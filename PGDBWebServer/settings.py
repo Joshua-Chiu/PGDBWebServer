@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'PGDB',
-        'USER': 'PGAdmin',
+        'USER': 'pgadmin',
         'PASSWORD': '2.71828',
         'HOST': 'localhost',
         'PORT': ''
