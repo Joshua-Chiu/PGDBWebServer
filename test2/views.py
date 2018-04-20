@@ -7,6 +7,6 @@ def index(request):
     students = Student.objects.all()
     html = "<h1>students</h1>"
     for s in students:
-        html += "<p>{0}</p>".format(s.student_num)
+        html += "<p>{1} {2} #{0}</p>".format(s.student_num, s.first, s.last)
     return HttpResponse(html)
 
