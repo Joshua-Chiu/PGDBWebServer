@@ -8,7 +8,7 @@ class Student(models.Model):
     first = models.CharField(max_length=30)
     last = models.CharField(max_length=30)
     student_num = models.PositiveIntegerField()
-    homeroom = models.CharField(max_length=2)
+    homeroom = models.CharField(max_length=3)
 
 
 class Service(models.Model):
