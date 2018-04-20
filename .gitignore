@@ -1,3 +1,8 @@
 venv
 .vscode
-__pychache__
+
+__pycache__/
+*.py[cod]
+
+*.log
+*.pot
