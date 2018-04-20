@@ -10,3 +10,8 @@ def index(request):
         html += "<p>{1} {2} #{0}</p>".format(s.student_num, s.first, s.last)
     return HttpResponse(html)
 
+def search(request, num):
+    html = ""
+    for s in filter(lambda x: x.student_num == num, Student.objects.all()):
+        html += "<p>{0}</p>".format(s.first)
+    return HttpResponse(html)
