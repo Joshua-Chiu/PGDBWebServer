@@ -20,8 +20,8 @@ def search(request, num):
 
 
 def student_info(request, num):
-    template = get_template('test2/student_list.html')
-    context = {'student_list': Student.objects.filter(id=num)}
+    template = get_template('test2/student_info.html')
+    context = {'student': Student.objects.filter(id=num)[0]}
     return HttpResponse(template.render(context, request))
 
 
