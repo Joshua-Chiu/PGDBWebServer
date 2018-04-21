@@ -6,3 +6,6 @@ __pycache__/
 
 *.log
 *.pot
+PGDBWebServer/__pycache__
+test2/__pycache__
+test3/__pycache__
