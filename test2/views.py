@@ -12,6 +12,7 @@ def index(request):
     return HttpResponse(html)
 '''
 
+
 def search(request, num):
     html = ""
     for s in filter(lambda x: x.student_num == num, Student.objects.all()):
@@ -20,11 +21,11 @@ def search(request, num):
 
 
 def index(request):
-	template = get_template('test2/index.html')
-	context = Context({
-	'Student': 'Student'
-	})
+    template = get_template('test2/index.html')
+    context = Context({
+    'Student': 'Student'
+    })
 
-	return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context, request))
 
 
