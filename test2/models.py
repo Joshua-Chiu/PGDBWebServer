@@ -10,6 +10,9 @@ class Student(models.Model):
     student_num = models.PositiveIntegerField()
     homeroom = models.CharField(max_length=3)
 
+    def __str__(self):
+        return "{0}, {1}, {2}, {3}".format(self.first, self.last, self.student_num, self.homeroom)
+
 
 class Service(models.Model):
     Student = models.ForeignKey(Student, on_delete=models.CASCADE)

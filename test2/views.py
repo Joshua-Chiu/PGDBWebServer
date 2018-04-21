@@ -22,9 +22,9 @@ def search(request, num):
 
 def index(request):
     template = get_template('test2/index.html')
-    context = Context({
-    'Student': 'Student'
-    })
+    context = {
+        'Student': str(Student)
+    }
 
     return HttpResponse(template.render(context, request))
 
