@@ -9,7 +9,17 @@
 
     	<h1>My First Heading</h1>
 
-		<p>The student is {{ Student }}</p>
+		<p>
+            Lastname: {{ Student|upper }} Firstname: {{ Student|safe }}<br />
+            Put somethings here
+
+        </p>
+
+    <ul>
+    {% for point in points %}
+        <li>{{ point }}</li>
+    {% endfor %}
+    </ul>
 
 	</body>
 </html>
