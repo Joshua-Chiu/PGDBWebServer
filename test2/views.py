@@ -14,18 +14,22 @@ def index(request):
 
 
 def search(request, num):
-    html = ""
-    for s in filter(lambda x: x.student_num == num, Student.objects.all()):
-        html += "<p>{0}</p>".format(s.first)
-    return HttpResponse(html)
+    template = get_template('test2/student_list.html')
+    context = {'student_list': Student.objects.filter(student_num=num)}
+    return HttpResponse(template.render(context, request))
+
+
+def student_info(request, num):
+    template = get_template('test2/student_list.html')
+    context = {'student_list': Student.objects.filter(id=num)}
+    return HttpResponse(template.render(context, request))
 
 
 def index(request):
-    template = get_template('test2/index.html')
+    template = get_template('test2/student_list.html')
     context = {
-        'Student': str(Student)
+        'student_list': Student.objects.all()
     }
-
     return HttpResponse(template.render(context, request))
 
 
