@@ -12,6 +12,7 @@ def index(request):
     return HttpResponse(html)
 '''
 
+
 def search(request, num):
     html = ""
     for s in filter(lambda x: x.student_num == num, Student.objects.all()):
