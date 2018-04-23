@@ -8,8 +8,10 @@
 <h2>{{ student.first }} {{ student.last }}</h2>
 <h3> student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
 <h3>Service</h3>
-<form>
-  Enter a Service: <input type="text" name="Service"><br>
+
+<form action="/enter-service/" method="post">
+    <label for="service">Service: </label>
+    <input id="service" type="number" name="service" maxlength="3" value="{{ current_name }}" >
 </form>
-</body>
+
 </html>
