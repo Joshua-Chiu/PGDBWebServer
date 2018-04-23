@@ -13,8 +13,15 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
+<<<<<<< HEAD
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
+=======
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.6 (PGDBWebServer)" jdkType="Python SDK" />
+>>>>>>> b57b8633cf2bfc58a19df4d87f53f528ccc3b1c3
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
