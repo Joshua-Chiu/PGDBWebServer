@@ -1,8 +1,7 @@
 from django.db import models
 
 # run manage.py makemigrations test2 && manage.py migrate to add to db
-# manage.py shell then from Test2.models import some stuff
-# Students.objects .all() .filter(first='')
+
 
 class Student(models.Model):
     first = models.CharField(max_length=30)

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Point Grey Awards Database</title>
+    </head>
+
+    <body>
+        <h1>students</h1>
+    	{% if student_list %}
+            <ul>
+            {% for student in student_list %}
+                <li><a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+	</body>
+</html>
