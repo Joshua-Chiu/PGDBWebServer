@@ -5,21 +5,25 @@
         <title>Point Grey Awards Database</title>
     </head>
 
-    <body>
-
-    	<h1>My First Heading</h1>
-
-		<p>
-            Lastname: {{ Student|upper }} Firstname: {{ Student|safe }}<br />
-            Put somethings here
-
-        </p>
-
     <ul>
     {% for point in points %}
         <li>{{ point }}</li>
     {% endfor %}
     </ul>
+
+    <body>
+
+    	<h1>Point Grey Awards Database</h1>
+
+		<p>
+            Lastname: {{ Student|upper }} Firstname: {{ Student|safe }}<br />
+            Student Number:
+
+        </p>
+
+        <h2>Points</h2>
+
+
 
 	</body>
 </html>
