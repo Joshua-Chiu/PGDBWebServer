@@ -3,22 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Point Grey Awards Database</title>
+    <link rel="stylesheet" type="text/css" href="./style.css"></link>
 </head>
 <body>
 <div id="top stuff">
     <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="http://go.vsb.bc.ca/schools/pointgrey/School%20Photos/School%20Logo.jpg" height="50" width="55"></a>
 </div>
+<hr>
+<h2>{{ student.last }} {{ student.first }}</h2>
+<h3> Student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
 
-<h2>{{ student.first }} {{ student.last }}</h2>
-<h3> student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
-<h3>Service</h3>
+<h3 style="color:blue;">Awards</h3>
 
-<form action="/enter-service/" method="post">
-    <label for="service">Service: </label>
-    <input id="service" type="number" name="service" maxlength="3" value="{{ current_name }}" >
-</form>
+<hr>
+
 <table>
-
+<!-- Put all the service stuff here in the table -->
+    <tr>
+        <!-- Totals and Table headers-->
+        <td>Grade: {{ student.homeroom|slice:"0:2" }} </td>
+        <td>Service {{ student.servicetotal|slice:"0:3" }} </td>
+        <td>Athletics {{ student.athleticstotal|slice:"0:3" }} </td>
+        <td>Scholar {{ student.schoclartotal|slice:"0:3" }} </td>
+        <td>Fine Arts {{ student.fineartstotal|slice:"0:3" }} </td>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <!-- get current year-->
+            <script type="text/javascript">
+            var today = new Date()
+            var year = today.getFullYear()
+            document.write(year)
+            </script>
+            <br>
+            <script type="text/javascript">
+            var today = new Date()
+            var year = today.getFullYear()
+            document.write(year + 1)
+            </script>
+            <br>
+            {{ student.currentyear|slice:"5:8" }}
+            <button class="btn danger">NULLIFY</button>
+        <!-- DATA ENTRY HAPPENS HERE -->
+        <td>
+        <form action="/enter-service/" method="post">
+             <label for="service">Points: </label>
+             <input id="service" type="number" name="Points: " maxlength="3" value="{{ service }}" >
+        </form>
+        </td>
+        <td>
+        <form action="/enter-athletics/" method="post">
+             <label for="athletics">Points: </label>
+             <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
+        </form>
+        </td>
+        <td>
+        <form action="/enter-scholar/" method="post">
+             <label for="scholar">Points: </label>
+             <input id="scholar" type="number" name="scholar" maxlength="3" value="{{ scholar }}" >
+        </form>
+        </td>
+        <td>
+        <form action="/enter-fine_arts/" method="post">
+             <label for="fine_arts">Points: </label>
+             <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
+        </form>
+        </td>
+    </tr>
 </table>
 
 </html>
