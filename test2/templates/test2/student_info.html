@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Point Grey Awards Database</title>
 </head>
 <body>
+<div id="top stuff">
+    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="http://go.vsb.bc.ca/schools/pointgrey/School%20Photos/School%20Logo.jpg" height="50" width="55"></a>
+</div>
+
 <h2>{{ student.first }} {{ student.last }}</h2>
 <h3> student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
 <h3>Service</h3>
@@ -13,5 +17,8 @@
     <label for="service">Service: </label>
     <input id="service" type="number" name="service" maxlength="3" value="{{ current_name }}" >
 </form>
+<table>
+
+</table>
 
 </html>
