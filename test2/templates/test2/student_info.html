@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Point Grey Awards Database</title>
-    <link rel="stylesheet" type="text/css" href="./style.css"></link>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
 <body>
-<div id="top stuff">
+<div id="top stuff" style="display:inline;text-align:left; float: left;">
     <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="http://go.vsb.bc.ca/schools/pointgrey/School%20Photos/School%20Logo.jpg" height="50" width="55"></a>
 </div>
+
+<div>
+    <h1>Point Grey Awards Database</h1>
+</div>
 <hr>
+
+
+
 <h2>{{ student.last }} {{ student.first }}</h2>
 <h3> Student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
 
-<h3 style="color:blue;">Awards</h3>
+<h3 style="color:blue">Awards</h3>
 
 <hr>
 
@@ -60,7 +67,7 @@
         <td>
         <form action="/enter-scholar/" method="post">
              <label for="scholar">Points: </label>
-             <input id="scholar" type="number" name="scholar" maxlength="3" value="{{ scholar }}" >
+             <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
         </form>
         </td>
         <td>
@@ -71,5 +78,5 @@
         </td>
     </tr>
 </table>
-
+</body>
 </html>

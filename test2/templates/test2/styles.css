@@ -23,6 +23,9 @@ p {
 
 /* On mouse-over */
 .btn:hover {background: #eee;}
-
 .danger {color: red;}
 .default {color: black;}
+
+input[type=number]{
+    width: 80px;
+}
