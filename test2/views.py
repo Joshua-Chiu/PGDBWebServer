@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from .models import Student
 from django.template.loader import get_template
-from .forms import Search
 
 '''
 def index(request):
@@ -14,19 +13,15 @@ def index(request):
 '''
 
 
-def search(request):
-    if request.method == "GET":
-        form = Search()
-    else:
-        # POST request not sure how it works
-        form = Search(request)
-
-    return render(request, 'test2/search.html', {'form': form})
+def search(request, num):
+    template = get_template('test2/student_list.html')
+    context = {'student_list': Student.objects.filter(student_num=num)}
+    return HttpResponse(template.render(context, request))
 
 
 def student_info(request, num):
     template = get_template('test2/student_info.html')
-    context = {'student ': Student.objects.filter(id=num)[0]}
+    context = {'student': Student.objects.filter(id=num)}
     return HttpResponse(template.render(context, request))
 
 
