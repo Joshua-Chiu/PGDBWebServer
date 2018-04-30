@@ -1,13 +1,19 @@
+<!--Load templetes-->
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Point Grey Awards Database</title>
-    <link rel="stylesheet" type="text/css" href="./styles.css">
+    <!--
+    <link href="./style.css" rel="stylesheet" type="text/css">
+    -->
+    <link rel="stylesheet" href="{% static 'css/studentinfo_style.css' %}">
 </head>
 <body>
 <div id="top stuff" style="display:inline;text-align:left; float: left;">
-    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="http://go.vsb.bc.ca/schools/pointgrey/School%20Photos/School%20Logo.jpg" height="50" width="55"></a>
+    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="My image" height="50" width="50"></a>
 </div>
 
 <div>
@@ -15,11 +21,14 @@
 </div>
 <hr>
 
+<!--Student Info goes here-->
 
-
-<h2>{{ student.last }} {{ student.first }}</h2>
-<h3> Student #: {{ student.student_num }} homeroom: {{ student.homeroom }}</h3>
-
+<h2>{{ student.last }}, {{ student.first }}</h2>
+<form method="get" action="/test2">
+    <button type="submit">Student List</button>
+</form>
+<h3> Student #: {{ student.student_num }} Homeroom: {{ student.homeroom }} Sex: {{ student.sex }} Year Entered: {{ student.year_entered }}</h3>
+<h2>CUMULATIVE TOTAL: {{ student.cumulative }}</h2>
 <h3 style="color:blue">Awards</h3>
 
 <hr>
@@ -29,13 +38,13 @@
     <tr>
         <!-- Totals and Table headers-->
         <td>Grade: {{ student.homeroom|slice:"0:2" }} </td>
-        <td>Service {{ student.servicetotal|slice:"0:3" }} </td>
-        <td>Athletics {{ student.athleticstotal|slice:"0:3" }} </td>
-        <td>Scholar {{ student.schoclartotal|slice:"0:3" }} </td>
-        <td>Fine Arts {{ student.fineartstotal|slice:"0:3" }} </td>
+        <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
+        <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
+        <td><strong>Scholar</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+        <td><strong>Fine Arts</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
     </tr>
     <tr>
-        <td rowspan="2">
+        <td rowspan="3">
             <!-- get current year-->
             <script type="text/javascript">
             var today = new Date()
@@ -51,6 +60,8 @@
             <br>
             {{ student.currentyear|slice:"5:8" }}
             <button class="btn danger">NULLIFY</button>
+            <p>Anecdotes</p>
+            <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
         <!-- DATA ENTRY HAPPENS HERE -->
         <td>
         <form action="/enter-service/" method="post">
@@ -66,7 +77,7 @@
         </td>
         <td>
         <form action="/enter-scholar/" method="post">
-             <label for="scholar">Points: </label>
+             <label for="scholar">Average: </label>
              <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
         </form>
         </td>
