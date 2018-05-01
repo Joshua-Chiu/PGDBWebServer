@@ -13,9 +13,9 @@ def index(request):
 '''
 
 
-def search(request, num):
-    template = get_template('test2/student_list.html')
-    context = {'student_list': Student.objects.filter(student_num=num)}
+def search(request):
+    template = get_template('test2/search.html')
+    context = {}
     return HttpResponse(template.render(context, request))
 
 
