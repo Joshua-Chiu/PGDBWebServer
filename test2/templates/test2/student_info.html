@@ -1,10 +1,11 @@
-<!--Load templetes-->
+<!--Load templates-->
 {% load staticfiles %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
     <title>Point Grey Awards Database</title>
     <!--
     <link href="./style.css" rel="stylesheet" type="text/css">
@@ -20,20 +21,31 @@
     <h1>Point Grey Awards Database</h1>
 </div>
 <hr>
+<input type="text" placeholder="Search..">
+<button class="btn submit" type="submit">Submit</button>
+<br>
+<!--Nav Bar-->
 
+<ul>
+    <li><a href="/test2">Student List</a></li>
+</ul>
+<hr>
 <!--Student Info goes here-->
-
-<h2>{{ student.last }}, {{ student.first }}</h2>
+<h2><strong>{{ student.last }}, {{ student.first }}</strong></h2>
+<!--
 <form method="get" action="/test2">
     <button type="submit">Student List</button>
 </form>
-<h3> Student #: {{ student.student_num }} Homeroom: {{ student.homeroom }} Sex: {{ student.sex }} Year Entered: {{ student.year_entered }}</h3>
+-->
+<h3> Student #: {{ student.student_num }} Homeroom: {{ student.homeroom }} Sex: {{ student.sex }} Year Entered: {{ student.date_added }}</h3>
 <h2>CUMULATIVE TOTAL: {{ student.cumulative }}</h2>
 <h3 style="color:blue">Awards</h3>
 
 <hr>
 
-<table>
+<button class="collapsible">Grade {{ student.homeroom|slice:"0:2" }}</button>
+<div class="content">
+<table border="1">
 <!-- Put all the service stuff here in the table -->
     <tr>
         <!-- Totals and Table headers-->
@@ -42,22 +54,24 @@
         <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
         <td><strong>Scholar</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
         <td><strong>Fine Arts</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
+        <td><strong>Annual Awards</strong></td>
     </tr>
     <tr>
         <td rowspan="3">
             <!-- get current year-->
             <script type="text/javascript">
-            var today = new Date()
-            var year = today.getFullYear()
+            var today = new Date();
+            var year = today.getFullYear();
             document.write(year)
             </script>
             <br>
             <script type="text/javascript">
-            var today = new Date()
-            var year = today.getFullYear()
+            var today = new Date();
+            var year = today.getFullYear();
             document.write(year + 1)
             </script>
             <br>
+            <hr>
             {{ student.currentyear|slice:"5:8" }}
             <button class="btn danger">NULLIFY</button>
             <p>Anecdotes</p>
@@ -65,29 +79,68 @@
         <!-- DATA ENTRY HAPPENS HERE -->
         <td>
         <form action="/enter-service/" method="post">
-             <label for="service">Points: </label>
-             <input id="service" type="number" name="Points: " maxlength="3" value="{{ service }}" >
+            <label for="service">Points: </label>
+            <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
+            <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
+            <div style="overflow-y:auto;">
+            <table>
+            {% for service in services %}
+            <tr><td>{{ service }}</td></tr>
+            {% endfor %}
+            </table>
+            </div>
         </form>
         </td>
+
         <td>
         <form action="/enter-athletics/" method="post">
-             <label for="athletics">Points: </label>
-             <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
+            <label for="athletics">Points: </label>
+            <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
         </form>
         </td>
+
         <td>
         <form action="/enter-scholar/" method="post">
-             <label for="scholar">Average: </label>
-             <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
+            <label for="scholar">T1 Average: </label>
+            <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
+            <br>
+            <label for="scholar">T2 Average: </label>
+            <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
         </form>
         </td>
+
         <td>
         <form action="/enter-fine_arts/" method="post">
-             <label for="fine_arts">Points: </label>
-             <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
+            <label for="fine_arts">Points: </label>
+            <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
         </form>
         </td>
     </tr>
 </table>
+</div>
+
+
+
+
+
+
+<!-- Script for the collapsible-->
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+</script>
+
 </body>
 </html>
