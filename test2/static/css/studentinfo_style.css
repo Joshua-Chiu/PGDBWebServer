@@ -1,32 +1,120 @@
+* {
+ font-family: "Helvetica", Helvetica, sans-serif;
+}
+
 body {
     background-color: powderblue;
 }
+
 h1 {
     color: blue;
     font-family: "Helvetica", Helvetica, sans-serif;
 }
 
 p {
-    color: red;
+    color: black;
 }
 
+/* button stuff (Nullify)*/
 .btn {
-    border: 1px solid red;
+    border: 1px solid inherit;
     background-color: inherit;
     padding: 5px 5px;
     font-size: 16px;
     cursor: pointer;
     display: inline-block;
 }
+.btn:hover {
+    background: inherit;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
 
-/* On mouse-over */
-.btn:hover {background: #eee;}
 .danger {
     color: red;
 }
 
-.default {color: black;}
+.default {
+    color: black;
+}
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.submit{
+
+    float: right
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: rgba(255,255,255,0.5);
+}
+
+.collapsible:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+
+.collapsible, .active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+/* End of Collapsible Stuff*/
+
 
 input[type=number]{
     width: 40px;
+}
+/*Nav Bar*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: right;
+    border-right: 1px solid #bbb;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 10px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+li:last-child {
+    border-right: none;
 }
