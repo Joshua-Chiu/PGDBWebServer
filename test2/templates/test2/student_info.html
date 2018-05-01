@@ -21,14 +21,19 @@
     <h1>Point Grey Awards Database</h1>
 </div>
 <hr>
-<input type="text" placeholder="Search..">
-<button class="btn submit" type="submit">Submit</button>
-<br>
 <!--Nav Bar-->
-
-<ul>
-    <li><a href="/test2">Student List</a></li>
-</ul>
+<div class="topnav">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search.." name="search">
+    </form>
+    <br>
+    <br>
+    <br>
+    <ul>
+        <li><a href="/test2">Student List</a></li>
+        <li><a href="/settings">Settings</a></li>
+    </ul>
+</div>
 <hr>
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }}</strong></h2>

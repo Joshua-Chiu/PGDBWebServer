@@ -40,10 +40,6 @@ p {
     opacity: 0.6;
     cursor: not-allowed;
 }
-.submit{
-
-    float: right
-}
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
@@ -108,6 +104,17 @@ li a {
     text-align: center;
     padding: 10px 10px;
     text-decoration: none;
+}
+.topnav .search-container {
+  float: right;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+    float: right;
+  border: none;
 }
 
 /* Change the link color to #111 (black) on hover */
