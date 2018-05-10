@@ -62,4 +62,3 @@ class Certificates(models.Model):
     honour = models.BooleanField()
     p_list = models.BooleanField()
     fine_arts = models.BooleanField()
-
