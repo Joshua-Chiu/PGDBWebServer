@@ -1,4 +1,5 @@
 <!--Load templates-->
+{% include 'test2/navbar.html' %}
 {% load staticfiles %}
 
 <!DOCTYPE html>
@@ -10,30 +11,11 @@
     <link rel="stylesheet" href="{% static 'css/studentinfo_style.css' %}">
 </head>
 <body>
-<div id="top stuff" style="display:inline;text-align:left; float: left;">
-    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="My image" height="50" width="50"></a>
-</div>
 
-<div>
-    <h1>Point Grey Awards Database</h1>
-</div>
-<hr>
-<!--Nav Bar-->
-<div class="topnav">
-    <form action="/test2/search">
-      <input type="text" placeholder="Search.." name="search">
-    </form>
-    <br>
-    <br>
-    <br>
-    <ul>
-        <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
-        <li><a href="/test2">Student List</a></li>
-        <li><a href="/settings">Settings</a></li>
-        <li style="float: left"><a href="/admin">Admin Login</a></li>
-    </ul>
-</div>
-<hr>
+{% block content %}
+
+{% endblock %}
+
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }}</strong></h2>
 <!--
@@ -50,30 +32,123 @@
 <button class="collapsible">Grade {{ student.homeroom|slice:"0:2" }}</button>
 
 <div class="current year">
+    <table border="1" style="float: left;">
+    <!-- Put all the service stuff here in the table -->
+        <tr>
+            <!-- Totals and Table headers-->
+            <td>Grade: {{ student.homeroom|slice:"0:2" }} </td>
+            <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
+            <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
+            <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+            <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
+            <td><strong>Annual Awards</strong></td>
+        </tr>
+        <tr>
+            <td rowspan="3">
+                <!-- get current year-->
+                <script type="text/javascript">
+                var today = new Date();
+                var year = today.getFullYear();
+                document.write(year)
+                </script>
+                <br>
+                <script type="text/javascript">
+                var today = new Date();
+                var year = today.getFullYear();
+                document.write(year + 1)
+                </script>
+                <br>
+                <hr>
+                {{ student.currentyear|slice:"5:8" }}
+                <button onclick="myFunction()" class="btn danger">NULLIFY</button>
+                <p>Anecdotes</p>
+                <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
+            <!-- DATA ENTRY HAPPENS HERE -->
+            <td>
+            <form action="/enter-service/" method="post">
+                <label for="service">Points: </label>
+                <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
+                <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
+                <div style="overflow-y:auto;">
+                <table>
+                {% for service in services %}
+                <tr><td>{{ service }}</td></tr>
+                {% endfor %}
+                </table>
+                </div>
+            </form>
+            </td>
+
+            <td>
+            <form action="/enter-athletics/" method="post">
+                <label for="athletics">Points: </label>
+                <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
+            </form>
+            </td>
+
+            <td>
+            <form action="/enter-fine_arts/" method="post">
+                <label for="fine_arts">Points: </label>
+                <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
+            </form>
+            </td>
+
+            <td rowspan="2">
+                <form action="/enter-scholar/" method="post">
+                    <label for="scholar">T1 Average: </label>
+                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
+                    <br>
+                    <label for="scholar">T2 Average: </label>
+                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
+                </form>
+            </td>
+            <td rowspan="2">
+            </td>
+        </tr>
+    <!--Where all the points are displayed-->
+        <tr>
+            <td align="center">
+                Hours | Code
+            </td>
+        </tr>
+    </table>
+
+    <table border="1" style="float: left;">
+        <tr>
+            <td><strong>Cumulative Awards</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!--Previous Years(s)-->
+
+<button class="collapsible">Grade {{ student.homeroom|slice:"0:2"|add:"-1" }}</button>
+
+<div class="previous year">
 <table border="1">
 <!-- Put all the service stuff here in the table -->
     <tr>
         <!-- Totals and Table headers-->
-        <td>Grade: {{ student.homeroom|slice:"0:2" }} </td>
+        <td>Grade: {{ student.homeroom|slice:"0:2"|add:"-1" }} </td>
         <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
         <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
         <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
         <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
         <td><strong>Annual Awards</strong></td>
-    </tr>
+    <tr>
     <tr>
         <td rowspan="3">
             <!-- get current year-->
             <script type="text/javascript">
             var today = new Date();
             var year = today.getFullYear();
-            document.write(year)
+            document.write(year - 1)
             </script>
             <br>
             <script type="text/javascript">
             var today = new Date();
             var year = today.getFullYear();
-            document.write(year + 1)
+            document.write(year)
             </script>
             <br>
             <hr>
@@ -81,66 +156,12 @@
             <button onclick="myFunction()" class="btn danger">NULLIFY</button>
             <p>Anecdotes</p>
             <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
-        <!-- DATA ENTRY HAPPENS HERE -->
-        <td>
-        <form action="/enter-service/" method="post">
-            <label for="service">Points: </label>
-            <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
-            <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            <div style="overflow-y:auto;">
-            <table>
-            {% for service in services %}
-            <tr><td>{{ service }}</td></tr>
-            {% endfor %}
-            </table>
-            </div>
-        </form>
-        </td>
-
-        <td>
-        <form action="/enter-athletics/" method="post">
-            <label for="athletics">Points: </label>
-            <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
-        </form>
-        </td>
-
-        <td>
-        <form action="/enter-fine_arts/" method="post">
-            <label for="fine_arts">Points: </label>
-            <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
-        </form>
-        </td>
-
-        <td rowspan="2">
-            <form action="/enter-scholar/" method="post">
-                <label for="scholar">T1 Average: </label>
-                <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
-                <br>
-                <label for="scholar">T2 Average: </label>
-                <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
-            </form>
-        </td>
-        <td rowspan="2">
-        </td>
-    </tr>
-<!--Where all the points are displayed-->
-    <tr>
-        <td align="center">
-            Hours | Code
         </td>
     </tr>
 </table>
 </div>
 
-<hr>
 
-<div class="past year">
-    <table border="1">
-        <tr>
-            <td>test</td>
-        </tr>
-    </table>
-</div>
 
 
 
