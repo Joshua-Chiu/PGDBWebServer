@@ -13,9 +13,9 @@
     <body>
         <h1>Students</h1>
     	{% if student_list %}
-            <ul>
+            <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: inherit">
             {% for student in student_list %}
-                <li><a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a></li>
+                <li style="float: left; border: none"><a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a></li>
             {% endfor %}
             </ul>
         {% endif %}
