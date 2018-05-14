@@ -48,7 +48,8 @@
 <hr>
 
 <button class="collapsible">Grade {{ student.homeroom|slice:"0:2" }}</button>
-<div class="content">
+
+<div class="current year">
 <table border="1">
 <!-- Put all the service stuff here in the table -->
     <tr>
@@ -56,8 +57,8 @@
         <td>Grade: {{ student.homeroom|slice:"0:2" }} </td>
         <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
         <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
-        <td><strong>Scholar</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
-        <td><strong>Fine Arts</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
+        <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+        <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
         <td><strong>Annual Awards</strong></td>
     </tr>
     <tr>
@@ -131,7 +132,15 @@
 </table>
 </div>
 
+<hr>
 
+<div class="past year">
+    <table border="1">
+        <tr>
+            <td>test</td>
+        </tr>
+    </table>
+</div>
 
 
 
