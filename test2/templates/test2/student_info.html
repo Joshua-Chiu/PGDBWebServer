@@ -12,10 +12,33 @@
 </head>
 <body>
 
+<<<<<<< HEAD
 {% block content %}
 
 {% endblock %}
 
+=======
+<div>
+    <h1>Point Grey Awards Database</h1>
+</div>
+<hr>
+<!--Nav Bar-->
+<div class="topnav">
+    <form action="/test2/search">
+      <input type="text" placeholder="Search.." name="first">
+    </form>
+    <br>
+    <br>
+    <br>
+    <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
+        <li><a href="/test2">Student List</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li style="float: left"><a href="/admin">Admin Login</a></li>
+    </ul>
+</div>
+<hr>
+>>>>>>> 103d1f50dfa08abd08c65c9ef8989afbea78cb2d
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }}</strong></h2>
 <!--

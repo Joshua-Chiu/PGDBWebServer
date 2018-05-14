@@ -7,12 +7,21 @@
 <body>
 <h1>search</h1>
 
-<form action="search.html" method="get">
+<form action="search" method="get">
     <fieldset>
     <label for="first"> Firstname: </label>
     <input id="first" type ="text" name="first">
-    <input type="submit" value="Search" />
+    <input type="submit" value="search" />
     </fieldset>
 </form>
+
+{% if student_list %}
+            <ul>
+            {% for student in student_list %}
+                <li><a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
 </body>
 </html>
