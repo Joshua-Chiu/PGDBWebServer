@@ -6,9 +6,10 @@ body {
     background-color: powderblue;
 }
 
-ul {
+.student ul {
+    border: none;
     list-style-type: disc;
     margin: 0;
     padding: 0;
-
+    overflow-y: auto;
 }
