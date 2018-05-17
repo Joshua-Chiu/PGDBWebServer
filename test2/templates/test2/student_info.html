@@ -19,18 +19,13 @@
 
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }}</strong></h2>
-<!--
-<form method="get" action="/test2">
-    <button type="submit">Student List</button>
-</form>
--->
 <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added }}</strong></p>
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 <h3 style="color:blue">Points</h3>
 
-<hr>
+<hr><!-- end of Student Overview-->
 
-<button class="collapsible">Grade {{ student.homeroom|slice:"0:2" }}</button>
+<button class="collapsible"><strong>Grade {{ student.homeroom|slice:"0:2" }}</strong></button>
 
 <div class="current year">
     <table border="1" style="float: left;">
@@ -111,12 +106,29 @@
             <td align="center">
                 Hours | Code
             </td>
+            <td align="center">
+                Hours | Code
+            </td>
+            <td align="center">
+                Hours | Code
+            </td>
         </tr>
     </table>
 
-    <table border="1" style="float: left;">
+    <table border="1" style="float: left; margin-left: 20px;">
         <tr>
-            <td><strong>Cumulative Awards</strong></td>
+            <td colspan="2"><strong>Cumulative Awards</strong></td>
+        </tr>
+        <tr>
+            <td>
+                Total Points: <br>
+                Service Points: <br>
+                Scholar Points: <br>
+                Academic Points: <br>
+            </td>
+            <td>
+                Put points here
+            </td>
         </tr>
     </table>
 </div>

@@ -10,15 +10,19 @@
     <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
 </head>
 
+
+{% block content %}
+
+{% endblock %}
+
+
     <body>
         <h1>Students</h1>
     	{% if student_list %}
             <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: inherit">
             {% for student in student_list %}
                 <li style="float: left; border: none">
-                    <a style="display: block; color: white; text-align: center; padding: 10px 10px; text-decoration: none;" href="/test2/student/{{ student.id }}">
-                        {{ student.first }} {{ student.last }}
-                    </a>
+                    <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
                 </li>
             {% endfor %}
             </ul>

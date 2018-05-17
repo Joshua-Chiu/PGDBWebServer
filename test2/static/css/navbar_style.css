@@ -1,0 +1,56 @@
+* {
+ font-family: "Helvetica", Helvetica, sans-serif;
+}
+
+body {
+    background-color: powderblue;
+}
+
+h1 {
+    color: blue;
+    font-family: "Helvetica", Helvetica, sans-serif;
+}
+
+/*Nav Bar*/
+.topnav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.topnav li {
+    float: right;
+    border-left: 1px solid #bbb;
+}
+
+.topnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 10px;
+    text-decoration: none;
+}
+.topnav .search-container {
+  float: right;
+}
+
+.topnav input[type=text] {
+    padding: 6px;
+    margin-top: 1px;
+    font-size: 17px;
+    float: right;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+
+/* Change the link color to #111 (black) on hover */
+.topnav li a:hover {
+    background-color: #111;
+}
+
+.topnav li:last-child {
+    border-left: none;
+}

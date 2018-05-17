@@ -81,47 +81,8 @@ p {
 /* End of Collapsible Stuff*/
 
 
+
 input[type=number]{
     width: 40px;
 }
-/*Nav Bar*/
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
 
-li {
-    float: right;
-    border-right: 1px solid #bbb;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 10px 10px;
-    text-decoration: none;
-}
-.topnav .search-container {
-  float: right;
-}
-
-.topnav input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-    float: right;
-  border: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-    background-color: #111;
-}
-
-li:last-child {
-    border-right: none;
-}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
     <title>Point Grey Awards Database</title>
-    <link rel="stylesheet" href="{% static 'css/studentinfo_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
 </head>
 
 <div id="top stuff" style="display:inline;text-align:left; float: left;">
@@ -18,13 +18,12 @@
 <hr>
 <!--Nav Bar-->
 <div class="topnav">
-    <form action="/test2/search">
-      <input type="text" placeholder="Search.." name="search">
-    </form>
-    <br>
-    <br>
-    <br>
     <ul>
+        <li style="float:center">
+            <form action="/test2/search">
+                <input type="text" placeholder="Search.." name="first">
+            </form>
+        </li>
         <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
         <li><a href="/test2">Student List</a></li>
         <li><a href="/settings">Settings</a></li>
