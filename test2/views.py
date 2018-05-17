@@ -15,7 +15,7 @@ def index(request):
 
 def search(request):
     template = get_template('test2/search.html')
-    student_list = Student.objects.filter(first__contains=request.GET.get('first', ''))
+    student_list = Student.objects.filter(first__icontains=request.GET.get('first', ''))
     context = {'student_list': student_list}
     return HttpResponse(template.render(context, request))
 
