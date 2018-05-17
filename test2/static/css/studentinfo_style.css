@@ -80,7 +80,9 @@ p {
 }
 /* End of Collapsible Stuff*/
 
-
+textarea {
+   resize: none;
+}
 
 input[type=number]{
     width: 40px;

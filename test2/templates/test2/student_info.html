@@ -62,22 +62,22 @@
                 <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
             <!-- DATA ENTRY HAPPENS HERE -->
             <td>
-            <form action="/enter-service/" method="post">
+            <form action="/test2/submit" method="post">
                 <label for="service">Points: </label>
                 <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
-                <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
-                <div style="overflow-y:auto;">
-                <table>
-                {% for service in services %}
-                <tr><td>{{ service }}</td></tr>
-                {% endfor %}
-                </table>
-                </div>
+                <!-- <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" > -->
             </form>
+                <div style="overflow-y:auto;">
+                    <table>
+                    {% for service in services %}
+                    <tr><td>{{ service }}</td></tr>
+                    {% endfor %}
+                    </table>
+                </div>
             </td>
 
             <td>
-            <form action="/enter-athletics/" method="post">
+            <form action="/test2/submit" method="post">
                 <label for="athletics">Points: </label>
                 <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
             </form>
