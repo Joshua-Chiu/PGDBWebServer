@@ -177,7 +177,9 @@
 
 
 
-
+<form action="/test2/student/{{ student.id }}/submit" method="post">{% csrf_token %}
+<input type="submit" value="Submit" />
+</form>
 
 
 <!-- Script for the collapsible-->
