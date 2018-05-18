@@ -62,10 +62,14 @@
                 <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
             <!-- DATA ENTRY HAPPENS HERE -->
             <td>
-            <form action="/test2/submit" method="post">
+            <form action="/test2/submit" method="post" style="float: left">
                 <label for="service">Points: </label>
                 <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
                 <!-- <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" > -->
+            </form>
+            <form action="/test2/submit" method="post" style="float: left; margin-left: 20px">
+                <label for="service">Code: </label>
+                <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
             </form>
                 <div style="overflow-y:auto;">
                     <table>
