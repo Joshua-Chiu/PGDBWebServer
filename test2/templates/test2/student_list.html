@@ -22,7 +22,7 @@
             <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: inherit">
             {% for student in student_list %}
                 <li class="student">
-                    <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
+                    <a href="{% url 'test2:student_info' student.id %}">{{ student.first }} {{ student.last }}</a>
                 </li>
             {% endfor %}
             </ul>
