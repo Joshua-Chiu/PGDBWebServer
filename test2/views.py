@@ -15,7 +15,7 @@ def index(request):
 
 def search(request):
     template = get_template('test2/search.html')
-    student_list = Student.objects.filter(first__icontains=request.GET.get('first', ''))
+    student_list = Student.objects.filter(first__icontains=request.GET['first'])
     context = {
         'student_list': student_list
     }
@@ -30,13 +30,18 @@ def student_info(request, num):
     return HttpResponse(template.render(context, request))
 
 
-
 def student_submit(request, num):
     if request.method == 'POST':
         print("received POST request")
     else:
         print("this is not supposed to happen don't do that again")
-    return HttpResponseRedirect("/test2/student/{}".format(num))
+
+    template = get_template('test2/student_info.html')
+    context = {
+        'student': Student.objects.get(id=num)
+    }
+    return HttpResponse(template.render(context, request))
+
 
 def settings(request):
     template = get_template('test2/settings.html')
@@ -44,7 +49,6 @@ def settings(request):
 
     }
     return HttpResponse(template.render(context, request))
-
 
 
 def index(request):
