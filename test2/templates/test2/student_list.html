@@ -23,11 +23,17 @@
         {% if student_list %}
             <table class="student">
             {% for student in student_list %}
+<<<<<<< HEAD
                 <tr>
                     <td>
                         <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
                     </td>
                 </tr>
+=======
+                <li class="student">
+                    <a href="{% url 'test2:student_info' student.id %}">{{ student.first }} {{ student.last }}</a>
+                </li>
+>>>>>>> cd9a2a2b1728ccc51a9a091b714861a350b51ffa
             {% endfor %}
             </table>
         {% endif %}
