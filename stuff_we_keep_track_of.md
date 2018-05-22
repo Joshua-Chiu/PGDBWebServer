@@ -21,4 +21,5 @@
 * codes, what they are, and what category they are in - add codes
 * users -admin and
 * backups
-* import students from .csv
+* import students from .csv or .xlsx
+*
