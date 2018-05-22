@@ -18,14 +18,18 @@
 
     <body>
         <h1>Students</h1>
-    	{% if student_list %}
-            <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: inherit">
+        <hr>
+
+        {% if student_list %}
+            <table class="student">
             {% for student in student_list %}
-                <li class="student">
-                    <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
-                </li>
+                <tr>
+                    <td>
+                        <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
+                    </td>
+                </tr>
             {% endfor %}
-            </ul>
+            </table>
         {% endif %}
 
 	</body>

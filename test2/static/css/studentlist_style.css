@@ -13,3 +13,8 @@ body {
     padding: 0;
     overflow-y: auto;
 }
+
+.student table{
+    border: 1px solid black;
+    overflow-y: auto;
+}

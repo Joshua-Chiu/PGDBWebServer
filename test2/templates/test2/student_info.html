@@ -24,6 +24,10 @@
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 <h3 style="color:blue">Points</h3>
 
+<form action="/test2/student/{{ student.id }}/submit" method="post">{% csrf_token %}
+<input type="submit" value="Submit" />
+</form>
+
 <hr><!-- end of Student Overview-->
 
 <button class="collapsible"><strong>Grade {{ student.homeroom|slice:"0:2" }}</strong></button>
@@ -118,6 +122,7 @@
         </tr>
     </table>
 
+<!-- Cumulative stuff and grad awards-->
     <table border="1" style="float: left; margin-left: 20px;">
         <tr>
             <td colspan="2"><strong>Cumulative Awards</strong></td>
@@ -131,6 +136,11 @@
             </td>
             <td>
                 Put points here
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <strong>Grad Calculations</strong>
             </td>
         </tr>
     </table>
@@ -179,9 +189,7 @@
 
 
 
-<form action="/test2/student/{{ student.id }}/submit" method="post">{% csrf_token %}
-<input type="submit" value="Submit" />
-</form>
+
 
 
 <!-- Script for the collapsible-->
