@@ -26,8 +26,16 @@
         </li>
         <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
         <li style="float: left; border-right: 1px solid #bbb;"><a href="/admin">Admin Login</a></li>
+
         <li><a href="{% url 'test2:index' %}">Student List</a></li>
-        <li style="border-left: 1px solid #bbb"><a href="{% url 'test2:settings' %}">Settings</a></li>
+
+        <li class="dropdown" style="border-left: 1px solid #bbb"><a href="{% url 'test2:settings' %}">Settings<span class="caret"></span></a>
+            <div class="dropdown-content">
+            <ul class="dropdown">
+                <li><a href="/admin">Generate Reports</a></li>
+            </ul>
+            </div>
+        </li>
     </ul>
 </div>
 <hr>

@@ -33,6 +33,7 @@
 * T1 and T2 averages
 * annual certificates
   * Principal List: variable cut-off
+    *BOTH TERMS AVERAGES ARE HIGHER THAN THE PRINCIPALS LIST CUTOFF*
   * Honour:    if (term 1 and term 2 averages are > 80) and not on principal's list:
   * Service:   if annual SERVICE POINTS TOTAL > 10
   * Athletics: if annual ATHLETICS POINTS TOTAL > 10
@@ -42,6 +43,7 @@
 
 * codes, what they are, and what category they are in - add codes
 * backups
+* advanced search -> sort students by points and totals
 
 
 # other features
