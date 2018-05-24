@@ -6,20 +6,32 @@
 * data added
 * last modified
 * cumulative awards
-  * exactly what awards and requirements to get them
+
 * check digit thing to keep track on the points
 * grad calculations
-  * more specific
-  * items
+  * Average of Grade 11 and 12 all averages (%)
+  * Service total grade 11 + grade 12 (points)
+  * Athletics total grade 11 + grade 12 (points)
+  * Scholar total grade 11 + grade 12 (points)
+  * Fine arts total grade 11 + grade 12 (points)
+  * All points earned in grade 11 + grade 12 (points)
 
 ### Per grade per student
 
 * points - type and amount
+    SCHOLAR:
+        79.50 -> 83.49: 2 POINTS
+        
+
 * anecdote
 * totals for each category e.g. service, athletics
 * T1 and T2 averages
 * annual certificates
-  * specifics
+  * Principal List: variable cut-off
+  * Honour:    if (term 1 and term 2 averages are > 80) and not on principal's list:
+  * Service:   if annual SERVICE POINTS TOTAL > 10
+  * Athletics: if annual ATHLETICS POINTS TOTAL > 10
+  * Fine Arts: if annual FINE ARTS POINTS TOTAL > 10
 
 ## Overall
 
