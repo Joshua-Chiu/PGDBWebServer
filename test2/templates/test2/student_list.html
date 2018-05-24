@@ -22,18 +22,23 @@
 
         {% if student_list %}
             <table class="student">
-            {% for student in student_list %}
-<<<<<<< HEAD
                 <tr>
                     <td>
-                        <a href="/test2/student/{{ student.id }}">{{ student.first }} {{ student.last }}</a>
+                        <strong>Name</strong>
+                    </td>
+                    <td style="padding-left: 100px">
+                        <strong>Homeroom</strong>
                     </td>
                 </tr>
-=======
-                <li class="student">
-                    <a href="{% url 'test2:student_info' student.id %}">{{ student.first }} {{ student.last }}</a>
-                </li>
->>>>>>> cd9a2a2b1728ccc51a9a091b714861a350b51ffa
+            {% for student in student_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'test2:student_info' student.id %}">{{ student.first }} {{ student.last }}</a>
+                    </td>
+                    <td style="padding-left: 100px">
+                        {{ student.homeroom }}
+                    </td>
+                </tr>
             {% endfor %}
             </table>
         {% endif %}

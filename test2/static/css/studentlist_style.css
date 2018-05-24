@@ -14,7 +14,7 @@ body {
     overflow-y: auto;
 }
 
-.student table{
-    border: 1px solid black;
+.student td{
+    /* border: 1px solid black; */
     overflow-y: auto;
 }
