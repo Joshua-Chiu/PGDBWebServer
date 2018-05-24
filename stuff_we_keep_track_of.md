@@ -1,4 +1,4 @@
-# stuff we keep track of in the database
+# Stuff we keep track of in the database
 
 ## Per student
 
@@ -7,11 +7,13 @@
 * last modified
 * cumulative awards
 * check digit thing to keep track on the points
+* grad calculations
 
 ### Per grade per student
 
 * points - type and amount
 * anecdote
+* nullify
 * totals for each category e.g. service, athletics
 * T1 and T2 averages
 * annual certificates
@@ -21,5 +23,10 @@
 * codes, what they are, and what category they are in - add codes
 * users -admin and
 * backups
+* "*" to save
+* Generate a list of award winners
+
+Release 2.0
 * import students from .csv or .xlsx
-*
+* put it in a server/ remote access
+* Version History
