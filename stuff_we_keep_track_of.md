@@ -21,7 +21,12 @@
 * points - type and amount
     SCHOLAR:
         79.50 -> 83.49: 2 POINTS
-        
+        83.50 -> 87.49: 3 POINTS
+        87.50 -> 91.49: 4 POINTS
+        91.50 -> 95.49: 5 POINTS
+        95.50 -> 99.99: 6 POINTS
+
+
 
 * anecdote
 * totals for each category e.g. service, athletics
