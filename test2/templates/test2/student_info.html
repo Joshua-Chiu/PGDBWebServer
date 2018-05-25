@@ -24,10 +24,6 @@
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 <h3 style="color:blue">Points</h3>
 
-<form action="/test2/student/{{ student.id }}/submit" method="post">{% csrf_token %}
-    <input type="submit" onclick="getData();"  /> <!--value="Submit"-->
-</form>
-
 <hr><!-- end of Student Overview-->
 
 <button class="collapsible"><strong>Grade {{ student.homeroom|slice:"0:2" }}</strong></button>
@@ -68,7 +64,8 @@
             <!-- DATA ENTRY HAPPENS HERE -->
 
             <td>
-            <form id="serviceInput" action="/test2/submit" method="post" style="float: left">
+            <form id="form0" action="{% url 'test2:student_submit' student.id %}" method="post" style="float: left">
+                {% csrf_token %}
                 <label for="service">Points: </label>
                 <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
                 <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
@@ -224,10 +221,41 @@ function myFunction() {
     document.getElementById("demo").innerHTML = txt;
 }
 </script>
+
+<button onclick="submitForms()">Submit</button>
+
+
 <!--Script for the getting post requests-->
 <script>
-function othername() {
-    var input = document.getElementById("serviceInput").value;
+function submitForms() {
+    var i;
+    for(i = 0; i < 1; i++) {
+        document.getElementById("form" + i).submit();
+    }
+}
+
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }
 </script>
 

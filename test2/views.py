@@ -33,6 +33,8 @@ def student_info(request, num):
 def student_submit(request, num):
     if request.method == 'POST':
         print("received POST request")
+        for k, v in request.POST.items():
+            print(k, "|", v)
     else:
         print("this is not supposed to happen don't do that again")
 
@@ -40,7 +42,7 @@ def student_submit(request, num):
     context = {
         'student': Student.objects.get(id=num)
     }
-    return HttpResponse(template.render(context, request))
+    return HttpResponseRedirect("/test2/student/{}".format(num))
 
 
 def settings(request):
