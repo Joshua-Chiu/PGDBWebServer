@@ -20,8 +20,8 @@
 <div class="topnav">
     <ul>
         <li style="float:center">
-            <form action="/test2/search">
-                <input type="text" placeholder="Search.." name="first">
+            <form action="{% url 'test2:search' %}">
+                <input type="text" placeholder="Search.." name="query">
             </form>
         </li>
         <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
