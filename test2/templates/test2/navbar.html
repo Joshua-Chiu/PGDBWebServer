@@ -29,13 +29,33 @@
 
         <li><a href="{% url 'test2:index' %}">Student List</a></li>
 
-        <li class="dropdown" style="border-left: 1px solid #bbb"><a href="{% url 'test2:settings' %}">Settings<span class="caret"></span></a>
-            <div class="dropdown-content">
-            <ul class="dropdown">
-                <li><a href="/admin">Generate Reports</a></li>
-            </ul>
+        <li style="border-left: 1px solid #bbb">
+            <div class="dropdown">
+                <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/reports">Generate Reports</a>
+                </div>
             </div>
         </li>
     </ul>
 </div>
+
+<!--
+<div class="navbar">
+  <a href="#home">Home</a>
+  <a href="#news">News</a>
+  <div class="dropdown">
+    <button class="dropbtn">Dropdown
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+</div>
 <hr>
+-->
