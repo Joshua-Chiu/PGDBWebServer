@@ -15,9 +15,29 @@ def index(request):
 
 def search(request):
     template = get_template('test2/search.html')
-    student_list = Student.objects.filter(first__icontains=request.GET['first'])
+    if request.GET['query']:
+        query = request.GET['query'].split(' ')
+    else:
+        query = []
+    items = {}
+    for i in query:
+        term = i.split(':')
+        if len(term) != 2:
+            continue
+        items[term[0]] = term[1]
+    print(items)
+
+    students = Student.objects.all()
+    for k, v in items.items():
+        if hasattr(Student, k):
+            val = "{0}__contains".format(k)
+            val = 'first__icontains'
+            print(val, v)
+            students = students.filter(**{val: v})
+
     context = {
-        'student_list': student_list
+        'student_list': students,
+        'query': request.GET['query']
     }
     return HttpResponse(template.render(context, request))
 

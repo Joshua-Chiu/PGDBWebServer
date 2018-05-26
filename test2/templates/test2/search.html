@@ -10,11 +10,11 @@
 <h1>Advanced Search</h1>
 
 <form action="search" method="get">
-    <fieldset>
-    <label for="first"> Firstname: </label>
-    <input id="first" type ="text" name="first">
     <input type="submit" value="search" />
-    </fieldset>
+
+    <label for="query"></label>
+    <input id="query" type ="text" name="query" value="{{ query }}" size="50">
+
 </form>
 
 {% if student_list %}
