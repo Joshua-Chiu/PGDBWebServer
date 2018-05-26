@@ -1,0 +1,35 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .GeneratedList {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 10px;
+        right: 10px;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.button {
+    border: 1px solid inherit;
+    background-color: inherit;
+    padding: 5px 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+.button:hover {
+    background: inherit;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.default {
+    color: black;
+}

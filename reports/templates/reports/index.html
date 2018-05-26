@@ -1,15 +1,52 @@
-{% include "topnav.html" %}
+{% include 'test2/navbar.html' %}
+{% load staticfiles %}
 
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
-    <head>
-        <title>Point Grey Awards Database</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
+    <title>Point Grey Awards Database</title>
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+</head>
 
-    <body>
-        <p>
-            Testing
-        </p>
-	</body>
+{% block content %}
+{% endblock %}
+
+<div>
+    <h2>Printing Reports</h2>
+</div>
+
+<div>
+    <button class="button default" onclick="PrintElem('GeneratedList')">Print</button>
+</div>
+
+<div id="GeneratedList">
+    <p>
+        Put the names here
+    </p>
+</div>
+
 </html>
+
+<script>
+    function PrintElem(elem)
+    {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h3>' + document.title  + '</h3>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        //mywindow.close();
+
+        return true;
+    }
+</script>

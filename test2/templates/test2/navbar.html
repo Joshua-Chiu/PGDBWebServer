@@ -19,15 +19,34 @@
 <!--Nav Bar-->
 <div class="topnav">
     <ul>
-        <li style="float:center">
+        <li style="float: left; border-right: 1px solid #bbb;">
+            <a href="/admin">Admin Login</a>
+        </li>
+
+        <li>
             <form action="/test2/search">
                 <input type="text" placeholder="Search.." name="first">
             </form>
         </li>
-        <li><a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a></li>
-        <li style="float: left; border-right: 1px solid #bbb;"><a href="/admin">Admin Login</a></li>
 
-        <li><a href="{% url 'test2:index' %}">Student List</a></li>
+        <li>
+            <a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a>
+        </li>
+
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn"><a href="{% url 'test2:index' %}">Student List</a></button>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{% url 'test2:index' %}">Grade 08</a>
+                    <a href="{% url 'test2:index' %}">Grade 09</a>
+                    <a href="{% url 'test2:index' %}">Grade 10</a>
+                    <a href="{% url 'test2:index' %}">Grade 11</a>
+                    <a href="{% url 'test2:index' %}">Grade 12</a>
+                </div>
+            </div>
+        </li>
 
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">

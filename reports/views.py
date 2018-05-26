@@ -4,7 +4,7 @@ from django.template.loader import get_template
 
 
 def index(request):
-    template = get_template('test2/settings.html')
+    template = get_template('reports/index.html')
     context = {
 
     }
