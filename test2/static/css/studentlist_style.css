@@ -29,3 +29,22 @@ table.sortable tbody tr:nth-child(2n) td {
 table.sortable tbody tr:nth-child(2n+1) td {
   background: #ccffff;
 }
+
+table.sortable th::after, th.sorttable_sorted::after, th.sorttable_sorted_reverse::after {
+  content: " ";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+/*
+th.sorttable_sorted::after {
+  background: url(/static/sorted-icon.png);
+  background-size: cover;
+}
+th.sorttable_sorted_reverse::after {
+  background: url(/static/sorted-reversed-icon.png);
+  background-size: contain;
+}
+*/
+
