@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% include 'test2/navbar.html' %}
 
 <!DOCTYPE html>
@@ -5,26 +6,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
+    <link rel="stylesheet" href="{% static 'css/search_style.css' %}">
 </head>
 <body>
-<h1>Advanced Search</h1>
 
-<form action="search" method="get">
-    <input type="submit" value="search" />
-
-    <label for="query"></label>
+<form action="search" method="get" class="search_bar">
+    <label for="query">Search</label>
     <input id="query" type ="text" name="query" value="{{ query }}" size="50">
 
+    <input type="submit" value="Enter" />
 </form>
 
 {% if student_list %}
             <table id="StudentList" class="sortable">
                 <thead>
                 <tr>
-                    <th> <!--onclick="sortTable(0)"-->
+                    <th width="60%" style="padding-right: 250px">
                         <strong>Name</strong>
                     </th>
-                    <th style="padding-left: 100px">
+                    <th>
                         <strong>Homeroom</strong>
                     </th>
                 </tr>
@@ -34,7 +34,7 @@
                     <td>
                         <a href="{% url "test2:student_info" student.id %}">{{ student.first }} {{ student.last }}</a>
                     </td>
-                    <td style="padding-left: 100px">
+                    <td>
                         {{ student.homeroom }}
                     </td>
                 </tr>
