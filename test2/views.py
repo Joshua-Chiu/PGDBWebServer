@@ -33,6 +33,12 @@ def search(request):
             val = "{0}__icontains".format(k)
             print(val, v)
             students = students.filter(**{val: v})
+        else:
+            if k == 'grade':
+                if len(v) == 1:
+                    v = '0' + v
+                print('homeroom__contains', v)
+                students = students.filter(**{'homeroom__contains': v})
 
     context = {
         'student_list': students,
