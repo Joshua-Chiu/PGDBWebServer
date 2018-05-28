@@ -5,6 +5,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+    <script src="{% static 'Javascript/sorttable.js' %}"></script>
 </head>
 
 
@@ -17,15 +18,17 @@
         <hr>
 
         {% if student_list %}
-            <table id="StudentList" class="student">
+            <table id="StudentList" class="sortable">
+                <thead>
                 <tr>
-                    <th onclick="sortTable(0)">
+                    <th> <!--onclick="sortTable(0)"-->
                         <strong>Name</strong>
                     </th>
-                    <th onclick="sortTable(1)" style="padding-left: 100px">
+                    <th style="padding-left: 100px">
                         <strong>Homeroom</strong>
                     </th>
                 </tr>
+                </thead>
             {% for student in student_list %}
                 <tr>
                     <td>

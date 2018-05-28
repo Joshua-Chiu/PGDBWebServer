@@ -19,6 +19,13 @@ body {
     overflow-y: auto;
 }
 
-.student th{
+.sortable th{
     text-align: left;
+}
+
+table.sortable tbody tr:nth-child(2n) td {
+  background: inherit;
+}
+table.sortable tbody tr:nth-child(2n+1) td {
+  background: #ccffff;
 }
