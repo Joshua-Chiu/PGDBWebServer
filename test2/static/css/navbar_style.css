@@ -6,8 +6,15 @@ body {
     background-color: powderblue;
 }
 
+p {}
+
 h1 {
     color: blue;
+}
+.title{
+    padding-left: 60px;
+    padding-top: 5px;
+    padding-bottom: 0px;
 }
 
 /*Nav Bar*/
@@ -68,7 +75,7 @@ h1 {
   border: none;
   outline: none;
   color: white;
-  padding: 0px 0px;
+  padding: 0 0;
   background-color: inherit;
   font-family: inherit; /* Important for vertical align on mobile phones */
   margin: 0; /* Important for vertical align on mobile phones */
@@ -85,7 +92,7 @@ h1 {
   position: absolute;
   background-color: #333;
   min-width: 110px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -107,4 +114,8 @@ h1 {
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.date {
+    text-align: right;
 }

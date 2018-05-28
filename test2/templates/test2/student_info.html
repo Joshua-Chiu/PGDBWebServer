@@ -58,7 +58,7 @@
                 <br>
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
-                <button onclick="myFunction()" class="btn danger">NULLIFY</button>
+                <button onclick="nullify()" class="btn danger">NULLIFY</button>
                 <p>Anecdotes</p>
                 <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
 
@@ -323,7 +323,7 @@ for (i = 0; i < coll.length; i++) {
 </script>
 <!--Script for the Nullify button-->
 <script>
-function myFunction() {
+function nullify() {
     var txt;
     var person = prompt("Please select:", "All");
     if (person == null || person == "") {

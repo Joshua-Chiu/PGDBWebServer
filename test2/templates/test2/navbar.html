@@ -13,8 +13,13 @@
 </div>
 
 <div>
-    <h1 style="padding-left: 60px; padding-top: 5px; padding-bottom: 0px">Point Grey Awards Database</h1>
+    <h1 class="title">Point Grey Awards Database</h1>
 </div>
+
+<!--<p class="date" id="date"></p>-->
+
+<div id="clockbox" class="date"></div>
+
 <hr>
 <!--Nav Bar-->
 <div class="topnav">
@@ -23,9 +28,9 @@
             <a href="/admin">Admin Login</a>
         </li>
 
-        <li style="float:center">
-            <form action="{% url 'test2:search' %}">
-                <input type="text" placeholder="Search.." name="query">
+        <li>
+            <form action="/test2/search">
+                <input type="text" placeholder="Search.." name="first">
             </form>
         </li>
 
@@ -62,19 +67,42 @@
 </div>
 
 <!--
-<div class="navbar">
-  <a href="#home">Home</a>
-  <a href="#news">News</a>
-  <div class="dropdown">
-    <button class="dropbtn">Dropdown
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
-    </div>
-  </div>
-</div>
-<hr>
+<script>
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
+</script>
+
+<script>
+    var d = new Date();
+    document.getElementById("date").innerHTML = d ;
+</script>
 -->
+
+<script type="text/javascript">
+tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+function GetClock(){
+var d=new Date();
+var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+if(nhour==0){ap=" AM";nhour=12;}
+else if(nhour<12){ap=" AM";}
+else if(nhour==12){ap=" PM";}
+else if(nhour>12){ap=" PM";nhour-=12;}
+
+if(nmin<=9) nmin="0"+nmin;
+if(nsec<=9) nsec="0"+nsec;
+
+document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+}
+
+window.onload=function(){
+GetClock();
+setInterval(GetClock, 100);
+}
+</script>

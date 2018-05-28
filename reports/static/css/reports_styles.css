@@ -16,11 +16,17 @@
         line-height: 18px;
     }
 }
+.heading {
 
+}
+
+/*Styles for the print button*/
 .button {
+    /* float: right; */
     border: 1px solid inherit;
     background-color: inherit;
     padding: 5px 5px;
+    margin-bottom: 10px;
     font-size: 16px;
     cursor: pointer;
     display: inline-block;
@@ -32,4 +38,19 @@
 
 .default {
     color: black;
+}
+
+.data {
+    display: inline-block;
+    list-style-type: none;
+    border: 1px solid black;
+}
+
+.data th {
+    text-align: left;
+    border: 1px solid black;
+}
+
+.data td {
+    border: 1px solid black;
 }
