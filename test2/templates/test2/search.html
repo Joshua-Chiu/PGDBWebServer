@@ -18,11 +18,28 @@
 </form>
 
 {% if student_list %}
-            <ul>
-            {% for student in student_list %}
-                <li><a href="{% url 'test2:student_info' student.id %}">{{ student.first }} {{ student.last }}</a></li>
+            <table id="StudentList" class="sortable">
+                <thead>
+                <tr>
+                    <th> <!--onclick="sortTable(0)"-->
+                        <strong>Name</strong>
+                    </th>
+                    <th style="padding-left: 100px">
+                        <strong>Homeroom</strong>
+                    </th>
+                </tr>
+                </thead>
+    {% for student in student_list %}
+                <tr>
+                    <td>
+                        <a href="{% url "test2:student_info" student.id %}">{{ student.first }} {{ student.last }}</a>
+                    </td>
+                    <td style="padding-left: 100px">
+                        {{ student.homeroom }}
+                    </td>
+                </tr>
             {% endfor %}
-            </ul>
+            </table>
         {% endif %}
 
 </body>
