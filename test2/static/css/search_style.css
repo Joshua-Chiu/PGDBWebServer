@@ -2,9 +2,19 @@
     text-align: left;
 }
 
+.sortable td{
+    text-align: left;
+}
+
 table.sortable tbody tr:nth-child(2n) td {
   background: inherit;
 }
 table.sortable tbody tr:nth-child(2n+1) td {
   background: #ccffff;
+}
+
+.search_bar{
+    padding-top: 10px;
+    text-align: left;
+
 }

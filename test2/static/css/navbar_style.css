@@ -119,3 +119,10 @@ h1 {
 .date {
     text-align: right;
 }
+
+a {
+    color: #000000;
+}
+a:visited {
+    color: #000000;
+}
