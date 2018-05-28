@@ -30,8 +30,7 @@ def search(request):
     students = Student.objects.all()
     for k, v in items.items():
         if hasattr(Student, k):
-            val = "{0}__contains".format(k)
-            val = 'first__icontains'
+            val = "{0}__icontains".format(k)
             print(val, v)
             students = students.filter(**{val: v})
 
