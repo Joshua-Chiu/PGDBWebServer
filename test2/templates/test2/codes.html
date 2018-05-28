@@ -1,0 +1,28 @@
+{% include 'test2/navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>codes</h2>
+    <form action="{% url "test2:codes_submit" %}" method="post">
+    {% csrf_token %}
+    {% for code in codes %}
+        <fieldset>
+            <input type='text' name="{{ forloop.counter0 }}code" value="">
+            <input type='text' name="{{ forloop.counter0 }}type" value="">
+            <input type='text' name="{{ forloop.counter0 }}description" value="">
+        </fieldset>
+    {% endfor %}
+        <fieldset>
+            <input type='text' name="code" value="1">
+            <input type='text' name="type" value="a">
+            <input type='text' name="description" value="b">
+        </fieldset>
+    <input type="submit" value="submit">
+    </form>
+</body>
+</html>
