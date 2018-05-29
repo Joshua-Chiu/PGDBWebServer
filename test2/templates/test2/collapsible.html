@@ -15,10 +15,11 @@
         <strong>
     {% endifequal %}
 
-        Grade {{ grade }} ({{ year }} - {{ year|add:1 }})
+        Grade {{ grade }}
 
     {% ifequal grade current %}
         </strong>
+        ({{ year }} - {{ year|add:1 }})
     {% endifequal %}
 </button>
 
