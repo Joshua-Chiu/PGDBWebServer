@@ -36,3 +36,8 @@
     content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
 /* End of Collapsible Stuff*/
+
+.data-table {
+    padding-top: 7px;
+    padding-bottom: 10px;
+}
