@@ -24,218 +24,45 @@
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 <h3 style="color:blue">Points</h3>
 
+<button onclick="submitForms()">Submit</button>
+
 <hr>
 <!-- end of Student Overview-->
 
-{% if student.homeroom|slice:":2"|add:"0" >= 8 %}
-    <p>I'm in grade 8</p>
-{% endif %}
-
-{% if student.homeroom|slice:":2"|add:"0" >= 9 %}
-    <p>I'm in grade 9</p>
-{% endif %}
-
-{% if student.homeroom|slice:":2"|add:"0" >= 10 %}
-    <p>I'm in grade 10</p>
+{% if student.homeroom|slice:":2"|add:"0" >= 12 %}
+    {% include 'test2/collapsible.html' with grade="12" %}
 {% endif %}
 
 {% if student.homeroom|slice:":2"|add:"0" >= 11 %}
-    <p>I'm in grade 11</p>
+    {% include 'test2/collapsible.html' with grade="11" %}
 {% endif %}
 
-{% if student.homeroom|slice:":2"|add:"0" >= 12 %}
-    <p>I'm in grade 12</p>
+{% if student.homeroom|slice:":2"|add:"0" >= 10 %}
+    {% include 'test2/collapsible.html' with grade="10" %}
 {% endif %}
 
-<button onclick="submitForms()">Submit</button>
+{% if student.homeroom|slice:":2"|add:"0" >= 9 %}
+    {% include 'test2/collapsible.html' with grade="09" %}
+{% endif %}
+
+{% if student.homeroom|slice:":2"|add:"0" >= 8 %}
+    {% include 'test2/collapsible.html' with grade="08" %}
+{% endif %}
 
 
-<button class="collapsible"><strong>Grade 10</strong></button>
-<div class="10">
-    <table border="1" style="float: left;">
-    <!-- Put all the service stuff here in the table -->
-        <tr>
-            <!-- Totals and Table headers-->
-            <td>Grade: 10</td>
-            <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
-            <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
-            <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
-            <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
-            <td><strong>Annual Awards</strong></td>
-        </tr>
-        <tr>
-            <td rowspan="4">
-                <!-- get current year-->
-                <script type="text/javascript">
-                var today = new Date();
-                var year = today.getFullYear();
-                document.write(year)
-                </script>
-                <br>
-                <script type="text/javascript">
-                var today = new Date();
-                var year = today.getFullYear();
-                document.write(year + 1)
-                </script>
-                <br>
-                <hr>
-                {{ student.currentyear|slice:"5:8" }}
-                <button onclick="nullify()" class="btn danger">NULLIFY</button>
-                <p>Anecdotes</p>
-                <textarea rows="5" cols="25">{{ student.anecdotes }}</textarea>
 
-            <!-- DATA ENTRY HAPPENS HERE -->
 
-            <td>
-            <form id="form0" action="{% url 'test2:student_submit' student.id %}" method="post" style="float: left">
-                {% csrf_token %}
-                <label for="service">Points: </label>
-                <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
-                <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
-                <div style="overflow-y:auto;">
-                    <table>
-                    {% for service in services %}
-                    <tr><td>{{ service }}</td></tr>
-                    {% endfor %}
-                    </table>
-                </div>
-            </td>
 
-            <td>
-            <form action="/test2/submit" method="post">
-                <label for="athletics">Points: </label>
-                <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
-                <input id="athletics" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
-            </td>
 
-            <td>
-            <form action="/enter-fine_arts/" method="post">
-                <label for="fine_arts">Points: </label>
-                <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
-                <input id="fine_arts" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
-            </td>
 
-            <td rowspan="2">
-                <form action="/enter-scholar/" method="post">
-                    <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
-                    <br>
-                    <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
-                </form>
-            </td>
-            <td rowspan="2">
-                Display certificates <br> earned
-            </td>
-        </tr>
-    <!--Where all the points are displayed-->
-        <tr>
-            <td align="center">
-                Points | Code
-            </td>
-            <td align="center">
-                Points | Code
-            </td>
-            <td align="center">
-                Points | Code
-            </td>
-        </tr>
-    <tr>
-        <td height="160" rowspan="2">
-            Points
-        </td>
-        <td height="160" rowspan="2">
-            Points
-        </td>
-        <td height="160" rowspan="2">
-            Points
-        </td>
-        <td height="15" colspan="2">
-            <strong>Pins</strong>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Silver <br>
-            Gold <br>
-            Gold + <br>
-            Platinum <br>
-        </td>
-        <td>
-            Dates/Years
-        </td>
-    </tr>
-    </table>
 
-<!-- Cumulative stuff and grad awards-->
-    <table border="1" style="float: left; margin-left: 20px;">
-        <tr>
-            <td colspan="2"><strong>Cumulative Awards</strong></td>
-        </tr>
-        <tr>
-            <td>
-                Total Points: <br>
-                Service Points: <br>
-                Athletics Points: <br>
-                Scholar Points: <br>
-                Fine Arts Points: <br>
-            </td>
-            <td>
-                Put points here
-            </td>
-        </tr>
-    </table>
-</div>
 
-<!-- Grad Calculations Table-->
 
-<table style="float: left; margin-left: 20px;">
-    <tr>
-        <td colspan="2">
-            <strong>Grad Calculations</strong>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            11/12 Average<br>
-            11/12 Service<br>
-            11/12 Athletics<br>
-            11/12 Scholar<br>
-            11/12 Fine Arts<br>
-            11/12 All Points<br>
-        </td>
 
-        <td width="120px">
-            : XX.XXX %<br>
-            : XX.X Points<br>
-            : XX.X Points<br>
-            : XX.X Points<br>
-            : XX.X Points<br>
-            : XX.X Points<br>
-        </td>
-    </tr>
-</table>
 
-<!-- Script for the collapsible-->
-<script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
 
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    });
-}
-</script>
+
+
 <!--Script for the Nullify button-->
 <script>
 function nullify() {
