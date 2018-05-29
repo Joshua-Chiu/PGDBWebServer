@@ -30,23 +30,23 @@
 <!-- end of Student Overview-->
 
 {% if student.homeroom|slice:":2"|add:"0" >= 12 %}
-    {% include 'test2/collapsible.html' with grade="12" %}
+    {% include 'test2/collapsible.html' with grade="12" year="2018" current=student.homeroom|slice:":2" %}
 {% endif %}
 
 {% if student.homeroom|slice:":2"|add:"0" >= 11 %}
-    {% include 'test2/collapsible.html' with grade="11" %}
+    {% include 'test2/collapsible.html' with grade="11" year="2017" current=student.homeroom|slice:":2" %}
 {% endif %}
 
 {% if student.homeroom|slice:":2"|add:"0" >= 10 %}
-    {% include 'test2/collapsible.html' with grade="10" %}
+    {% include 'test2/collapsible.html' with grade="10" year="2016" current=student.homeroom|slice:":2" %}
 {% endif %}
 
 {% if student.homeroom|slice:":2"|add:"0" >= 9 %}
-    {% include 'test2/collapsible.html' with grade="09" %}
+    {% include 'test2/collapsible.html' with grade="09" year="2015" current=student.homeroom|slice:":2" %}
 {% endif %}
 
 {% if student.homeroom|slice:":2"|add:"0" >= 8 %}
-    {% include 'test2/collapsible.html' with grade="08" %}
+    {% include 'test2/collapsible.html' with grade="08" year="2014" current=student.homeroom|slice:":2" %}
 {% endif %}
 
 
