@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Student
+from .models import Student, PointCodes
 from django.template.loader import get_template
+from itertools import zip_longest
 
 '''
 def index(request):
@@ -73,9 +74,26 @@ def student_submit(request, num):
 def settings(request):
     template = get_template('test2/settings.html')
     context = {
-
     }
     return HttpResponse(template.render(context, request))
+
+
+def codes(request):
+    template = get_template('test2/codes.html')
+    context = {'codes': PointCodes.objects.all()}
+    return HttpResponse(template.render(context, request))
+
+
+def codes_submit(request):
+    print(list(request.POST.items()))
+    items = list(request.POST.items())[1:]
+    args = [iter(items)] * 3
+    code_info = zip_longest(*args)
+    print(list(code_info))
+
+    for code in code_info:
+        print(code[0][1])
+    return HttpResponseRedirect("/test2/settings/codes")
 
 
 def index(request):
