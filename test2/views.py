@@ -51,7 +51,8 @@ def search(request):
                         v = '0' + v
                     print('homeroom__contains', v)
                     students = students.filter(**{'homeroom__contains': v})
-
+    if len(students) == 1:
+        return HttpResponseRedirect(f"/test2/student/{students[0].id}")
     context = {
         'student_list': students,
         'query': request.GET['query']
