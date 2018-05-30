@@ -86,13 +86,25 @@ def codes(request):
 
 def codes_submit(request):
     print(list(request.POST.items()))
+
     items = list(request.POST.items())[1:]
     args = [iter(items)] * 3
-    code_info = zip_longest(*args)
+
+    code_info = list(zip_longest(*args))
     print(list(code_info))
 
     for code in code_info:
-        print(code[0][1])
+        if not code[0][1]:
+            continue
+        if len(PointCodes.objects.filter(code=int(code[0][1]))):
+            entry = PointCodes.objects.get(code=int(code[0][1]))
+            print(entry.code)
+        else:
+            entry = PointCodes()
+        entry.code = code[0][1]
+        entry.type = code[1][1]
+        entry.description = code[2][1]
+        entry.save()
     return HttpResponseRedirect("/test2/settings/codes")
 
 
