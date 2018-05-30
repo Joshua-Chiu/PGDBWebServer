@@ -16,30 +16,40 @@ def index(request):
 
 def search(request):
     template = get_template('test2/search.html')
+    students = Student.objects.all()
     if request.GET['query']:
-        query = request.GET['query'].split(' ')
+        query = request.GET['query']
+        print(query)
     else:
         query = []
-    items = {}
-    for i in query:
-        term = i.split(':')
-        if len(term) != 2:
-            continue
-        items[term[0]] = term[1]
-    print(items)
 
-    students = Student.objects.all()
-    for k, v in items.items():
-        if hasattr(Student, k):
-            val = "{0}__icontains".format(k)
-            print(val, v)
-            students = students.filter(**{val: v})
-        else:
-            if k == 'grade':
-                if len(v) == 1:
-                    v = '0' + v
-                print('homeroom__contains', v)
-                students = students.filter(**{'homeroom__contains': v})
+    if query.count(":") == 0:
+        if query.isalpha():
+            first = set(Student.objects.filter(first__icontains=query))
+            last = set(Student.objects.filter(last__icontains=query))
+            students = list(first.union(last))
+        elif query.isdigit():
+            students = students.filter(student_num=query)
+    else:
+        items = {}
+        for i in query.split(' '):
+            term = i.split(':')
+            if len(term) != 2:
+                continue
+            items[term[0]] = term[1]
+        print(items)
+
+        for k, v in items.items():
+            if hasattr(Student, k):
+                val = "{0}__icontains".format(k)
+                print(val, v)
+                students = students.filter(**{val: v})
+            else:
+                if k == 'grade':
+                    if len(v) == 1:
+                        v = '0' + v
+                    print('homeroom__contains', v)
+                    students = students.filter(**{'homeroom__contains': v})
 
     context = {
         'student_list': students,
