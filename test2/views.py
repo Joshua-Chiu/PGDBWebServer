@@ -31,6 +31,7 @@ def search(request):
         elif query.isdigit():
             students = students.filter(student_num=query)
     else:
+        query = query.replace(": ", ":")
         items = {}
         for i in query.split(' '):
             term = i.split(':')
