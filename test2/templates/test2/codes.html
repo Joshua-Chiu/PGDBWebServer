@@ -13,17 +13,17 @@
     {% csrf_token %}
     {% for code in codes %}
         <fieldset>
-            <input type='text' name="{{ forloop.counter0 }}code" value="">
-            <input type='text' name="{{ forloop.counter0 }}type" value="">
-            <input type='text' name="{{ forloop.counter0 }}description" value="">
+            <input type='text' name="{{ forloop.counter0 }}code" value="{{ code.code }}">
+            <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.type }}">
+            <input type='text' name="{{ forloop.counter0 }}description" value="{{ code.description }}">
         </fieldset>
     {% endfor %}
         <fieldset>
-            <input type='text' name="code" value="1">
-            <input type='text' name="type" value="a">
-            <input type='text' name="description" value="b">
+            <input type='text' name="code" value="">
+            <input type='text' name="type" value="">
+            <input type='text' name="description" value="">
         </fieldset>
-    <input type="submit" value="submit">
+    <input type="submit" value="save">
     </form>
 </body>
 </html>
