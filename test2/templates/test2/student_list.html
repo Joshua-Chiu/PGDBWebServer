@@ -21,10 +21,10 @@
             <table id="StudentList" class="sortable">
                 <thead>
                 <tr>
-                    <th width="60%"> <!--onclick="sortTable(0)"-->
+                    <th style="padding-right: 200px"> <!--onclick="sortTable(0)"-->
                         <strong>Name</strong>
                     </th>
-                    <th style="padding-left: 100px">
+                    <th>
                         <strong>Homeroom</strong>
                     </th>
                 </tr>
@@ -34,7 +34,7 @@
                     <td>
                         <a href="{% url "test2:student_info" student.id %}">{{ student.first }} {{ student.last }}</a>
                     </td>
-                    <td style="padding-left: 100px">
+                    <td>
                         {{ student.homeroom }}
                     </td>
                 </tr>

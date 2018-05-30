@@ -26,6 +26,9 @@
                         <strong>Name</strong>
                     </th>
                     <th>
+                        <strong>Student #</strong>
+                    </th>
+                    <th>
                         <strong>Homeroom</strong>
                     </th>
                 </tr>
@@ -34,6 +37,9 @@
                 <tr>
                     <td>
                         <a href="{% url "test2:student_info" student.id %}">{{ student.first }} {{ student.last }}</a>
+                    </td>
+                    <td>
+                        {{ student.student_num }}
                     </td>
                     <td>
                         {{ student.homeroom }}
