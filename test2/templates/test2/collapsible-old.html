@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
 </head>
 
+
 <body>
 
-<div class="wrap-collabsible">
-  <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade student.homeroom|slice:":2" %} checked {% endifequal %}>
-  <label for="{{ grade }}" class="lbl-toggle">
-      {% ifequal grade student.homeroom|slice:":2" %}
+<button class="collapsible">
+    {% ifequal grade student.homeroom|slice:":2" %}
         <strong>
     {% endifequal %}
 
@@ -22,11 +21,10 @@
         </strong>
         ({{ year }} - {{ year|add:1 }})
     {% endifequal %}
-  </label>
+</button>
 
-  <div class="collapsible-content">
-    <div class="content-inner">
-      <table border="1" class="data-table" style="float: left;">
+<div class="content">
+    <table border="1" class="data-table" style="float: left;">
     <!-- Put all the service stuff here in the table -->
         <tr>
             <!-- Totals and Table headers-->
@@ -184,9 +182,45 @@
             </tr>
         </table>
     {% endifequal %}
-    </div>
-  </div>
 </div>
 
 </body>
+
+<!-- Script for the collapsible-->
+<!--
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+</script>
+-->
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+</script>
+
 </html>
