@@ -89,31 +89,36 @@ def settings(request):
 
 def codes(request):
     template = get_template('test2/codes.html')
-    context = {'codes': PointCodes.objects.all()}
+    context = {'codes': PointCodes.objects.order_by("type")}
     return HttpResponse(template.render(context, request))
 
 
 def codes_submit(request):
-    print(list(request.POST.items()))
 
+    # sort the codes into a list where each code is an item
     items = list(request.POST.items())[1:]
     args = [iter(items)] * 3
-
     code_info = list(zip_longest(*args))
-    print(list(code_info))
 
     for code in code_info:
-        if not code[0][1]:
+        if (not code[0][1]) or (not code [1][1]):
             continue
-        if len(PointCodes.objects.filter(code=int(code[0][1]))):
-            entry = PointCodes.objects.get(code=int(code[0][1]))
-            print(entry.code)
-        else:
+
+        # if there is an already existing code don't create a new one
+        filter_codes = PointCodes.objects.filter(code=int(code[1][1]))
+        filter_codes = filter_codes.filter(type=code[0][1])
+        if len(filter_codes) == 1:
+            entry = filter_codes[0]
+        elif len(filter_codes) == 0:
             entry = PointCodes()
-        entry.code = code[0][1]
-        entry.type = code[1][1]
+        else:
+            print("panic!!")
+
+        entry.code = code[1][1]
+        entry.type = code[0][1].upper()
         entry.description = code[2][1]
         entry.save()
+
     return HttpResponseRedirect("/test2/settings/codes")
 
 

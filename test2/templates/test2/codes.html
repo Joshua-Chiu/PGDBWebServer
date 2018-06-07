@@ -13,8 +13,8 @@
     {% csrf_token %}
     {% for code in codes %}
         <fieldset>
-            <input type='text' name="{{ forloop.counter0 }}code" value="{{ code.code }}">
-            <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.type }}">
+            <input type='text' name="{{ forloop.counter0 }}code" value="{{ code.type}}">
+            <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.code}}">
             <input type='text' name="{{ forloop.counter0 }}description" value="{{ code.description }}">
         </fieldset>
     {% endfor %}
