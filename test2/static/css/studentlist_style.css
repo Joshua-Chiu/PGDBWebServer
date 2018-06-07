@@ -36,14 +36,3 @@ table.sortable th::after, th.sorttable_sorted::after, th.sorttable_sorted_revers
   width: 24px;
   height: 24px;
 }
-
-/*
-th.sorttable_sorted::after {
-  background: url(/static/sorted-icon.png);
-  background-size: cover;
-}
-th.sorttable_sorted_reverse::after {
-  background: url(/static/sorted-reversed-icon.png);
-  background-size: contain;
-}
-*/
