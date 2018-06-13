@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 <div class="wrap-collabsible">
   <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade student.homeroom|slice:":2" %} checked {% endifequal %}>
   <label for="{{ grade }}" class="lbl-toggle">
@@ -25,6 +24,9 @@
   </label>
 
   <div class="collapsible-content">
+<form action="{% url "test2:student_submit" student.id %}" id="form {{ grade }}" name="col form" method="post">
+    {%csrf_token%}
+
     <div class="content-inner">
       <table border="1" class="data-table" style="float: left;">
     <!-- Put all the service stuff here in the table -->
@@ -32,8 +34,7 @@
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
             <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
-            <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
-            <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+            <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td> <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
             <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
             <td><strong>Annual Awards</strong></td>
         </tr>
@@ -53,12 +54,9 @@
             <!-- DATA ENTRY HAPPENS HERE -->
 
             <td>
-            <form id="form0" action="{% url 'test2:student_submit' student.id %}" method="post" style="float: left">
-                {% csrf_token %}
                 <label for="service">Points: </label>
-                <input id="service" type="number" name="Points" maxlength="3" value="{{ service }}" >
-                <input id="service" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
+                <input id="service" type="number" name="{{grade}} SE points" maxlength="3" value="{{ service }}" >
+                <input id="service" type="number" name="{{grade}} SE code" maxlength="3" value="{{ service }}" >
                 <div style="overflow-y:auto;">
                     <table>
                     {% for service in services %}
@@ -69,29 +67,23 @@
             </td>
 
             <td>
-            <form action="/test2/submit" method="post">
                 <label for="athletics">Points: </label>
-                <input id="athletics" type="number" name="athletics" maxlength="3" value="{{ athletics }}" >
-                <input id="athletics" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
+                <input id="athletics" type="number" name="{{grade}} AT points" maxlength="3" value="{{ athletics }}" >
+                <input id="athletics" type="number" name="{{grade}} AT code" maxlength="3" value="{{ service }}" >
             </td>
 
             <td>
-            <form action="/enter-fine_arts/" method="post">
                 <label for="fine_arts">Points: </label>
-                <input id="fine_arts" type="number" name="fine_arts" maxlength="3" value="{{ fine_arts }}" >
-                <input id="fine_arts" type="number" name="Code" maxlength="3" value="{{ service }}" >
-            </form>
+                <input id="fine_arts" type="number" name="{{grade}} FA points" maxlength="3" value="{{ fine_arts }}" >
+                <input id="fine_arts" type="number" name="{{grade}} FA code" maxlength="3" value="{{ service }}" >
             </td>
 
             <td rowspan="2">
-                <form action="/enter-scholar/" method="post">
                     <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar }}" >
                     <br>
                     <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="5" name="scholar" maxlength="3" value="{{ scholar }}" >
-                </form>
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar }}" >
             </td>
             <td rowspan="2">
                 Display certificates <br> earned
@@ -188,5 +180,6 @@
   </div>
 </div>
 
+</form>
 </body>
 </html>
