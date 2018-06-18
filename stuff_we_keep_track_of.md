@@ -1,13 +1,16 @@
 # Stuff we keep track of in the database
 
+# Release: Developer Alpha Friday June 15th
+
 ## Per student
 
-* info e.g. name, student num
-* data added
-* last modified
-* cumulative awards
+* info
+- name (First, Last, Legal)
+- date added
+- cumulative awards (pins/big block)
 
 * check digit thing to keep track on the points
+
 * grad calculations
   * Average of Grade 11 and 12 all averages (%)
   * Service total grade 11 + grade 12 (points)
@@ -26,9 +29,7 @@
         91.50 -> 95.49: 5 POINTS
         95.50 -> 99.99: 6 POINTS
 
-
-
-* anecdote
+* anecdotes
 * totals for each category e.g. service, athletics
 * T1 and T2 averages
 * annual certificates
@@ -41,20 +42,26 @@
 
 ## Overall
 
-* codes, what they are, and what category they are in - add codes
-* backups
+* codes, what they are, and what category they are in
+- add codes
+- change codes
+
 * advanced search -> sort students by points and totals
 
 
-# other features
+# Release: Public Beta Friday June 29th
 
-* "*" to save
+* backups
+* grades rollover
+* "*" to save and <- -> for navigation
 * nullify
 * Generate a list of award winners
+* print certificates to templates
 
-# Later Releases
+# Release: 1.0 Saturday October 6
 * users and permissions
 * import students from .csv or .xlsx
+
+# Release: 2.0
 * put it in a server/ remote access
 * Version History
-
