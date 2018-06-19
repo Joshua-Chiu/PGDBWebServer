@@ -22,7 +22,6 @@
   </label>
 
   <div class="collapsible-content">
-<form action="{% url "test2:student_submit" student.id %}" id="form {{ grade }}" name="col form" method="post">
     {%csrf_token%}
 
     <div class="content-inner">
@@ -175,7 +174,6 @@
         </table>
     {% endifequal %}
     </div>
-</form>
   </div>
 </div>
 

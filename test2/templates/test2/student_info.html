@@ -28,6 +28,8 @@
 <hr>
 <!-- end of Student Overview-->
 
+<form action="{% url "test2:student_submit" student.id %}" id="form0" name="col form" method="post">
+
 {% if student.homeroom|slice:":2"|add:"0" >= 12 %}
     {% include 'test2/collapsible.html' with student=student grade="12" year="2018" %}
 {% endif %}
@@ -48,6 +50,7 @@
     {% include 'test2/collapsible.html' with student=student grade="08" year="2014" %}
 {% endif %}
 
+</form>
 
 <!--Script for the Nullify button-->
 <script>
@@ -66,13 +69,14 @@ function nullify() {
 <!--Script for the getting post requests-->
 <script>
 function submitForms() {
-    document.getElementById("form 08").submit();
-    document.getElementById("form 09").submit();
-    document.getElementById("form 10").submit();
-    document.getElementById("form 11").submit();
-    document.getElementById("form 12").submit();
+    document.getElementById("form0").submit();
+    //document.getElementById("form 08").submit();
+    //document.getElementById("form 09").submit();
+    //document.getElementById("form 10").submit();
+    //document.getElementById("form 11").submit();
+    //document.getElementById("form 12").submit();
     }
-
+8
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
 
