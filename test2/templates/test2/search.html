@@ -22,8 +22,11 @@
             <table id="StudentList" class="sortable">
                 <thead>
                 <tr>
-                    <th style="padding-right: 250px">
-                        <strong>Name</strong>
+                    <th style="padding-right: 150px">
+                        <strong>Last Name</strong>
+                    </th>
+                    <th style="padding-right: 150px">
+                        <strong>First Name</strong>
                     </th>
                     <th>
                         <strong>Student #</strong>
@@ -36,7 +39,10 @@
     {% for student in student_list %}
                 <tr>
                     <td>
-                        <a href="{% url "test2:student_info" student.id %}">{{ student.first }} {{ student.last }}</a>
+                        <a href="{% url "test2:student_info" student.id %}">{{ student.last }}</a>
+                    </td>
+                    <td>
+                        <a href="{% url "test2:student_info" student.id %}">{{ student.first }}</a>
                     </td>
                     <td>
                         {{ student.student_num }}
