@@ -34,7 +34,7 @@
 * T1 and T2 averages
 * annual certificates
   * Principal List: variable cut-off
-    *BOTH TERMS AVERAGES ARE HIGHER THAN THE PRINCIPALS LIST CUTOFF*
+    * BOTH TERMS AVERAGES ARE HIGHER THAN THE PRINCIPALS LIST CUTOFF*
   * Honour:    if (term 1 and term 2 averages are > 80) and not on principal's list:
   * Service:   if annual SERVICE POINTS TOTAL > 10
   * Athletics: if annual ATHLETICS POINTS TOTAL > 10
@@ -56,12 +56,17 @@
 * "*" to save and <- -> for navigation
 * nullify
 * Generate a list of award winners
-* print certificates to templates
+
 
 # Release: 1.0 Saturday October 6
 * users and permissions
 * import students from .csv or .xlsx
+* print certificates to templates
+* print certificates to templates
+
 
 # Release: 2.0
+* portable on usb
 * put it in a server/ remote access
 * Version History
+* Off site backups

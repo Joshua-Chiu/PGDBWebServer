@@ -1,13 +1,11 @@
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
 </head>
 
-<body>
 <div class="wrap-collabsible">
   <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade student.homeroom|slice:":2" %} checked {% endifequal %}>
   <label for="{{ grade }}" class="lbl-toggle">
@@ -181,6 +179,3 @@
   </div>
 </div>
 
-
-</body>
-</html>
