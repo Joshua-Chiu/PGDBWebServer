@@ -6,6 +6,7 @@ from django.db import models
 class Student(models.Model):
     first = models.CharField(max_length=30)
     last = models.CharField(max_length=30)
+    legal = models.CharField(max_length=30)
     student_num = models.PositiveIntegerField()
     homeroom = models.CharField(max_length=3)
     sex = models.CharField(max_length=1)
@@ -20,7 +21,7 @@ class Grade(models.Model):
     Student = models.ForeignKey(Student, on_delete=models.CASCADE)
     grade = models.SmallIntegerField()
     start_year = models.SmallIntegerField()
-    anecdote = models.SlugField(max_length=300, blank=True)
+    anecdote = models.CharField(max_length=300, blank=True)
 
     SE_total = models.DecimalField(max_digits=5, decimal_places=1)
     AT_total = models.DecimalField(max_digits=5, decimal_places=1)
