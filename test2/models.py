@@ -23,10 +23,10 @@ class Grade(models.Model):
     start_year = models.SmallIntegerField()
     anecdote = models.CharField(max_length=300, blank=True)
 
-    SE_total = models.DecimalField(max_digits=5, decimal_places=1)
-    AT_total = models.DecimalField(max_digits=5, decimal_places=1)
-    FA_total = models.DecimalField(max_digits=5, decimal_places=1)
-    SC_total = models.DecimalField(max_digits=5, decimal_places=3)
+    SE_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    AT_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    FA_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    SC_total = models.DecimalField(max_digits=5, decimal_places=3, null=True)
 
 
 class Points(models.Model):

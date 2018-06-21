@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from test2.models import Student
+from test2.models import Student, Grade
 import random as r
 import string
 from django.utils import timezone
@@ -35,3 +35,7 @@ class Command(BaseCommand):
             student.student_num = r.randint(1, 100000)
             student.date_added = timezone.now()
             student.save()
+
+            for i in range(int(student.homeroom[:2]) - 7):
+                student.grade_set.create(grade=12 - i, start_year=timezone.now().year - i)
+
