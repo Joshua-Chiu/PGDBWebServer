@@ -37,5 +37,5 @@ class Command(BaseCommand):
             student.save()
 
             for i in range(int(student.homeroom[:2]) - 7):
-                student.grade_set.create(grade=12 - i, start_year=timezone.now().year - i)
+                student.grade_set.create(grade=8 + i, start_year=timezone.now().year - i)
 
