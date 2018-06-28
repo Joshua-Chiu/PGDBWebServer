@@ -28,6 +28,9 @@ class Grade(models.Model):
     FA_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
     SC_total = models.DecimalField(max_digits=5, decimal_places=3, null=True)
 
+    def __str__(self):
+        return f"{self.grade} {self.start_year}"
+
 
 class Points(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
@@ -35,11 +38,17 @@ class Points(models.Model):
     code = models.SmallIntegerField()
     amount = models.DecimalField(max_digits=5, decimal_places=1)
 
+    def __str__(self):
+        return f"{self.type} {self.code} {self.amount}"
+
 
 class Scholar(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     term1 = models.DecimalField(max_digits=7, decimal_places=5)
     term2 = models.DecimalField(max_digits=7, decimal_places=5)
+
+    def __str__(self):
+        return f"T1 {self.term1} T2 {self.term2}"
 
 
 class PointCodes(models.Model):
