@@ -66,12 +66,32 @@ def student_info(request, num):
 
 
 def student_submit(request, num):
+    student = Student.objects.get(id=num)
+    items = list(request.POST.items())[1:]
+
     if request.method == 'POST':
         print("received POST request")
         for k, v in request.POST.items():
             print(k, "|", v)
-    else:
-        print("this is not supposed to happen don't do that again")
+
+        for p, c in zip(items[::2], items[1::2]):
+            if p[1] == '' or c[1] == '':
+                continue
+
+            info = p[0].split(' ')
+            grade_num = int(info[0])
+            type = info[1]
+            amount = float(p[1])
+            code = int(c[1])
+
+            print(p)
+            print(c)
+            print(isinstance(int(p[1]), int))
+            print(grade_num, type, amount, code)
+
+            grade = student.grade_set.get(grade=grade_num)
+
+            grade.points_set.create(code=code, type=type, amount=amount)
 
     template = get_template('test2/student_info.html')
     context = {
