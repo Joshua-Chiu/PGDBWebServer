@@ -44,8 +44,8 @@ class Points(models.Model):
 
 class Scholar(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    term1 = models.DecimalField(max_digits=7, decimal_places=5)
-    term2 = models.DecimalField(max_digits=7, decimal_places=5)
+    term1 = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+    term2 = models.DecimalField(max_digits=8, decimal_places=5, null=True)
 
     def __str__(self):
         return f"T1 {self.term1} T2 {self.term2}"

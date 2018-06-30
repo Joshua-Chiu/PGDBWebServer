@@ -74,29 +74,36 @@ def student_submit(request, num):
         for k, v in request.POST.items():
             print(k, "|", v)
 
+        # iterate through pairs of point amount and code
         for p, c in zip(items[::2], items[1::2]):
-            if p[1] == '' or c[1] == '':
-                continue
 
             info = p[0].split(' ')
             grade_num = int(info[0])
             type = info[1]
-            amount = float(p[1])
-            code = int(c[1])
 
-            print(p)
-            print(c)
-            print(isinstance(int(p[1]), int))
-            print(grade_num, type, amount, code)
+            # scholar points go in a seperate class
+            if type == "SC":
+                if p[1] == '' and c[1] == '':
+                    continue
 
-            grade = student.grade_set.get(grade=grade_num)
 
-            grade.points_set.create(code=code, type=type, amount=amount)
+                if p[1] == '': t1 = 0
+                else: t1 = float(p[1])
+                if c[1] == '': t2 = 0
+                else: t2 = float(c[1])
 
-    template = get_template('test2/student_info.html')
-    context = {
-        'student': Student.objects.get(id=num)
-    }
+                grade = student.grade_set.get(grade=grade_num)
+                grade.scholar_set.create(term1=t1, term2=t2)
+            else:
+                if p[1] == '' or c[1] == '':
+                    continue
+
+                amount = float(p[1])
+                code = int(c[1])
+
+                grade = student.grade_set.get(grade=grade_num)
+                grade.points_set.create(code=code, type=type, amount=amount)
+
     return HttpResponseRedirect("/test2/student/{}".format(num))
 
 
