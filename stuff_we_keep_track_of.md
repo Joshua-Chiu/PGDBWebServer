@@ -1,13 +1,17 @@
 # Stuff we keep track of in the database
 
-# Release: Developer Alpha Friday June 15th
+# Current Release: Developer Alpha 
+<dl><s>Friday June 15th</s><br>
+Friday September 7th
+</dl> 
+
 
 ## Per student
 
 * info
-- name (First, Last, Legal)
-- date added
-- cumulative awards (pins/big block)
+  * name (First, Last, Legal)
+  * date added → grade (rollover, calculate from year of entry)
+  * cumulative awards (pins/big block)
 
 * check digit thing to keep track on the points
 
@@ -22,19 +26,22 @@
 ### Per grade per student
 
 * points - type and amount
-    SCHOLAR:
-        79.50 -> 83.49: 2 POINTS
-        83.50 -> 87.49: 3 POINTS
-        87.50 -> 91.49: 4 POINTS
-        91.50 -> 95.49: 5 POINTS
-        95.50 -> 99.99: 6 POINTS
+  * SCHOLAR:
+    - 79.50 -> 83.49: 2 POINTS
+    - 83.50 -> 87.49: 3 POINTS
+    - 87.50 -> 91.49: 4 POINTS
+    - 91.50 -> 95.49: 5 POINTS
+    - 95.50 -> 99.99: 6 POINTS
+  * ATHLETICS, SERVICE, FINE ARTS
+    - Keep Point and Code (Multiple Entry)
+  
 
-* anecdotes
-* totals for each category e.g. service, athletics
+* anecdotes per grade (nullify)
+* year and cumulative totals for each category e.g. service, athletics
 * T1 and T2 averages
 * annual certificates
   * Principal List: variable cut-off
-    * BOTH TERMS AVERAGES ARE HIGHER THAN THE PRINCIPALS LIST CUTOFF*
+    * BOTH TERMS AVERAGES ARE HIGHER THAN THE PRINCIPALS LIST CUTOFF
   * Honour:    if (term 1 and term 2 averages are > 80) and not on principal's list:
   * Service:   if annual SERVICE POINTS TOTAL > 10
   * Athletics: if annual ATHLETICS POINTS TOTAL > 10
@@ -49,7 +56,7 @@
 * advanced search -> sort students by points and totals
 
 
-# Release: Public Beta Friday June 29th
+# Release: Public Beta Friday September 14th
 
 * backups
 * grades rollover
@@ -61,7 +68,6 @@
 # Release: 1.0 Saturday October 6
 * users and permissions
 * import students from .csv or .xlsx
-* print certificates to templates
 * print certificates to templates
 
 
