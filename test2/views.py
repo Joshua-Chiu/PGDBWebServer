@@ -75,31 +75,33 @@ def student_submit(request, num):
             print(k, "|", v)
 
         # iterate through pairs of point amount and code
-        for p, c in zip(items[::2], items[1::2]):
+        for point_field, code_field in zip(items[::2], items[1::2]):
 
-            info = p[0].split(' ')
+            # get info like grade and point type e.g. SE, AT
+            info = point_field[0].split(' ')
             grade_num = int(info[0])
             type = info[1]
 
-            # scholar points go in a seperate class
+            # decide if it's scholar or other type
             if type == "SC":
-                if p[1] == '' and c[1] == '':
+                # scholar gets its own class from the other points
+                if point_field[1] == '' and code_field[1] == '':
                     continue
 
+                if point_field[1] == '': t1 = 0
+                else: t1 = float(point_field[1])
 
-                if p[1] == '': t1 = 0
-                else: t1 = float(p[1])
-                if c[1] == '': t2 = 0
-                else: t2 = float(c[1])
+                if code_field[1] == '': t2 = 0
+                else: t2 = float(code_field[1])
 
                 grade = student.grade_set.get(grade=grade_num)
                 grade.scholar_set.create(term1=t1, term2=t2)
             else:
-                if p[1] == '' or c[1] == '':
+                if point_field[1] == '' or code_field[1] == '':
                     continue
 
-                amount = float(p[1])
-                code = int(c[1])
+                amount = float(point_field[1])
+                code = int(code_field[1])
 
                 grade = student.grade_set.get(grade=grade_num)
                 grade.points_set.create(code=code, type=type, amount=amount)
