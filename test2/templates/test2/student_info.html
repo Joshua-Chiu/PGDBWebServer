@@ -50,6 +50,11 @@
     {% include 'test2/collapsible.html' with student=student grade="08" year="2014" %}
 {% endif %}
 
+{#i suggest you use a for loop here#}
+{#{% for grade in student.grade_set.all %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade=grade.grade year="2015" grade_object=grade%}#}
+{#{% endfor %}#}
+
 </form>
 
 <!--Script for the Nullify button-->

@@ -107,6 +107,12 @@
         </td>
         <td height="160" rowspan="2">
             Points
+            <br>
+            {% for grade in student.grade_set.all %}
+                {% for point in grade.points_set.all %}
+                    {{ point.amount }}
+                    {% endfor %}
+            {% endfor %}
         </td>
         <td height="15" colspan="2">
             <strong>Pins</strong>
