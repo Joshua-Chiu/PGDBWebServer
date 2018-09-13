@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
 </head>
 
-<div class="wrap-collabsible">
+<div class="wrap-collapsible">
   <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade student.homeroom|slice:":2" %} checked {% endifequal %}>
   <label for="{{ grade }}" class="lbl-toggle">
       {% ifequal grade student.homeroom|slice:":2" %}
