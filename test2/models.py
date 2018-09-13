@@ -36,7 +36,7 @@ class Points(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     type = models.CharField(max_length=2)
     code = models.SmallIntegerField()
-    amount = models.DecimalField(max_digits=5, decimal_places=1)
+    amount = models.DecimalField(max_digits=5, decimal_places=3)
 
     def __str__(self):
         return f"{self.type} {self.code} {self.amount}"
