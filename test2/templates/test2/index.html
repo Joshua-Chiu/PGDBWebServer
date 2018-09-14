@@ -1,29 +1,16 @@
+{% include 'test2/navbar.html' %}
+{% load staticfiles %}
+
 <!DOCTYPE html>
-
-<html>
-    <head>
-        <title>Point Grey Awards Database</title>
-    </head>
-
-    <ul>
-    {% for point in points %}
-        <li>{{ point }}</li>
-    {% endfor %}
-    </ul>
-
-    <body>
-
-    	<h1>Point Grey Awards Database</h1>
-
-		<p>
-            Lastname: {{ Student|upper }} Firstname: {{ Student|safe }}<br />
-            Student Number:
-
-        </p>
-
-        <h2>Points</h2>
-
-
-
-	</body>
-</html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+    <script src="{% static 'Javascript/sorttable.js' %}"></script>
+</head>
+<br>
+<button>increase grade</button>
+<button>import students</button>
+<button> create new student </button>
+<br><br>
+recently modified students

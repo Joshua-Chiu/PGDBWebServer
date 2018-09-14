@@ -151,8 +151,16 @@ def codes_submit(request):
     return HttpResponseRedirect("/test2/settings/codes")
 
 
-def index(request):
+def student_list(request):
     template = get_template('test2/student_list.html')
+    context = {
+        'student_list': Student.objects.all()
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def index(request):
+    template = get_template('test2/index.html')
     context = {
         'student_list': Student.objects.all()
     }
