@@ -100,18 +100,31 @@
         </tr>
     <tr>
         <td height="160" rowspan="2">
-            Points
+            {% for point in grade_object.points_set.all %}
+                {% ifequal "SE" point.type %}
+                {{ point.amount }} {{ point.code }}<br>
+                {% endifequal %}
+            {% endfor %}
         </td>
         <td height="160" rowspan="2">
-            Points
+            {% for point in grade_object.points_set.all %}
+                {% ifequal "AT" point.type %}
+                {{ point.amount }} {{ point.code }}<br>
+                {% endifequal %}
+            {% endfor %}
         </td>
         <td height="160" rowspan="2">
-            Points
-            <br>
-            {% for grade in student.grade_set.all %}
-                {% for point in grade.points_set.all %}
-                    {{ point.amount }} {{ point.code }} {{ point.type }}<br>
-                    {% endfor %}
+{#            {% for grade in student.grade_set.all %}#}
+{#                {% ifequal grade.grade grade  %}#}
+{#                {% for point in grade.points_set.all %}#}
+{#                    {{ point.amount }} {{ point.code }} {{ point.type }}<br>#}
+{#                    {% endfor %}#}
+{#                {% endifequal %}#}
+{#            {% endfor %}#}
+            {% for point in grade_object.points_set.all %}
+                {% ifequal "FA" point.type %}
+                {{ point.amount }} {{ point.code }}<br>
+                {% endifequal %}
             {% endfor %}
         </td>
         <td height="15" colspan="2">

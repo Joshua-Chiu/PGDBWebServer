@@ -30,30 +30,32 @@
 
 <form action="{% url "test2:student_submit" student.id %}" id="form0" name="col form" method="post">
 
-{% if student.homeroom|slice:":2"|add:"0" >= 12 %}
-    {% include 'test2/collapsible.html' with student=student grade="12" year="2018" %}
-{% endif %}
 
-{% if student.homeroom|slice:":2"|add:"0" >= 11 %}
-    {% include 'test2/collapsible.html' with student=student grade="11" year="2017" %}
-{% endif %}
+{#{% if student.homeroom|slice:":2"|add:"0" >= 12 %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade="12" year="2018" %}#}
+{#{% endif %}#}
+{##}
+{#{% if student.homeroom|slice:":2"|add:"0" >= 11 %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade="11" year="2017" %}#}
+{#{% endif %}#}
+{##}
+{#{% if student.homeroom|slice:":2"|add:"0" >= 10 %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade="10" year="2016" %}#}
+{#{% endif %}#}
+{##}
+{#{% if student.homeroom|slice:":2"|add:"0" >= 9 %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade="09" year="2015" %}#}
+{#{% endif %}#}
+{##}
+{#{% if student.homeroom|slice:":2"|add:"0" >= 8 %}#}
+{#    {% include 'test2/collapsible.html' with student=student grade="08" year="2014" %}#}
+{#{% endif %}#}
 
-{% if student.homeroom|slice:":2"|add:"0" >= 10 %}
-    {% include 'test2/collapsible.html' with student=student grade="10" year="2016" %}
-{% endif %}
 
-{% if student.homeroom|slice:":2"|add:"0" >= 9 %}
-    {% include 'test2/collapsible.html' with student=student grade="09" year="2015" %}
-{% endif %}
 
-{% if student.homeroom|slice:":2"|add:"0" >= 8 %}
-    {% include 'test2/collapsible.html' with student=student grade="08" year="2014" %}
-{% endif %}
-
-{#i suggest you use a for loop here#}
-{#{% for grade in student.grade_set.all %}#}
-{#    {% include 'test2/collapsible.html' with student=student grade=grade.grade year="2015" grade_object=grade%}#}
-{#{% endfor %}#}
+{% for grade in student.grade_set.all reversed %}
+    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year="2015" grade_object=grade %}
+{% endfor %}
 
 </form>
 
