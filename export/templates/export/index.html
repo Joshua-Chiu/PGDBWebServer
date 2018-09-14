@@ -1,0 +1,16 @@
+{% include 'test2/navbar.html' %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
+    <title>Point Grey Awards Database</title>
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+</head>
+
+<a href="{% url "export:printing"%}"> printing </a>
+<br>
+<a href="{% url "export:export_files"%}"> file download </a>
