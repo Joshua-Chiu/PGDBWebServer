@@ -99,33 +99,44 @@
             </td>
         </tr>
     <tr>
-        <td height="160" rowspan="2">
-            {% for point in grade_object.points_set.all %}
-                {% ifequal "SE" point.type %}
-                {{ point.amount }}    {{ point.code }}<br>
-                {% endifequal %}
-            {% endfor %}
+        <td height="160" rowspan="2" style="overflow:scroll; height:100%">
+            <table width="100%">
+                {% for point in grade_object.points_set.all %}
+                    {% ifequal "SE" point.type %}
+                        <tr>
+                            <td>{{ point.amount|floatformat:3 }}</td>
+                            <td>{{ point.code }}</td>
+                            <td><button onclick="">X</button></td>
+                        </tr>
+                    {% endifequal %}
+                {% endfor %}
+            </table>
         </td>
         <td height="160" rowspan="2">
-            {% for point in grade_object.points_set.all %}
-                {% ifequal "AT" point.type %}
-                {{ point.amount }}    {{ point.code }}<br>
-                {% endifequal %}
-            {% endfor %}
+            <table width="100%">
+                {% for point in grade_object.points_set.all %}
+                    {% ifequal "AT" point.type %}
+                        <tr>
+                            <td>{{ point.amount|floatformat:3 }}</td>
+                            <td>{{ point.code }}</td>
+                            <td><button onclick="">X</button></td>
+                        </tr>
+                    {% endifequal %}
+                {% endfor %}
+            </table>
         </td>
         <td height="160" rowspan="2">
-{#            {% for grade in student.grade_set.all %}#}
-{#                {% ifequal grade.grade grade  %}#}
-{#                {% for point in grade.points_set.all %}#}
-{#                    {{ point.amount }} {{ point.code }} {{ point.type }}<br>#}
-{#                    {% endfor %}#}
-{#                {% endifequal %}#}
-{#            {% endfor %}#}
-            {% for point in grade_object.points_set.all %}
-                {% ifequal "FA" point.type %}
-                {{ point.amount }}    {{ point.code }}<br>
-                {% endifequal %}
-            {% endfor %}
+            <table width="100%">
+                {% for point in grade_object.points_set.all %}
+                    {% ifequal "FA" point.type %}
+                        <tr>
+                            <td>{{ point.amount|floatformat:3 }}</td>
+                            <td>{{ point.code }}</td>
+                            <td><button onclick="">X</button></td>
+                        </tr>
+                    {% endifequal %}
+                {% endfor %}
+            </table>
         </td>
         <td height="15" colspan="2">
             <strong>Pins</strong>
@@ -160,11 +171,13 @@
             <td>
 {#                {% grade_object.points_set.all().aggregate(Avg('points')) %}#}
                 <br>
-                    {% for point in grade_object.points_set.all %}
-                    {% ifequal "SE" point.type %}
-                    {{ point.amount }}<br>
-                    {% endifequal %}
-                    {% endfor %}
+                {{ grade_object.SE_total }}
+                <br>
+                {{ grade_object.AT_total }}
+                <br>
+                {{ grade_object.SC_total }}
+                <br>
+                {{ grade_object.FA_total }}
             </td>
         </tr>
     </table>

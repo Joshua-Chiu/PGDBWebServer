@@ -28,8 +28,10 @@
 
 <script>
     addEventListener('keypress', function(e) {
-    if (e.keyCode == 42)
-    {
+    if (e.keyCode == 42) {
+        submitForms();
+    }
+    if ( e.keyCode == 13 ) {
         submitForms();
     }
 }, false);
