@@ -121,3 +121,29 @@ function post(path, params, method) {
     form.submit();
 }
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+      $('input').keyup(function (e) {
+        if (e.which == 39) { // right arrow
+          $(this).closest('td').next().find('input').focus();
+
+        } else if (e.which == 37) { // left arrow
+          $(this).closest('td').prev().find('input').focus();
+
+        } else if (e.which == 40) { // down arrow
+          $(this).closest('tr').next().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+
+        } else if (e.which == 38) { // up arrow
+          $(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+        }
+      });
+
+    // un-comment to display key code
+    // $("input").keydown(function (e) {
+    //   console.log(e.which);
+    // });
+    });
+</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>

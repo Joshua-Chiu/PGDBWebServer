@@ -74,3 +74,10 @@ input[type='checkbox'] {
   background: inherit;
   padding: .5rem 1rem;
 }
+
+.main-table {
+  float: left;
+}
+
+.data-table{
+}
