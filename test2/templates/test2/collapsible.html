@@ -89,7 +89,7 @@
     <!--Where all the points are displayed-->
         <tr>
             <td align="center">
-                Points | Code
+                Points | Code <!--Display Annual Totals Here-->
             </td>
             <td align="center">
                 Points | Code
@@ -99,7 +99,7 @@
             </td>
         </tr>
     <tr>
-        <td height="160" rowspan="2" style="overflow:scroll; height:100%">
+        <td height="160" rowspan="2">
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "SE" point.type %}
