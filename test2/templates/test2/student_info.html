@@ -1,6 +1,7 @@
 <!--Load templates-->
 {% include 'test2/navbar.html' %}
 {% load staticfiles %}
+{% now "Y" as current_year %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +68,8 @@
 
 
 {% for grade in student.grade_set.all reversed %}
-    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year="2015" grade_object=grade %}
+<!--student.homeroom|slice:":2" - grade-->
+    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year grade_object=grade %}
 {% endfor %}
 
 </form>
@@ -75,14 +77,7 @@
 <!--Script for the Nullify button-->
 <script>
 function nullify() {
-    var txt;
-    var person = prompt("Please select:", "All");
-    if (person == null || person == "") {
-        txt = "User cancelled the prompt.";
-    } else {
-        txt = "Hello " + person + "! How are you today?";
-    }
-    document.getElementById("demo").innerHTML = txt;
+
 }
 </script>
 
@@ -146,4 +141,5 @@ function post(path, params, method) {
     // });
     });
 </script>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>

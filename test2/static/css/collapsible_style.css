@@ -82,4 +82,5 @@ input[type='checkbox'] {
 .data-table{
   overflow-y: scroll;
   height: 100%;
+  vert-align: top
 }

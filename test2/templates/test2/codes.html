@@ -13,17 +13,29 @@
     {% csrf_token %}
     {% for code in codes %}
         <fieldset>
-            <input type='text' name="{{ forloop.counter0 }}code" value="{{ code.type}}">
-            <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.code}}">
-            <input type='text' name="{{ forloop.counter0 }}description" value="{{ code.description }}">
+            Type: <select name="{{ forloop.counter0 }}code">
+                <option value="SE" {% ifequal code.type "SE" %}selected{% endifequal %}>Service</option>
+                <option value="AT" {% ifequal code.type "AT" %}selected{% endifequal %}>Athletics</option>
+                <option value="FA" {% ifequal code.type "FA" %}selected{% endifequal %}>Fine Arts</option>
+                <option value="SC" {% ifequal code.type "SC" %}selected{% endifequal %}>Scholar</option>
+            </select>
+
+            Code: <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.code}}">
+            Description: <input type='text' name="{{ forloop.counter0 }}description" value="{{ code.description }}">
+            <button onclick="">X</button>
         </fieldset>
     {% endfor %}
         <fieldset>
-            <input type='text' name="code" value="">
-            <input type='text' name="type" value="">
-            <input type='text' name="description" value="">
+            Type: <select name="type">
+                <option value="SE">Service</option>
+                <option value="AT">Athletics</option>
+                <option value="FA">Fine Arts</option>
+                <option value="SC">Scholar</option>
+            </select>
+            Code: <input type='text' name="code" value="">
+            Description: <input type='text' name="description" value="">
         </fieldset>
-    <input type="submit" value="save">
+    <input type="submit" value="Save">
     </form>
 </body>
 </html>

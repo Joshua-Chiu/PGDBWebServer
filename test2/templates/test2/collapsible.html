@@ -1,6 +1,5 @@
 {% load staticfiles %}
 
-
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
@@ -17,7 +16,7 @@
 
     {% ifequal grade student.homeroom|slice:":2" %}
         </strong>
-        ({{ year }} - {{ year|add:1 }})
+        ({{ year|add:-1 }} - {{ year }})
     {% endifequal %}
   </label>
 
@@ -54,13 +53,6 @@
                 <label for="service">Points: </label>
                 <input id="service" type="number" name="{{grade}} SE points" maxlength="3" value="{{ service }}" >
                 <input id="service" type="number" name="{{grade}} SE code" maxlength="3" value="{{ service }}" >
-                <div style="overflow-y:auto;">
-                    <table>
-                    {% for service in services %}
-                    <tr><td>{{ service }}</td></tr>
-                    {% endfor %}
-                    </table>
-                </div>
             </td>
 
             <td>
@@ -100,27 +92,26 @@
         </tr>
     <tr>
         <td height="160" rowspan="2">
-            <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "SE" point.type %}
-                        <tr>
-                            <td>{{ point.amount|floatformat:3 }}</td>
-                            <td>{{ point.code }}</td>
-                            <td><button onclick="">X</button></td>
-                        </tr>
+                            {{ point.amount|floatformat:3 }}
+                            <span style="display: inline-block; width: 2ch;">&#9;</span>
+                            {{ point.code|stringformat:"02d" }}
+                            <button onclick="">X</button>
+                            <br>
                     {% endifequal %}
                 {% endfor %}
-            </table>
+
         </td>
         <td height="160" rowspan="2">
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "AT" point.type %}
-                        <tr>
-                            <td>{{ point.amount|floatformat:3 }}</td>
-                            <td>{{ point.code }}</td>
-                            <td><button onclick="">X</button></td>
-                        </tr>
+                        {{ point.amount|floatformat:3 }}
+                            <span style="display: inline-block; width: 2ch;">&#9;</span>
+                            {{ point.code|stringformat:"02d" }}
+                            <button onclick="">X</button>
+                            <br>
                     {% endifequal %}
                 {% endfor %}
             </table>
@@ -129,11 +120,11 @@
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "FA" point.type %}
-                        <tr>
-                            <td>{{ point.amount|floatformat:3 }}</td>
-                            <td>{{ point.code }}</td>
-                            <td><button onclick="">X</button></td>
-                        </tr>
+                        {{ point.amount|floatformat:3 }}
+                            <span style="display: inline-block; width: 2ch;">&#9;</span>
+                            {{ point.code|stringformat:"02d" }}
+                            <button onclick="">X</button>
+                            <br>
                     {% endifequal %}
                 {% endfor %}
             </table>
