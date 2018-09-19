@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
 </head>
 
-<a href="{% url "export:printing"%}"> printing </a>
-<br>
-<a href="{% url "export:export_files"%}"> file download </a>
+<div>
+    <h2>Export</h2>
+
+    <h4><a href="{% url 'export:printing' %}">Printing</a></h4>
+    <h4><a href="{% url 'export:export_files' %}">Export Files</a></h4>
+
+</div>
+
