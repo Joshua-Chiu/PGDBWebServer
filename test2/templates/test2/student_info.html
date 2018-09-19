@@ -24,9 +24,6 @@
 <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added }}</strong></p>
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 
-<button onclick="submitForms()">Submit</button>
-
-
 <script>
     addEventListener('keypress', function(e) {
     if (e.keyCode == 42) {
@@ -91,7 +88,6 @@ function submitForms() {
     //document.getElementById("form 11").submit();
     //document.getElementById("form 12").submit();
     }
-8
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
 
