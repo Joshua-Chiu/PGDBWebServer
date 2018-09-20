@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load mathfilters %}
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,11 @@
 
     {% ifequal grade student.homeroom|slice:":2" %}
         </strong>
-        ({{ year|add:-1 }} - {{ year }})
+        {% if month > "7" %}
+            ({{ year }} - {{ year|add:1 }})
+            {% else %}
+            ({{ year|add:-1 }} - {{ year }})
+        {% endif %}
     {% endifequal %}
   </label>
 
@@ -38,7 +43,7 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {{ year }}
+                {{ year|add:-grade }}
                 <br>
                 {{ year|add:1 }}
                 <br>

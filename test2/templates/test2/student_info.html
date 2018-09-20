@@ -2,7 +2,7 @@
 {% include 'test2/navbar.html' %}
 {% load staticfiles %}
 {% now "Y" as current_year %}
-{% now "M" as current_month %}
+{% now "n" as current_month %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
 
-<p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"c" }}</strong></p>
+<p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"Y" }}</strong></p>
 <h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 
 <script>
@@ -67,7 +67,7 @@
 
 {% for grade in student.grade_set.all reversed %}
 <!--student.homeroom|slice:":2" - grade-->
-    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month grade_object=grade %}
+    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade %}
 {% endfor %}
 
 </form>
