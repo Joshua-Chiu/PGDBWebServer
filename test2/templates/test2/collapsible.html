@@ -7,7 +7,9 @@
 </head>
 
 <div class="wrap-collapsible">
-  <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade student.homeroom|slice:":2" %} checked {% endifequal %}>
+  <input id="{{ grade }}" class="toggle" type="checkbox"
+          {% if year|sub:current_grade|add:grade > student.date_added|date:"Y" %} onclick="return false" {% endif %}
+          {% ifequal grade current_grade %} checked {% endifequal %}>
   <label for="{{ grade }}" class="lbl-toggle">
       {% ifequal grade student.homeroom|slice:":2" %}
         <strong>
@@ -15,7 +17,7 @@
 
         Grade {{ grade }}
 
-    {% ifequal grade student.homeroom|slice:":2" %}
+    {% ifequal grade current_grade %}
         </strong>
         {% if month > "7" %}
             ({{ year }} - {{ year|add:1 }})
@@ -23,6 +25,9 @@
             ({{ year|add:-1 }} - {{ year }})
         {% endif %}
     {% endifequal %}
+    {% if year|sub:current_grade|add:grade > student.date_added|date:"Y" %}
+        NOT AT PG
+    {% endif %}
   </label>
 
   <div class="collapsible-content">
@@ -43,10 +48,17 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {{ year|add:-grade }}
+                {% if month > "7" %}
+                    {{ year|sub:current_grade|add:grade|add:"1" }}
+                    <br>
+                    {{ year|sub:current_grade|add:grade }}
+                {% else %}
+                    {{ year|sub:current_grade|add:grade }}
+                    <br>
+                    {{ year|sub:current_grade|add:grade|add:"-1" }}
+                {% endif %}
                 <br>
-                {{ year|add:1 }}
-                <br>
+
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
