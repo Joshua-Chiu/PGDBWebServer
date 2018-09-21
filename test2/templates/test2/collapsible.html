@@ -7,11 +7,15 @@
 </head>
 
 <div class="wrap-collapsible">
+    <!--Comment out the following line to remove the disable NOT AT PG-->
   <input id="{{ grade }}" class="toggle" type="checkbox"
-          {% if year|sub:current_grade|add:grade > student.date_added|date:"Y" %} onclick="return false" {% endif %}
-          {% ifequal grade current_grade %} checked {% endifequal %}>
+
+          {% if year|add:grade < student.date_added|date:"Y"|abs|add:current_grade %} onclick="return false" {% endif %}
+
+          {% ifequal grade current_grade %} checked {% endifequal %}
+            >
   <label for="{{ grade }}" class="lbl-toggle">
-      {% ifequal grade student.homeroom|slice:":2" %}
+      {% ifequal grade current_grade %}
         <strong>
     {% endifequal %}
 
@@ -25,8 +29,8 @@
             ({{ year|add:-1 }} - {{ year }})
         {% endif %}
     {% endifequal %}
-    {% if year|sub:current_grade|add:grade > student.date_added|date:"Y" %}
-        NOT AT PG
+    {% if year|add:grade < student.date_added|date:"Y"|abs|add:current_grade %}
+        <strong>NOT AT PG</strong>
     {% endif %}
   </label>
 
