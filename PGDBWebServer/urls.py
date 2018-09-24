@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
+    path('', views.test2, name="test2_redirect"),
     path('test2/', include('test2.urls')),
     path('test3/', include('test3.urls')),
     path('export/', include('export.urls')),
