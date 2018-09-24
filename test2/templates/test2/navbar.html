@@ -33,7 +33,7 @@
 
         <li>
             <form action="/test2/search">
-                <input type="text" placeholder="Search.." name="query" accesskey="a">
+                <input type="text" placeholder="Search.." name="query" accesskey="a" id="query">
             </form>
         </li>
 
@@ -94,3 +94,17 @@ GetClock();
 setInterval(GetClock, 100);
 }
 </script>
+
+<script src="{% static 'Javascript/jQuery.js' %}"></script>
+
+
+
+<script>
+    var query = document.getElementById("query");
+
+    $( document ).on( 'keydown', function ( e ) {
+      if ( e.keyCode === 27 ) { //ESC key code
+        query.focus();
+      }
+    });
+  </script>
