@@ -73,20 +73,20 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input id="service" type="number" name="{{grade}} SE points" maxlength="3" value="{{ service }}" >
-                <input id="service" type="number" name="{{grade}} SE code" maxlength="3" value="{{ service }}" >
+                <input id="service" type="number" name="{{grade}} SE points" maxlength="3" {% ifequal grade current_grade %} autofocus {% endifequal %}>
+                <input id="service" type="number" name="{{grade}} SE code" maxlength="3">
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input id="athletics" type="number" name="{{grade}} AT points" maxlength="3" value="{{ athletics }}" >
-                <input id="athletics" type="number" name="{{grade}} AT code" maxlength="3" value="{{ service }}" >
+                <input id="athletics" type="number" name="{{grade}} AT points" maxlength="3">
+                <input id="athletics" type="number" name="{{grade}} AT code" maxlength="3">
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input id="fine_arts" type="number" name="{{grade}} FA points" maxlength="3" value="{{ fine_arts }}" >
-                <input id="fine_arts" type="number" name="{{grade}} FA code" maxlength="3" value="{{ service }}" >
+                <input id="fine_arts" type="number" name="{{grade}} FA points" maxlength="3">
+                <input id="fine_arts" type="number" name="{{grade}} FA code" maxlength="3">
             </td>
 
             <td rowspan="2">

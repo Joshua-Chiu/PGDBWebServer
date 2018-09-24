@@ -33,7 +33,7 @@
 
         <li>
             <form action="/test2/search">
-                <input type="text" placeholder="Search.." name="query">
+                <input type="text" placeholder="Search.." name="query" accesskey="a">
             </form>
         </li>
 
@@ -60,7 +60,6 @@
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
                     <i class="fa fa-caret-down"></i>
-                </button>
                 <div class="dropdown-content">
                     <a href="/export">Generate Reports</a>
                     <a href="/admin">Browse Archives</a>
