@@ -69,7 +69,7 @@
 
 {% for grade in student.grade_set.all reversed %}
 <!--student.homeroom|slice:":2" - grade-->
-    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2"%}
+    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0%}
 {% endfor %}
 
 </form>
