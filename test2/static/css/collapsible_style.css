@@ -82,6 +82,10 @@ input[type='checkbox'] {
   overflow-y: scroll;
   height: 100%;
   vert-align: top
+
+}
+.data-table td {
+    width: 10px;
 }
 
 .cumulative-table {
