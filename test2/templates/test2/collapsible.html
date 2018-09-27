@@ -8,12 +8,8 @@
 
 <div class="wrap-collapsible">
     <!--Comment out the following line to remove the disable NOT AT PG-->
-  <input id="{{ grade }}" class="toggle" type="checkbox"
+  <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
 
-          {% if year|add:grade < student.date_added|date:"Y"|abs|add:current_grade %} onclick="return false" {% endif %}
-
-          {% ifequal grade current_grade %} checked {% endifequal %}
-            >
   <label for="{{ grade }}" class="lbl-toggle">
       {% ifequal grade current_grade %}
         <strong>
@@ -43,9 +39,9 @@
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
-            <td><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
-            <td><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
-            <td><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+            <td class="entry-table-heading"><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
+            <td class="entry-table-heading"><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
+            <td class="entry-table-heading"><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
             <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
             <td><strong>Annual Awards</strong></td>
         </tr>
@@ -96,7 +92,7 @@
                     <label for="scholar">T2 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2 }}" >
             </td>
-            <td rowspan="2">
+            <td rowspan="3">
                 Display certificates <br> earned
             </td>
         </tr>
@@ -113,7 +109,7 @@
             </td>
         </tr>
     <tr>
-        <td height="160" rowspan="2">
+        <td height="10" rowspan="2">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "SE" point.type %}
                             {{ point.amount|floatformat:3 }}
@@ -125,7 +121,7 @@
                 {% endfor %}
 
         </td>
-        <td height="160" rowspan="2">
+        <td height="10" rowspan="2">
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "AT" point.type %}
@@ -138,12 +134,12 @@
                 {% endfor %}
             </table>
         </td>
-        <td height="160" rowspan="2">
+        <td height="10" rowspan="2">
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "FA" point.type %}
                         {{ point.amount|floatformat:3 }}
-                            <span style="display: inline-block; width: 2ch;">&#9;</span>
+
                             {{ point.code|stringformat:"02d" }}
                             <button onclick="">X</button>
                             <br>
@@ -151,7 +147,7 @@
                 {% endfor %}
             </table>
         </td>
-        <td height="15" colspan="2">
+        <td height="15">
             <strong>Pins</strong>
         </td>
     </tr>
@@ -169,7 +165,7 @@
     </table>
 
 <!-- Cumulative stuff and grad awards-->
-    <table border="1" style="float: left; margin-left: 20px;">
+    <table border="1" class="cumulative-table">
         <tr>
             <td colspan="2"><strong>Cumulative Awards</strong></td>
         </tr>
@@ -197,7 +193,7 @@
 
 <!-- Grad Calculations Table-->
     {% ifequal grade "12" %}
-        <table style="float: left; margin-left: 20px;">
+        <table class="grad-calc-table">
             <tr>
                 <td colspan="2">
                     <strong>Grad Calculations</strong>
