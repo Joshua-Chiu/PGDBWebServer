@@ -62,7 +62,7 @@ input[type='checkbox'] {
 }
 
 .toggle:checked + .lbl-toggle + .collapsible-content {
-  max-height: 350px;
+  max-height: 550px;
 }
 
 .toggle:checked + .lbl-toggle {
@@ -76,11 +76,26 @@ input[type='checkbox'] {
 }
 
 .main-table {
-  float: left;
 }
 
-.data-table{
+.data-table {
   overflow-y: scroll;
   height: 100%;
   vert-align: top
+}
+
+.cumulative-table {
+    float: left;
+    margin-top: 20px;
+
+}
+
+.entry-table-heading {
+    width: 20%;
+}
+
+.grad-calc-table {
+    float: left;
+    margin-left: 20px;
+    margin-top: 20px;
 }

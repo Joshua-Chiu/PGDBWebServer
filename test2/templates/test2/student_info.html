@@ -23,7 +23,6 @@
 <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
 
 <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"Y" }}</strong></p>
-<h3>CUMULATIVE TOTAL: {{ student.cumulative }}</h3>
 
 <script>
     addEventListener('keypress', function(e) {
@@ -116,7 +115,7 @@ function post(path, params, method) {
     form.submit();
 }
 </script>
-
+<!--
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -141,5 +140,14 @@ function post(path, params, method) {
     // });
     });
 </script>
+-->
+<script>
+    $(document).ready(function () {
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        $('input').keydown(function (e) {
+            if (e.keyCode == 39) {
+                $(this).next('input').focus();
+            }
+        });
+    });
+</script>
