@@ -125,10 +125,7 @@
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "AT" point.type %}
-                        {{ point.amount|floatformat:3 }}
-                            <span style="display: inline-block; width: 2ch;">&#9;</span>
-                            {{ point.code|stringformat:"02d" }}
-                            <button onclick="">X</button>
+                        {{ point.amount|floatformat:3 }}<span style="display: inline-block; width: 2ch;">&#9;</span>{{ point.code|stringformat:"02d" }}<button onclick="">X</button>
                             <br>
                     {% endifequal %}
                 {% endfor %}
@@ -138,7 +135,8 @@
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "FA" point.type %}
-                        <tr><td>{{ point.amount|floatformat:3 }}</td><td>{{ point.code|stringformat:"02d" }}</td><td><button onclick="">X</button></td></tr>
+                        {{ point.amount|floatformat:3 }}<span style="display: inline-block; width: 2ch;">&#9;</span>{{ point.code|stringformat:"02d" }}<button onclick="">X</button>
+                            <br>
                     {% endifequal %}
                 {% endfor %}
             </table>

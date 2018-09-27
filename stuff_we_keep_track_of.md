@@ -2,7 +2,8 @@
 
 # Current Release: Developer Alpha 
 <dl><s>Friday June 15th</s><br>
-Friday September 7th
+<s>Friday September 7th</s><br>
+Friday October 5th
 </dl> 
 
 
@@ -27,11 +28,7 @@ Friday September 7th
 
 * points - type and amount
   * SCHOLAR:
-    - 79.50 -> 83.49: 2 POINTS
-    - 83.50 -> 87.49: 3 POINTS
-    - 87.50 -> 91.49: 4 POINTS
-    - 91.50 -> 95.49: 5 POINTS
-    - 95.50 -> 99.99: 6 POINTS
+    
   * ATHLETICS, SERVICE, FINE ARTS
     - Keep Point and Code (Multiple Entry)
   
