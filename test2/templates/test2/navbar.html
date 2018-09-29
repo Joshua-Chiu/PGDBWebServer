@@ -18,9 +18,12 @@
 
 <!--<p class="date" id="date"></p>-->
 
+
+
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>
 </div>
+
 
 
 <hr>
@@ -36,6 +39,13 @@
                 <input type="text" placeholder="Search.." name="query" accesskey="a" id="query">
             </form>
         </li>
+
+        <select name="autofocus" style="float: left">
+            <option value="SE" {% ifequal code.type "SE" %}selected{% endifequal %}>Service</option>
+            <option value="AT" {% ifequal code.type "AT" %}selected{% endifequal %}>Athletics</option>
+            <option value="FA" {% ifequal code.type "FA" %}selected{% endifequal %}>Fine Arts</option>
+            <option value="SC" {% ifequal code.type "SC" %}selected{% endifequal %}>Scholar</option>
+        </select>
 
         <li>
             <a href="https://en.wikipedia.org/wiki/Get_a_life_(idiom)">Help</a>
@@ -56,15 +66,19 @@
             </div>
         </li>
 
-        <li style="border-left: 1px solid #bbb">
+        <li>
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="/export">Generate Reports</a>
-                    <a href="/admin">Browse Archives</a>
+                    <a href="/export">Backup</a>
+                    <a href="/admin">Archives</a>
                 </div>
             </div>
+        </li>
+
+        <li style="border-left: 1px solid #bbb">
+            <a href="/export/printing">Reports</a>
         </li>
     </ul>
 </div>

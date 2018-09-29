@@ -71,6 +71,7 @@ h1 {
 
 /* Dropdown button */
 .dropdown .dropbtn {
+  text-align: left;
   font-size: 16px;
   border: none;
   outline: none;

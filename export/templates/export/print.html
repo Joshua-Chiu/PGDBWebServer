@@ -18,6 +18,51 @@
     <h2 class="heading">Printing Reports</h2>
 </div>
 
+<fieldset style="border: 0">
+    Grade:
+    <select name="grade">
+        <option value="" >Select</option>
+        <option value="08" >Grade 08</option>
+        <option value="09" >Grade 09</option>
+        <option value="10" >Grade 10</option>
+        <option value="11" >Grade 11</option>
+        <option value="12" >Grade 12</option>
+    </select>
+
+    Annual Certificates:
+    <select name="annual">
+        <option value="" >Select</option>
+        <option value="service" >Service</option>
+        <option value="athletics" >Athletics</option>
+        <option value="scholar-hr" >Scholar Honour Roll</option>
+        <option value="scholar-pl" >Scholar Principal's List</option>
+        <option value="Fine-arts" >Fine Arts</option>
+
+    </select>
+
+    Cumulative Awards:
+    <select name="cumulative">
+        <option value="" >Select</option>
+        <option value="silver-pins" >Greyhound Silver Pin</option>
+        <option value="gold-pins" >Greyhound Gold Pin</option>
+        <option value="goldplus-pins" >Greyhound Gold + Pin</option>
+        <option value="platinum-pins" >Greyhound Platinum Pin</option>
+        <option value="big-block" >Athletics Big Block</option>
+    </select>
+
+    Graduation Awards:
+    <select name="grad-awards">
+        <option value="" >Select</option>
+        <option value="se-candidates">Service Candidates</option>
+        <option value="at-candidates">Athletics Candidates</option>
+        <option value="me-candidates">Merit Candidates</option>
+        <option value="sc-candidates">Scholar Candidates</option>
+        <option value="fa-candidates">Fine Arts Candidates</option>
+    </select>
+
+
+</fieldset>
+
 <div>
     <button class="button default" onclick="PrintElem('GeneratedList')">Print</button>
 </div>

@@ -15,7 +15,8 @@ Friday October 5th
 ### Points
 * check digit thing to keep track on the points
 
-* Totals and make the cumulative 
+* Totals next to the heading
+* make the cumulative table 
 
 * Assign scholar points based on percentage
     * 2 points 79.46 -> 83.45
@@ -45,4 +46,17 @@ Friday October 5th
 ### Possible Certificates
 * Scholar 
 * Principal List (Variable Value)
+
+### Nullify
+* Checkmarks 
+* No awards 
+* No cumulative
+
+### Generate Reports
+* Descending list of each category
+* Big block
+* annual awards
+* Athletics List
+    - Format: NAME [TEAM POINT] Cumulative Total
+* 
 
