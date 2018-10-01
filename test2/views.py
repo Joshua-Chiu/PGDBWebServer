@@ -95,7 +95,10 @@ def student_submit(request, num):
                 else: t2 = float(code_field[1])
 
                 grade = student.grade_set.get(grade=grade_num)
-                grade.scholar_set.create(term1=t1, term2=t2)
+                scholar = grade.scholar_set.all()[0]
+                scholar.term1 = t1
+                scholar.term2 = t2
+                scholar.save()
             else:
                 if point_field[1] == '' or code_field[1] == '':
                     continue
