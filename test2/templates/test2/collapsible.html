@@ -87,10 +87,10 @@
 
             <td rowspan="2">
                     <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1 }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"2" }}" >
                     <br>
                     <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2 }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"2" }}" >
             </td>
             <td rowspan="3">
                 Display certificates <br> earned
