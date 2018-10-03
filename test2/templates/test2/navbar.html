@@ -117,7 +117,7 @@ setInterval(GetClock, 100);
     var query = document.getElementById("query");
 
     $( document ).on( 'keydown', function ( e ) {
-      if ( e.keyCode === 107 ) { //Numpad+ key code
+      if ( e.keyCode === 27 ) { //Numpad+ key code
         query.focus();
         query.value = '';
       }
