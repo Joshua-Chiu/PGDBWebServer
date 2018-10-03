@@ -23,10 +23,36 @@ class Grade(models.Model):
     start_year = models.SmallIntegerField()
     anecdote = models.CharField(max_length=300, blank=True)
 
-    SE_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    AT_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    FA_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    SC_total = models.DecimalField(max_digits=5, decimal_places=3, null=True)
+    @property
+    def SE_total(self):
+        total = 0
+        for point in self.points_set.filter(type="SE"):
+            total += point.amount
+        return total
+
+    @property
+    def AT_total(self):
+        total = 0
+        for point in self.points_set.filter(type="AT"):
+            total += point.amount
+        return total
+
+    @property
+    def FA_total(self):
+        total = 0
+        for point in self.points_set.filter(type="FA"):
+            total += point.amount
+        return total
+
+    @property
+    def SC_total(self):
+        total = self.scholar_set.all()[0].term1 + self.scholar_set.all()[0].term2
+        return total
+
+    # SE_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    # AT_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    # FA_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
+    # SC_total = models.DecimalField(max_digits=5, decimal_places=3, null=True)
 
     def __str__(self):
         return f"{self.grade} {self.start_year}"
