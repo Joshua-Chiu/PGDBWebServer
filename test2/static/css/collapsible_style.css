@@ -19,6 +19,20 @@ input[type='checkbox'] {
   display: none;
 }
 
+input[type=number]{
+    width: 50px;
+
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+textarea {
+   resize: none;
+}
+
+
 .lbl-toggle {
     display: block;
     text-align: left;
