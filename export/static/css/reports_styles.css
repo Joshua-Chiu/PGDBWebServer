@@ -40,17 +40,17 @@
     color: black;
 }
 
-.data {
+.sortable {
     display: inline-block;
     list-style-type: none;
     border: 1px solid black;
 }
 
-.data th {
+.sortable th {
     text-align: left;
     border: 1px solid black;
 }
 
-.data td {
+.sortable td {
     border: 1px solid black;
 }

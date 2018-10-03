@@ -13,6 +13,7 @@
 
 {% block content %}
 {% endblock %}
+<script src="{% static 'Javascript/sorttable.js' %}"></script>
 
 <div>
     <h2 class="heading">Printing Reports</h2>
@@ -68,7 +69,7 @@
 </div>
 
 <div id="GeneratedList">
-    <table class="data">
+    <table class="sortable">
         <!-- Header Row-->
         <tr>
             <td width="200px">
