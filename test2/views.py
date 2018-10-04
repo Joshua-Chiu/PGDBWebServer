@@ -68,11 +68,20 @@ def student_info(request, num):
 def student_submit(request, num):
     student = Student.objects.get(id=num)
     items = list(request.POST.items())[1:]
+    anecdotes = [item for item in items if item[0].find("anecdote") != -1]
+    items = [item for item in items if item[0].find("anecdote") == -1]
+
+    for n, anecdote in enumerate(anecdotes):
+        # print(anecdote[1])
+        grade = student.grade_set.get(grade=12-n)
+        grade.anecdote = anecdote[1]
+        grade.save()
+
 
     if request.method == 'POST':
         print("received POST request")
-        for k, v in request.POST.items():
-            print(k, "|", v)
+        # for k, v in request.POST.items():
+        #     print(k, "|", v)
 
         # iterate through pairs of point amount and code
         for point_field, code_field in zip(items[::2], items[1::2]):
@@ -94,6 +103,7 @@ def student_submit(request, num):
                 if code_field[1] == '': t2 = 0
                 else: t2 = float(code_field[1])
 
+                # set the scholar average
                 grade = student.grade_set.get(grade=grade_num)
                 scholar = grade.scholar_set.all()[0]
                 scholar.term1 = t1

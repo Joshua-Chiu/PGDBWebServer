@@ -63,7 +63,7 @@
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
                 <p>Anecdotes</p>
-                <textarea name="Anecdotes" class="text" rows="5" cols="25" form="form0" ></textarea>
+                <textarea name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" >{{ grade_object.anecdote }}</textarea>
 
             <!-- DATA ENTRY HAPPENS HERE -->
 
