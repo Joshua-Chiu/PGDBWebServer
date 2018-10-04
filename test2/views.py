@@ -73,7 +73,7 @@ def student_submit(request, num):
 
     for n, anecdote in enumerate(anecdotes):
         # print(anecdote[1])
-        grade = student.grade_set.get(grade=12-n)
+        grade = student.grade_set.get(grade=int(student.homeroom[:2])-n)
         grade.anecdote = anecdote[1]
         grade.save()
 
