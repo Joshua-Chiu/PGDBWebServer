@@ -19,7 +19,7 @@
 
     {% ifequal grade current_grade %}
         </strong>
-        {% if month > "7" %}
+        {% if month < "7" %}
             ({{ year }} - {{ year|add:1 }})
             {% else %}
             ({{ year|add:-1 }} - {{ year }})
@@ -48,7 +48,7 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {% if month > "7" %}
+                {% if month < "7" %}
                     {{ year|sub:current_grade|add:grade|add:"1" }}
                     <br>
                     {{ year|sub:current_grade|add:grade }}
