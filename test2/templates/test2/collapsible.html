@@ -69,19 +69,19 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" id="service" type="number" name="{{grade}} SE points" maxlength="3" {% ifequal grade current_grade %} autofocus {% endifequal %}>
+                <input class="inputs" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %} autofocus {% endifequal %}>
                 <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2">
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input class="inputs" id="athletics" type="number" name="{{grade}} AT points" maxlength="3">
+                <input class="inputs" id="athletics" type="number" name="{{grade}} AT points" maxlength="4">
                 <input class="codes" id="athletics" type="number" name="{{grade}} AT code" maxlength="2">
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="3">
+                <input class="inputs" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4">
                 <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2">
             </td>
 
@@ -232,7 +232,6 @@
     $(".codes").keyup(function () {
     if (this.value.length == this.maxLength) {
         submitForms();
-      $(this).prev('.inputs').focus();
     }
 });
 </script>
