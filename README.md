@@ -3,7 +3,8 @@
 ## Current Release: Developer Alpha 
 <dl><s>Friday June 15th</s><br>
 <s>Friday September 7th</s><br>
-Friday October 5th
+<s>Friday October 5th</s><br>
+Never!
 </dl> 
 
 ### Student Info
