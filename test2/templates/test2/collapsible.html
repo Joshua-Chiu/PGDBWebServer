@@ -115,7 +115,7 @@
                             <span class="point">{{ point.amount }}</span>
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                            <button onclick="">X</button>
+                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
                             <br>
                     {% endifequal %}
                 {% endfor %}
@@ -128,7 +128,7 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <button onclick="">X</button>
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
                         <br>
                     {% endifequal %}
                 {% endfor %}
@@ -141,7 +141,7 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <button onclick="">X</button>
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
                         <br>
                     {% endifequal %}
                 {% endfor %}

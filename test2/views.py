@@ -38,14 +38,14 @@ def search(request):
         for k, v in items.items():
             if hasattr(Student, k):
                 val = "{0}__icontains".format(k)
-                print(val, v)
+                # print(val, v)
                 students = students.filter(**{val: v})
             else:
                 # pretend there is a grade attribute
                 if k == 'grade':
                     if len(v) == 1:
                         v = '0' + v
-                    print('homeroom__contains', v)
+                    # print('homeroom__contains', v)
                     students = students.filter(**{'homeroom__contains': v})
     # if one student is returned redirect to its page
     if len(students) == 1:
@@ -69,22 +69,32 @@ def student_submit(request, num):
     student = Student.objects.get(id=num)
     items = list(request.POST.items())[1:]
     anecdotes = [item for item in items if item[0].find("anecdote") != -1]
-    items = [item for item in items if item[0].find("anecdote") == -1]
+    points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
+    code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
 
+    # anecdotes
     for n, anecdote in enumerate(anecdotes):
         # print(anecdote[1])
         grade = student.grade_set.get(grade=int(student.homeroom[:2])-n)
         grade.anecdote = anecdote[1]
         grade.save()
 
+    # delete codes buttons
+    for button in code_delete_buttons:
+        grade, type, code = button[0].split(' ')[1:]
+        point = student.grade_set.get(grade=int(grade)).points_set.filter(type=type).get(code=code)
+        print(point)
+        point.delete()
+        print("button: ", grade, type, code)
 
+    # points and codes
     if request.method == 'POST':
         print("received POST request")
         # for k, v in request.POST.items():
         #     print(k, "|", v)
 
         # iterate through pairs of point amount and code
-        for point_field, code_field in zip(items[::2], items[1::2]):
+        for point_field, code_field in zip(points_list[::2], points_list[1::2]):
 
             # get info like grade and point type e.g. SE, AT
             info = point_field[0].split(' ')
