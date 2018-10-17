@@ -134,6 +134,11 @@ def codes(request):
     context = {'codes': PointCodes.objects.order_by("type")}
     return HttpResponse(template.render(context, request))
 
+def plist(request):
+    template = get_template('test2/plist.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 
 def codes_submit(request):
 

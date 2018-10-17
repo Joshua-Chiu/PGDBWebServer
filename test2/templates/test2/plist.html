@@ -1,10 +1,25 @@
+{% load staticfiles %}
+{% include 'test2/navbar.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/plist_style.css' %}">
 </head>
 <body>
+<h2>Principal Lists Thresholds</h2>
+<h4>Current Year:</h4>
+<table border="1">
+        <tr><th>Grade</th><th>Term 1</th><th>Term 2</th></tr>
+        <tr><td>8</td><td><input type="number"></td><td><input type="number"></td></tr>
+        <tr><td>9</td><td><input type="number"></td><td><input type="number"></td></tr>
+        <tr><td>10</td><td><input type="number"></td><td><input type="number"></td></tr>
+        <tr><td>11</td><td><input type="number"></td><td><input type="number"></td></tr>
+        <tr><td>12</td><td><input type="number"></td><td><input type="number"></td></tr>
+
+    </table>
 
 </body>
 </html>
