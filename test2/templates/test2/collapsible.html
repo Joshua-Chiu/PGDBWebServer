@@ -93,7 +93,10 @@
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"2" }}" >
             </td>
             <td rowspan="3">
-                Display certificates <br> earned
+                {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
+                {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
+                {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
+                {% if grade_object.SC_total >= 9.5 %}Scholar{% endif %}<br>
             </td>
         </tr>
     <!--Where all the points are displayed-->
