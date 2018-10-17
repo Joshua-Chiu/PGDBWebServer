@@ -69,9 +69,9 @@ def student_submit(request, num):
     student = Student.objects.get(id=num)
     items = list(request.POST.items())[1:]
     anecdotes = [item for item in items if item[0].find("anecdote") != -1]
-    points_list = [item for item in items if item[0].find("points") != -1]
+    points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
     scholar_fields = [item for item in items if item[0].find("SC") != -1]
-    points_list += scholar_fields
+    points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
 
     # anecdotes
