@@ -82,7 +82,7 @@ def student_submit(request, num):
     # delete codes buttons
     for button in code_delete_buttons:
         grade, type, code = button[0].split(' ')[1:]
-        point = student.grade_set.get(grade=int(grade)).points_set.filter(type=type).get(code=code)
+        point = student.grade_set.get(grade=int(grade)).points_set.filter(type=type).filter(code=code)[0]
         print(point)
         point.delete()
         print("button: ", grade, type, code)
