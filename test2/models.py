@@ -46,7 +46,32 @@ class Grade(models.Model):
 
     @property
     def SC_total(self):
-        total = self.scholar_set.all()[0].term1 + self.scholar_set.all()[0].term2
+        total = 0
+        term1 = self.scholar_set.all()[0].term1
+        term2 = self.scholar_set.all()[0].term2
+        
+        if term1 > 95.5:
+            total += 6
+        elif term1 > 91.5:
+            total += 5
+        elif term1 > 87.5:
+            total += 4
+        elif term1 > 83.5:
+            total += 3
+        elif term1 > 79.5:
+            total += 2
+            
+        if term2 > 95.5:
+            total += 6
+        elif term2 > 91.5:
+            total += 5
+        elif term2 > 87.5:
+            total += 4
+        elif term2 > 83.5:
+            total += 3
+        elif term2 > 79.5:
+            total += 2
+
         return total
 
     # SE_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
