@@ -39,9 +39,9 @@
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
-            <td class="entry-table-heading"><strong>Service</strong> {{ student.servicetotal|slice:"0:3" }} </td>
-            <td class="entry-table-heading"><strong>Athletics</strong> {{ student.athleticstotal|slice:"0:3" }} </td>
-            <td class="entry-table-heading"><strong>Fine Arts</strong> {{ student.schoclartotal|slice:"0:3" }} </td>
+            <td class="entry-table-heading"><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
             <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
             <td><strong>Annual Awards</strong></td>
         </tr>
@@ -63,7 +63,7 @@
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
                 <p>Anecdotes</p>
-                <textarea name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" >{{ grade_object.anecdote }}</textarea>
+                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" >{{ grade_object.anecdote }}</textarea>
 
             <!-- DATA ENTRY HAPPENS HERE -->
 
@@ -131,7 +131,7 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
                         <br>
                     {% endifequal %}
                 {% endfor %}
@@ -144,7 +144,7 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
                         <br>
                     {% endifequal %}
                 {% endfor %}
@@ -166,6 +166,8 @@
         </td>
     </tr>
     </table>
+
+
 
 <!-- Cumulative stuff and grad awards-->
     <table border="1" class="cumulative-table">
@@ -193,6 +195,8 @@
             </td>
         </tr>
     </table>
+
+
 
 <!-- Grad Calculations Table-->
     {% ifequal grade "12" %}
@@ -234,7 +238,8 @@
 });
     $(".codes").keyup(function () {
     if (this.value.length == this.maxLength) {
-
+        submitForms();
+        this.value = ''
     }
 });
 </script>
