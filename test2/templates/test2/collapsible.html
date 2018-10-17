@@ -118,7 +118,7 @@
                             <span class="point">{{ point.amount }}</span>
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="" />
+                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
                             <br>
                     {% endifequal %}
                 {% endfor %}
@@ -234,7 +234,7 @@
 });
     $(".codes").keyup(function () {
     if (this.value.length == this.maxLength) {
-        submitForms();
+
     }
 });
 </script>
