@@ -52,6 +52,22 @@ class Grade(models.Model):
     anecdote = models.CharField(max_length=300, blank=True)
 
     @property
+    def cumulative_SE(self):
+        return self.Student.get_cumulative_SE(self.grade)
+
+    @property
+    def cumulative_AT(self):
+        return self.Student.get_cumulative_AT(self.grade)
+
+    @property
+    def cumulative_FA(self):
+        return self.Student.get_cumulative_FA(self.grade)
+
+    @property
+    def cumulative_SC(self):
+        return self.Student.get_cumulative_SC(self.grade)
+
+    @property
     def SE_total(self):
         total = 0
         for point in self.points_set.filter(type="SE"):
