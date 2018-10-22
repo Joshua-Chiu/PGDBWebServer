@@ -42,7 +42,7 @@
             <td class="entry-table-heading"><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
             <td class="entry-table-heading"><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
             <td class="entry-table-heading"><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
-            <td><strong>Scholar</strong> {{ student.fineartstotal|slice:"0:3" }} </td>
+            <td><strong>Scholar</strong> {{ grade_object.SC_total|floatformat:1 }} Points</td>
             <td><strong>Annual Awards</strong></td>
         </tr>
         <tr>
@@ -92,7 +92,7 @@
                     <label for="scholar">T2 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"2" }}" >
             </td>
-            <td rowspan="3">
+            <td rowspan="2">
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
                 {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
                 {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
@@ -150,7 +150,7 @@
                 {% endfor %}
             </table>
         </td>
-        <td height="15">
+        <td height="15" colspan="2">
             <strong>Pins</strong>
         </td>
     </tr>
