@@ -13,6 +13,34 @@ class Student(models.Model):
     date_added = models.DateField()
     last_modified = models.DateField(auto_now=True)
 
+    def get_cumulative_SE(self, current_grade):
+        total = 0
+        for grade in self.grade_set.all():
+            if grade.grade <= current_grade:
+                total += grade.SE_total
+        return total
+
+    def get_cumulative_AT(self, current_grade):
+        total = 0
+        for grade in self.grade_set.all():
+            if grade.grade <= current_grade:
+                total += grade.AT_total
+        return total
+
+    def get_cumulative_FA(self, current_grade):
+        total = 0
+        for grade in self.grade_set.all():
+            if grade.grade <= current_grade:
+                total += grade.FA_total
+        return total
+
+    def get_cumulative_SC(self, current_grade):
+        total = 0
+        for grade in self.grade_set.all():
+            if grade.grade <= current_grade:
+                total += grade.SC_total
+        return total
+
     def __str__(self):
         return "{0}, {1}, {2}".format(self.first, self.last, self.student_num)
 
