@@ -7,6 +7,15 @@
 Never!
 </dl> 
 
+## Mason Work due by December
+* Cumulative Awards
+* Pins with year
+* Export and Reports
+* Import from dos
+* 
+
+
+
 ### Student Info
 
 * name (First, Last, Legal) (Done)
@@ -60,4 +69,6 @@ Never!
 * Athletics List
     - Format: NAME [TEAM POINT] Cumulative Total
 * 
+
+
 

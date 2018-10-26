@@ -182,16 +182,17 @@
                 Scholar Points: <br>
                 Fine Arts Points: <br>
             </td>
-            <td>
+            <td align="right">
 {#                {% grade_object.points_set.all().aggregate(Avg('points')) %}#}
                 <br>
-                {{ grade_object.SE_total }}
+                {{ grade_object.cumulative_SE|floatformat:"2" }}
                 <br>
-                {{ grade_object.AT_total }}
+                {{ grade_object.cumulative_AT|floatformat:"2" }}
                 <br>
-                {{ grade_object.SC_total }}
+                {{ grade_object.cumulative_SC|floatformat:"2" }}
                 <br>
-                {{ grade_object.FA_total }}
+                {{ grade_object.cumulative_FA|floatformat:"2" }}
+                <br>
             </td>
         </tr>
     </table>
