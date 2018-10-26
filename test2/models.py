@@ -13,6 +13,8 @@ class Student(models.Model):
     date_added = models.DateField()
     last_modified = models.DateField(auto_now=True)
 
+    # please help me there are far too many functions and i just keep adding more
+
     def get_cumulative_SE(self, current_grade):
         total = 0
         for grade in self.grade_set.all():
@@ -40,6 +42,35 @@ class Student(models.Model):
             if grade.grade <= current_grade:
                 total += grade.SC_total
         return total
+
+    @property
+    def all_11_12_total(self):
+        total = self.SE_11_12_total + self.AT_11_12_total + self.FA_11_12_total + self.SC_11_12_total
+        return total
+
+    @property
+    def SE_11_12_total(self):
+        total = self.grade_set.get(grade=11).SE_total + self.grade_set.get(grade=12).SE_total
+        return total
+
+    @property
+    def AT_11_12_total(self):
+        total = self.grade_set.get(grade=11).AT_total + self.grade_set.get(grade=12).AT_total
+        return total
+
+    @property
+    def FA_11_12_total(self):
+        total = self.grade_set.get(grade=11).FA_total + self.grade_set.get(grade=12).FA_total
+        return total
+
+    @property
+    def SC_11_12_total(self):
+        total = self.grade_set.get(grade=11).SC_total + self.grade_set.get(grade=12).SC_total
+        return total
+
+    @property
+    def average_11_12(self):
+        return (self.grade_set.get(grade=11).scholar_set.all()[0].term1 + self.grade_set.get(grade=11).scholar_set.all()[0].term2 + self.grade_set.get(grade=12).scholar_set.all()[0].term1 + self.grade_set.get(grade=12).scholar_set.all()[0].term2) / 4
 
     def __str__(self):
         return "{0}, {1}, {2}".format(self.first, self.last, self.student_num)
