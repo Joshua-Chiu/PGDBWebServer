@@ -172,7 +172,7 @@
 <!-- Cumulative stuff and grad awards-->
     <table border="1" class="cumulative-table">
         <tr>
-            <td colspan="2"><strong>Cumulative Awards</strong></td>
+            <th colspan="2"><strong>Cumulative Awards</strong></th>
         </tr>
         <tr>
             <td>
@@ -183,7 +183,7 @@
                 Fine Arts Points: <br>
             </td>
             <td align="right">
-{#                {% grade_object.points_set.all().aggregate(Avg('points')) %}#}
+                {{ grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA|floatformat:"2" }}
                 <br>
                 {{ grade_object.cumulative_SE|floatformat:"2" }}
                 <br>

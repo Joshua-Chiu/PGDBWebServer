@@ -109,6 +109,11 @@ textarea {
 
 }
 
+.cumulative-table th {
+    text-align:left;
+    width: 100%;
+}
+
 .entry-table-heading {
     width: 20%;
 }
