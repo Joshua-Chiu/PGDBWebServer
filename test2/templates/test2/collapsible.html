@@ -156,13 +156,19 @@
     </tr>
     <tr>
         <td>
-            Silver <br>
+            Silver<br>
             Gold <br>
             Gold + <br>
             Platinum <br>
         </td>
         <td>
-            Dates/Years
+            {% if grade_object.cumulative_SE >= 9.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 49.5 %}
+            True<br>
+            {% endif %}
+
+            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
+            True<br><!--Put the year in here-->
+            {% endif %}
         </td>
     </tr>
     </table>
@@ -170,30 +176,20 @@
 
 
 <!-- Cumulative stuff and grad awards-->
-    <table border="1" class="cumulative-table">
+    <table border="0" class="cumulative-table" frame="box">
         <tr>
-            <td colspan="2"><strong>Cumulative Awards</strong></td>
+            <th colspan="2" style="border:1px solid black;" colspan="4"><strong>Cumulative Awards</strong></th>
         </tr>
         <tr>
-            <td>
-                Total Points: <br>
-                Service Points: <br>
-                Athletics Points: <br>
-                Scholar Points: <br>
-                Fine Arts Points: <br>
-            </td>
-            <td align="right">
-{#                {% grade_object.points_set.all().aggregate(Avg('points')) %}#}
-                <br>
-                {{ grade_object.cumulative_SE|floatformat:"2" }}
-                <br>
-                {{ grade_object.cumulative_AT|floatformat:"2" }}
-                <br>
-                {{ grade_object.cumulative_SC|floatformat:"2" }}
-                <br>
-                {{ grade_object.cumulative_FA|floatformat:"2" }}
-                <br>
-            </td>
+            <td>Total Points:</td><td>{{ grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA|floatformat:"2" }}</td>
+        </tr><tr>
+            <td>Service Points: </td><td>{{ grade_object.cumulative_SE|floatformat:"2" }}</td>
+        </tr><tr>
+            <td>Athletics Points: </td><td>{{ grade_object.cumulative_AT|floatformat:"2" }}</td>
+        </tr><tr>
+            <td>Scholar Points: </td><td>{{ grade_object.cumulative_SC|floatformat:"2" }}</td>
+        </tr><tr>
+            <td>Fine Arts Points: </td><td>{{ grade_object.cumulative_FA|floatformat:"2" }}</td>
         </tr>
     </table>
 
