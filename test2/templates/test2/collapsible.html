@@ -171,7 +171,9 @@
             Achieved<br><!--Put the year in here-->
             {% endif %}
 
-            <br>
+            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
+            Achieved<br><!--Put the year in here-->
+            {% endif %}
             <br>
             <br>
 
