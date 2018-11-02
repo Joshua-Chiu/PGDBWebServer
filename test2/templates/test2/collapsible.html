@@ -164,22 +164,24 @@
         </td>
         <td>
             {% if grade_object.cumulative_SE >= 9.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 49.5 %}
-            Achieved<br>
-            {% endif %}
+            Achieved<!--Silver, Put the year in here-->
+            {% endif %}<br>
 
             {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
-            Achieved<br><!--Put the year in here-->
-            {% endif %}
+            Achieved<!--Gold, Put the year in here-->
+            {% endif %}<br>
 
             {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
-            Achieved<br><!--Put the year in here-->
-            {% endif %}
-            <br>
-            <br>
+            Achieved<!--Gold+, Put the year in here-->
+            {% endif %}<br>
+
+            {% if grade_object.cumulative_SE >= 80.0 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 %}
+            Achieved<!--Gold+, Put the year in here-->
+            {% endif %}<br>
 
             {% if grade_object.cumulative_AT >= 59.5 %}
-            Achieved<br>
-            {% endif %}
+            Achieved
+            {% endif %}<br>
         </td>
     </tr>
     </table>
