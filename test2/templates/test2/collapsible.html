@@ -62,7 +62,7 @@
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
-                <p>Anecdotes</p>
+                <p>Comments</p>
                 <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" >{{ grade_object.anecdote }}</textarea>
 
             <!-- DATA ENTRY HAPPENS HERE -->
@@ -87,10 +87,13 @@
 
             <td rowspan="2">
                     <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"2" }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"3" }}" >
                     <br>
                     <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"2" }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"3" }}" >
+                    <br>
+                    <label for="scholar">T1 Plist: 99.000% </label><br>
+                    <label for="scholar">T2 Plist: 99.000% </label>
             </td>
             <td rowspan="2">
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
@@ -171,12 +174,12 @@
             Achieved<!--Gold, Put the year in here-->
             {% endif %}<br>
 
-            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
+            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 109.5 and SE_11_total > 19.5 %}
             Achieved<!--Gold+, Put the year in here-->
             {% endif %}<br>
 
-            {% if grade_object.cumulative_SE >= 80.0 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 %}
-            Achieved<!--Gold+, Put the year in here-->
+            {% if grade_object.cumulative_SE >= 79.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 and SE_11_total > 19.5 and SE_12_total > 19.5 %}
+            Achieved<!--Platinum, Put the year in here-->
             {% endif %}<br>
 
             {% if grade_object.cumulative_AT >= 59.5 %}

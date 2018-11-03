@@ -44,8 +44,18 @@ class Student(models.Model):
         return total
 
     @property
+    def SE_11_total(self):
+        total = self.grade_set.get(grade=11).SE_total
+        return total
+
+    @property
+    def SE_12_total(self):
+        total = self.grade_set.get(grade=12).SE_total
+        return total
+
+    @property
     def all_11_12_total(self):
-        total = self.SE_11_12_total + self.AT_11_12_total + self.FA_11_12_total + self.SC_11_12_total
+        total = self.SC_11_12_total + self.SE_11_12_total + self.FA_11_12_total + self.SC_11_12_total
         return total
 
     @property

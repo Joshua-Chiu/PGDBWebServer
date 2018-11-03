@@ -4,31 +4,34 @@
 <dl><s>Friday June 15th</s><br>
 <s>Friday September 7th</s><br>
 <s>Friday October 5th</s><br>
-Never!
+<s>Never!</s><br>
+Friday December 21st
 </dl> 
 
-## Mason Work due by December
-* Cumulative Awards
+## Work due by December
+* Cumulative Awards [Done]
 * Pins with year
 * Export and Reports
 * Import from dos
-* 
+* Display points from dictionary
+* System Variables
+* Crosscheck lists
 
 
 
 ### Student Info
 
-* name (First, Last, Legal) (Done)
-* date added → grade (rollover, calculate from year of entry (Done)
-* cumulative awards (pins/big block)
+* name (First, Last, Legal) [Done]
+* date added → grade (rollover, calculate from year of entry [Done]
+* cumulative awards (pins/big block) [Done]
 
 ### Points
 * check digit thing to keep track on the points
 
-* Totals next to the heading
-* make the cumulative table 
+* Totals next to the heading [Done]
+* make the cumulative table [Done]
 
-* Assign scholar points based on percentage
+* Assign scholar points based on percentage [Done]
     * 2 points 79.46 -> 83.45
     * 3 points 83.46 -> 87.45 
     * 4 points 87.46 -> 91.45
