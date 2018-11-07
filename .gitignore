@@ -1,6 +1,6 @@
 venv
 .vscode
-
+tags
 __pycache__/
 *.py[cod]
 *.pyc
