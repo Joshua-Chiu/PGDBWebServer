@@ -140,11 +140,6 @@ class Grade(models.Model):
 
         return toPoints(self.scholar_set.all()[0].term1) + toPoints(self.scholar_set.all()[0].term2)
 
-    # SE_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    # AT_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    # FA_total = models.DecimalField(max_digits=5, decimal_places=1, null=True)
-    # SC_total = models.DecimalField(max_digits=5, decimal_places=3, null=True)
-
     def __str__(self):
         return f"{self.grade} {self.start_year}"
 
