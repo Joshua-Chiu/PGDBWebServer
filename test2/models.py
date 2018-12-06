@@ -111,21 +111,21 @@ class Grade(models.Model):
     @property
     def SE_total(self):
         total = 0
-        for point in self.points_set.filter(type="SE"):
+        for point in self.points_set.filter(type__catagory="SE"):
             total += point.amount
         return total
 
     @property
     def AT_total(self):
         total = 0
-        for point in self.points_set.filter(type="AT"):
+        for point in self.points_set.filter(type__catagory="AT"):
             total += point.amount
         return total
 
     @property
     def FA_total(self):
         total = 0
-        for point in self.points_set.filter(type="FA"):
+        for point in self.points_set.filter(type__catagory="FA"):
             total += point.amount
         return total
 
@@ -168,14 +168,22 @@ class Grade(models.Model):
         return f"{self.grade} {self.start_year}"
 
 
+class PointCodes(models.Model):
+    catagory = models.CharField(max_length=2)
+    code = models.SmallIntegerField()
+    description = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.catagory} {self.code}"
+
+
 class Points(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    type = models.CharField(max_length=2)
-    code = models.SmallIntegerField()
+    type = models.ForeignKey(PointCodes, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6, decimal_places=3)
 
     def __str__(self):
-        return f"{self.type} {self.code} {self.amount}"
+        return f"{self.type} {self.amount}"
 
 
 class Scholar(models.Model):
@@ -185,12 +193,6 @@ class Scholar(models.Model):
 
     def __str__(self):
         return f"T1 {self.term1} T2 {self.term2}"
-
-
-class PointCodes(models.Model):
-    type = models.CharField(max_length=2)
-    code = models.SmallIntegerField()
-    description = models.CharField(max_length=20)
 
 
 class Awards(models.Model):

@@ -83,11 +83,12 @@ def student_submit(request, num):
 
     # delete codes buttons
     for button in code_delete_buttons:
-        grade, type, code = button[0].split(' ')[1:]
-        point = student.grade_set.get(grade=int(grade)).points_set.filter(type=type).filter(code=code)[0]
-        print(point)
+        # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
+        grade, catagory, code = button[0].strip().split(' ')[1:]
+        point = student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
         point.delete()
-        print("button: ", grade, type, code)
+        # print(point)
+        # print("button: ", grade, type, code)
 
     # points and codes
     if request.method == 'POST':
@@ -128,8 +129,11 @@ def student_submit(request, num):
                 amount = float(point_field[1])
                 code = int(code_field[1])
 
+                # find the point class with the same code and catagory 
+                typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
+
                 grade = student.grade_set.get(grade=grade_num)
-                grade.points_set.create(code=code, type=type, amount=amount)
+                grade.points_set.create(type=typeClass, amount=amount)
 
     return HttpResponseRedirect("/test2/student/{}".format(num))
 
@@ -143,7 +147,7 @@ def settings(request):
 
 def codes(request):
     template = get_template('test2/codes.html')
-    context = {'codes': PointCodes.objects.order_by("type")}
+    context = {'codes': PointCodes.objects.order_by("catagory")}
     return HttpResponse(template.render(context, request))
 
 def plist(request):
@@ -165,7 +169,7 @@ def codes_submit(request):
 
         # if there is an already existing code don't create a new one
         filter_codes = PointCodes.objects.filter(code=int(code[1][1]))
-        filter_codes = filter_codes.filter(type=code[0][1])
+        filter_codes = filter_codes.filter(catagory=code[0][1])
         if len(filter_codes) == 1:
             entry = filter_codes[0]
         elif len(filter_codes) == 0:
@@ -174,7 +178,7 @@ def codes_submit(request):
             print("panic!!")
 
         entry.code = code[1][1]
-        entry.type = code[0][1].upper()
+        entry.catagory = code[0][1].upper()
         entry.description = code[2][1]
         entry.save()
 

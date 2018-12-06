@@ -14,10 +14,10 @@
     {% for code in codes %}
         <fieldset>
             Type: <select name="{{ forloop.counter0 }}code">
-                <option value="SE" {% ifequal code.type "SE" %}selected{% endifequal %}>Service</option>
-                <option value="AT" {% ifequal code.type "AT" %}selected{% endifequal %}>Athletics</option>
-                <option value="FA" {% ifequal code.type "FA" %}selected{% endifequal %}>Fine Arts</option>
-                <option value="SC" {% ifequal code.type "SC" %}selected{% endifequal %}>Scholar</option>
+                <option value="SE" {% ifequal code.catagory "SE" %}selected{% endifequal %}>Service</option>
+                <option value="AT" {% ifequal code.catagory "AT" %}selected{% endifequal %}>Athletics</option>
+                <option value="FA" {% ifequal code.catagory "FA" %}selected{% endifequal %}>Fine Arts</option>
+                <option value="SC" {% ifequal code.catagory "SC" %}selected{% endifequal %}>Scholar</option>
             </select>
 
             Code: <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.code}}">

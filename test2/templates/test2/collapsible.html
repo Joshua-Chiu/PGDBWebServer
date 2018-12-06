@@ -117,10 +117,11 @@
     <tr>
         <td height="10" rowspan="2">
                 {% for point in grade_object.points_set.all %}
-                    {% ifequal "SE" point.type %}
+                    {% ifequal "SE" point.type.catagory %}
                             <span class="point">{{ point.amount }}</span>
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
-                            <span class="code">{{ point.code|stringformat:"02d" }}</span>
+                            <span class="code description">{{ point.type.description }}</span>
+                            <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
                              <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
                             <br>
                     {% endifequal %}
