@@ -122,7 +122,7 @@
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
                             <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
-                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
+                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                             <br>
                     {% endifequal %}
                 {% endfor %}
@@ -131,11 +131,12 @@
         <td height="10" rowspan="2">
             <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
-                    {% ifequal "AT" point.type %}
+                    {% ifequal "AT" point.type.catagory %}
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
-                        <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
+                        <span class="code description">{{ point.type.description}}</span>
+                        <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                         <br>
                     {% endifequal %}
                 {% endfor %}
@@ -147,8 +148,9 @@
                     {% ifequal "FA" point.type %}
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
-                        <span class="code">{{ point.code|stringformat:"02d" }}</span>
-                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }} {{ point.code }}" value="X" />
+                        <span class="code description">{{ point.type.description}}</span>
+                        <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
+                        <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                         <br>
                     {% endifequal %}
                 {% endfor %}

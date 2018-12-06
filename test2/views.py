@@ -130,7 +130,11 @@ def student_submit(request, num):
                 code = int(code_field[1])
 
                 # find the point class with the same code and catagory 
-                typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
+                try:
+                    typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
+                except PointCodes.DoesNotExist as e:
+                    typeClass = PointCodes(catagory=type, code=code, description="")
+                    typeClass.save()
 
                 grade = student.grade_set.get(grade=grade_num)
                 grade.points_set.create(type=typeClass, amount=amount)
