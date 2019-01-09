@@ -10,16 +10,20 @@
 </head>
 <body>
 <h2>Principal Lists Thresholds</h2>
-<h4>Current Year:</h4>
-<table border="1">
+<table border="1" style="float: left">
+        <tr><th colspan="3">Current Year {% if month > "7" %}
+            ({{ year }} - {{ year|add:1 }})
+            {% else %}
+            ({{ year|add:-1 }} - {{ year }})
+        {% endif %}</th></tr>
         <tr><th>Grade</th><th>Term 1</th><th>Term 2</th></tr>
         <tr><td>8</td><td><input type="number"></td><td><input type="number"></td></tr>
         <tr><td>9</td><td><input type="number"></td><td><input type="number"></td></tr>
         <tr><td>10</td><td><input type="number"></td><td><input type="number"></td></tr>
         <tr><td>11</td><td><input type="number"></td><td><input type="number"></td></tr>
         <tr><td>12</td><td><input type="number"></td><td><input type="number"></td></tr>
-
 </table>
+
 
 </body>
 </html>

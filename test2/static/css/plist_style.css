@@ -1,4 +1,9 @@
 input[type=number]{
-    width: 50px;
+    width: 70px;
 
+}
+
+table{
+    float: left;
+    margin-left: 10px;
 }
