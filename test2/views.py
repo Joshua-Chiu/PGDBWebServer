@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Student, PointCodes,  PlistCutoff
 from django.template.loader import get_template
 from itertools import zip_longest
+import datetime
 
 def search(request):
     template = get_template('test2/search.html')
@@ -156,7 +157,11 @@ def codes(request):
 
 def plist(request):
     template = get_template('test2/plist.html')
-    context = {"plist" : PlistCutoff.objects.all()[0]}
+    context = {
+            "plist" : PlistCutoff.objects.all()[0],
+            'year': datetime.datetime.now().year,
+            'month': datetime.datetime.now().month
+            }
     return HttpResponse(template.render(context, request))
 
 
@@ -229,5 +234,9 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+def help(request):
+    template = get_template('test2/help.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
 

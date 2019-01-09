@@ -19,7 +19,7 @@
 
     {% ifequal grade current_grade %}
         </strong>
-        {% if month < "7" %}
+        {% if month > "7" %}
             ({{ year }} - {{ year|add:1 }})
             {% else %}
             ({{ year|add:-1 }} - {{ year }})
@@ -48,7 +48,7 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {% if month < "7" %}
+                {% if month > "7" %}
                     {{ year|sub:current_grade|add:grade|add:"1" }}
                     <br>
                     {{ year|sub:current_grade|add:grade }}
@@ -99,7 +99,7 @@
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
                 {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
                 {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
-                {% if grade_object.SC_total >= 9.5 %}Scholar{% endif %}<br>
+                {% if scholar.term1 >= 79.45 and scholar.term1 >= 79.45 %}Scholar{% endif %} + (Plist)<br>
             </td>
         </tr>
     <!--Where all the points are displayed-->
@@ -121,7 +121,6 @@
                             <span class="point">{{ point.amount }}</span>
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
-                            <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
                              <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                             <br>
                     {% endifequal %}
@@ -135,7 +134,6 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code description">{{ point.type.description}}</span>
-                        <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
                         <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                         <br>
                     {% endifequal %}
@@ -149,7 +147,6 @@
                         <span class="point">{{ point.amount }}</span>
                         <span style="display: inline-block; width: 2ch;">&#9;</span>
                         <span class="code description">{{ point.type.description}}</span>
-                        <span class="code">{{ point.type.code|stringformat:"02d" }}</span>
                         <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
                         <br>
                     {% endifequal %}
