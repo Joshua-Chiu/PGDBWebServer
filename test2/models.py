@@ -3,6 +3,23 @@ import math
 # run manage.py makemigrations test2 && manage.py migrate to add to db
 
 
+class PlistCutoff(models.Model):
+    grade8_t1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade8_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+
+    grade9_t1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade9_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+
+    grade10_t1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade10_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+
+    grade11_t1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade11_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+
+    grade12_t1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade12_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+
+
 class Student(models.Model):
     first = models.CharField(max_length=30)
     last = models.CharField(max_length=30)

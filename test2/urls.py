@@ -12,4 +12,5 @@ urlpatterns = [
     path('settings/codes', views.codes, name='codes'),
     path('settings/plist', views.plist, name='plist'),
     path('settings/codes/submit', views.codes_submit, name='codes_submit'),
+    path('settings/plist_submit', views.plist_submit, name='plist_submit'),
 ]
