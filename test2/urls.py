@@ -14,4 +14,5 @@ urlpatterns = [
     path('settings/codes/submit', views.codes_submit, name='codes_submit'),
     path('settings/plist_submit', views.plist_submit, name='plist_submit'),
     path('help', views.help, name='help'),
+    path('export', views.export, name='export'),
 ]

@@ -1,13 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Student, PointCodes,  PlistCutoff
 from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
+import io
+import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
+from util.queryParse import parseQuery
 
 def search(request):
     template = get_template('test2/search.html')
-    students = Student.objects.all()
     
     #if no query exists make an empty list
     if request.GET['query']:
@@ -15,40 +18,8 @@ def search(request):
     else:
         return HttpResponse(template.render(None, request))
 
-    # checl if there are attribute specifics e.g. first: bob
-    if query.count(":") == 0:
-        # search first and last if it's letters
-        if query.isalpha():
-            first = set(Student.objects.filter(first__icontains=query))
-            last = set(Student.objects.filter(last__icontains=query))
-            students = list(first.union(last))
-        # else search student number
-        elif query.isdigit():
-            students = students.filter(student_num=query)
-    else:
-        query = query.replace(": ", ":")
-        items = {}
-        # split by spaces into attributes
-        for i in query.split(' '):
-            term = i.split(':')
-            if len(term) != 2:
-                continue
-            items[term[0]] = term[1]
+    students = parseQuery(query)
 
-        # if it's an attribute of student filter by it
-        for k, v in items.items():
-            if hasattr(Student, k):
-                val = "{0}__icontains".format(k)
-                # print(val, v)
-                students = students.filter(**{val: v})
-            else:
-                # pretend there is a grade attribute
-                if k == 'grade':
-                    if len(v) == 1:
-                        v = '0' + v
-                    # print('homeroom__contains', v)
-                    students = students.filter(**{'homeroom__contains': v})
-    # if one student is returned redirect to its page
     if len(students) == 1:
         return HttpResponseRedirect(f"/test2/student/{students[0].id}")
     context = {
@@ -239,4 +210,35 @@ def help(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+
+def export(request):
+    if not "query" in request.GET:
+        raise Http404
+    query = request.GET['query']
+
+    # fileType = request.GET['filetype']
+
+    student_list = parseQuery(query)
+
+    # xml_file = io.StringIO("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
+
+    root = ET.Element('students')
+    for student in student_list:
+        student_tag = ET.SubElement(root, 'student')
+        ET.SubElement(student_tag, 'number').text = str(student.student_num)
+        ET.SubElement(student_tag, 'currentGrade').text = str(student.homeroom[:-1])
+        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
+        ET.SubElement(student_tag, 'first').text = student.first
+        ET.SubElement(student_tag, 'last').text = student.last
+        ET.SubElement(student_tag, 'legalName').text = student.legal
+        ET.SubElement(student_tag, 'sex').text = student.sex
+        ET.SubElement(student_tag, 'creationDate').text = str(student.date_added)
+
+    xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
+    xml_file = io.StringIO(xml_str)
+
+    response = HttpResponse(xml_file, content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename=students.xml'
+
+    return response
 
