@@ -11,11 +11,12 @@
 </head>
 <body>
 
-<form action="search" method="get" class="search_bar">
+<form method="get" class="search_bar">
     <label for="query">Search</label>
     <input id="query" type ="text" name="query" value="{{ query }}" size="50">
 
-    <input type="submit" value="Enter" />
+    <input type="submit" value="Enter" onclick="javascript: form.action='search';" />
+    <input type="submit" value="export" onclick="javascript: form.action='export';" />
 </form>
 
 {% if student_list %}
