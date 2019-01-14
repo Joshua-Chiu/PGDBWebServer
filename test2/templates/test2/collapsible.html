@@ -89,11 +89,25 @@
                     <label for="scholar">T1 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"3" }}" >
                     <br>
+
                     <label for="scholar">T2 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"3" }}" >
                     <br>
-                    <label for="scholar">T1 Plist: 99.000% </label><br>
-                    <label for="scholar">T2 Plist: 99.000% </label>
+
+                    <label for="scholar">T1 Plist:
+                        {% ifequal grade "8" %}{{ plist.grade8_t1 }}{% endifequal %}
+                        {% ifequal grade "9" %}{{ plist.grade9_t1 }}{% endifequal %}
+                        {% ifequal grade "10" %}{{ plist.grade10_t1 }}{% endifequal %}
+                        {% ifequal grade "11" %}{{ plist.grade11_t1 }}{% endifequal %}
+                        {% ifequal grade "12" %}{{ plist.grade12_t1 }}{% endifequal %}%
+                    </label><br>
+                    <label for="scholar">T2 Plist:
+                        {% ifequal grade "8" %}{{ plist.grade8_t2 }}{% endifequal %}
+                        {% ifequal grade "9" %}{{ plist.grade9_t2 }}{% endifequal %}
+                        {% ifequal grade "10" %}{{ plist.grade10_t2 }}{% endifequal %}
+                        {% ifequal grade "11" %}{{ plist.grade11_t2 }}{% endifequal %}
+                        {% ifequal grade "12" %}{{ plist.grade12_t2 }}{% endifequal %}%
+                    </label>
             </td>
             <td rowspan="2">
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
@@ -157,6 +171,7 @@
             <strong>Pins</strong>
         </td>
     </tr>
+      <!--CUMULATIVE AWARDS-->
     <tr>
         <td>
             Silver<br>
@@ -191,10 +206,18 @@
 
 
 
+
+
+
+
+
+
+
+
 <!-- Cumulative stuff and grad awards-->
     <table border="0" class="cumulative-table" frame="box">
         <tr>
-            <th colspan="2" style="border:1px solid black;" colspan="4"><strong>Cumulative Awards</strong></th>
+            <th colspan="4" style="border:1px solid black;"><strong>Cumulative Awards</strong></th>
         </tr>
         <tr>
             <td>Total Points:</td><td>{{ grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA|floatformat:"2" }}</td>

@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
     <title>Point Grey Awards Database</title>
     <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
+    <script src="{% static 'Javascript/sorttable.js' %}"></script>
 </head>
 
 <div id="top stuff" style="display:inline;text-align:left; float: left;">
@@ -70,8 +71,23 @@
             </div>
         </li>
 
-        <li style="border-left: 1px solid #bbb">
+        <li>
             <a href="/export/printing">Reports</a>
+        </li>
+
+        <li style="border-left: 1px solid #bbb">
+            <div class="dropdown">
+                <button class="dropbtn"><a>Autofocus</a></button>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a>Service</a>
+                    <a>Athletics</a>
+                    <a>Fine Arts</a>
+                    <a>Scholar Term 1</a>
+                    <a>Scholar Term 2</a>
+                </div>
+            </div>
         </li>
     </ul>
 </div>

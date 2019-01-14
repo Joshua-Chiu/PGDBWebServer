@@ -32,7 +32,8 @@ def search(request):
 def student_info(request, num):
     template = get_template('test2/student_info.html')
     context = {
-        'student': Student.objects.get(id=num)
+        'student': Student.objects.get(id=num),
+        'plist' : PlistCutoff.objects.all()[0],
     }
     return HttpResponse(template.render(context, request))
 
@@ -129,7 +130,7 @@ def codes(request):
 def plist(request):
     template = get_template('test2/plist.html')
     context = {
-            "plist" : PlistCutoff.objects.all()[0],
+            'plist' : PlistCutoff.objects.all()[0],
             'year': datetime.datetime.now().year,
             'month': datetime.datetime.now().month
             }
