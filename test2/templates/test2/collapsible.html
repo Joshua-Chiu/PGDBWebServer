@@ -113,7 +113,9 @@
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
                 {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
                 {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
-                {% if scholar.term1 >= 79.45 and scholar.term1 >= 79.45 %}Scholar{% endif %} + (Plist)<br>
+                {% if scholar.term1 >= 79.45 and scholar.term1 >= 79.45 %}Scholar{% endif %}
+                {% if scholar.term1 >= plist.grade8_t1 and scholar.term1 >= plist.grade8_t2 %}(Principal's List){% endif %}
+<br>
             </td>
         </tr>
     <!--Where all the points are displayed-->
@@ -193,8 +195,10 @@
             Achieved<!--Gold+, Put the year in here-->
             {% endif %}<br>
 
-            {% if grade_object.cumulative_SE >= 79.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 and SE_11_total > 19.5 and SE_12_total > 19.5 %}
+            {% if grade_object.cumulative_SE >= 79.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 %}
+                {% if SE_11_total > 19.5 and SE_12_total > 19.5 %}
             Achieved<!--Platinum, Put the year in here-->
+                {% endif %}
             {% endif %}<br>
 
             {% if grade_object.cumulative_AT >= 59.5 %}
