@@ -72,7 +72,10 @@ class Student(models.Model):
 
     @property
     def all_11_12_total(self):
-        total = self.SC_11_12_total + self.SE_11_12_total + self.FA_11_12_total + self.SC_11_12_total
+        total = self.SC_11_12_total
+        total += self.SE_11_12_total
+        total += self.FA_11_12_total
+        total += self.SC_11_12_total
         return total
 
     @property
@@ -130,21 +133,21 @@ class Grade(models.Model):
         total = 0
         for point in self.points_set.filter(type__catagory="SE"):
             total += point.amount
-        return total
+        return float(total)
 
     @property
     def AT_total(self):
         total = 0
         for point in self.points_set.filter(type__catagory="AT"):
             total += point.amount
-        return total
+        return float(total)
 
     @property
     def FA_total(self):
         total = 0
         for point in self.points_set.filter(type__catagory="FA"):
             total += point.amount
-        return total
+        return float(total)
 
     @property
     def SC_total(self):
