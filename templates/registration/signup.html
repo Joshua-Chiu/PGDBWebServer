@@ -1,22 +1,8 @@
 {% load staticfiles %}
+{% include 'test2/navbar.html' %}
 
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'icon.png' %}" />
-    <title>Point Grey Awards Database</title>
-    <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
-    <script src="{% static 'Javascript/sorttable.js' %}"></script>
-</head>
 <body>
-
-<div id="top stuff" style="display:inline;text-align:left; float: left;">
-    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="My image" height="50" width="50"></a>
-</div>
-
-<div>
-    <h1 class="title">Point Grey Awards Database</h1>
-</div>
 
 {% block content %}
   <h2>Sign up</h2>
