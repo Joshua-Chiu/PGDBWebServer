@@ -19,7 +19,7 @@
 
 <!--<p class="date" id="date"></p>-->
 
-Hi {{ user.username }}!
+Hi {{ user.username }}! <a href="{% url 'logout' %}">logout</a>
 
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>
