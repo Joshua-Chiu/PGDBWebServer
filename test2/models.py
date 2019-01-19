@@ -1,9 +1,13 @@
 from django.db import models
 import math
+import datetime
 # run manage.py makemigrations test2 && manage.py migrate to add to db
 
 
 class PlistCutoff(models.Model):
+    YEAR_CHOICES = [(r,r) for r in range(1984, datetime.date.today().year+1)]
+    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+
     grade8_t1 = models.DecimalField(max_digits=5, decimal_places=3)
     grade8_t2 = models.DecimalField(max_digits=5, decimal_places=3)
 
