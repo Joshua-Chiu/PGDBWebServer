@@ -16,67 +16,68 @@
 <div>
     <h2 class="heading">Printing Reports</h2>
 </div>
+    <form method="get" class="search_bar">
+        <fieldset style="border: 0">
+            Year:
+            <select name="year">
+                <option value="" >Select</option>
+                <option value="08" >Current Year</option>
+                <option value="09" >Previous Year (-)</option>
+                <option value="10" >Previous Year (-)</option>
+                <option value="11" >Previous Year (-)</option>
+                <option value="12" >Previous Year (-)</option>
+            </select>
+            Grade:
+            <select name="grade">
+                <option value="" >Select</option>
+                <option value="08" >Grade 08</option>
+                <option value="09" >Grade 09</option>
+                <option value="10" >Grade 10</option>
+                <option value="11" >Grade 11</option>
+                <option value="12" >Grade 12</option>
+            </select>
 
-<fieldset style="border: 0">
-    Year:
-    <select name="Year">
-        <option value="" >Select</option>
-        <option value="08" >Current Year</option>
-        <option value="09" >Previous Year (-)</option>
-        <option value="10" >Previous Year (-)</option>
-        <option value="11" >Previous Year (-)</option>
-        <option value="12" >Previous Year (-)</option>
-    </select>
-    Grade:
-    <select name="grade">
-        <option value="" >Select</option>
-        <option value="08" >Grade 08</option>
-        <option value="09" >Grade 09</option>
-        <option value="10" >Grade 10</option>
-        <option value="11" >Grade 11</option>
-        <option value="12" >Grade 12</option>
-    </select>
+            Annual Certificates:
+            <select name="annual">
+                <option value="" >Select</option>
+                <option value="service" >Service</option>
+                <option value="athletics" >Athletics</option>
+                <option value="scholar-hr" >Scholar Honour Roll</option>
+                <option value="scholar-pl" >Scholar Principal's List</option>
+                <option value="fine-arts" >Fine Arts</option>
 
-    Annual Certificates:
-    <select name="annual">
-        <option value="" >Select</option>
-        <option value="service" >Service</option>
-        <option value="athletics" >Athletics</option>
-        <option value="scholar-hr" >Scholar Honour Roll</option>
-        <option value="scholar-pl" >Scholar Principal's List</option>
-        <option value="Fine-arts" >Fine Arts</option>
+            </select>
 
-    </select>
+            Cumulative Awards:
+            <select name="cumulative">
+                <option value="" >Select</option>
+                <option value="silver" >Greyhound Silver Pin</option>
+                <option value="gold" >Greyhound Gold Pin</option>
+                <option value="goldplus" >Greyhound Gold+ Bar</option>
+                <option value="platinum" >Greyhound Platinum Pin</option>
+                <option value="big-block" >Athletics Big Block</option>
+            </select>
 
-    Cumulative Awards:
-    <select name="cumulative">
-        <option value="" >Select</option>
-        <option value="silver-pins" >Greyhound Silver Pin</option>
-        <option value="gold-pins" >Greyhound Gold Pin</option>
-        <option value="goldplus-pins" >Greyhound Gold+ Bar</option>
-        <option value="platinum-pins" >Greyhound Platinum Pin</option>
-        <option value="big-block" >Athletics Big Block</option>
-    </select>
+            Graduation Awards:
+            <select name="grad-awards">
+                <option value="" >Select</option>
+                <option value="se-candidates">Service Candidates</option>
+                <option value="at-candidates">Athletics Candidates</option>
+                <option value="sc-candidates">Scholar Candidates</option>
+                <option value="fa-candidates">Fine Arts Candidates</option>
+                <option value="me-candidates">Merit Candidates</option>
+            </select>
 
-    Graduation Awards:
-    <select name="grad-awards">
-        <option value="" >Select</option>
-        <option value="se-candidates">Service Candidates</option>
-        <option value="at-candidates">Athletics Candidates</option>
-        <option value="sc-candidates">Scholar Candidates</option>
-        <option value="fa-candidates">Fine Arts Candidates</option>
-        <option value="me-candidates">Merit Candidates</option>
-    </select>
-
-
-
-
+            <input type="submit" value="Enter" onclick="javascript: form.action='search';" />
+        </fieldset>
+    </form>
 </fieldset>
 
 <div>
     <button class="button default" onclick="PrintElem('GeneratedList')">Print</button>
 </div>
 
+{% if student_list %}
 <div id="GeneratedList">
     <table class="sortable">
         <!-- Header Row-->
@@ -94,15 +95,20 @@
                 <strong>Homeroom</strong>
             </td>
         </tr>
-
+    {% for student in student_list %}
         <tr>
             <td>Certificate</td>
-            <td>Student Name</td>
-            <td>Student Number</td>
-            <td>Homeroom</td>
+            <td>{{ student.first }} ({{ student.legal }}) {{ student.last }}</td>
+            <td>{{ student.student_num }}</td>
+            <td>{{ student.homeroom }}</td>
         </tr>
+    {% endfor %}
     </table>
 </div>
+{% endif %}
+
+
+
 
 </html>
 
