@@ -77,7 +77,13 @@
 <!--Script for the Nullify button-->
 <script>
 function nullify() {
-
+var txt;
+  if (confirm("This removes a student's qualification for the selected award")) {
+    txt = "Nullified!";
+  } else {
+    txt = "";
+  }
+  document.getElementById("nullification-status").innerHTML = txt;
 }
 </script>
 

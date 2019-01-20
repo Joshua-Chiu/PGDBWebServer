@@ -8,18 +8,13 @@
 
 <div class="wrap-collapsible">
     <!--Comment out the following line to remove the disable NOT AT PG-->
-  <input id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
+  <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
 
   <label for="{{ grade }}" class="lbl-toggle">
-      {% ifequal grade current_grade %}
-        <strong>
-    {% endifequal %}
-
-        Grade {{ grade }}
-
-    {% ifequal grade current_grade %}
-        </strong>
-        {% if month > "7" %}
+      {% ifequal grade current_grade %}<strong>{% endifequal %}
+      Grade {{ grade }}
+      {% ifequal grade current_grade %}</strong>
+        {% if month < "7" %}
             ({{ year }} - {{ year|add:1 }})
             {% else %}
             ({{ year|add:-1 }} - {{ year }})
@@ -35,20 +30,19 @@
 
     <div class="content-inner">
       <table border="1" class="main-table" >
-    <!-- Put all the service stuff here in the table style="float: left;" -->
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
-            <td class="entry-table-heading"><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
-            <td class="entry-table-heading"><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
-            <td class="entry-table-heading"><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-at" value="nullify-at" checked><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
             <td><strong>Scholar</strong> {{ grade_object.SC_total|floatformat:1 }} Points</td>
             <td><strong>Annual Awards</strong></td>
         </tr>
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {% if month > "7" %}
+                {% if month < "7" %}
                     {{ year|sub:current_grade|add:grade|add:"1" }}
                     <br>
                     {{ year|sub:current_grade|add:grade }}
@@ -58,7 +52,7 @@
                     {{ year|sub:current_grade|add:grade|add:"-1" }}
                 {% endif %}
                 <br>
-
+                    <!--Table left content-->
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
@@ -102,26 +96,30 @@
                         {% ifequal grade "12" %}{{ plist.grade12_t1 }}{% endifequal %}%
                     </label><br>
                     <label for="scholar">T2 Plist:
-                        {% ifequal grade "8" %}{{ plist.grade8_t2 }}{% endifequal %}
-                        {% ifequal grade "9" %}{{ plist.grade9_t2 }}{% endifequal %}
+                        {% ifequal grade "08" %}{{ plist.grade8_t2 }}{% endifequal %}
+                        {% ifequal grade "09" %}{{ plist.grade9_t2 }}{% endifequal %}
                         {% ifequal grade "10" %}{{ plist.grade10_t2 }}{% endifequal %}
                         {% ifequal grade "11" %}{{ plist.grade11_t2 }}{% endifequal %}
                         {% ifequal grade "12" %}{{ plist.grade12_t2 }}{% endifequal %}%
                     </label>
             </td>
+            <!-- Annual awards -->
             <td rowspan="2">
-                {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
-                {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
-                {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
-                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}Scholarship{% endif %}
-                {% if scholar.term1 >= plist.grade8_t1 and scholar.term2 >= plist.grade8_t2 %}PL{% endif %}
+                {% if grade_object.SE_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Service{% endif %}<br>
+                {% if grade_object.AT_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Athletics{% endif %}<br>
+                {% if grade_object.FA_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Fine Arts{% endif %}<br>
+                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Scholarship{% if scholar.term1 >= 0 and scholar.term2 >= 0 %}PL{% endif %}{% endif %}
+
 <br>
             </td>
         </tr>
+
+
+
     <!--Where all the points are displayed-->
         <tr>
             <td align="center">
-                Points | Code <!--Display Annual Totals Here-->
+                Points | Code
             </td>
             <td align="center">
                 Points | Code
@@ -173,6 +171,9 @@
             <strong>Pins</strong>
         </td>
     </tr>
+
+
+
       <!--CUMULATIVE AWARDS-->
     <tr>
         <td>
@@ -209,6 +210,7 @@
     </table>
 
 
+<p id="nullification-status"></p>
 
 
 
@@ -217,8 +219,7 @@
 
 
 
-
-<!-- Cumulative stuff and grad awards-->
+<!-- Cumulative Awards Datatable-->
     <table border="0" class="cumulative-table" frame="box">
         <tr>
             <th colspan="4" style="border:1px solid black;"><strong>Cumulative Awards</strong></th>
@@ -270,6 +271,7 @@
     </div>
   </div>
 </div>
+
 <script>
     $(".inputs").keyup(function () {
     if (this.value.length == this.maxLength) {
