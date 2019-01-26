@@ -106,6 +106,38 @@ class Student(models.Model):
     def average_11_12(self):
         return (self.grade_set.get(grade=11).scholar_set.all()[0].term1 + self.grade_set.get(grade=11).scholar_set.all()[0].term2 + self.grade_set.get(grade=12).scholar_set.all()[0].term1 + self.grade_set.get(grade=12).scholar_set.all()[0].term2) / 4
 
+    @property
+    def silver_pin(self):
+        for i in range(8, 12+1):
+            if (self.get_cumulative_SE(i) > 10):
+                if (self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 50):
+                    return i;
+        return None
+
+    @property
+    def gold_pin(self):
+        for i in range(8, 12+1):
+            if (self.get_cumulative_SE(i) > 30):
+                if (self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 90):
+                    return i;
+        return None
+
+    @property
+    def goldPlus_pin(self):
+        if (self.gold_pin):
+            if (self.get_cumulat11ve_SE(11) + self.get_cumulat11ve_AT(11) + self.get_cumulat11ve_FA(11) + self.get_cumulat11ve_SC(11) > 90):
+                return 11;
+        return None
+
+    @property
+    def platinum_pin(self):
+        if (self.gold_pin):
+            if (self.get_cumulat11ve_SE(11) + self.get_cumulat11ve_AT(11) + self.get_cumulat11ve_FA(11) + self.get_cumulat11ve_SC(11) > 90):
+                return 11;
+        return None
+
+
+
     def __str__(self):
         return "{0}, {1}, {2}".format(self.first, self.last, self.student_num)
 
