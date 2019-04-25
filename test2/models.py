@@ -23,6 +23,9 @@ class PlistCutoff(models.Model):
     grade12_t1 = models.DecimalField(max_digits=5, decimal_places=3)
     grade12_t2 = models.DecimalField(max_digits=5, decimal_places=3)
 
+    def __str__(self):
+        return str(self.year) + "'s Principal list cutoffs"
+
 
 class Student(models.Model):
     first = models.CharField(max_length=30)
@@ -109,16 +112,16 @@ class Student(models.Model):
     @property
     def silver_pin(self):
         for i in range(8, 12+1):
-            if (self.get_cumulative_SE(i) > 10):
-                if (self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 50):
+            if self.get_cumulative_SE(i) > 9.45:
+                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 49.45:
                     return i;
         return None
 
     @property
     def gold_pin(self):
         for i in range(8, 12+1):
-            if (self.get_cumulative_SE(i) > 30):
-                if (self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 90):
+            if self.get_cumulative_SE(i) > 29.45:
+                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 89.45:
                     return i;
         return None
 
@@ -139,7 +142,7 @@ class Student(models.Model):
 
 
     def __str__(self):
-        return "{0}, {1}, {2}".format(self.first, self.last, self.student_num)
+        return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
 
 class Grade(models.Model):
@@ -242,3 +245,4 @@ class Certificates(models.Model):
     honour = models.BooleanField()
     p_list = models.BooleanField()
     fine_arts = models.BooleanField()
+

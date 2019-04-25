@@ -33,7 +33,7 @@ def student_info(request, num):
     template = get_template('test2/student_info.html')
     context = {
         'student': Student.objects.get(id=num),
-        'plist' : PlistCutoff.objects.all()[0],
+        'plist' : PlistCutoff.objects.get(year=datetime.datetime.now().year),
     }
     return HttpResponse(template.render(context, request))
 
