@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'export.apps.ReportsConfig',
-    'test3.apps.Test3Config',
     'test2.apps.Test2Config',
     'django.contrib.admin',
     'django.contrib.auth',

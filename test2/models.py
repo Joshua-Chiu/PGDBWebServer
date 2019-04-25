@@ -114,7 +114,7 @@ class Student(models.Model):
         for i in range(8, 12+1):
             if self.get_cumulative_SE(i) > 9.45:
                 if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 49.45:
-                    return i;
+                    return i
         return None
 
     @property
@@ -122,22 +122,23 @@ class Student(models.Model):
         for i in range(8, 12+1):
             if self.get_cumulative_SE(i) > 29.45:
                 if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 89.45:
-                    return i;
+                    return i
         return None
 
     @property
     def goldPlus_pin(self):
         if (self.gold_pin):
-            if (self.get_cumulat11ve_SE(11) + self.get_cumulat11ve_AT(11) + self.get_cumulat11ve_FA(11) + self.get_cumulat11ve_SC(11) > 90):
-                return 11;
+            if (self.get_cumulative_SE(11) + self.get_cumulative_AT(11) + self.get_cumulative_FA(11) + self.get_cumulative_SC(11) > 90):
+                return 11
         return None
 
     @property
     def platinum_pin(self):
-        if (self.gold_pin):
-            if (self.get_cumulat11ve_SE(11) + self.get_cumulat11ve_AT(11) + self.get_cumulat11ve_FA(11) + self.get_cumulat11ve_SC(11) > 90):
-                return 11;
+        if (self.goldPlus_pin):
+            if self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(12) + self.get_cumulative_SC(12) > 110:
+                return 12
         return None
+
 
 
 

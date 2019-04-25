@@ -110,7 +110,7 @@
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
                 {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
                 {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
-                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Scholarship{% if scholar.term1 >= 0 and scholar.term2 >= 0 %}PL{% endif %}{% endif %}
+                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}Scholarship {% if scholar.term1 >= 0 and scholar.term2 >= 0 %}PL{% endif %}{% endif %}
 
 <br>
             </td>
@@ -186,8 +186,11 @@
             Big Block<br>
         </td>
         <td>
-            {% if student.silver_pin %}Received in Grade {{ student.silver_pin }}{% endif %}<br>
-
+            {% if student.silver_pin %}Grade {{ student.silver_pin }}{% endif %}<br>
+            {% if student.gold_pin %}Grade {{ student.gold_pin }}{% endif %}<br>
+            {% if student.goldPlus_pin %}Grade {{ student.goldPlus_pin }}{% endif %}<br>
+            {% if student.platinum_pin %}Grade {{ student.platinum_pin }}{% endif %}<br>
+            {% if student.silver_pin %}Grade {{ student.silver_pin }}{% endif %}<br>
 
         </td>
     </tr>

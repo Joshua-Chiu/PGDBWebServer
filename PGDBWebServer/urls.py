@@ -21,7 +21,6 @@ urlpatterns = [
     # path('', views.test2, name="test2_redirect"),
     path('', views.accounts, name="login"),
     path('test2/', include('test2.urls')),
-    path('test3/', include('test3.urls')),
     path('export/', include('export.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
