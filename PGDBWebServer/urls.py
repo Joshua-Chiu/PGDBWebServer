@@ -28,3 +28,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
+admin.site.site_header = "Point Grey Database Management"
+admin.site.site_title = "Admin Portal"
+admin.site.index_title = "Welcome to Database Management Portal"

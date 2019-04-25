@@ -33,9 +33,9 @@
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
-            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
-            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-at" value="nullify-at" checked><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
-            <td class="entry-table-heading"><input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>--><strong>Service</strong> {{ grade_object.SE_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><!--<input onclick="nullify()" type="checkbox" name="nullify-at" value="nullify-at" checked>--><strong>Athletics</strong> {{ grade_object.AT_total|floatformat:1 }} Points</td>
+            <td class="entry-table-heading"><!--<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>--><strong>Fine Arts</strong> {{ grade_object.FA_total|floatformat:1 }} Points</td>
             <td><strong>Scholar</strong> {{ grade_object.SC_total|floatformat:1 }} Points</td>
             <td><strong>Annual Awards</strong></td>
         </tr>
@@ -80,12 +80,12 @@
             </td>
 
             <td rowspan="2">
-                    <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>
+                    <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T1 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"3" }}" >
                     <br>
 
-                    <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>
+                    <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T2 Average: </label>
                     <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"3" }}" >
                     <br>
@@ -107,9 +107,9 @@
             </td>
             <!-- Annual awards -->
             <td rowspan="2">
-                {% if grade_object.SE_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Service{% endif %}<br>
-                {% if grade_object.AT_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Athletics{% endif %}<br>
-                {% if grade_object.FA_total >= 9.5 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Fine Arts{% endif %}<br>
+                {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
+                {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
+                {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
                 {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}<input onclick="nullify()" type="checkbox" name="nullify-fa" value="nullify-fa" checked>Scholarship{% if scholar.term1 >= 0 and scholar.term2 >= 0 %}PL{% endif %}{% endif %}
 
 <br>
@@ -186,27 +186,9 @@
             Big Block<br>
         </td>
         <td>
-            {% if grade_object.cumulative_SE >= 9.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 49.5 %}
-            <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>Achieved<!--Silver, Put the year in here-->
-            {% endif %}<br>
+            {% if student.silver_pin %}Received in Grade {{ student.silver_pin }}{% endif %}<br>
 
-            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 89.5 %}
-            <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>Achieved<!--Gold, Put the year in here-->
-            {% endif %}<br>
 
-            {% if grade_object.cumulative_SE >= 29.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 109.5 and SE_11_total > 19.5 %}
-            <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>Achieved<!--Gold+, Put the year in here-->
-            {% endif %}<br>
-
-            {% if grade_object.cumulative_SE >= 79.5 and grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA >= 129.5 %}
-                {% if SE_11_total > 19.5 and SE_12_total > 19.5 %}
-            <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>Achieved<!--Platinum, Put the year in here-->
-                {% endif %}
-            {% endif %}<br>
-
-            {% if grade_object.cumulative_AT >= 59.5 %}
-            <input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>Achieved
-            {% endif %}<br>
         </td>
     </tr>
     </table>
