@@ -20,6 +20,7 @@ def parseQuery(query):
         # split by spaces into attributes
         for i in query.split(' '):
             term = i.split(':')
+            # if length is not 2 it doesn't have a ':'
             if len(term) != 2:
                 continue
             items[term[0]] = term[1]
@@ -37,6 +38,29 @@ def parseQuery(query):
                         v = '0' + v
                     # print('homeroom__contains', v)
                     students = students.filter(**{'homeroom__contains': v})
+                if k == 'award':
+                    new_students = students
+                    if v == "silver":
+                        for s in students:
+                            if not s.silver_pin:
+                                new_students = new_students.exclude(id=s.id)
+                    if v == "gold":
+                        for s in students:
+                            if not s.gold_pin:
+                                new_students = new_students.exclude(id=s.id)
+                    if v == "goldplus":
+                        for s in students:
+                            if not s.goldPlus_ping:
+                                new_students = new_students.exclude(id=s.id)
+                    if v == "platinum":
+                        for s in students:
+                            if not s.platinum_pin:
+                                new_students = new_students.exclude(id=s.id)
+                    if v == "bigblock":
+                        for s in students:
+                            if not s.bigblock_award:
+                                new_students = new_students.exclude(id=s.id)
+                    students = new_students
 
     return students
 
