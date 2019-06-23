@@ -1,3 +1,21 @@
+# install
+
+## needed packages:
+
+linux
+* mariadb-server
+* libmysqlclient-dev
+
+python
+* django
+* django-mathfilters
+* mysqlclient
+
+## database setup
+
+* database called `PGDB`
+* mysql user called `pgadmin` with password `2.71828`
+
 # To do list
 
 ## Current Release: Developer Alpha 
