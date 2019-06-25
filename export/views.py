@@ -15,11 +15,14 @@ def index(request):
 def printing(request):
     template = get_template('export/print.html')
 
-    year = request.GET["year"]
-    grade = request.GET["grade"]
-    award = request.GET["cumulative"]
+    query = ""
 
-    query = f"grade:{grade} award:{award}"
+    if "grade" in request.GET and request.GET["grade"]:
+        query += "grade:" + request.GET["grade"] + " "
+    if "cumulative" in request.GET and request.GET["cumulative"]:
+        query += "award:" + request.GET["cumulative"] + " "
+
+    print(query)
 
     students = parseQuery(query)
 
