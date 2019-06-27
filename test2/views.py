@@ -243,3 +243,8 @@ def export(request):
 
     return response
 
+
+def entry(request):
+    template = get_template('test2/entry.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
