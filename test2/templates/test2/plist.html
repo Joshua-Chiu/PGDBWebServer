@@ -20,12 +20,11 @@
             ({{ year|add:-1 }} - {{ year }})
         {% endif %}</th></tr>
         <tr><th>Grade</th><th>Term 1</th><th>Term 2</th></tr>
-        <tr><td>8</td><td><input name="8 1" type="number" value="{{ plist.grade_8_T1 }}"></td><td><input name="8 2" type="number" value="{{ plist.grade_8_T2 }}"></td></tr>
-        <tr><td>9</td><td><input name="9 1" type="number" value="{{ plist.grade_9_T1 }}"></td><td><input name="9 2" type="number" value="{{ plist.grade_9_T2 }}"></td></tr>
-        <tr><td>10</td><td><input name="10 1" type="number" value="{{ plist.grade_10_T1 }}"></td><td><input name="10 2" type="number" value="{{ plist.grade_10_T2 }}"></td></tr>
-        <tr><td>11</td><td><input name="11 1" type="number" value="{{ plist.grade_11_T1 }}"></td><td><input name="11 2" type="number" value="{{ plist.grade_11_T2 }}"></td></tr>
-
-        <tr><td>12</td><td><input name="12 1" type="number" value="{{ plist.grade_12_T1 }}"></td><td><input name="12 2" type="number" value="{{ plist.grade_12_T2 }}"></td></tr>
+        <tr><td>8</td><td><input name="8 1" type="number" value="{{ plist.grade_8_T1 }}" step="0.001"></td><td><input name="8 2" type="number" value="{{ plist.grade_8_T2 }}" step="0.001"></td></tr>
+        <tr><td>9</td><td><input name="9 1" type="number" value="{{ plist.grade_9_T1 }}" step="0.001"></td><td><input name="9 2" type="number" value="{{ plist.grade_9_T2 }}" step="0.001"></td></tr>
+        <tr><td>10</td><td><input name="10 1" type="number" value="{{ plist.grade_10_T1 }}" step="0.001"></td><td><input name="10 2" type="number" value="{{ plist.grade_10_T2 }}" step="0.001"></td></tr>
+        <tr><td>11</td><td><input name="11 1" type="number" value="{{ plist.grade_11_T1 }}" step="0.001"></td><td><input name="11 2" type="number" value="{{ plist.grade_11_T2 }}" step="0.001"></td></tr>
+        <tr><td>12</td><td><input name="12 1" type="number" value="{{ plist.grade_12_T1 }}" step="0.001"></td><td><input name="12 2" type="number" value="{{ plist.grade_12_T2 }}" step="0.001"></td></tr>
 </table>
 
 <input type="submit">
