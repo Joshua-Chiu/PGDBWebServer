@@ -139,6 +139,13 @@ class Student(models.Model):
                 return 12
         return None
 
+    @property
+    def bigblock_award(self):
+        for i in range(8, 12 + 1):
+            if self.get_cumulative_AT(i) > 59.45:
+                return i
+        return None
+
 
 
 

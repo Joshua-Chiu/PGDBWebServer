@@ -1,3 +1,5 @@
+{% if user.username %}
+
 {% include 'test2/navbar.html' %}
 {% load staticfiles %}
 
@@ -17,3 +19,10 @@
 <br>
 
 Recently Modified Students
+
+{% else %}
+
+    Session Invalid <br>
+<a href="/">Return home</a>
+
+{% endif %}
