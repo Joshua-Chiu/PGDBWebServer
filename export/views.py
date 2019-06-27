@@ -21,6 +21,8 @@ def printing(request):
         query += "grade:" + request.GET["grade"] + " "
     if "cumulative" in request.GET and request.GET["cumulative"]:
         query += "award:" + request.GET["cumulative"] + " "
+    if "annual" in request.GET and request.GET["annual"]:
+        query += "award:" + request.GET["annual"] + " "
 
     print(query)
 

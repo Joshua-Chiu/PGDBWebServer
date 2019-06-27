@@ -207,6 +207,10 @@ class Grade(models.Model):
 
         return toPoints(self.scholar_set.all()[0].term1) + toPoints(self.scholar_set.all()[0].term2)
 
+    @property
+    def honourrole(self):
+        return (self.scholar_set.all()[0].term1 > 80 and self.scholar_set.all()[0].term2 > 80)
+
     def __str__(self):
         return f"{self.grade} {self.start_year}"
 
