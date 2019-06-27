@@ -141,20 +141,20 @@ def plist_submit(request):
     plist = PlistCutoff.objects.all()[0]
     items = request.POST
 
-    plist.grade8_t1 = items["8 1"]
-    plist.grade8_t2 = items["8 2"]
+    plist.grade_8_T1 = items["8 1"]
+    plist.grade_8_T2 = items["8 2"]
 
-    plist.grade9_t1 = items["9 1"]
-    plist.grade9_t2 = items["9 2"]
+    plist.grade_9_T1 = items["9 1"]
+    plist.grade_9_T2 = items["9 2"]
 
-    plist.grade10_t1 = items["10 1"]
-    plist.grade10_t2 = items["10 2"]
+    plist.grade_10_T1 = items["10 1"]
+    plist.grade_10_t2 = items["10 2"]
 
-    plist.grade11_t1 = items["11 1"]
-    plist.grade11_t2 = items["11 2"]
+    plist.grade_11_T1 = items["11 1"]
+    plist.grade_11_T2 = items["11 2"]
 
-    plist.grade12_t1 = items["12 1"]
-    plist.grade12_t2 = items["12 2"]
+    plist.grade_12_T1 = items["12 1"]
+    plist.grade_12_T2 = items["12 2"]
 
 
     plist.save()

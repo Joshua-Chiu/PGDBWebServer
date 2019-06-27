@@ -8,20 +8,20 @@ class PlistCutoff(models.Model):
     YEAR_CHOICES = [(r,r) for r in range(1984, datetime.date.today().year+1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
-    grade8_t1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade8_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
-    grade9_t1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade9_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_9_T1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_9_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
-    grade10_t1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade10_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_10_T1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_10_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
-    grade11_t1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade11_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_11_T1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_11_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
-    grade12_t1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade12_t2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
     def __str__(self):
         return str(self.year) + "'s Principal list cutoffs"
@@ -209,7 +209,12 @@ class Grade(models.Model):
 
     @property
     def honourrole(self):
-        return (self.scholar_set.all()[0].term1 > 80 and self.scholar_set.all()[0].term2 > 80)
+        return self.SC_total != 0
+
+    @property
+    def principalslist(self):
+        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year) and\
+               self.scholar_set.all()[0].term2 > PlistCutoff.get(year=self.start_year)
 
     def __str__(self):
         return f"{self.grade} {self.start_year}"
