@@ -1,0 +1,72 @@
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
+    <title>Point Grey Awards Database</title>
+    <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
+    <script src="{% static 'Javascript/sorttable.js' %}"></script>
+</head>
+
+<div id="top stuff" style="display:inline;text-align:left; float: left;">
+    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="My image" height="50" width="50"></a>
+</div>
+
+<div>
+    <h1 class="title">Point Grey Awards Database</h1>
+</div>
+
+<!--<p class="date" id="date"></p>-->
+
+Hi {{ user.username }}! Session valid <br>
+<a href="{% url 'logout' %}">logout</a>
+
+<div id="clockbox" class="date">
+<p>{% now "l, F d, Y g:i:s A" %}</p>
+</div>
+
+
+
+<hr>
+
+<script type="text/javascript">
+tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+function GetClock(){
+var d=new Date();
+var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+if(nhour==0){ap=" AM";nhour=12;}
+else if(nhour<12){ap=" AM";}
+else if(nhour==12){ap=" PM";}
+else if(nhour>12){ap=" PM";nhour-=12;}
+
+if(nmin<=9) nmin="0"+nmin;
+if(nsec<=9) nsec="0"+nsec;
+
+document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+}
+
+window.onload=function(){
+GetClock();
+setInterval(GetClock, 100);
+}
+</script>
+
+<script src="{% static 'Javascript/jQuery.js' %}"></script>
+
+
+
+<script>
+    var query = document.getElementById("query");
+
+    $( document ).on( 'keydown', function ( e ) {
+      if ( e.keyCode === 27 ) { //Numpad+ key code
+        query.focus();
+        query.value = '';
+      }
+    });
+  </script>

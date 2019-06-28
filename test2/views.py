@@ -8,6 +8,12 @@ import io
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
+from django.contrib.auth.decorators import login_required
+
+# user permissions
+
+def is_super(user):
+    return user.groups.filter(name='entry').exists()
 
 def search(request):
     template = get_template('test2/search.html')
@@ -204,7 +210,11 @@ def index(request):
     context = {
         'student_list': Student.objects.all()
     }
-    return HttpResponse(template.render(context, request))
+
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    elif request.user.is_authenticated:
+        return HttpResponseRedirect('/entry')
 
 def help(request):
     template = get_template('test2/help.html')

@@ -4,6 +4,7 @@ from django.template.loader import get_template
 from test2.models import Student
 from util.queryParse import parseQuery
 
+
 def index(request):
     template = get_template('export/index.html')
     context = {

@@ -1,9 +1,12 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views import generic
+
+
+def index(request):
+    return HttpResponseRedirect('/')
 
 
 class SignUp(generic.CreateView):

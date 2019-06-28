@@ -66,19 +66,33 @@ Hi {{ user.username }}! Session valid <br>
                 <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="/export">Backup</a>
+                    <a href="{% url 'export:index' %}">Backup</a>
                     <a href="/admin">Archives</a>
                 </div>
             </div>
         </li>
 
         <li>
-            <a href="/export/printing">Reports</a>
+            <a href="{% url 'export:printing' %}">Reports</a>
         </li>
 
-        <li style="border-left: 1px solid #bbb">
+        <li>
             <div class="dropdown">
                 <button class="dropbtn"><a>Cursor Default</a></button>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a>Service ✔</a>
+                    <a>Athletics</a>
+                    <a>Fine Arts</a>
+                    <a>Scholar Term 1</a>
+                    <a>Scholar Term 2</a>
+                </div>
+            </div>
+        </li>
+        <li style="border-left: 1px solid #bbb">
+            <div class="dropdown">
+                <button class="dropbtn"><a>Direct Entry</a></button>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">

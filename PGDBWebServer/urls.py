@@ -20,6 +20,7 @@ from . import views
 urlpatterns = [
     # path('', views.test2, name="test2_redirect"),
     path('', views.accounts, name="login"),
+    path('entry/', include('entry.urls')),
     path('test2/', include('test2.urls')),
     path('export/', include('export.urls')),
     path('admin/', admin.site.urls),
