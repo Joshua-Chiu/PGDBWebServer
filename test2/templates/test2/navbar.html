@@ -19,8 +19,8 @@
 
 <!--<p class="date" id="date"></p>-->
 
-Hi {{ user.username }}! Session valid <br>
-<a href="{% url 'logout' %}">logout</a>
+Hi {{ user.username }}!<br>
+<a href="{% url 'logout' %}">Logout</a>
 
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>
@@ -96,11 +96,10 @@ Hi {{ user.username }}! Session valid <br>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a>Service ✔</a>
-                    <a>Athletics</a>
-                    <a>Fine Arts</a>
-                    <a>Scholar Term 1</a>
-                    <a>Scholar Term 2</a>
+                    <a href="{% url 'entry:service' %}">Service</a>
+                    <a href="{% url 'entry:athletics' %}">Athletics</a>
+                    <a href="{% url 'entry:fine-arts' %}">Fine Arts</a>
+                    <a href="">Scholar</a>
                 </div>
             </div>
         </li>

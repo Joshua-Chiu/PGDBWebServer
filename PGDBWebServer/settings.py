@@ -60,7 +60,7 @@ ROOT_URLCONF = 'PGDBWebServer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'accounts/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,3 +138,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/test2/'
 LOGOUT_REDIRECT_URL = '/'
+
+# SESSION AGE 5 Minutes
+SESSION_COOKIE_AGE = 5*60

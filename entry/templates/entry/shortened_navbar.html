@@ -19,8 +19,13 @@
 
 <!--<p class="date" id="date"></p>-->
 
-Hi {{ user.username }}! Session valid <br>
-<a href="{% url 'logout' %}">logout</a>
+Hi {{ user.username }}!<br>
+
+{% if user.is_superuser %}
+    <a href="{% url 'test2:index' %}"><< Back to Default View</a>
+{%  endif %}
+
+<a href="{% url 'logout' %}">Logout</a>
 
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>

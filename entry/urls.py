@@ -5,4 +5,8 @@ app_name = 'entry'
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('service', views.service, name='service'),
+    path('athletics', views.athletics, name='athletics'),
+    path('fine-arts', views.fine_arts, name='fine-arts'),
+    path('error', views.error, name='error'),
 ]
