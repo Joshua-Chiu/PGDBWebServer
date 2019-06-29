@@ -39,7 +39,16 @@ def athletics(request):
 
 def fine_arts(request):
     if request.user.is_authenticated and checkUser(request.user, "Fine Arts"):
-        template = get_template('entry/fine_arts.html')
+        template = get_template('entry/fine-arts.html')
+        context = {}
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('error')
+
+
+def scholar(request):
+    if request.user.is_authenticated and checkUser(request.user, "Scholar"):
+        template = get_template('entry/scholar.html')
         context = {}
         return HttpResponse(template.render(context, request))
     else:

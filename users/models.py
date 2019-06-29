@@ -7,4 +7,4 @@ class CustomUser(AbstractUser):
     # add additional fields in here
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.first_name + " " + self.last_name
