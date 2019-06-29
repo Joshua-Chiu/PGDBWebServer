@@ -10,12 +10,11 @@ import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 
-# user permissions
 
 def search(request):
     template = get_template('test2/search.html')
     
-    #if no query exists make an empty list
+    # if no query exists make an empty list
     if request.GET['query']:
         query = request.GET['query']
     else:
@@ -241,6 +240,7 @@ def help(request):
     else:
         return HttpResponseRedirect('/')
 
+
 def export(request):
     if not "query" in request.GET:
         raise Http404
@@ -271,3 +271,6 @@ def export(request):
     response['Content-Disposition'] = 'attachment; filename=students.xml'
 
     return response
+
+
+# def autofocus(request):
