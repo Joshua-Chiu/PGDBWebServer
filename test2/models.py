@@ -26,6 +26,10 @@ class PlistCutoff(models.Model):
     def __str__(self):
         return str(self.year) + "'s Principal list cutoffs"
 
+    class Meta:
+        verbose_name = 'Principal List Cutoff'
+        verbose_name_plural = 'Principal List Cutoffs'
+
 
 class Student(models.Model):
     first = models.CharField(max_length=30)
