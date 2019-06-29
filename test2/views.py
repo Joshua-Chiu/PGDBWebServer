@@ -12,9 +12,6 @@ from django.contrib.auth.decorators import login_required
 
 # user permissions
 
-def is_super(user):
-    return user.groups.filter(name='entry').exists()
-
 def search(request):
     template = get_template('test2/search.html')
     
@@ -32,8 +29,10 @@ def search(request):
         'student_list': students,
         'query': request.GET['query']
     }
-    return HttpResponse(template.render(context, request))
-
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 def student_info(request, num):
     template = get_template('test2/student_info.html')
@@ -41,7 +40,10 @@ def student_info(request, num):
         'student': Student.objects.get(id=num),
         'plist' : PlistCutoff.objects.get(year=datetime.datetime.now().year),
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
 def student_submit(request, num):
@@ -125,13 +127,19 @@ def settings(request):
     template = get_template('test2/settings.html')
     context = {
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
 def codes(request):
     template = get_template('test2/codes.html')
     context = {'codes': PointCodes.objects.order_by("catagory")}
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 def plist(request):
     template = get_template('test2/plist.html')
@@ -140,7 +148,10 @@ def plist(request):
             'year': datetime.datetime.now().year,
             'month': datetime.datetime.now().month
             }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
 def plist_submit(request):
@@ -202,7 +213,10 @@ def student_list(request):
     context = {
         'student_list': Student.objects.all()
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
 def index(request):
@@ -215,12 +229,16 @@ def index(request):
         return HttpResponse(template.render(context, request))
     elif request.user.is_authenticated:
         return HttpResponseRedirect('/entry')
+    else:
+        return HttpResponseRedirect('/')
 
 def help(request):
     template = get_template('test2/help.html')
     context = {}
-    return HttpResponse(template.render(context, request))
-
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 def export(request):
     if not "query" in request.GET:
@@ -252,9 +270,3 @@ def export(request):
     response['Content-Disposition'] = 'attachment; filename=students.xml'
 
     return response
-
-
-def entry(request):
-    template = get_template('test2/entry.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
