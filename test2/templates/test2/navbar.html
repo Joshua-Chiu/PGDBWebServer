@@ -19,7 +19,7 @@
 
 <!--<p class="date" id="date"></p>-->
 
-Hi {{ user.username }}!<br>
+Hi {{ user.first_name }} {{ user.last_name }}!<br>
 <a href="{% url 'logout' %}">Logout</a>
 
 <div id="clockbox" class="date">
@@ -33,7 +33,7 @@ Hi {{ user.username }}!<br>
 <div class="topnav">
     <ul>
         <li style="float: left; border-right: 1px solid #bbb;">
-            <a href="/admin">Admin Login</a>
+            <a href="/admin">Administration</a>
         </li>
 
         <li>
