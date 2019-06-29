@@ -1,6 +1,7 @@
 <!--Load templates-->
 {% include 'test2/navbar.html' %}
 {% load staticfiles %}
+{% load mathfilters %}
 {% now "Y" as current_year %}
 {% now "n" as current_month %}
 
@@ -14,11 +15,6 @@
 </head>
 <body>
 
-
-{% block content %}
-
-{% endblock %}
-
 <!--Student Info goes here-->
 <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
 
@@ -27,7 +23,7 @@
 <script>
     addEventListener('keypress', function(e) {
     if (e.keyCode == 42) { // * key code
-        submitForms();
+        query.focus();
     }
     if ( e.keyCode == 13 ) { // enter key code
         submitForms();
@@ -66,26 +62,17 @@
 {#{% endif %}#}
 
 
-
-{% for grade in student.grade_set.all reversed %}
-<!--student.homeroom|slice:":2" - grade-->
-    {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0%}
+{% for i in i|rjust:5 %}
+    {% for grade in student.grade_set.all %}
+        {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
+            {% include 'test2/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0%}
+        {% endifequal %}
+    {% endfor %}
 {% endfor %}
+
 
 </form>
 
-<!--Script for the Nullify button-->
-<script>
-function nullify() {
-var txt;
-  if (confirm("This removes a student's qualification for the selected award")) {
-    txt = "Nullified!";
-  } else {
-    txt = "";
-  }
-  document.getElementById("nullification-status").innerHTML = txt;
-}
-</script>
 
 <!--Script for the getting post requests-->
 <script>
@@ -151,5 +138,16 @@ function post(path, params, method) {
             }
         });
     });
+</script>
+<script>
+function nullify() {
+var txt;
+  if (confirm("This removes a student's qualification for the selected award")) {
+    txt = "Nullified!";
+  } else {
+    txt = "";
+  }
+  document.getElementById("nullification-status").innerHTML = txt;
+}
 </script>
 -->
