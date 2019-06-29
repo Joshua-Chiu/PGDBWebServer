@@ -82,11 +82,11 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a>Service ✔</a>
-                    <a>Athletics</a>
-                    <a>Fine Arts</a>
-                    <a>Scholar Term 1</a>
-                    <a>Scholar Term 2</a>
+                    <a>Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a>
+                    <a>Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
+                    <a>Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
+                    <a>Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
+                    <a>Scholar Term 2 {% ifequal user.autofocus 5 %}✔{% endifequal %}</a>
                 </div>
             </div>
         </li>
