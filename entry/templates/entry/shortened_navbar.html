@@ -19,7 +19,7 @@
 
 <!--<p class="date" id="date"></p>-->
 
-Hi {{ user.username }}!<br>
+Hi {{ user.first_name }} {{ user.last_name }}!<br>
 
 {% if user.is_superuser %}
     <a href="{% url 'test2:index' %}"><< Back to Default View</a>
