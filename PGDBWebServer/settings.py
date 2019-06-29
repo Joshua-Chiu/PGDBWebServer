@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mathfilters',
     'accounts.apps.AccountsConfig',
+    'users.apps.UsersConfig',
 
 ]
 
@@ -141,8 +142,9 @@ LOGIN_REDIRECT_URL = '/test2/'
 LOGOUT_REDIRECT_URL = '/'
 
 # SESSION AGE 5 Minutes
-SESSION_COOKIE_AGE = 5*60
+# SESSION_COOKIE_AGE = 5*60
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
