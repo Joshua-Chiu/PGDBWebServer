@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'accounts.apps.AccountsConfig',
     'users.apps.UsersConfig',
-
+    'import_export',
 ]
 
 MIDDLEWARE = [
