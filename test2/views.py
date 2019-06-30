@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Student, PointCodes,  PlistCutoff
+from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
@@ -173,10 +174,20 @@ def plist_submit(request):
     plist.grade_12_T1 = items["12 1"]
     plist.grade_12_T2 = items["12 2"]
 
-
     plist.save()
 
     return HttpResponseRedirect("/test2/settings/plist")
+
+
+def autofocus_submit(request):
+    user = CustomUser.objects.all()[0]
+    user.autofocus = 2
+
+    print(request.POST)
+
+    user.save()
+
+    return HttpResponseRedirect("/test2")
 
 
 def codes_submit(request):

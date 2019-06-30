@@ -63,31 +63,31 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %} autofocus {% endifequal %}>
+                <input class="inputs" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %}>
                 <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2">
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input class="inputs" id="athletics" type="number" name="{{grade}} AT points" maxlength="4">
+                <input class="inputs" id="athletics" type="number" name="{{grade}} AT points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %}>
                 <input class="codes" id="athletics" type="number" name="{{grade}} AT code" maxlength="2">
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4">
+                <input class="inputs" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %}>
                 <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2">
             </td>
 
             <td rowspan="2">
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"3" }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T1" maxlength="3" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %}>
                     <br>
 
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"3" }}" >
+                    <input id="scholar" type="number" size="5" name="{{grade}} SC T2" maxlength="3" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %}>
                     <br>
 
                     <label for="scholar">T1 Plist:
