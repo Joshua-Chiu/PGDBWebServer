@@ -1,30 +1,20 @@
-# install
-
-## needed packages:
-
-linux
-* mariadb-server
-* libmysqlclient-dev
-
-python
-* django
-* django-mathfilters
-* mysqlclient
-
-## database setup
-
-* database called `PGDB`
-* mysql user called `pgadmin` with password `2.71828`
-
 # To do list
 
-## Current Release: Developer Alpha 
+## Current Release: Closed Beta
 <dl><s>Friday June 15th</s><br>
 <s>Friday September 7th</s><br>
 <s>Friday October 5th</s><br>
 <s>Never!</s><br>
-Friday December 21st
+<s>Friday December 21st</s><br>
+The fall
 </dl> 
+
+## things that should be fixed at some point
+
+- [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom letter attributes
+- [ ] make student have a oneToOne scholar instead of a whole scholar_set
+- [ ] remove the entire JQuery from the git repository
+- [ ] modular non hard-coded way of making awards/pins
 
 ## Work due by December
 * Cumulative Awards [Done]
