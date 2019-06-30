@@ -15,5 +15,5 @@ urlpatterns = [
     path('settings/plist_submit', views.plist_submit, name='plist_submit'),
     path('help', views.help, name='help'),
     path('export', views.export, name='export'),
-    path('autofocus', views.autofocus_submit, name='autofocus'),
+    path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
 ]

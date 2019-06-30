@@ -142,6 +142,7 @@ def codes(request):
     else:
         return HttpResponseRedirect('/')
 
+
 def plist(request):
     template = get_template('test2/plist.html')
     context = {
@@ -179,11 +180,10 @@ def plist_submit(request):
     return HttpResponseRedirect("/test2/settings/plist")
 
 
-def autofocus_submit(request):
+def autofocus_submit(request, num):
     user = CustomUser.objects.all()[0]
-    user.autofocus = 2 # get number from navbar
 
-    print(request.POST)
+    user.autofocus = num
 
     user.save()
 
@@ -243,6 +243,7 @@ def index(request):
     else:
         return HttpResponseRedirect('/')
 
+
 def help(request):
     template = get_template('test2/help.html')
     context = {}
@@ -282,6 +283,3 @@ def export(request):
     response['Content-Disposition'] = 'attachment; filename=students.xml'
 
     return response
-
-
-# def autofocus(request):
