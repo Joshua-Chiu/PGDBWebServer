@@ -14,10 +14,10 @@
       {% ifequal grade current_grade %}<strong>{% endifequal %}
       Grade {{ grade }}
       {% ifequal grade current_grade %}</strong>
-        {% if month < "7" %}
-            ({{ year }} - {{ year|add:1 }})
-            {% else %}
+        {% if month < "8" %}
             ({{ year|add:-1 }} - {{ year }})
+            {% else %}
+            ({{ year }} - {{ year|add:1 }})
         {% endif %}
     {% endifequal %}
     {% if year|add:grade < student.date_added|date:"Y"|abs|add:current_grade %}
@@ -42,14 +42,14 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {% if month < "7" %}
-                    {{ year|sub:current_grade|add:grade|add:"1" }}
+                {% if month < "8" %}
+                    {{ year|sub:current_grade|add:grade|add:"-1" }}
                     <br>
                     {{ year|sub:current_grade|add:grade }}
                 {% else %}
                     {{ year|sub:current_grade|add:grade }}
                     <br>
-                    {{ year|sub:current_grade|add:grade|add:"-1" }}
+                    {{ year|sub:current_grade|add:grade|add:"1" }}
                 {% endif %}
                 <br>
                     <!--Table left content-->

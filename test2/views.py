@@ -181,7 +181,7 @@ def plist_submit(request):
 
 def autofocus_submit(request):
     user = CustomUser.objects.all()[0]
-    user.autofocus = 2
+    user.autofocus = 2 # get number from navbar
 
     print(request.POST)
 
