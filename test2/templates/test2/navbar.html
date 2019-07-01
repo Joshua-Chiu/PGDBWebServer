@@ -68,14 +68,22 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
                 <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'export:index' %}">Export</a>
-                    <a href="/admin">Archives</a>
+                    <a href="{% url 'test2:codes' %}">Codes</a>
+                    <a href="{% url 'test2:plist' %}">Plist</a>
                 </div>
             </div>
         </li>
 
         <li>
-            <a href="{% url 'export:printing' %}">Reports</a>
+            <div class="dropdown">
+                <button class="dropbtn"><a href="{% url 'export:printing' %}">Reports</a></button>
+                    <i class="fa fa-caret-down"></i>
+                <div class="dropdown-content">
+                    <a href="{% url 'export:index' %}">Print Certificates</a>
+                    <a href="{% url 'export:index' %}">Archives</a>
+                    <a href="{% url 'export:index' %}">Other</a>
+                </div>
+            </div>
         </li>
 
         <li>
@@ -84,7 +92,7 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a type="submit" href="{% url 'test2:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
+                    <a href="{% url 'test2:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
                     <a type="submit" href="{% url 'test2:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
                     <a type="submit" href="{% url 'test2:autofocus' 3 %}">Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
                     <a type="submit" href="{% url 'test2:autofocus' 4 %}">Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
