@@ -37,7 +37,7 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
         </li>
 
         <li>
-            <form action="/test2/search">
+            <form action="{% url 'test2:search' %}">
                 <input type="text" placeholder="Search.." name="query" accesskey="a" id="query">
             </form>
         </li>
@@ -134,15 +134,27 @@ setInterval(GetClock, 100);
 
 <script src="{% static 'Javascript/jQuery.js' %}"></script>
 
-
-
 <script>
-    var query = document.getElementById("query");
-
-    $( document ).on( 'keydown', function ( e ) {
-      if ( e.keyCode === 27 ) { //Numpad+ key code
+    addEventListener('keypress', function(e) {
+        console.log(e.key + e.keyCode)
+    if (e.keyCode == 42) { // * key code
         query.focus();
-        query.value = '';
-      }
+    }}, false);
+
+    $(function(){
+      $('#query').keypress(function(e){
+        if(e.which == 42 || this.value == '*'){
+            this.value = ''
+            return false;
+        } else {
+
+        }
+      });
     });
-  </script>
+</script>
+
+<!--
+<script>
+
+</script>
+-->

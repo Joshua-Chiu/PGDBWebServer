@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.views.generic import RedirectView
+from django.conf.urls import url
 
 urlpatterns = [
     # path('', views.test2, name="test2_redirect"),
@@ -26,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^favicon\.ico$',RedirectView.as_view(url='/static/icon.png')),
 ]
 
 admin.site.site_header = "Point Grey Database Management"

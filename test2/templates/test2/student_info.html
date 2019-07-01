@@ -20,20 +20,6 @@
 
 <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"Y" }}</strong></p>
 
-<script>
-    addEventListener('keypress', function(e) {
-    if (e.keyCode == 42) { // * key code
-        query.focus();
-    }
-    if ( e.keyCode == 13 ) { // enter key code
-        submitForms();
-    }
-    if ( e.keyCode === 27 ) { //ESC key code
-        query.focus();
-    }
-}, false);
-</script>
-
 
 <hr>
 <!-- end of Student Overview-->

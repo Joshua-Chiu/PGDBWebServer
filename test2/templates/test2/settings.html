@@ -21,21 +21,3 @@
 <div>
     <h4><a href="{% url 'test2:plist' %}">Principal Lists Thresholds</a></h4>
 </div>
-
-<div>
-    <h4><a href="/accounts/signup">Add new user</a> </h4>
-</div>
-
-<label>
-    Autofocus:
-</label>
-
-<select name="autofocus">
-            <option value="SE" {% ifequal code.type "SE" %}selected{% endifequal %}>Service</option>
-            <option value="AT" {% ifequal code.type "AT" %}selected{% endifequal %}>Athletics</option>
-            <option value="FA" {% ifequal code.type "FA" %}selected{% endifequal %}>Fine Arts</option>
-            <option value="SC" {% ifequal code.type "SC" %}selected{% endifequal %}>Scholar</option>
-</select>
-
-
-</html>
