@@ -29,6 +29,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/icon.png')),
+    url(r'session_security/', include('session_security.urls')),
 ]
 
 admin.site.site_header = "Point Grey Database Management"

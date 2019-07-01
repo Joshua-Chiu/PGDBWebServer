@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% include 'session_security/all.html' %}
 
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
     <title>Point Grey Awards Database</title>
     <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
     <script src="{% static 'Javascript/sorttable.js' %}"></script>
+    <script src="{% static 'Javascript/jQuery.js' %}"></script>
 </head>
 
 <div id="top stuff" style="display:inline;text-align:left; float: left;">
@@ -131,8 +133,6 @@ GetClock();
 setInterval(GetClock, 100);
 }
 </script>
-
-<script src="{% static 'Javascript/jQuery.js' %}"></script>
 
 <script>
     addEventListener('keypress', function(e) {

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'users.apps.UsersConfig',
     'import_export',
+    'session_security',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'session_security.middleware.SessionSecurityMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -141,8 +143,9 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/test2/'
 LOGOUT_REDIRECT_URL = '/'
 
-# SESSION AGE 5 Minutes
-# SESSION_COOKIE_AGE = 5*60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SECURITY_WARN_AFTER = 180
+SESSION_SECURITY_EXPIRE_AFTER = 180
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
