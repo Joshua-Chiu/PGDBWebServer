@@ -5,7 +5,7 @@ import datetime
 
 
 class PlistCutoff(models.Model):
-    YEAR_CHOICES = [(r,r) for r in range(1984, datetime.date.today().year+1)]
+    YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year+1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
     grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
@@ -131,14 +131,14 @@ class Student(models.Model):
 
     @property
     def goldPlus_pin(self):
-        if (self.gold_pin):
+        if self.gold_pin:
             if (self.get_cumulative_SE(11) + self.get_cumulative_AT(11) + self.get_cumulative_FA(11) + self.get_cumulative_SC(11) > 90):
                 return 11
         return None
 
     @property
     def platinum_pin(self):
-        if (self.goldPlus_pin):
+        if self.goldPlus_pin:
             if self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(12) + self.get_cumulative_SC(12) > 110:
                 return 12
         return None
@@ -149,9 +149,6 @@ class Student(models.Model):
             if self.get_cumulative_AT(i) > 59.45:
                 return i
         return None
-
-
-
 
     def __str__(self):
         return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)

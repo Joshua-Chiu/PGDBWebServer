@@ -26,7 +26,7 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
     <a href="{% url 'test2:index' %}"><< Back to Default View</a>
 {%  endif %}
 
-<a href="{% url 'logout' %}">Logout</a>
+<a href="{% url 'admin:index' %}">Administration</a> </a> <a href="{% url 'logout' %}">Logout</a>
 
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>
