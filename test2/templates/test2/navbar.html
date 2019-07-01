@@ -38,7 +38,7 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
 
         <li>
             <form action="{% url 'test2:search' %}">
-                <input type="text" placeholder="Search.." name="query" accesskey="a" id="query">
+                <input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()">
             </form>
         </li>
 
@@ -136,25 +136,18 @@ setInterval(GetClock, 100);
 
 <script>
     addEventListener('keypress', function(e) {
-        console.log(e.key + e.keyCode)
     if (e.keyCode == 42) { // * key code
         query.focus();
     }}, false);
-
+</script>
+<script>
     $(function(){
       $('#query').keypress(function(e){
-        if(e.which == 42 || this.value == '*'){
-            this.value = ''
-            return false;
+        if(e.which == 42 || this.value.includes('*')){
+            this.value = this.value.replace('*','');
         } else {
 
         }
       });
     });
 </script>
-
-<!--
-<script>
-
-</script>
--->

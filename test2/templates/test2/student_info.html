@@ -118,15 +118,19 @@ function post(path, params, method) {
 
 <!--prevent submit or query from changing field-->
 <script>
-    $(function(){
+    let wasEmpty = false;
+        $(function(){
         $('#scholar').keypress(function(e){
-            if(e.which == 65 || e.which == 98 || e.which == 99 || e.which == 110 || e.which == 111){
-            } else if(e.which == 42){
+            if(e.which == 42){
                 query.focus();
                 return false;
-            } else {
-                return false;
+            } else if(this.value.length >= 5 && wasEmpty){
+                submitForms();
             }
+            if(this.value.length < 6){
+            wasEmpty = true;
+        }
+        console.log(wasEmpty);
         });
     });
 </script>
