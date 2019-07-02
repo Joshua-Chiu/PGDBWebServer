@@ -82,12 +82,12 @@
             <td rowspan="2">
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T1 Average: </label>
-                    <input id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
+                    <input class="scholar" id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
                     <br>
 
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T2 Average: </label>
-                    <input id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
+                    <input class="scholar" id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
                     <br>
 
                     <label for="scholar">T1 Plist:
@@ -258,19 +258,5 @@
     </div>
   </div>
 </div>
-
-<script>
-    $(".inputs").keyup(function () {
-    if (this.value.length == this.maxLength) {
-      $(this).next('.codes').focus();
-    }
-});
-    $(".codes").keyup(function () {
-    if (this.value.length == this.maxLength) {
-        submitForms();
-        this.value = ''
-    }
-});
-</script>
 
 

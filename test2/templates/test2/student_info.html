@@ -120,7 +120,7 @@ function post(path, params, method) {
 <script>
     let wasEmpty = false;
         $(function(){
-        $('#scholar').keypress(function(e){
+        $('.scholar').keypress(function(e){
             if(e.which == 42){
                 query.focus();
                 return false;
@@ -133,6 +133,20 @@ function post(path, params, method) {
         console.log(wasEmpty);
         });
     });
+</script>
+
+<script>
+    $(".inputs").keyup(function () {
+    if (this.value.length == this.maxLength) {
+      $(this).next('.codes').focus();
+    }
+});
+    $(".codes").keyup(function () {
+    if (this.value.length == this.maxLength) {
+        submitForms();
+        this.value = ''
+    }
+});
 </script>
 <!--
 <script>
