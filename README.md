@@ -15,6 +15,7 @@ The fall
 - [ ] make student have a oneToOne scholar instead of a whole scholar_set
 - [ ] remove the entire JQuery from the git repository
 - [ ] modular non hard-coded way of making awards/pins
+- [ ] fix last modified date on Student so it updates when points are added
 
 ## Work due by December
 * Cumulative Awards [Done]
