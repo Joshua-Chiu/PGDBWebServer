@@ -59,7 +59,6 @@
 
 </form>
 
-
 <!--Script for the getting post requests-->
 <script>
 function submitForms() {
@@ -95,42 +94,23 @@ function post(path, params, method) {
 }
 </script>
 
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-      $('input').keyup(function (e) {
-        if (e.which == 39) { // right arrow
-          $(this).closest('table').next().find('input').focus();
-
-        } else if (e.which == 37) { // left arrow
-          $(this).closest('table').prev().find('input').focus();
-
-      });
-
-    // un-comment to display key code
-    // $("input").keydown(function (e) {
-    //   console.log(e.which);
-    // });
-    });
-</script>
-
-
 <!--prevent submit or query from changing field-->
 <script>
     let wasEmpty = false;
-        $(function(){
-        $('.scholar').keypress(function(e){
-            if(e.which == 42){
-                query.focus();
-                return false;
-            } else if(this.value.length >= 5 && wasEmpty){
+    $(function(){
+        $('.scholar').keyup(function(e){
+            if(this.value.length >= 6 && wasEmpty){
                 submitForms();
             }
             if(this.value.length < 6){
             wasEmpty = true;
-        }
-        console.log(wasEmpty);
+            }
+        });
+        $('.scholar').keypress(function(e){
+            if(e.which == 42){
+                query.focus();
+                return false;
+            }
         });
     });
 </script>

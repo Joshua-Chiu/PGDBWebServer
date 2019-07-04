@@ -3,7 +3,7 @@
 Hi {{ user.first_name }} {{ user.last_name }}!<br>
 <a href="{% url 'logout' %}">Logout</a>
 
-<div id="clockbox" class="date"></div>
+<div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
 <hr>
 
 <!--Nav Bar-->
@@ -77,7 +77,7 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
         </li>
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">
-                <button class="dropbtn"><a>Direct Entry</a></button>
+                <button class="dropbtn"><a href="{% url 'entry:index' %}">Direct Entry</a></button>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
