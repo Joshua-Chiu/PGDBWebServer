@@ -58,4 +58,7 @@ def scholar(request):
 def error(request):
     template = get_template('entry/error.html')
     context = {}
-    return HttpResponse(template.render(context, request))
+    if request.user.is_authenticated:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/test2')

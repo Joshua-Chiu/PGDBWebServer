@@ -184,8 +184,10 @@ def autofocus_submit(request, num):
     user = CustomUser.objects.all()[0]
 
     user.autofocus = num
-
     user.save()
+    while not user.autofocus == num:
+        user.autofocus = num
+        user.save()
 
     return HttpResponseRedirect("/test2")
 
