@@ -12,6 +12,7 @@ from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def search(request):
     template = get_template('test2/search.html')
     
@@ -185,9 +186,6 @@ def autofocus_submit(request, num):
 
     user.autofocus = num
     user.save()
-    while not user.autofocus == num:
-        user.autofocus = num
-        user.save()
 
     return HttpResponseRedirect("/test2")
 

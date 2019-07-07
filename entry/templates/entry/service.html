@@ -21,9 +21,9 @@
         </fieldset>
     </form>
 </body>
-
+<!--
 <script>
-    $(".student-number").keyup(function () {
+    $(".student-number").change(function () {
         if (this.value.length > 0) {
             document.getElementById('name').innerHTML=this.value;
         } else {
@@ -46,9 +46,25 @@
             document.getElementById('code').innerHTML="NO CODE";
         }
     });
-
-
-
 </script>
+-->
+<footer>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script>
+    $(".student-number").change(function () {
+        var student_id = this.value;
+        console.log(student_id);
 
+        $.ajax({
+            url: {% url "entry:get_student_name" %},
+            data: {
+                'student_id': 57395
+            },
+            dataType: 'json',
+            success: function (data) {console.log(data)}
+        });
+
+    });
+</script>
+</footer>
 </html>

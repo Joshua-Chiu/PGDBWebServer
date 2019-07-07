@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
+from test2.models import Student
+from django.http import JsonResponse
 
 
 def checkUser(user, category):
@@ -62,3 +64,13 @@ def error(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/test2')
+
+
+def get_student_name(request):
+    student_id = request.GET.get('student_id', None)
+    print(student_id)
+    data = {
+        'exists': Student.objects.filter(student_num__iexact=student_id).exists(),
+        'name': Student.objects.filter(student_num__iexact=student_id).first,
+    }
+    return JsonResponse(data)
