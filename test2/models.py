@@ -32,13 +32,13 @@ class PlistCutoff(models.Model):
 
 
 class Student(models.Model):
-    first = models.CharField(max_length=30)
-    last = models.CharField(max_length=30)
-    legal = models.CharField(max_length=30)
-    student_num = models.PositiveIntegerField()
-    homeroom = models.CharField(max_length=3)
-    sex = models.CharField(max_length=1)
-    date_added = models.DateField()
+    first = models.CharField(max_length=30, verbose_name='First Name')
+    last = models.CharField(max_length=30, verbose_name='Last Name')
+    legal = models.CharField(max_length=30, verbose_name='Legal Name')
+    student_num = models.PositiveIntegerField(verbose_name='Student Number')
+    homeroom = models.CharField(max_length=3, verbose_name='Homeroom')
+    sex = models.CharField(max_length=1, verbose_name='Sex')
+    date_added = models.DateField(verbose_name='Date of entry into Point Grey')
     last_modified = models.DateField(auto_now=True)
 
     # please help me there are far too many functions and i just keep adding more

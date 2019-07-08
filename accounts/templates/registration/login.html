@@ -11,12 +11,14 @@
 
 {% block content%}
 
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+    <h2>Login</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+        </form>
+        <br>
+        <a href="mailto:system@pgdbwebserver.herokuapp.com?subject=I%20have%20issues%20logging%20in&amp;body=My%20username%20is%20%5Busername%5D%20and%20I%20have%20issues%20logging%20in.">Contact the system administrator</a>
 
 </body>
 {% endblock %}
