@@ -1,23 +1,23 @@
-{% include 'test2/navbar.html' %}
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}Settings{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
-    <title>Point Grey Awards Database</title>
+{% block navbar %}
+    {% include 'test2/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/settings_style.css' %}">
-</head>
+{% endblock %}
 
-
+{% block content%}
     <h2>Settings</h2>
+    <div>
+        <h4><a href="{% url 'test2:codes' %}">Add / Edit a code</a></h4>
+    </div>
+    <div>
+        <h4><a href="{% url 'test2:plist' %}">Principal Lists Thresholds</a></h4>
+    </div>
+{% endblock %}
 
-<div>
-    <h4><a href="{% url 'test2:codes' %}">Add / Edit a code</a></h4>
-</div>
-
-<div>
-    <h4><a href="{% url 'test2:plist' %}">Principal Lists Thresholds</a></h4>
-</div>

@@ -219,17 +219,6 @@ def codes_submit(request):
     return HttpResponseRedirect("/test2/settings/codes")
 
 
-def student_list(request):
-    template = get_template('test2/student_list.html')
-    context = {
-        'student_list': Student.objects.all()
-    }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/')
-
-
 def index(request):
     template = get_template('test2/index.html')
     context = {
