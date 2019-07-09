@@ -1,21 +1,25 @@
-{% include 'test2/navbar.html' %}
+
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}Export{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
-    <title>Point Grey Awards Database</title>
+{% block navbar %}
+    {% include 'test2/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
-</head>
+{% endblock %}
 
-<div>
-    <h2>Export</h2>
+{% block content%}
+    <!--Content goes here-->
+    <div>
+        <h2>Export</h2>
 
-    <h4><a href="{% url 'export:printing' %}">Printing</a></h4>
-    <h4><a href="{% url 'export:export_files' %}">Export Files</a></h4>
+        <h4><a href="{% url 'export:printing' %}">Printing</a></h4>
+        <h4><a href="{% url 'export:export_files' %}">Export Files</a></h4>
 
-</div>
+    </div>
+{% endblock %}
 

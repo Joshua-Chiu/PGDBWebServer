@@ -1,36 +1,41 @@
-{% include 'entry/shortened_navbar.html' %}
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block title %}Scholar (Direct){% endblock %}
+
+{% block navbar %}
+    {% include 'entry/shortened_navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/entry_styles.css' %}">
-</head>
+{% endblock %}
 
-<body>
-<h2>Direct Entry (Scholar)</h2>
+{% block content%}
+    <body>
+        <h2>Direct Entry (Scholar)</h2>
 
-<form action="" method="post">
-        <fieldset>
-            Student Number: <input class="student-number" type='number' name="student-number" value="">
-            Term 1 Percentage: <input class="t1" type='number' name="t1" value="" style="width: 40px">
-            Term 2 Percentage: <input class="t2" type="number" name="t2" value="" style="width: 40px">
-            . . . . .
-            Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a>
-        </fieldset>
-</form>
+        <form action="" method="post">
+                <fieldset>
+                    Student Number: <input class="student-number" type='number' name="student-number" value="">
+                    Term 1 Percentage: <input class="t1" type='number' name="t1" value="" style="width: 40px">
+                    Term 2 Percentage: <input class="t2" type="number" name="t2" value="" style="width: 40px">
+                    . . . . .
+                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a>
+                </fieldset>
+        </form>
 
-<button>Import Scholarship Scores</button><br>
-</body>
-
-<script>
-    $(".student-number").keyup(function () {
-        if (this.value.length > 0) {
-            document.getElementById('name').innerHTML=this.value;
-        } else {
-            document.getElementById('name').innerHTML="TYPE IN STUDENT NUMBER";
-        }
-    });
-</script>
-</html>
+        <button>Import Scholarship Scores</button><br>
+    </body>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(".student-number").keyup(function () {
+            if (this.value.length > 0) {
+                document.getElementById('name').innerHTML=this.value;
+            } else {
+                document.getElementById('name').innerHTML="TYPE IN STUDENT NUMBER";
+            }
+        });
+    </script>
+{% endblock %}

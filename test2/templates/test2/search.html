@@ -1,26 +1,27 @@
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
-{% include 'test2/navbar.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Search</title>
+{% block title %}Search{% endblock %}
+
+{% block navbar %}
+    {% include 'test2/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/search_style.css' %}">
-</head>
-<body>
+{% endblock %}
 
-<form method="get" class="search_bar">
-    <label for="query">Search</label>
-    <input id="query" type ="text" name="query" value="{{ query }}" size="50">
+{% block content%}
+    <form method="get" class="search_bar">
+        <label for="query">Search</label>
+        <input id="query" type ="text" name="query" value="{{ query }}" size="50">
 
-    <input type="submit" value="Enter" onclick="javascript: form.action='search';" />
-    <input type="submit" value="export" onclick="javascript: form.action='export';" />
-</form>
-
-{% if student_list %}
-            <table id="StudentList" class="sortable">
-                <thead>
+        <input type="submit" value="Enter" onclick="form.action='search';" />
+        <input type="submit" value="export" onclick="form.action='export';" />
+    </form>
+    {% if student_list %}
+        <table id="StudentList" class="sortable">
+            <thead>
                 <tr>
                     <th style="padding-right: 150px">
                         <strong>Last Name</strong>
@@ -35,8 +36,8 @@
                         <strong>Homeroom</strong>
                     </th>
                 </tr>
-                </thead>
-    {% for student in student_list %}
+            </thead>
+            {% for student in student_list %}
                 <tr>
                     <td>
                         <a href="{% url "test2:student_info" student.id %}">{{ student.last }}</a>
@@ -52,8 +53,6 @@
                     </td>
                 </tr>
             {% endfor %}
-            </table>
-        {% endif %}
-
-</body>
-</html>
+        </table>
+    {% endif %}
+{% endblock %}

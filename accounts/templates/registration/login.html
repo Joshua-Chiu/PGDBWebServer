@@ -1,29 +1,25 @@
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'icon.png' %}" />
-    <title>Point Grey Awards Database</title>
+{% block title %}Login{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
-    <script src="{% static 'Javascript/sorttable.js' %}"></script>
-</head>
-<body>
+{% endblock %}
 
-<div id="top stuff" style="display:inline;text-align:left; float: left;">
-    <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="My image" height="50" width="50"></a>
-</div>
+{% block content%}
 
-<div>
-    <h1 class="title">Point Grey Secondary School</h1>
-</div>
-
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+    <h2>Login</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+        </form>
+        <br>
+        <a href="mailto:system@pgdbwebserver.herokuapp.com?subject=I%20have%20issues%20logging%20in&amp;body=My%20username%20is%20%5Busername%5D%20and%20I%20have%20issues%20logging%20in.">Contact the system administrator</a>
 
 </body>
-</html>
+{% endblock %}
+{% block javascript %}{% endblock %}

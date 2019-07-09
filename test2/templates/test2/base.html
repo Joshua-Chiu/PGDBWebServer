@@ -6,13 +6,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
-    <title>Point Grey Awards Database</title>
+    <title>{% block title %}Database{% endblock %} | Point Grey Awards Database</title>
     <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
     <script src="{% static 'Javascript/sorttable.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% block stylesheet %}{% endblock %}
 </head>
 
-<div id="top stuff" style="display:inline;text-align:left; float: left;">
+<div style="display:inline;text-align:left; float: left;">
     <a href="http://go.vsb.bc.ca/schools/pointgrey/Awards/School%20Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="Point Grey Secondary Logogit " height="50" width="50"></a>
 </div>
 
@@ -20,46 +21,74 @@
     <h1 class="title">Point Grey Awards Database</h1>
 </div>
 
-<script type="text/javascript">
-tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+    {% block navbar %}{% endblock %}
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-function GetClock(){
-var d=new Date();
-var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
-var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+<footer>
+    <script type="text/javascript">
+    tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+    tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-if(nhour==0){ap=" AM";nhour=12;}
-else if(nhour<12){ap=" AM";}
-else if(nhour==12){ap=" PM";}
-else if(nhour>12){ap=" PM";nhour-=12;}
+    function GetClock(){
+    var d=new Date();
+    var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+    var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
 
-if(nmin<=9) nmin="0"+nmin;
-if(nsec<=9) nsec="0"+nsec;
+    if(nhour==0){ap=" AM";nhour=12;}
+    else if(nhour<12){ap=" AM";}
+    else if(nhour==12){ap=" PM";}
+    else if(nhour>12){ap=" PM";nhour-=12;}
 
-document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
-}
+    if(nmin<=9) nmin="0"+nmin;
+    if(nsec<=9) nsec="0"+nsec;
 
-window.onload=function(){
-GetClock();
-setInterval(GetClock, 100);
-}
-</script>
+    document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+    }
 
-<script>
-    addEventListener('keypress', function(e) {
-    if (e.keyCode == 42) { // * key code
-        query.focus();
-    }}, false);
-</script>
-<script>
-    $(function(){
-      $('#query').keypress(function(e){
-        if(e.which == 42 || this.value.includes('*')){
-            this.value = this.value.replace('*','');
-        } else {
+    window.onload=function(){
+    GetClock();
+    setInterval(GetClock, 100);
+    }
+    </script>
+    <script>
+        addEventListener('keypress', function(e) {
+        if (e.keyCode == 42) { // * key code
+            query.focus();
+        }}, false);
+    </script>
+    <script>
+        $(function(){
+          $('#query').keypress(function(e){
+            if(e.which == 42 || this.value.includes('*')){
+                this.value = this.value.replace('*','');
+            } else {
 
-        }
-      });
-    });
-</script>
+            }
+          });
+        });
+    </script>
+    {% block javascript %}{% endblock %}
+</footer>
+{% comment %}
+
+{% extends 'test2/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock %}
+
+{% block navbar %}
+    {% include 'test2/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static '' %}">
+{% endblock %}
+
+{% block content%}
+    <!--Content goes here-->
+{% endblock %}
+{% block javascript %}{% endblock %}
+
+{% endcomment %}

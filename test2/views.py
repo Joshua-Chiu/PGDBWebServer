@@ -12,6 +12,7 @@ from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def search(request):
     template = get_template('test2/search.html')
     
@@ -185,9 +186,6 @@ def autofocus_submit(request, num):
 
     user.autofocus = num
     user.save()
-    while not user.autofocus == num:
-        user.autofocus = num
-        user.save()
 
     return HttpResponseRedirect("/test2")
 
@@ -219,17 +217,6 @@ def codes_submit(request):
         entry.save()
 
     return HttpResponseRedirect("/test2/settings/codes")
-
-
-def student_list(request):
-    template = get_template('test2/student_list.html')
-    context = {
-        'student_list': Student.objects.all()
-    }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/')
 
 
 def index(request):

@@ -1,11 +1,6 @@
 {% load staticfiles %}
 {% load mathfilters %}
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
-</head>
-
 <div class="wrap-collapsible">
     <!--Comment out the following line to remove the disable NOT AT PG-->
   <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
@@ -105,6 +100,7 @@
                         {% ifequal grade "12" %}{{ plist.grade_12_T2 }}{% endifequal %}%
                     </label>
             </td>
+
             <!-- Annual awards -->
             <td rowspan="2">
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
@@ -115,8 +111,6 @@
 <br>
             </td>
         </tr>
-
-
 
     <!--Where all the points are displayed-->
         <tr>
@@ -174,8 +168,6 @@
         </td>
     </tr>
 
-
-
       <!--CUMULATIVE AWARDS-->
     <tr>
         <td>
@@ -196,16 +188,6 @@
     </tr>
     </table>
 
-
-<p id="nullification-status"></p>
-
-
-
-
-
-
-
-
 <!-- Cumulative Awards Datatable-->
     <table border="0" class="cumulative-table" frame="box">
         <tr>
@@ -223,8 +205,6 @@
             <td>Fine Arts Points: </td><td>{{ grade_object.cumulative_FA|floatformat:"2" }}</td>
         </tr>
     </table>
-
-
 
 <!-- Grad Calculations Table-->
     {% ifequal grade "12" %}

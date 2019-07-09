@@ -1,29 +1,34 @@
-{% include 'entry/shortened_navbar.html' %}
+{% extends 'test2/base.html' %}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block title %}Service (Direct){% endblock %}
+
+{% block navbar %}
+    {% include 'entry/shortened_navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/entry_styles.css' %}">
-</head>
+{% endblock %}
 
-<body>
-<h2>Direct Entry (Service)</h2>
-
-    <form action="" method="post">
-        <fieldset>
-            Student Number: <input class="student-number" type='number' name="student-number" value="">
-            Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
-            Code: <input class="code" type="number" name="code" value="" style="width: 40px">
-            . . . . .
-            Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Hours: <a id="hours" class="hours">NO HOURS DOCUMENTED</a> | Type: <a id="code" class="code">NO CODE</a>
-        </fieldset>
-    </form>
-</body>
-
+{% block content%}
+    <body>
+        <h2>Direct Entry (Service)</h2>
+            <form action="" method="post">
+                <fieldset>
+                    Student Number: <input class="student-number" type='number' name="student-number" value="">
+                    Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
+                    Code: <input class="code" type="number" name="code" value="" style="width: 40px">
+                    . . . . .
+                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Hours: <a id="hours" class="hours">NO HOURS DOCUMENTED</a> | Type: <a id="code" class="code">NO CODE</a>
+                </fieldset>
+            </form>
+    </body>
+{% endblock %}
+{% block javascript %}
+    <!--
 <script>
-    $(".student-number").keyup(function () {
+    $(".student-number").change(function () {
         if (this.value.length > 0) {
             document.getElementById('name').innerHTML=this.value;
         } else {
@@ -46,9 +51,22 @@
             document.getElementById('code').innerHTML="NO CODE";
         }
     });
-
-
-
 </script>
+    <script>
+    $(".student-number").change(function () {
+        var student_id = this.value;
+        console.log(student_id);
 
-</html>
+        $.ajax({
+            url: {% url "entry:get_student_name" %},
+            data: {
+                'student_id': 57395
+            },
+            dataType: 'json',
+            success: function (data) {console.log(data)}
+        });
+
+    });
+</script>
+-->
+{% endblock %}
