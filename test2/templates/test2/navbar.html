@@ -49,10 +49,10 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
 
         <li>
             <div class="dropdown">
-                <button class="dropbtn"><a href="{% url 'export:printing' %}">Reports</a></button>
+                <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'export:index' %}">Print Certificates</a>
+                    <a href="{% url 'export:printing' %}">Print Reports</a>
                     <a href="{% url 'export:index' %}">Archives</a>
                     <a href="{% url 'export:index' %}">Other</a>
                 </div>
