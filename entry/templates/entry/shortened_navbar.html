@@ -1,7 +1,7 @@
 Hi {{ user.first_name }} {{ user.last_name }}!<br>
 
 {% if user.is_superuser %}
-    <a href="{% url 'test2:index' %}"><< Back to Default View</a>
+    <a href="{% url 'data:index' %}"><< Back to Default View</a>
 {% else %}
     <a href="{% url 'entry:index' %}"><< Home</a>
 {%  endif %}

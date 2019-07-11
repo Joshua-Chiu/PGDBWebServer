@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 
 
-def test2(request):
-    return HttpResponseRedirect('/test2/')
+def data(request):
+    return HttpResponseRedirect('/data/')
 
 
 def accounts(request):

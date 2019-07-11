@@ -1,0 +1,23 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Settings{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/settings_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <h2>Settings</h2>
+    <div>
+        <h4><a href="{% url 'data:codes' %}">Add / Edit a code</a></h4>
+    </div>
+    <div>
+        <h4><a href="{% url 'data:plist' %}">Principal Lists Thresholds</a></h4>
+    </div>
+{% endblock %}
+

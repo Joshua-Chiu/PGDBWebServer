@@ -1,0 +1,24 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <br>
+    <button>Increase Grade</button>
+    <button onclick="location.href='{% url "admin:data_student_import" %}';">Import Students</button>
+    <button onclick="location.href='{% url "admin:data_student_add" %}';">Create New Student </button>
+
+    <br>
+    <br>
+
+    Recently Modified Students
+{% endblock %}

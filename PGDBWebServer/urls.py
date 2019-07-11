@@ -20,10 +20,10 @@ from django.views.generic import RedirectView
 from django.conf.urls import url
 
 urlpatterns = [
-    # path('', views.test2, name="test2_redirect"),
+    # path('', views.data, name="data_redirect"),
     path('', views.accounts, name="login"),
     path('entry/', include('entry.urls')),
-    path('test2/', include('test2.urls')),
+    path('data/', include('data.urls')),
     path('export/', include('export.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),

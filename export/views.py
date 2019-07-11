@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
-from test2.models import Student
+from data.models import Student
 from util.queryParse import parseQuery
 
 

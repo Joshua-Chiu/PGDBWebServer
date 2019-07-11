@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
-from test2.models import Student
+from data.models import Student
 from django.http import JsonResponse
 
 
@@ -63,7 +63,7 @@ def error(request):
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/test2')
+        return HttpResponseRedirect('/data')
 
 
 def get_student_name(request):

@@ -1,0 +1,128 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+{% load mathfilters %}
+
+{% block title %}{{ student.first }} {{ student.last }}{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/studentinfo_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    {% now "Y" as current_year %}
+    {% now "n" as current_month %}
+    <!--Student Info-->
+    <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
+    <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"Y" }}</strong></p>
+    <hr>
+    <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
+    {% for i in i|rjust:5 %}
+        {% for grade in student.grade_set.all %}
+            {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
+                {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0%}
+            {% endifequal %}
+        {% endfor %}
+    {% endfor %}
+
+
+    </form>
+{% endblock %}
+
+{% block javascript %}
+<!--Script for the getting post requests-->
+<script>
+function submitForms() {
+    document.getElementById("form0").submit();
+    //document.getElementById("form 08").submit();
+    //document.getElementById("form 09").submit();
+    //document.getElementById("form 10").submit();
+    //document.getElementById("form 11").submit();
+    //document.getElementById("form 12").submit();
+    }
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+
+<!--prevent submit or query from changing field-->
+<script>
+    let wasEmpty = false;
+    $(function(){
+        $('.scholar').keyup(function(e){
+            if(this.value.length >= 6 && wasEmpty){
+                submitForms();
+            }
+            if(this.value.length < 6){
+            wasEmpty = true;
+            }
+        });
+        $('.scholar').keypress(function(e){
+            if(e.which == 42){
+                query.focus();
+                return false;
+            }
+        });
+    });
+</script>
+
+<script>
+    $(".inputs").keyup(function () {
+    if (this.value.length == this.maxLength) {
+      $(this).next('.codes').focus();
+    }
+});
+    $(".codes").keyup(function () {
+    if (this.value.length == this.maxLength) {
+        submitForms();
+        this.value = ''
+    }
+});
+</script>
+<!--
+<script>
+    $(document).ready(function () {
+        $('input').keydown(function (e) {
+            if (e.keyCode == 39) {
+                $(this).next('input').focus();
+            }
+        });
+    });
+</script>
+<script>
+function nullify() {
+var txt;
+  if (confirm("This removes a student's qualification for the selected award")) {
+    txt = "Nullified!";
+  } else {
+    txt = "";
+  }
+  document.getElementById("nullification-status").innerHTML = txt;
+}
+</script>
+-->
+{% endblock %}
