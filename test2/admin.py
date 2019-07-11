@@ -20,7 +20,7 @@ class StudentResource(resources.ModelResource):
         export_order = ['student_num', 'first', 'last', 'legal', 'sex']
 
 
-class StudentAdmin(ImportMixin, admin.ModelAdmin):
+class StudentAdmin(ImportExportModelAdmin):
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.TSV)
 
