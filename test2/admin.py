@@ -1,11 +1,14 @@
 from django.contrib import admin
 from import_export import resources
 from .models import Student, PlistCutoff
-from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportModelAdmin, ImportMixin
 from django.dispatch import receiver
 from import_export.signals import post_import, post_export
 from import_export.formats import base_formats
-# admin.site.register(Student)
+from import_export.forms import ImportForm, ConfirmImportForm
+import datetime
+from django import forms
+
 admin.site.register(PlistCutoff)
 
 
@@ -17,28 +20,9 @@ class StudentResource(resources.ModelResource):
         export_order = ['student_num', 'first', 'last', 'legal', 'sex']
 
 
-class StudentAdmin(ImportExportModelAdmin):
+class StudentAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = StudentResource
-
-    def get_export_formats(self):
-        formats = (
-            base_formats.CSV,
-            base_formats.TSV,
-            base_formats.XLSX,
-            base_formats.ODS,
-        )
-        return [f for f in formats if f().can_export()]
-
-
-    def get_import_formats(self):
-        formats = (
-            base_formats.CSV,
-            base_formats.TSV,
-            base_formats.XLSX,
-            base_formats.ODS,
-        )
-        return [f for f in formats if f().can_export()]
-
+    formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.TSV)
 
 admin.site.register(Student, StudentAdmin)
 

@@ -38,7 +38,7 @@ class Student(models.Model):
     student_num = models.PositiveIntegerField(verbose_name='Student Number')
     homeroom = models.CharField(max_length=3, verbose_name='Homeroom')
     sex = models.CharField(max_length=1, verbose_name='Sex')
-    date_added = models.DateField(verbose_name='Date of entry into Point Grey')
+    date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     last_modified = models.DateField(auto_now=True)
 
     # please help me there are far too many functions and i just keep adding more
