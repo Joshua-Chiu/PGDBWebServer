@@ -14,3 +14,4 @@ test3/__pycache__
 .idea
 tags
 .tags
+.DS_Store
