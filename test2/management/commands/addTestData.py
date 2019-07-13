@@ -9,7 +9,7 @@ try:
         M_first = f.readline()[:-1].strip().split()
         F_first = f.readline()[:-1].strip().split()
         last = f.readline()[:-1].strip().split()
-except FileNotFoundError: 
+except FileNotFoundError:
     print("names.txt file not in current directory")
     raise FileNotFoundError
 
@@ -33,9 +33,10 @@ class Command(BaseCommand):
             student.last = last[r.randint(0, len(last) - 1)]
             student.homeroom = "{}{}".format(str(r.randint(8, 12)).zfill(2), r.choice(string.ascii_uppercase))
             student.student_num = r.randint(1, 100000)
-            student.date_added = timezone.now()
+            # student.date_added = timezone.now()
+            student.grad_year = timezone.now().year + 5 + 7 - int(student.homeroom[:2])
             student.save()
 
             for i in range(int(student.homeroom[:2]) - 7):
-                student.grade_set.create(grade=8 + i, start_year=timezone.now().year - i)
+                student.grade_set.create(grade=8 + i, start_year=timezone.now().year - int(student.homeroom[:2]) + 8 + i)
                 student.grade_set.get(grade=8 + i).scholar_set.create(term1=0, term2=0)

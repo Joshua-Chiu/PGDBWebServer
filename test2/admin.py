@@ -16,8 +16,8 @@ class StudentResource(resources.ModelResource):
     class Meta:
         model = Student
         import_id_fields = ('student_num',)
-        fields = ('first', 'last', 'legal', 'student_num', 'homeroom', 'sex')
-        export_order = ['student_num', 'first', 'last', 'legal', 'sex']
+        fields = ('first', 'last', 'legal', 'student_num', 'homeroom', 'sex', 'grad_year')
+        export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'grad_year']
 
 
 class StudentAdmin(ImportExportModelAdmin):

@@ -18,7 +18,7 @@
     {% now "n" as current_month %}
     <!--Student Info-->
     <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
-    <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Year Entered: <strong>{{ student.date_added|date:"Y" }}</strong></p>
+    <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | grad year: <strong>{{ student.grad_year}}</strong></p>
     <hr>
     <form action="{% url "test2:student_submit" student.id %}" id="form0" name="col form" method="post">
     {% for i in i|rjust:5 %}

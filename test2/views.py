@@ -40,7 +40,7 @@ def student_info(request, num):
     template = get_template('test2/student_info.html')
     context = {
         'student': Student.objects.get(id=num),
-        'plist': PlistCutoff.objects.get(year=datetime.datetime.now().year),
+        'plists': PlistCutoff.objects.all()
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

@@ -23,8 +23,12 @@ class PlistCutoff(models.Model):
     grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3)
     grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3)
 
+    def getCutoff(self, grade, term):
+        return getattr(self, f"grade_{grade}_T{term}")
+
     def __str__(self):
-        return str(self.year) + "'s Principal list cutoffs"
+        # return str(self.year) + "'s Principal list cutoffs"
+        return f"{self.year}-{self.year+1}'s Principal's list cutoffs"
 
     class Meta:
         verbose_name = 'Principal List Cutoff'
@@ -38,7 +42,8 @@ class Student(models.Model):
     student_num = models.PositiveIntegerField(verbose_name='Student Number')
     homeroom = models.CharField(max_length=3, verbose_name='Homeroom')
     sex = models.CharField(max_length=1, verbose_name='Sex')
-    date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
+    # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
+    grad_year = models.IntegerField()
     last_modified = models.DateField(auto_now=True)
 
     # please help me there are far too many functions and i just keep adding more
@@ -219,6 +224,14 @@ class Grade(models.Model):
 
     def __str__(self):
         return f"{self.grade} {self.start_year}"
+
+    @property
+    def plist_T1(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 1)
+
+    @property
+    def plist_T2(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
 
 class PointCodes(models.Model):

@@ -86,18 +86,20 @@
                     <br>
 
                     <label for="scholar">T1 Plist:
-                        {% ifequal grade "08" %}{{ plist.grade_8_T1 }}{% endifequal %}
-                        {% ifequal grade "09" %}{{ plist.grade_9_T1 }}{% endifequal %}
-                        {% ifequal grade "10" %}{{ plist.grade_10_T1 }}{% endifequal %}
-                        {% ifequal grade "11" %}{{ plist.grade_11_T1 }}{% endifequal %}
-                        {% ifequal grade "12" %}{{ plist.grade_12_T1 }}{% endifequal %}%
+                        {{ grade_object.plist_T1 }}
+                        <!-- {% ifequal grade "08" %}{{ grade_object.plist.grade_8_T1 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "09" %}{{ grade_object.plist.grade_9_T1 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "10" %}{{ grade_object.plist.grade_10_T1 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "11" %}{{ grade_object.plist.grade_11_T1 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "12" %}{{ grade_object.plist_T1 }}{% endifequal %}% -->
                     </label><br>
                     <label for="scholar">T2 Plist:
-                        {% ifequal grade "08" %}{{ plist.grade_8_T2 }}{% endifequal %}
-                        {% ifequal grade "09" %}{{ plist.grade_9_T2 }}{% endifequal %}
-                        {% ifequal grade "10" %}{{ plist.grade_10_T2 }}{% endifequal %}
-                        {% ifequal grade "11" %}{{ plist.grade_11_T2 }}{% endifequal %}
-                        {% ifequal grade "12" %}{{ plist.grade_12_T2 }}{% endifequal %}%
+                        {{ grade_object.plist_T2 }}
+                        <!-- {% ifequal grade "08" %}{{ plist.grade_8_T2 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "09" %}{{ plist.grade_9_T2 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "10" %}{{ plist.grade_10_T2 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "11" %}{{ plist.grade_11_T2 }}{% endifequal %} -->
+                        <!-- {% ifequal grade "12" %}{{ plist.grade_12_T2 }}{% endifequal %}% -->
                     </label>
             </td>
 
