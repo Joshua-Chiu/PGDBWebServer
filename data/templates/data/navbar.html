@@ -12,37 +12,37 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
         </li>
 
         <li>
-            <form action="{% url 'test2:search' %}">
+            <form action="{% url 'data:search' %}">
                 <input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()">
             </form>
         </li>
 
         <li>
-            <a href="{% url 'test2:help' %}">Help</a>
+            <a href="{% url 'data:help' %}">Help</a>
         </li>
 
         <li>
             <div class="dropdown">
-                <button class="dropbtn"><a href="{% url 'test2:index' %}">Student List</a></button>
+                <button class="dropbtn"><a href="{% url 'data:index' %}">Student List</a></button>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="/test2/search?query=grade%3A8">Grade 08</a>
-                    <a href="/test2/search?query=grade%3A9">Grade 09</a>
-                    <a href="/test2/search?query=grade%3A10">Grade 10</a>
-                    <a href="/test2/search?query=grade%3A11">Grade 11</a>
-                    <a href="/test2/search?query=grade%3A12">Grade 12</a>
+                    <a href="/data/search?query=grade%3A8">Grade 08</a>
+                    <a href="/data/search?query=grade%3A9">Grade 09</a>
+                    <a href="/data/search?query=grade%3A10">Grade 10</a>
+                    <a href="/data/search?query=grade%3A11">Grade 11</a>
+                    <a href="/data/search?query=grade%3A12">Grade 12</a>
                 </div>
             </div>
         </li>
 
         <li>
             <div class="dropdown">
-                <button class="dropbtn"><a href="{% url 'test2:settings' %}">Settings</a></button>
+                <button class="dropbtn"><a href="{% url 'data:settings' %}">Settings</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'test2:codes' %}">Codes</a>
-                    <a href="{% url 'test2:plist' %}">Plist</a>
+                    <a href="{% url 'data:codes' %}">Codes</a>
+                    <a href="{% url 'data:plist' %}">Plist</a>
                 </div>
             </div>
         </li>
@@ -65,11 +65,11 @@ Hi {{ user.first_name }} {{ user.last_name }}!<br>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="{% url 'test2:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
-                    <a type="submit" href="{% url 'test2:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'test2:autofocus' 3 %}">Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'test2:autofocus' 4 %}">Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'test2:autofocus' 5 %}">Scholar Term 2 {% ifequal user.autofocus 5 %}✔{% endifequal %}</a>
+                    <a href="{% url 'data:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
+                    <a type="submit" href="{% url 'data:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
+                    <a type="submit" href="{% url 'data:autofocus' 3 %}">Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
+                    <a type="submit" href="{% url 'data:autofocus' 4 %}">Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
+                    <a type="submit" href="{% url 'data:autofocus' 5 %}">Scholar Term 2 {% ifequal user.autofocus 5 %}✔{% endifequal %}</a>
                 </div>
             </div>
         </li>

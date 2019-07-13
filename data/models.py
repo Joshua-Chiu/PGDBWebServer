@@ -1,7 +1,7 @@
 from django.db import models
 import math
 import datetime
-# run manage.py makemigrations test2 && manage.py migrate to add to db
+# run manage.py makemigrations data && manage.py migrate to add to db
 
 
 class PlistCutoff(models.Model):

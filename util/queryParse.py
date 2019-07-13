@@ -1,4 +1,4 @@
-from test2.models import Student
+from data.models import Student
 from itertools import zip_longest
 
 def parseQuery(query):

@@ -1,4 +1,4 @@
 from django.contrib import admin
-from test2.models import Student, PointCodes
+from data.models import Student, PointCodes
 
 # Register your models here.

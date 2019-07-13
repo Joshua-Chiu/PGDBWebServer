@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from test2.models import Student, Grade
+from data.models import Student, Grade
 import random as r
 import string
 from django.utils import timezone

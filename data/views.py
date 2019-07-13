@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required()
 def search(request):
-    template = get_template('test2/search.html')
+    template = get_template('data/search.html')
     
     # if no query exists make an empty list
     if request.GET['query']:
@@ -25,7 +25,7 @@ def search(request):
     students = parseQuery(query)
 
     if len(students) == 1:
-        return HttpResponseRedirect(f"/test2/student/{students[0].id}")
+        return HttpResponseRedirect(f"/data/student/{students[0].id}")
     context = {
         'student_list': students,
         'query': request.GET['query']
@@ -37,7 +37,7 @@ def search(request):
 
 
 def student_info(request, num):
-    template = get_template('test2/student_info.html')
+    template = get_template('data/student_info.html')
     context = {
         'student': Student.objects.get(id=num),
         'plists': PlistCutoff.objects.all()
@@ -122,11 +122,11 @@ def student_submit(request, num):
                 grade = student.grade_set.get(grade=grade_num)
                 grade.points_set.create(type=typeClass, amount=amount)
 
-    return HttpResponseRedirect("/test2/student/{}".format(num))
+    return HttpResponseRedirect("/data/student/{}".format(num))
 
 
 def settings(request):
-    template = get_template('test2/settings.html')
+    template = get_template('data/settings.html')
     context = {
     }
     if request.user.is_superuser:
@@ -136,7 +136,7 @@ def settings(request):
 
 
 def codes(request):
-    template = get_template('test2/codes.html')
+    template = get_template('data/codes.html')
     context = {'codes': PointCodes.objects.order_by("catagory")}
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -145,7 +145,7 @@ def codes(request):
 
 
 def plist(request):
-    template = get_template('test2/plist.html')
+    template = get_template('data/plist.html')
     context = {
             'plist' : PlistCutoff.objects.all()[0],
             'year': datetime.datetime.now().year,
@@ -178,7 +178,7 @@ def plist_submit(request):
 
     plist.save()
 
-    return HttpResponseRedirect("/test2/settings/plist")
+    return HttpResponseRedirect("/data/settings/plist")
 
 
 def autofocus_submit(request, num):
@@ -187,7 +187,7 @@ def autofocus_submit(request, num):
     user.autofocus = num
     user.save()
 
-    return HttpResponseRedirect("/test2")
+    return HttpResponseRedirect("/data")
 
 
 def codes_submit(request):
@@ -216,11 +216,11 @@ def codes_submit(request):
         entry.description = code[2][1]
         entry.save()
 
-    return HttpResponseRedirect("/test2/settings/codes")
+    return HttpResponseRedirect("/data/settings/codes")
 
 
 def index(request):
-    template = get_template('test2/index.html')
+    template = get_template('data/index.html')
     context = {
         'student_list': Student.objects.all()
     }
@@ -234,7 +234,7 @@ def index(request):
 
 
 def help(request):
-    template = get_template('test2/help.html')
+    template = get_template('data/help.html')
     context = {}
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

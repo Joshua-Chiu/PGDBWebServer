@@ -1,10 +1,10 @@
-{% extends 'test2/base.html' %}
+{% extends 'data/base.html' %}
 {% load staticfiles %}
 
 {% block title %}Search{% endblock %}
 
 {% block navbar %}
-    {% include 'test2/navbar.html' %}
+    {% include 'data/navbar.html' %}
 {% endblock %}
 
 {% block stylesheet %}
@@ -40,10 +40,10 @@
             {% for student in student_list %}
                 <tr>
                     <td>
-                        <a href="{% url "test2:student_info" student.id %}">{{ student.last }}</a>
+                        <a href="{% url "data:student_info" student.id %}">{{ student.last }}</a>
                     </td>
                     <td>
-                        <a href="{% url "test2:student_info" student.id %}">{{ student.first }}</a>
+                        <a href="{% url "data:student_info" student.id %}">{{ student.first }}</a>
                     </td>
                     <td>
                         {{ student.student_num }}

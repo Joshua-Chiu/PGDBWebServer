@@ -1,11 +1,11 @@
 
-{% extends 'test2/base.html' %}
+{% extends 'data/base.html' %}
 {% load staticfiles %}
 
 {% block title %}Code Definitions{% endblock %}
 
 {% block navbar %}
-    {% include 'test2/navbar.html' %}
+    {% include 'data/navbar.html' %}
 {% endblock %}
 
 {% block stylesheet %}
@@ -15,7 +15,7 @@
 {% block content%}
     <h2>Codes</h2>
     <p>Note: The student view can only display approximately 15 characters per line.</p>
-    <form action="{% url "test2:codes_submit" %}" method="post">
+    <form action="{% url "data:codes_submit" %}" method="post">
     {% csrf_token %}
     {% for code in codes %}
         <fieldset>

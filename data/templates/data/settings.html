@@ -1,10 +1,10 @@
-{% extends 'test2/base.html' %}
+{% extends 'data/base.html' %}
 {% load staticfiles %}
 
 {% block title %}Settings{% endblock %}
 
 {% block navbar %}
-    {% include 'test2/navbar.html' %}
+    {% include 'data/navbar.html' %}
 {% endblock %}
 
 {% block stylesheet %}
@@ -14,10 +14,10 @@
 {% block content%}
     <h2>Settings</h2>
     <div>
-        <h4><a href="{% url 'test2:codes' %}">Add / Edit a code</a></h4>
+        <h4><a href="{% url 'data:codes' %}">Add / Edit a code</a></h4>
     </div>
     <div>
-        <h4><a href="{% url 'test2:plist' %}">Principal Lists Thresholds</a></h4>
+        <h4><a href="{% url 'data:plist' %}">Principal Lists Thresholds</a></h4>
     </div>
 {% endblock %}
 
