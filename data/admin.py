@@ -5,6 +5,7 @@ from import_export.admin import ImportExportModelAdmin, ImportMixin
 from django.dispatch import receiver
 from import_export.signals import post_import, post_export
 from import_export.formats import base_formats
+from django.utils import timezone
 from import_export.forms import ImportForm, ConfirmImportForm
 import datetime
 from django import forms
@@ -14,10 +15,14 @@ admin.site.register(PlistCutoff)
 
 def increase_grade(modeladmin, request, queryset):
     for student in queryset:
-        student.homeroom = str(int(student.homeroom[:-1]) + 1) + student.homeroom[-1:]
-        if int(student.homeroom[:-1]) > 12:
+        new_grade = int(student.homeroom[:-1])
+        student.homeroom = str(new_grade).zfill(2) + student.homeroom[-1:]
+
+        if new_grade > 12:
             pass  # mark inactive
         else:
+            student.grade_set.create(grade=new_grade, start_year=timezone.now().year)
+            student.grade_set.get(grade=new_grade).scholar_set.create(term1=0, term2=0)
             student.save()  # also create new grade set
 
 
