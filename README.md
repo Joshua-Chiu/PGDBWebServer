@@ -12,10 +12,11 @@ The fall
 ## things that should be fixed at some point
 
 - [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom letter attributes
-- [ ] make student have a oneToOne scholar instead of a whole scholar_set
 - [ ] remove the entire JQuery from the git repository
 - [ ] modular non hard-coded way of making awards/pins
 - [ ] fix last modified date on Student so it updates when points are added
+- [ ] remove Scholar class and make it's attributes part of Grade
+- [ ] instead of Grade pointing to a student have the Student class have five grade attributes
 
 ## Work due by December
 * Cumulative Awards [Done]
