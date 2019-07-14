@@ -1,4 +1,4 @@
-Hi {{ user.first_name }} {{ user.last_name }} !<br>
+Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }} {% else %}{{ user.username }}{% endif %}!<br>
 <a href="{% url 'logout' %}">Logout</a>
 
 <div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
