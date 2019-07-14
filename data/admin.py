@@ -9,6 +9,8 @@ from django.utils import timezone
 from import_export.forms import ImportForm, ConfirmImportForm
 import datetime
 from django import forms
+import csv
+from django.http import HttpResponse
 
 admin.site.register(PlistCutoff)
 
@@ -30,6 +32,23 @@ def mark_inactive(modeladmin, request, queryset):
     pass
 
 
+def export_as_tsv(modeladmin, request, queryset):
+    field_names = modeladmin.resource_class.Meta.fields
+    file_name = "student_export_thing" # TODO better name include date maybe
+
+    response = HttpResponse(content_type='text/tsv')
+    response['Content-Disposition'] = f'attachment; filename={file_name}.tsv'
+    writer = csv.writer(response, dialect='excel-tab')
+
+    writer.writerow(field_names)
+    for obj in queryset:
+        row = writer.writerow([getattr(obj, field) for field in field_names])
+
+    return response
+
+export_as_tsv.short_description = "Export selected as tsv"
+
+
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
 
 
@@ -41,12 +60,12 @@ class StudentResource(resources.ModelResource):
         export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'homeroom', 'grad_year']
 
 
-class StudentAdmin(ImportExportModelAdmin):
+class StudentAdmin(admin.ModelAdmin):
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.TSV)
     list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
     list_display_links = ('last', 'first')
-    actions = [increase_grade, mark_inactive, ]
+    actions = [increase_grade, export_as_tsv, mark_inactive]
 
 
 admin.site.register(Student, StudentAdmin)
@@ -54,8 +73,8 @@ admin.site.register(Student, StudentAdmin)
 
 @receiver(post_import)
 def _post_import(model, **kwargs):
-    # model is the actual model instance which after import
-    pass
+    print(model)
+    print(kwargs)
 
 
 @receiver(post_export)
