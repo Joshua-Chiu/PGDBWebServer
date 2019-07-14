@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import resources
-from .models import Student, PlistCutoff
+from .models import Student, PlistCutoff, Grade
 from import_export.admin import ImportExportModelAdmin, ImportMixin
 from django.dispatch import receiver
 from import_export.signals import post_import, post_export
@@ -10,6 +10,22 @@ import datetime
 from django import forms
 
 admin.site.register(PlistCutoff)
+
+
+def increase_grade(modeladmin, request, queryset):
+    for student in queryset:
+        student.homeroom = str(int(student.homeroom[:-1]) + 1) + student.homeroom[-1:]
+        if int(student.homeroom[:-1]) > 12:
+            pass  # mark inactive
+        else:
+            student.save()  # also create new grade set
+
+
+def mark_inactive(modeladmin, request, queryset):
+    pass
+
+
+increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
 
 
 class StudentResource(resources.ModelResource):
@@ -23,6 +39,10 @@ class StudentResource(resources.ModelResource):
 class StudentAdmin(ImportExportModelAdmin):
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.TSV)
+    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
+    list_display_links = ('last', 'first')
+    actions = [increase_grade, mark_inactive, ]
+
 
 admin.site.register(Student, StudentAdmin)
 

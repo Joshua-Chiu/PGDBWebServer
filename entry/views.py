@@ -75,7 +75,8 @@ def upload_file(request, point_catagory):
                     continue
 
                 # print(line.decode("utf-8").strip())
-                snum, code, amount = line.decode("utf-8").strip().split("\t")
+                print(line.decode("utf-8").strip().split("\t"))
+                snum, code, amount = line.decode("utf-8").strip().split("\t")[:3]
 
                 student = Student.objects.get(student_num=snum)
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
