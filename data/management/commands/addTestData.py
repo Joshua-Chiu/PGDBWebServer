@@ -34,7 +34,7 @@ class Command(BaseCommand):
             student.homeroom = "{}{}".format(str(r.randint(8, 12)).zfill(2), r.choice(string.ascii_uppercase))
             student.student_num = r.randint(1, 100000)
             # student.date_added = timezone.now()
-            student.grad_year = timezone.now().year + 5 + 7 - int(student.homeroom[:2])
+            student.grad_year = timezone.now().year + 5 + 7 - int(student.homeroom[:2]) + 1
             student.save()
 
             for i in range(int(student.homeroom[:2]) - 7):
