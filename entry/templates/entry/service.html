@@ -23,6 +23,11 @@
                     Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Hours: <a id="hours" class="hours">NO HOURS DOCUMENTED</a> | Type: <a id="code" class="code">NO CODE</a>
                 </fieldset>
             </form>
+            <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
+              <input type="submit" value="Upload file" name="submit">
+              <input type="file" name="file" id="file">
+              {% csrf_token %}
+            </form>
     </body>
 {% endblock %}
 {% block javascript %}

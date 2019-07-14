@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
-from data.models import Student
+from data.models import Student, PointCodes
 from django.http import JsonResponse
 
 
@@ -64,6 +64,32 @@ def error(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/data')
+
+
+def upload_file(request, point_catagory):
+    if request.method == "POST":
+        if "file" in request.FILES:
+            for line in request.FILES['file']:
+                #if it's the start line skip it
+                if line.decode("utf-8") == "student_number	code	amount\n":
+                    continue
+
+                # print(line.decode("utf-8").strip())
+                snum, code, amount = line.decode("utf-8").strip().split("\t")
+
+                student = Student.objects.get(student_num=snum)
+                grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+
+                # create point type if missing
+                try:
+                    point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
+                except PointCodes.DoesNotExist:
+                    point_type = PointCodes(catagory=point_catagory, code=code, description="")
+                    point_type.save()
+
+                grade.points_set.create(type=point_type, amount=amount)
+
+    return HttpResponseRedirect('/entry/service')
 
 
 def get_student_name(request):
