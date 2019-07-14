@@ -38,13 +38,13 @@
             <td rowspan="4">
                 <!-- get current year-->
                 {% if month < "8" %}
+                    {{ year|sub:current_grade|add:grade }}
+                    <br>
                     {{ year|sub:current_grade|add:grade|add:"-1" }}
-                    <br>
-                    {{ year|sub:current_grade|add:grade }}
                 {% else %}
-                    {{ year|sub:current_grade|add:grade }}
-                    <br>
                     {{ year|sub:current_grade|add:grade|add:"1" }}
+                    <br>
+                    {{ year|sub:current_grade|add:grade }}
                 {% endif %}
                 <br>
                     <!--Table left content-->
@@ -86,20 +86,10 @@
                     <br>
 
                     <label for="scholar">T1 Plist:
-                        {{ grade_object.plist_T1 }}
-                        <!-- {% ifequal grade "08" %}{{ grade_object.plist.grade_8_T1 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "09" %}{{ grade_object.plist.grade_9_T1 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "10" %}{{ grade_object.plist.grade_10_T1 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "11" %}{{ grade_object.plist.grade_11_T1 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "12" %}{{ grade_object.plist_T1 }}{% endifequal %}% -->
+                        {% if grade_object.plist_T1 %}{{ grade_object.plist_T1 }}{% else %}<a href="{% url "admin:data_plistcutoff_add" %}">Create</a>{% endif %}
                     </label><br>
                     <label for="scholar">T2 Plist:
                         {{ grade_object.plist_T2 }}
-                        <!-- {% ifequal grade "08" %}{{ plist.grade_8_T2 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "09" %}{{ plist.grade_9_T2 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "10" %}{{ plist.grade_10_T2 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "11" %}{{ plist.grade_11_T2 }}{% endifequal %} -->
-                        <!-- {% ifequal grade "12" %}{{ plist.grade_12_T2 }}{% endifequal %}% -->
                     </label>
             </td>
 
@@ -108,7 +98,7 @@
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
                 {% if grade_object.AT_total >= 9.5 %}Athletics{% endif %}<br>
                 {% if grade_object.FA_total >= 9.5 %}Fine Arts{% endif %}<br>
-                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}Scholarship {% if scholar.term1 >= 0 and scholar.term2 >= 0 %}PL{% endif %}{% endif %}
+                {% if scholar.term1 >= 79.45 and scholar.term2 >= 79.45 %}Scholarship {% if scholar.term1 >= grade_object.plist_T1 and scholar.term2 >= grade_object.plist_T2 %}PL{% endif %}{% endif %}
 
 <br>
             </td>
@@ -178,7 +168,7 @@
             </table>
         </td>
         <td height="15" colspan="2">
-            <strong>Pins</strong>
+            <strong>Cumulative Awards</strong>
         </td>
     </tr>
 

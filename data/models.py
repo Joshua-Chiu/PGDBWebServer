@@ -214,7 +214,7 @@ class Grade(models.Model):
         return toPoints(self.scholar_set.all()[0].term1) + toPoints(self.scholar_set.all()[0].term2)
 
     @property
-    def honourrole(self):
+    def honourroll(self):
         return self.SC_total != 0
 
     @property
@@ -276,4 +276,3 @@ class Certificates(models.Model):
     honour = models.BooleanField()
     p_list = models.BooleanField()
     fine_arts = models.BooleanField()
-

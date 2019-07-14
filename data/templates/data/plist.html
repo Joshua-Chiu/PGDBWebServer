@@ -17,21 +17,20 @@
 
     <form action="{% url "data:plist_submit" %}" name="form0" name="form" method="post">
     {%csrf_token%}
-    <table border="1" style="float: left">
-            <tr><th colspan="3">Current Year {% if month > "7" %}
-                ({{ year }} - {{ year|add:1 }})
-                {% else %}
-                ({{ year|add:-1 }} - {{ year }})
-            {% endif %}</th></tr>
+
+    {% for year in plist %}
+        <table border="1" style="float: left">
+            <tr><th colspan="3">{{ year.year }} - {{ year.year|add:1 }}</th></tr>
             <tr><th>Grade</th><th>Term 1</th><th>Term 2</th></tr>
-            <tr><td>8</td><td><input name="8 1" type="number" value="{{ plist.grade_8_T1 }}" step="0.001"></td><td><input name="8 2" type="number" value="{{ plist.grade_8_T2 }}" step="0.001"></td></tr>
-            <tr><td>9</td><td><input name="9 1" type="number" value="{{ plist.grade_9_T1 }}" step="0.001"></td><td><input name="9 2" type="number" value="{{ plist.grade_9_T2 }}" step="0.001"></td></tr>
-            <tr><td>10</td><td><input name="10 1" type="number" value="{{ plist.grade_10_T1 }}" step="0.001"></td><td><input name="10 2" type="number" value="{{ plist.grade_10_T2 }}" step="0.001"></td></tr>
-            <tr><td>11</td><td><input name="11 1" type="number" value="{{ plist.grade_11_T1 }}" step="0.001"></td><td><input name="11 2" type="number" value="{{ plist.grade_11_T2 }}" step="0.001"></td></tr>
-            <tr><td>12</td><td><input name="12 1" type="number" value="{{ plist.grade_12_T1 }}" step="0.001"></td><td><input name="12 2" type="number" value="{{ plist.grade_12_T2 }}" step="0.001"></td></tr>
-    </table>
+            <tr><td>8</td><td><input name="{{ year.year }} 8 1" type="number" value="{{ year.grade_8_T1 }}" step="0.001"></td><td><input name="{{ year.year }} 8 2" type="number" value="{{ year.grade_8_T2 }}" step="0.001"></td></tr>
+            <tr><td>9</td><td><input name="{{ year.year }} 9 1" type="number" value="{{ year.grade_9_T1 }}" step="0.001"></td><td><input name="{{ year.year }} 9 2" type="number" value="{{ year.grade_9_T2 }}" step="0.001"></td></tr>
+            <tr><td>10</td><td><input name="{{ year.year }} 10 1" type="number" value="{{ year.grade_10_T1 }}" step="0.001"></td><td><input name="{{ year.year }} 10 2" type="number" value="{{ year.grade_10_T2 }}" step="0.001"></td></tr>
+            <tr><td>11</td><td><input name="{{ year.year }} 11 1" type="number" value="{{ year.grade_11_T1 }}" step="0.001"></td><td><input name="{{ year.year }} 11 2" type="number" value="{{ year.grade_11_T2 }}" step="0.001"></td></tr>
+            <tr><td>12</td><td><input name="{{ year.year }} 12 1" type="number" value="{{ year.grade_12_T1 }}" step="0.001"></td><td><input name="{{ year.year }} 12 2" type="number" value="{{ year.grade_12_T2 }}" step="0.001"></td></tr>
+        </table>
+    {% endfor %}
 
-    <input type="submit">
-
+    <input style="clear: both" type="submit">
     </form>
+
 {% endblock %}

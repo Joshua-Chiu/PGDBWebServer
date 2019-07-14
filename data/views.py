@@ -48,6 +48,7 @@ def student_info(request, num):
         return HttpResponseRedirect('/')
 
 
+@login_required
 def student_submit(request, num):
     student = Student.objects.get(id=num)
     items = list(request.POST.items())[1:]
@@ -75,7 +76,7 @@ def student_submit(request, num):
 
     # points and codes
     if request.method == 'POST':
-        print("received POST request")
+        # print("received POST request")
         # for k, v in request.POST.items():
         #     print(k, "|", v)
 
@@ -147,7 +148,7 @@ def codes(request):
 def plist(request):
     template = get_template('data/plist.html')
     context = {
-            'plist' : PlistCutoff.objects.all()[0],
+            'plist' : PlistCutoff.objects.all(),
             'year': datetime.datetime.now().year,
             'month': datetime.datetime.now().month
             }
@@ -158,25 +159,26 @@ def plist(request):
 
 
 def plist_submit(request):
-    plist = PlistCutoff.objects.all()[0]
+    plist = PlistCutoff.objects.all()
     items = request.POST
 
-    plist.grade_8_T1 = items["8 1"]
-    plist.grade_8_T2 = items["8 2"]
+    for year in plist:
+        year.grade_8_T1 = items[str(year.year) + " 8 1"]
+        year.grade_8_T2 = items[str(year.year) + " 8 2"]
 
-    plist.grade_9_T1 = items["9 1"]
-    plist.grade_9_T2 = items["9 2"]
+        year.grade_9_T1 = items[str(year.year) + " 9 1"]
+        year.grade_9_T2 = items[str(year.year) + " 9 2"]
 
-    plist.grade_10_T1 = items["10 1"]
-    plist.grade_10_t2 = items["10 2"]
+        year.grade_10_T1 = items[str(year.year) + " 10 1"]
+        year.grade_10_T2 = items[str(year.year) + " 10 2"]
 
-    plist.grade_11_T1 = items["11 1"]
-    plist.grade_11_T2 = items["11 2"]
+        year.grade_11_T1 = items[str(year.year) + " 11 1"]
+        year.grade_11_T2 = items[str(year.year) + " 11 2"]
 
-    plist.grade_12_T1 = items["12 1"]
-    plist.grade_12_T2 = items["12 2"]
+        year.grade_12_T1 = items[str(year.year) + " 12 1"]
+        year.grade_12_T2 = items[str(year.year) + " 12 2"]
 
-    plist.save()
+        year.save()
 
     return HttpResponseRedirect("/data/settings/plist")
 
