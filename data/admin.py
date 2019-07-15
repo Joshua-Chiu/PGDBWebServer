@@ -10,7 +10,9 @@ from import_export.forms import ImportForm, ConfirmImportForm
 import datetime
 from django import forms
 import csv
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.conf.urls import url, include
+from django.template.loader import get_template
 
 admin.site.register(PlistCutoff)
 
@@ -36,9 +38,9 @@ def export_as_tsv(modeladmin, request, queryset):
     field_names = modeladmin.resource_class.Meta.fields
     file_name = "student_export_thing" # TODO better name include date maybe
 
-    response = HttpResponse(content_type='text/tsv')
-    response['Content-Disposition'] = f'attachment; filename={file_name}.tsv'
-    writer = csv.writer(response, dialect='excel-tab')
+    response = HttpResponse(content_type="text/tsv")
+    response['Content-Disposition'] = f"attachment; filename={file_name}.tsv"
+    writer = csv.writer(response, dialect="excel-tab", lineterminator="\n")
 
     writer.writerow(field_names)
     for obj in queryset:
@@ -68,14 +70,52 @@ class StudentAdmin(admin.ModelAdmin):
     actions = [increase_grade, export_as_tsv, mark_inactive]
 
 
+    def import_as_tsv(self, request):
+        if "file" in request.FILES:
+            print("asdf")
+            for line in request.FILES['file']:
+                #if it's the start line skip it
+                if line.decode("utf-8") == \
+                    "first	last	legal	student_num	homeroom	sex	grad_year\n":
+                    continue
+
+                print(line.decode("utf-8").strip().split("\t"))
+                first, last, legal, student_num, homeroom, sex, grad_year = line.decode("utf-8").strip().split("\t")
+                # skip if student exists
+                if Student.objects.filter(student_num=int(student_num)):
+                    print(f"student {student_num} already exists")
+                    #continue
+
+                student = Student(first=first, last=last, legal=legal, student_num=student_num,
+                                  homeroom=homeroom, sex=sex, grad_year=grad_year)
+                student.save()
+
+                # add grades
+                for i in range(int(student.homeroom[:2]) - 7):
+                    student.grade_set.create(grade=8+i,
+                                             start_year=timezone.now().year-int(student.homeroom[:2])+8+i)
+                    student.grade_set.get(grade=8+i).scholar_set.create(term1=0, term2=0)
+
+                student.save()
+
+        template = get_template('admin/data/student/import.html')
+        context = {}
+        return HttpResponse(template.render(context, request))
+
+    def get_urls(self):
+        urls = super(StudentAdmin, self).get_urls()
+        my_urls = [
+            url(r"^import/$", self.import_as_tsv)
+        ]
+        return my_urls + urls
+
+
 admin.site.register(Student, StudentAdmin)
 
 
 @receiver(post_import)
 def _post_import(model, **kwargs):
-    print(model)
-    print(kwargs)
-
+    pass
 
 @receiver(post_export)
 def _post_export(model, **kwargs):
