@@ -12,10 +12,19 @@
 {% endblock %}
 
 {% block content%}
-    I would like to enter: <br>
-    <a href="{% url 'entry:service' %}">Service Points</a><br>
-    <a href="{% url 'entry:athletics' %}">Athletics Points</a><br>
-    <a href="{% url 'entry:fine-arts' %}">Fine Art Points</a><br>
-    <a href="{% url 'entry:scholar' %}">Scholarship Points</a>
+    <div id="entry">
+        I would like to enter: <br>
+        <a href="{% url 'entry:service' %}">Service Points</a><br>
+        <a href="{% url 'entry:athletics' %}">Athletics Points</a><br>
+        <a href="{% url 'entry:fine-arts' %}">Fine Art Points</a><br>
+        <a href="{% url 'entry:scholar' %}">Scholarship Points</a>
+    </div>
+    <div id="recent-actions">
+        My Recent Actions:
+
+    </div>
 {% endblock %}
+
+
+
 {% block javascript %}{% endblock %}

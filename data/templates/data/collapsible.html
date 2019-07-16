@@ -47,7 +47,7 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %}>
+                <input class="inputs" max="1000" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %}>
                 <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2">
             </td>
 
@@ -59,7 +59,7 @@
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %}>
+                <input class="inputs" max="10" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %}>
                 <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2">
             </td>
 

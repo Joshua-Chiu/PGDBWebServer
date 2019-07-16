@@ -17,8 +17,8 @@
     {% now "Y" as current_year %}
     {% now "n" as current_month %}
     <!--Student Info-->
-    <h2><strong>{{ student.last }}, {{ student.first }} ({{ student.legal }})</strong></h2>
-    <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Grad Year: <strong>{{ student.grad_year}}</strong></p>
+    <h2><strong><a>{{ student.last }}, {{ student.first }} ({{ student.legal }})</a></strong></h2>
+    <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Grad Year: <strong>{{ student.grad_year}}</strong> | <a href="{% url 'admin:data_student_change' student.id %}">Edit</a></p>
     <hr>
     <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
     {% for i in i|rjust:5 %}
@@ -75,7 +75,9 @@ function post(path, params, method) {
     $(function(){
         $('.scholar').keyup(function(e){
             if(this.value.length >= 6 && wasEmpty){
-                submitForms();
+                if(parseFloat(this.value) <= this.max){
+                    submitForms();
+                }
             }
             if(this.value.length < 6){
             wasEmpty = true;
@@ -92,7 +94,7 @@ function post(path, params, method) {
 
 <script>
     $(".inputs").keyup(function () {
-    if (this.value.length == this.maxLength) {
+    if (this.value.length == this.maxLength && parseFloat(this.value) <= this.max) {
       $(this).next('.codes').focus();
     }
 });

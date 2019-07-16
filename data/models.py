@@ -41,7 +41,7 @@ class Student(models.Model):
     legal = models.CharField(max_length=30, verbose_name='Legal Name')
     student_num = models.PositiveIntegerField(verbose_name='Student Number', help_text="This number must be unique as it is used to identify students")
     homeroom = models.CharField(max_length=3, verbose_name='Homeroom', help_text="Do not change unless you know what you are doing")
-    sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accexpts any letter of the alphabet")
+    sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accepts any letter of the alphabet")
     # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     last_modified = models.DateField(auto_now=True)
