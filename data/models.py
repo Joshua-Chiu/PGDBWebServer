@@ -88,8 +88,8 @@ class Student(models.Model):
 
     @property
     def all_11_12_total(self):
-        total = self.SC_11_12_total
-        total += self.SE_11_12_total
+        total = self.SE_11_12_total
+        total += self.AT_11_12_total
         total += self.FA_11_12_total
         total += self.SC_11_12_total
         return total
