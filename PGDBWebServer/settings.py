@@ -77,6 +77,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'PGDBWebServer.wsgi.application'
 
 
@@ -144,8 +145,8 @@ LOGIN_REDIRECT_URL = '/data/'
 LOGOUT_REDIRECT_URL = '/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SECURITY_WARN_AFTER = 1800
-SESSION_SECURITY_EXPIRE_AFTER = 1800
+SESSION_SECURITY_WARN_AFTER = 540
+SESSION_SECURITY_EXPIRE_AFTER = 600
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -154,6 +155,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
+# SECURE_SSL_REDIRECT = True, un comment for deployment
 
 # Extra lookup directories for collectstatic to find static files
 STATICFILES_DIRS = (
