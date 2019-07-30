@@ -30,6 +30,9 @@ def increase_grade(modeladmin, request, queryset):
             student.save()  # also create new grade set
 
 
+increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+
+
 def mark_inactive(modeladmin, request, queryset):
     pass
 
@@ -48,10 +51,8 @@ def export_as_tsv(modeladmin, request, queryset):
 
     return response
 
-export_as_tsv.short_description = "Export selected as tsv"
 
-
-increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+export_as_tsv.short_description = "Export Selected as TSV"
 
 
 class StudentResource(resources.ModelResource):
@@ -69,14 +70,13 @@ class StudentAdmin(admin.ModelAdmin):
     list_display_links = ('last', 'first')
     actions = [increase_grade, export_as_tsv, mark_inactive]
 
-
     def import_as_tsv(self, request):
         if "file" in request.FILES:
             print("asdf")
             for line in request.FILES['file']:
-                #if it's the start line skip it
+                # if it's the start line skip it
                 if line.decode("utf-8") == \
-                    "first	last	legal	student_num	homeroom	sex	grad_year\n":
+                        "first	last	legal	student_num	homeroom	sex	grad_year\n":
                     continue
 
                 print(line.decode("utf-8").strip().split("\t"))
@@ -121,3 +121,9 @@ def _post_import(model, **kwargs):
 def _post_export(model, **kwargs):
     # model is the actual model instance which after export
     pass
+
+
+class DataAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        print(obj)
+        super().save_model(request, obj, form, change)

@@ -1,5 +1,5 @@
 {% load staticfiles %}
-{% include 'session_security/all.html' %}
+{% load session_security_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
     <script src="{% static 'Javascript/sorttable.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% include 'session_security/all.html' %}
     {% block stylesheet %}{% endblock %}
 </head>
 
