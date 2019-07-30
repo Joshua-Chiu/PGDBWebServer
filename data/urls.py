@@ -14,6 +14,8 @@ urlpatterns = [
     path('settings/codes/submit', views.codes_submit, name='codes_submit'),
     path('settings/plist_submit', views.plist_submit, name='plist_submit'),
     path('help', views.help, name='help'),
-    path('export', views.export, name='export'),
+    path('archive', views.archive, name='archive'),
+    path('archive_file', views.archive_file, name='archive_file'),
+    path('archive_submit', views.archive_submit, name='archive_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
 ]

@@ -126,6 +126,76 @@ def student_submit(request, num):
     return HttpResponseRedirect("/data/student/{}".format(num))
 
 
+def archive(request):
+    template = get_template('data/archive.html')
+    context = {}
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
+
+
+def archive_submit(request):
+        return HttpResponseRedirect('/data/archive')
+
+def archive_file(request):
+    if not "query" in request.POST:
+        raise Http404
+    query = request.POST['query']
+
+    print(f"query={query}")
+
+    # fileType = request.GET['filetype']
+
+    student_list = parseQuery(query)
+
+    # xml_file = io.StringIO("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
+
+    relevent_plists = []
+
+    root = ET.Element('PGDB')
+
+    students = ET.SubElement(root, "students")
+    for student in student_list:
+        student_tag = ET.SubElement(students, 'student')
+        ET.SubElement(student_tag, 'number').text = str(student.student_num)
+        ET.SubElement(student_tag, 'current_grade').text = str(student.homeroom[:-1])
+        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
+        ET.SubElement(student_tag, 'first').text = student.first
+        ET.SubElement(student_tag, 'last').text = student.last
+        ET.SubElement(student_tag, 'legal_name').text = student.legal
+        ET.SubElement(student_tag, 'sex').text = student.sex
+        ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
+
+        grades = ET.SubElement(student_tag, 'grades')
+        for grade in student.grade_set.all():
+            grade_tag = ET.SubElement(grades, 'grade')
+
+            ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
+            ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
+            ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
+
+            if grade.start_year not in relevent_plists and \
+                    len(PlistCutoff.objects.filter(year=grade.start_year)) == 1:
+                        relevent_plists.append(grade.start_year)
+
+    print(relevent_plists)
+
+    plists = ET.SubElement(root, "plists")
+    for plist in relevent_plists:
+        plist_tag = ET.SubElement(plists, 'plist')
+
+        ET.SubElement(plist_tag, 'year').text = str(plist)
+
+    xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
+    xml_file = io.StringIO(xml_str)
+
+    response = HttpResponse(xml_file, content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename=students.pgdb'
+
+    return response
+
+
 def settings(request):
     template = get_template('data/settings.html')
     context = {
@@ -242,35 +312,3 @@ def help(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
-
-
-def export(request):
-    if not "query" in request.GET:
-        raise Http404
-    query = request.GET['query']
-
-    # fileType = request.GET['filetype']
-
-    student_list = parseQuery(query)
-
-    # xml_file = io.StringIO("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
-
-    root = ET.Element('students')
-    for student in student_list:
-        student_tag = ET.SubElement(root, 'student')
-        ET.SubElement(student_tag, 'number').text = str(student.student_num)
-        ET.SubElement(student_tag, 'currentGrade').text = str(student.homeroom[:-1])
-        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
-        ET.SubElement(student_tag, 'first').text = student.first
-        ET.SubElement(student_tag, 'last').text = student.last
-        ET.SubElement(student_tag, 'legalName').text = student.legal
-        ET.SubElement(student_tag, 'sex').text = student.sex
-        ET.SubElement(student_tag, 'creationDate').text = str(student.date_added)
-
-    xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
-    xml_file = io.StringIO(xml_str)
-
-    response = HttpResponse(xml_file, content_type='application/xml')
-    response['Content-Disposition'] = 'attachment; filename=students.xml'
-
-    return response
