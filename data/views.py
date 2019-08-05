@@ -117,7 +117,7 @@ def student_submit(request, num):
                 try:
                     typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
                 except PointCodes.DoesNotExist as e:
-                    typeClass = PointCodes(catagory=type, code=code, description="")
+                    typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
                     typeClass.save()
 
                 grade = student.grade_set.get(grade=grade_num)
