@@ -136,7 +136,7 @@ def archive(request):
 
 
 def archive_submit(request):
-        return HttpResponseRedirect('/data/archive')
+    return HttpResponseRedirect('/data/archive')
 
 def archive_file(request):
     if not "query" in request.POST:
@@ -218,7 +218,7 @@ def codes(request):
 def plist(request):
     template = get_template('data/plist.html')
     context = {
-            'plist' : PlistCutoff.objects.all(),
+            'plist': PlistCutoff.objects.all(),
             'year': datetime.datetime.now().year,
             'month': datetime.datetime.now().month
             }

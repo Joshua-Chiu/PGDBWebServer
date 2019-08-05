@@ -1,5 +1,26 @@
-<form method="post" enctype="multipart/form-data">
-  <input type="submit" value="Upload file" name="submit">
-  <input type="file" name="file" id="file">
-  {% csrf_token %}
-</form>
+{% extends 'admin/base_site.html' %}
+{% load i18n static %}
+{% block title %}Import | {{ site_title }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a> &rsaquo;
+<a href="{% url 'admin:index' %}">{% trans 'Data' %}</a> &rsaquo;
+<a href="{% url 'admin:index' %}">{% trans 'Students' %}</a> &rsaquo;
+Import
+</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        <input type="submit" value="Upload file" name="submit">
+        <input type="file" name="file" id="file">
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
+

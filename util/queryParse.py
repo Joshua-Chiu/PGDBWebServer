@@ -60,7 +60,7 @@ def parseQuery(query):
                         for s in students:
                             if not s.bigblock_award:
                                 new_students = new_students.exclude(id=s.id)
-                    if v == "honourrole":
+                    if v == "honourroll":
                         for s in students:
                             if not s.grade_set.get(grade=s.homeroom[:2]).honourrole:
                                 new_students = new_students.exclude(id=s.id)

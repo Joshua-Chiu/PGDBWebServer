@@ -53,7 +53,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
                     <a href="{% url 'export:printing' %}">Print Reports</a>
-                    <a href="{% url 'export:index' %}">Archives</a>
+                    <a href="{% url 'data:archive' %}">Archives</a>
                     <a href="{% url 'export:index' %}">Other</a>
                 </div>
             </div>
