@@ -12,5 +12,17 @@
 {% endblock %}
 
 {% block content%}
+    <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
+        <input type="submit" value="Upload file" name="submit">
+        <input type="file" name="file" id="file">
+        {% csrf_token %}
+    </form>
 
+    <form method="post" action="{% url 'data:archive_file'%}">
+        <input type="submit" value="do stuff" name="submit">
+        <input type="text" name="query" id="query">
+        {% csrf_token %}
+    </form>
 {% endblock %}
+
+

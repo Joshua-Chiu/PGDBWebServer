@@ -145,12 +145,9 @@ def archive_file(request):
 
     print(f"query={query}")
 
-    # fileType = request.GET['filetype']
-
     student_list = parseQuery(query)
 
-    # xml_file = io.StringIO("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
-
+    # plists from years that students being exported are in
     relevent_plists = []
 
     root = ET.Element('PGDB')
@@ -175,17 +172,40 @@ def archive_file(request):
             ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
             ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
 
+            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.scholar_set.all()[0].term2)
+            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.scholar_set.all()[0].term1)
+
+            points_tag = ET.SubElement(grade_tag, 'points')
+            for point in grade.points_set.all():
+                point_tag = ET.SubElement(points_tag, 'point')
+
+                ET.SubElement(point_tag, 'catagory').text = str(point.type.catagory)
+                ET.SubElement(point_tag, 'code').text = str(point.type.code)
+                ET.SubElement(point_tag, 'amount').text = str(point.amount)
+
+            # if a plist for this year exists add it to the list
             if grade.start_year not in relevent_plists and \
                     len(PlistCutoff.objects.filter(year=grade.start_year)) == 1:
                         relevent_plists.append(grade.start_year)
 
-    print(relevent_plists)
-
     plists = ET.SubElement(root, "plists")
     for plist in relevent_plists:
+        plist_object = PlistCutoff.objects.get(year=plist)
         plist_tag = ET.SubElement(plists, 'plist')
 
         ET.SubElement(plist_tag, 'year').text = str(plist)
+
+        ET.SubElement(plist_tag, 'grade_8_T1').text = str(plist_object.grade_8_T1)
+        ET.SubElement(plist_tag, 'grade_8_T2').text = str(plist_object.grade_8_T2)
+        ET.SubElement(plist_tag, 'grade_9_T1').text = str(plist_object.grade_9_T1)
+        ET.SubElement(plist_tag, 'grade_9_T2').text = str(plist_object.grade_9_T2)
+        ET.SubElement(plist_tag, 'grade_10_T1').text = str(plist_object.grade_10_T1)
+        ET.SubElement(plist_tag, 'grade_10_T2').text = str(plist_object.grade_10_T2)
+        ET.SubElement(plist_tag, 'grade_11_T1').text = str(plist_object.grade_11_T1)
+        ET.SubElement(plist_tag, 'grade_11_T2').text = str(plist_object.grade_11_T2)
+        ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
+        ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
+
 
     xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
