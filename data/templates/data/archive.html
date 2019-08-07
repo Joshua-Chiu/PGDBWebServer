@@ -1,11 +1,28 @@
-<form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
-  <input type="submit" value="Upload file" name="submit">
-  <input type="file" name="file" id="file">
-  {% csrf_token %}
-</form>
+{% extends 'data/base.html' %}
+{% load staticfiles %}
 
-<form method="post" action="{% url 'data:archive_file'%}">
-  <input type="submit" value="do stuff" name="submit">
-  <input type="text" name="query" id="query">
-  {% csrf_token %}
-</form>
+{% block title %}Archives{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
+        <input type="submit" value="Upload file" name="submit">
+        <input type="file" name="file" id="file">
+        {% csrf_token %}
+    </form>
+
+    <form method="post" action="{% url 'data:archive_file'%}">
+        <input type="submit" value="do stuff" name="submit">
+        <input type="text" name="query" id="query">
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
+

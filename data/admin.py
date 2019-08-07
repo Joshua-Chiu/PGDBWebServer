@@ -99,7 +99,10 @@ class StudentAdmin(admin.ModelAdmin):
                 student.save()
 
         template = get_template('admin/data/student/import.html')
-        context = {}
+        context = {
+            'site_header': admin.site.site_header,
+            'site_title': admin.site.site_title,
+        }
         return HttpResponse(template.render(context, request))
 
     def get_urls(self):

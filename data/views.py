@@ -117,7 +117,7 @@ def student_submit(request, num):
                 try:
                     typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
                 except PointCodes.DoesNotExist as e:
-                    typeClass = PointCodes(catagory=type, code=code, description="")
+                    typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
                     typeClass.save()
 
                 grade = student.grade_set.get(grade=grade_num)
@@ -136,6 +136,7 @@ def archive(request):
 
 
 def archive_submit(request):
+<<<<<<< HEAD
     if request.method == "POST":
         if "file" in request.FILES:
             tree = ET.parse(request.FILES["file"])
@@ -274,7 +275,7 @@ def codes(request):
 def plist(request):
     template = get_template('data/plist.html')
     context = {
-            'plist' : PlistCutoff.objects.all(),
+            'plist': PlistCutoff.objects.all(),
             'year': datetime.datetime.now().year,
             'month': datetime.datetime.now().month
             }
