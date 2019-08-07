@@ -136,7 +136,43 @@ def archive(request):
 
 
 def archive_submit(request):
-        return HttpResponseRedirect('/data/archive')
+    if request.method == "POST":
+        if "file" in request.FILES:
+            tree = ET.parse(request.FILES["file"])
+            root = tree.getroot()
+
+            # all students
+            for s in root[0]:
+                if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
+                    print(f"student with number {s[0].text} already exists")
+                    continue
+
+                s_obj = Student(
+                    student_num=int(s[0].text),
+                    homeroom=f"{s[1].text}{s[2].text}",
+                    first=s[3].text,
+                    last=s[4].text,
+                    legal=s[5].text,
+                    sex=s[6].text,
+                    grad_year=int(s[7].text)
+                )
+
+                s_obj.save()
+
+                for g in s[8]:
+                    s_obj.grade_set.create(
+                        grade=int(g[0].text),
+                        start_year=int(g[1].text),
+                        anecdote=s[2].text,
+                    )
+
+                    # for p in g[5]:
+                    #     g_obj.points_set.create()
+
+            for plist in root[1]:
+                print(plist)
+
+    return HttpResponseRedirect('/data/archive')
 
 def archive_file(request):
     if not "query" in request.POST:
