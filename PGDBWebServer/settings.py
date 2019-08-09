@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', '5wqlq*_!b197zx2i1m2*)j*cqz^l!1^aium+1$_0tb&if!_rmr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['*'])
 
@@ -146,7 +146,7 @@ LOGIN_REDIRECT_URL = '/data/'
 LOGOUT_REDIRECT_URL = '/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SECURITY_WARN_AFTER = os.environ.get('SESSION_SECURITY_EXPIRE_AFTER', 540)
+SESSION_SECURITY_WARN_AFTER = os.environ.get('SESSION_SECURITY_WARN_AFTER', 540)
 SESSION_SECURITY_EXPIRE_AFTER = os.environ.get('SESSION_SECURITY_EXPIRE_AFTER', 600)
 
 AUTH_USER_MODEL = 'users.CustomUser'

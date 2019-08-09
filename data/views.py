@@ -136,7 +136,6 @@ def archive(request):
 
 
 def archive_submit(request):
-<<<<<<< HEAD
     if request.method == "POST":
         if "file" in request.FILES:
             tree = ET.parse(request.FILES["file"])
