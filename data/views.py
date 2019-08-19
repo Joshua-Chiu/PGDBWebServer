@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes,  PlistCutoff
+from .models import Student, PointCodes, PlistCutoff, Grade
 from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
@@ -160,14 +160,21 @@ def archive_submit(request):
                 s_obj.save()
 
                 for g in s[8]:
-                    s_obj.grade_set.create(
+                    g_obj = Grade(
                         grade=int(g[0].text),
                         start_year=int(g[1].text),
                         anecdote=s[2].text,
                     )
+                    s_obj.grade_set.add(g_obj, bulk=False)
+                    g_obj.save();
 
-                    # for p in g[5]:
-                    #     g_obj.points_set.create()
+                    g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
+
+                    for p in g[5]:
+                        g_obj.points_set.create(
+                            type=PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text)),
+                            amount=float(p[2].text),
+                        )
 
             for plist in root[1]:
                 print(plist)
