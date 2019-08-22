@@ -1,4 +1,4 @@
-# To do list
+# Point Grey Awards Database
 
 ## instructions to run
 system packages:
@@ -21,10 +21,11 @@ python packages:
 
 - [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom letter attributes
 - [ ] remove the entirety JQuery from the git repository
-- [ ] modular non hard-coded way of making awards/pins
+- [ ] modular non hard-coded way of making awards/pins and point catagories so more can be added/removed easily
 - [ ] fix last modified date on Student so it updates when points are added
 - [ ] remove Scholar class and make it's attributes part of Grade
 - [ ] instead of Grade pointing to a student have the Student class have five grade attributes
 - [ ] have the archive thing import/export plists
 - [ ] make the Points constructor create PointCodes if missing
+- [ ] in xml make ids of objects attributes instead of child tags e.g. <student student_num=1234>, <grade grade=12>
 
