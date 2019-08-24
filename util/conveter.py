@@ -2,6 +2,7 @@
 import csv
 import sys
 import xml.etree.ElementTree as ET
+import math
 
 info = {
     "last": 0,
@@ -14,7 +15,7 @@ info = {
 }
 
 # (type, grade)
-points = {
+points_dict = {
     ("SE", 8):  [87,  88,  89,  90,  91,  92,  93 ],
     ("AT", 8):  [94,  95,  96,  97,  98,  99,  100],
     ("FA", 8):  [103, 104, 105, 106, 107, 108, 109],
@@ -33,7 +34,7 @@ points = {
 }
 
 # (grade, term)
-scholar = {
+scholar_dict = {
     (8, 1): 101,
     (8, 2): 102,
     (9, 1): 124,
@@ -63,13 +64,44 @@ with open(file) as csvfile:
     for row in reader:
         student = ET.SubElement(students, "student")
 
+        homeroom = row[info["homeroom"]]
+        if not homeroom:
+            homeroom = "12#"
+
         ET.SubElement(student, "number").text = row[info["number"]]
-        ET.SubElement(student, "current_grade").text = row[info["homeroom"]][:2]
-        ET.SubElement(student, "homeroom").text = row[info["homeroom"]][2:]
+        ET.SubElement(student, "current_grade").text = homeroom[:2]
+        ET.SubElement(student, "homeroom").text = homeroom[2:]
         ET.SubElement(student, "first").text = row[info["first"]]
         ET.SubElement(student, "last").text = row[info["last"]]
         ET.SubElement(student, "legal_name").text = row[info["legal_name"]]
         ET.SubElement(student, "sex").text = row[info["gender"]]
         ET.SubElement(student, "grad_year").text = str(int(row[info["year_entered"]]) + 5)
+
+        grades = ET.SubElement(student, "grades")
+        for g in range(8, int(homeroom[:2]) + 1):
+            grade = ET.SubElement(grades, "grade")
+
+            ET.SubElement(grade, "grade_num").text = str(g)
+            ET.SubElement(grade, "start_year").text = str(0)
+            ET.SubElement(grade, "anecdote").text = row[anecdote]
+
+            ET.SubElement(grade, "AverageT1").text = row[scholar_dict[(g, 1)]] or "0.0"
+            ET.SubElement(grade, "AverageT2").text = row[scholar_dict[(g, 2)]] or "0.0"
+
+            points = ET.SubElement(grade, "points")
+            for catagory in ["SE", "FA", "AT"]:
+                for p_index in points_dict[(catagory, g)]:
+                    if not row[p_index]:
+                        continue
+                    value = float(row[p_index])
+
+                    amount = round(value, 1)
+                    code = round(((value * 10) % 1) * 10_000)
+
+                    point = ET.SubElement(points, "point")
+                    ET.SubElement(point, "catagory").text = catagory
+                    ET.SubElement(point, "code").text = str(code)
+                    ET.SubElement(point, "amount").text = str(amount)
+
 
     print(ET.tostring(root, encoding="utf-8", method="xml").decode())
