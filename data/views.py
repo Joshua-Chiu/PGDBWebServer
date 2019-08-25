@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes,  PlistCutoff
+from .models import Student, PointCodes, PlistCutoff, Grade
 from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
@@ -143,31 +143,53 @@ def archive_submit(request):
 
             # all students
             for s in root[0]:
-                if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
-                    print(f"student with number {s[0].text} already exists")
-                    continue
+                try:
+                    if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
+                        print(f"student with number {s[0].text} already exists")
+                        continue
 
-                s_obj = Student(
-                    student_num=int(s[0].text),
-                    homeroom=f"{s[1].text}{s[2].text}",
-                    first=s[3].text,
-                    last=s[4].text,
-                    legal=s[5].text,
-                    sex=s[6].text,
-                    grad_year=int(s[7].text)
-                )
-
-                s_obj.save()
-
-                for g in s[8]:
-                    s_obj.grade_set.create(
-                        grade=int(g[0].text),
-                        start_year=int(g[1].text),
-                        anecdote=s[2].text,
+                    s_obj = Student(
+                        student_num=int(s[0].text),
+                        homeroom=f"{s[1].text}{s[2].text}",
+                        first=s[3].text,
+                        last=s[4].text,
+                        legal=s[5].text,
+                        sex=s[6].text,
+                        grad_year=int(s[7].text)
                     )
 
-                    # for p in g[5]:
-                    #     g_obj.points_set.create()
+                    s_obj.save()
+
+                    for g in s[8]:
+                        g_obj = Grade(
+                            grade=int(g[0].text),
+                            start_year=int(g[1].text),
+                            anecdote=s[2].text,
+                        )
+                        s_obj.grade_set.add(g_obj, bulk=False)
+                        g_obj.save();
+
+                        g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
+
+                        for p in g[5]:
+                            if (len(PointCodes.objects.filter(catagory=p[0].text).filter(code=int(p[1].text))) == 0):
+                                type = PointCodes(catagory=p[0].text, code=int(p[1].text), description="")
+                                type.save()
+                            else:
+                                type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
+
+                            g_obj.points_set.create(
+                                type=type,
+                                amount=float(p[2].text),
+                            )
+                    print(f"added student {int(s[0].text)}")
+                except:
+                    student_num = int(s[0].text)
+                    print(f"Failed to add student {int(s[0].text)}")
+
+                    # delete the partially formed student
+                    if len(Student.objects.filter(student_num=student_num)) != 0:
+                        Student.objects.get(student_num=student_num).delete()
 
             for plist in root[1]:
                 print(plist)
