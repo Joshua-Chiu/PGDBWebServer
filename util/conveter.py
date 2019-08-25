@@ -103,5 +103,7 @@ with open(file) as csvfile:
                     ET.SubElement(point, "code").text = str(code)
                     ET.SubElement(point, "amount").text = str(amount)
 
+            ET.SubElement(root, "plists")
+
 
     print(ET.tostring(root, encoding="utf-8", method="xml").decode())
