@@ -17,5 +17,6 @@ urlpatterns = [
     path('archive', views.archive, name='archive'),
     path('archive_file', views.archive_file, name='archive_file'),
     path('archive_submit', views.archive_submit, name='archive_submit'),
+    path('archive_wdb_submit', views.archive_wdb_submit, name='archive_wdb_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
 ]
