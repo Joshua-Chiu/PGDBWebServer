@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '5wqlq*_!b197zx2i1m2*)j*cqz^l!1^aium+1$_0tb&if!_rmr'
+SECRET_KEY = os.getenv('SECRET_KEY', '5wqlq*_!b197zx2i1m2*)j*cqz^l!1^aium+1$_0tb&if!_rmr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', True)
@@ -145,8 +145,8 @@ LOGIN_REDIRECT_URL = '/data/'
 LOGOUT_REDIRECT_URL = '/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SECURITY_WARN_AFTER = 540
-SESSION_SECURITY_EXPIRE_AFTER = 600
+SESSION_SECURITY_WARN_AFTER = os.getenv('SESSION_SECURITY_WARN_AFTER', 540)
+SESSION_SECURITY_EXPIRE_AFTER = os.getenv('SESSION_SECURITY_EXPIRE_AFTER', 600)
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
