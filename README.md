@@ -1,11 +1,14 @@
 # Point Grey Awards Database
 
 ## instructions to run
+
 system packages:
+
 * python>3.6
 * mariadb
 
 python packages:
+
 * django
 * django-mathfilters
 * django-import-export
