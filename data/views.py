@@ -200,9 +200,9 @@ def archive_submit(request):
 def archive_wdb_submit(request):
     if request.method == "POST":
         if "file" in request.FILES:
-            pgdb_file = wdb_converter(request.FILES["file"])
+            pgdb_file = wdb_converter(l.decode() for l in request.FILES["file"])
 
-            response = HttpResponse(xml_file, content_type='application/xml')
+            response = HttpResponse(pgdb_file, content_type='application/xml')
             response['Content-Disposition'] = 'attachment; filename=students.pgdb'
 
             return response
