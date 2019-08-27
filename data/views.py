@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
+from util.converter import wdb_converter
 
 
 @login_required()
@@ -195,6 +196,18 @@ def archive_submit(request):
                 print(plist)
 
     return HttpResponseRedirect('/data/archive')
+
+def archive_wdb_submit(request):
+    if request.method == "POST":
+        if "file" in request.FILES:
+            pgdb_file = wdb_converter(l.decode() for l in request.FILES["file"])
+
+            response = HttpResponse(pgdb_file, content_type='application/xml')
+            response['Content-Disposition'] = 'attachment; filename=students.pgdb'
+
+            return response
+
+    return HttpResponseRedirect("/data/archive")
 
 def archive_file(request):
     if not "query" in request.POST:

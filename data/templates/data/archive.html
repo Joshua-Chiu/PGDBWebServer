@@ -18,6 +18,12 @@
         {% csrf_token %}
     </form>
 
+    <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
+        <input type="submit" value="Upload DOS csv" name="submit">
+        <input type="file" name="file" id="file">
+        {% csrf_token %}
+    </form>
+
     <form method="post" action="{% url 'data:archive_file'%}">
         <input type="submit" value="do stuff" name="submit">
         <input type="text" name="query" id="query">

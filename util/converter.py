@@ -55,7 +55,7 @@ if len(sys.argv) != 2:
 
 file = sys.argv[1]
 
-with open(file) as csvfile:
+def wdb_converter(csvfile):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
 
     root = ET.Element("PGDB")
@@ -103,7 +103,16 @@ with open(file) as csvfile:
                     ET.SubElement(point, "code").text = str(code)
                     ET.SubElement(point, "amount").text = str(amount)
 
-            ET.SubElement(root, "plists")
+    ET.SubElement(root, "plists")
 
+    return ET.tostring(root, encoding="utf-8", method="xml").decode()
 
-    print(ET.tostring(root, encoding="utf-8", method="xml").decode())
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("needs filename argument")
+        exit()
+    file = sys.argv[1]
+
+    with open(file) as csvfile:
+        print(wdb_convert(csvfile))
+
