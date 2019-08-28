@@ -49,7 +49,7 @@ scholar_dict = {
 
 anecdote = 81
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
     print("needs filename argument")
     exit()
 
@@ -108,7 +108,7 @@ def wdb_converter(csvfile):
     return ET.tostring(root, encoding="utf-8", method="xml").decode()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print("needs filename argument")
         exit()
     file = sys.argv[1]
