@@ -1,7 +1,7 @@
 {% extends 'data/base.html' %}
 {% load staticfiles %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -12,5 +12,11 @@
 {% endblock %}
 
 {% block content%}
-
+    <h2>Dashboard</h2>
+    <ul>
+        <li>List all login attempts with more than 5 failed attempts</li>
+        <li>Recent Changes</li>
+        <li>Student Statistics</li>
+        <li></li>
+    </ul>
 {% endblock %}
