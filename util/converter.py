@@ -55,7 +55,12 @@ if len(sys.argv) != 2:
 
 file = sys.argv[1]
 
-def wdb_converter(csvfile):
+def get_if_exists(index, row):
+    if len(row) > index:
+        return row[index]
+    return ""
+
+def wdb_convert(csvfile):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
 
     root = ET.Element("PGDB")
@@ -64,18 +69,19 @@ def wdb_converter(csvfile):
     for row in reader:
         student = ET.SubElement(students, "student")
 
-        homeroom = row[info["homeroom"]]
+        homeroom = get_if_exists(info["homeroom"], row)
         if not homeroom:
             homeroom = "12#"
 
-        ET.SubElement(student, "number").text = row[info["number"]]
+        ET.SubElement(student, "number").text = get_if_exists(info["number"], row)
         ET.SubElement(student, "current_grade").text = homeroom[:2]
         ET.SubElement(student, "homeroom").text = homeroom[2:]
-        ET.SubElement(student, "first").text = row[info["first"]]
-        ET.SubElement(student, "last").text = row[info["last"]]
-        ET.SubElement(student, "legal_name").text = row[info["legal_name"]]
-        ET.SubElement(student, "sex").text = row[info["gender"]]
-        ET.SubElement(student, "grad_year").text = str(int(row[info["year_entered"]]) + 5)
+        ET.SubElement(student, "first").text = get_if_exists(info["first"], row)
+        ET.SubElement(student, "last").text = get_if_exists(info["last"], row)
+        ET.SubElement(student, "legal_name").text = get_if_exists(info["legal_name"], row)
+        ET.SubElement(student, "sex").text = get_if_exists(info["gender"], row)
+        grad_year = get_if_exists(info["year_entered"], row)
+        ET.SubElement(student, "grad_year").text = str(int(grad_year if grad_year else 0) + 5)
 
         grades = ET.SubElement(student, "grades")
         for g in range(8, int(homeroom[:2]) + 1):
@@ -83,17 +89,18 @@ def wdb_converter(csvfile):
 
             ET.SubElement(grade, "grade_num").text = str(g)
             ET.SubElement(grade, "start_year").text = str(0)
-            ET.SubElement(grade, "anecdote").text = row[anecdote]
+            ET.SubElement(grade, "anecdote").text = get_if_exists(anecdote, row)
 
-            ET.SubElement(grade, "AverageT1").text = row[scholar_dict[(g, 1)]] or "0.0"
-            ET.SubElement(grade, "AverageT2").text = row[scholar_dict[(g, 2)]] or "0.0"
+            ET.SubElement(grade, "AverageT1").text = get_if_exists(scholar_dict[(g, 1)], row) or "0.0"
+            ET.SubElement(grade, "AverageT2").text = get_if_exists(scholar_dict[(g, 2)], row) or "0.0"
 
             points = ET.SubElement(grade, "points")
             for catagory in ["SE", "FA", "AT"]:
                 for p_index in points_dict[(catagory, g)]:
-                    if not row[p_index]:
+                    try:
+                        value = float(get_if_exists(p_index, row))
+                    except:
                         continue
-                    value = float(row[p_index])
 
                     amount = round(value, 1)
                     code = round(((value * 10) % 1) * 10_000)
