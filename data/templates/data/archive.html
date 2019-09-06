@@ -12,18 +12,29 @@
 {% endblock %}
 
 {% block content%}
+    <hr>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
-        <input type="submit" value="Upload file" name="submit">
+        <input type="submit" value="Upload .pgdb Archive" name="submit">
         <input type="file" name="file" id="file">
+        <select name="grade">
+                <option value="" >Select</option>
+                <option value="08" >Grade 08</option>
+                <option value="09" >Grade 09</option>
+                <option value="10" >Grade 10</option>
+                <option value="11" >Grade 11</option>
+                <option value="12" >Grade 12</option>
+        </select>
         {% csrf_token %}
     </form>
 
+    <hr>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
         <input type="submit" value="Upload DOS csv" name="submit">
         <input type="file" name="file" id="file">
         {% csrf_token %}
     </form>
 
+    <hr>
     <form method="post" action="{% url 'data:archive_file'%}">
         <input type="submit" value="do stuff" name="submit">
         <input type="text" name="query" id="query">
