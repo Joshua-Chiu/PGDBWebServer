@@ -60,7 +60,7 @@ def get_if_exists(index, row):
         return row[index]
     return ""
 
-def wdb_convert(csvfile):
+def wdb_convert(csvfile, grade):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
 
     root = ET.Element("PGDB")
@@ -71,7 +71,7 @@ def wdb_convert(csvfile):
 
         homeroom = get_if_exists(info["homeroom"], row)
         if not homeroom:
-            homeroom = "12#"
+            homeroom = str(grade).zfill(2) + "#"
 
         ET.SubElement(student, "number").text = get_if_exists(info["number"], row)
         ET.SubElement(student, "current_grade").text = homeroom[:2]
@@ -115,11 +115,12 @@ def wdb_convert(csvfile):
     return ET.tostring(root, encoding="utf-8", method="xml").decode()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("needs filename argument")
+    if len(sys.argv) < 3:
+        print("needs filename and grade argument")
         exit()
     file = sys.argv[1]
+    grade = sys.argv[2]
 
     with open(file) as csvfile:
-        print(wdb_convert(csvfile))
+        print(wdb_convert(csvfile, grade))
 
