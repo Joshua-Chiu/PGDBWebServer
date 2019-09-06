@@ -115,6 +115,37 @@
     </table>
 </div>
 {% endif %}
+
+{% if student_list %}
+<div id="GradList">
+    <table class="sortable">
+        <!-- Header Row-->
+        <tr>
+            <td width="200px">
+                <strong>Graduation</strong>
+            </td>
+            <td width="400px">
+                <strong>Name</strong>
+            </td>
+            <td width="150px">
+                <strong>Student Number</strong>
+            </td>
+            <td>
+                <strong>Homeroom</strong>
+            </td>
+        </tr>
+    {% for student in student_list %}
+        <tr>
+            <td>Certificate</td>
+            <td>{{ student.first }} ({{ student.legal }}) {{ student.last }}</td>
+            <td>{{ student.student_num }}</td>
+            <td>{{ student.homeroom }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endif %}
+
 {% endblock %}
 {% block javascript %}
 
