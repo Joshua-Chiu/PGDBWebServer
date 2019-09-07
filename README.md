@@ -1,14 +1,14 @@
 # Point Grey Awards Database
 
-## instructions to run
+## Instructions to run
 
-system packages:
+System packages:
 
-* python>3.6
+* python ≥ 3.6
 * mariadb
 
 python packages:
-
+refer to requirements.txt
 * django
 * django-mathfilters
 * django-import-export
@@ -20,7 +20,7 @@ python packages:
 * create databse `PGDB`
 * create user `pgadmin` with password `2.71828`
 
-## things that should be fixed at some point
+## Things that should be fixed at some point
 
 - [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom letter attributes
 - [ ] remove the entirety JQuery from the git repository
