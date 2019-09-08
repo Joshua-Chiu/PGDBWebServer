@@ -40,6 +40,7 @@ refer to requirements.txt
 - [ ] make converter.py create start year for students missing it by taking the average of students with a start year and allow an optional grade argument for wdb_convert
 - [ ] make a button to download pgdb file archive of students and delete them at the same time
 - [ ] change all tsv import and export to csv
+- [ ] add dashboard features like recent changes and statistics
 
 ## helpful information
 

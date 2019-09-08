@@ -52,7 +52,7 @@
                 <option value="" >Select</option>
                 <option value="service" >Service</option>
                 <option value="athletics" >Athletics</option>
-                <option value="honourrole" >Scholar Honour Roll</option>
+                <option value="honourroll" >Scholar Honour Roll</option>
                 <option value="principalslist" >Scholar Principal's List</option>
                 <option value="fine-arts" >Fine Arts</option>
             </select>
@@ -80,10 +80,10 @@
             <input type="submit" value="Enter" onclick="javascript: form.action='printing';" />
         </fieldset>
     </form>
-</fieldset>
 
 <div>
-    <button class="button default" onclick="PrintElem('GeneratedList')">Print</button>
+    <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
+    <button class="button default" onclick="PrintElem('GeneratedList')">Print Certificates</button>
 </div>
 
 {% if student_list %}
