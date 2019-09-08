@@ -62,7 +62,7 @@ def parseQuery(query):
                                 new_students = new_students.exclude(id=s.id)
                     if v == "honourroll":
                         for s in students:
-                            if not s.grade_set.get(grade=s.homeroom[:2]).honourrole:
+                            if not s.grade_set.get(grade=s.homeroom[:2]).honourroll:
                                 new_students = new_students.exclude(id=s.id)
 
                     students = new_students
