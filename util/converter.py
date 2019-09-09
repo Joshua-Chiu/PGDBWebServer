@@ -73,9 +73,14 @@ def wdb_convert(csvfile, grade_num):
         if not homeroom:
             homeroom = str(grade_num).zfill(2) + "#"
 
+        if homeroom[:2].isdigit():
+            homeroom_str = homeroom[2:]
+        else:
+            homeroom_str = homeroom
+
         ET.SubElement(student, "number").text = get_if_exists(info["number"], row)
-        ET.SubElement(student, "current_grade").text = homeroom[:2]
-        ET.SubElement(student, "homeroom").text = homeroom[2:]
+        ET.SubElement(student, "current_grade").text = str(grade_num)
+        ET.SubElement(student, "homeroom").text = homeroom_str
         ET.SubElement(student, "first").text = get_if_exists(info["first"], row)
         ET.SubElement(student, "last").text = get_if_exists(info["last"], row)
         ET.SubElement(student, "legal_name").text = get_if_exists(info["legal_name"], row)
@@ -84,7 +89,7 @@ def wdb_convert(csvfile, grade_num):
         ET.SubElement(student, "grad_year").text = str(int(grad_year if grad_year else 0) + 5)
 
         grades = ET.SubElement(student, "grades")
-        for g in range(8, int(homeroom[:2]) + 1):
+        for g in range(8, grade_num + 1):
             grade = ET.SubElement(grades, "grade")
 
             ET.SubElement(grade, "grade_num").text = str(g)
