@@ -107,8 +107,8 @@ def wdb_convert(csvfile, grade_num):
                     except:
                         continue
 
-                    amount = round(value, 1)
-                    code = round(((value * 10) % 1) * 10_000)
+                    amount = round(value, 3)
+                    code = round(((value * 1000) % 1) * 100)
 
                     point = ET.SubElement(points, "point")
                     ET.SubElement(point, "catagory").text = catagory
