@@ -1,4 +1,4 @@
-Hi {{ user.first_name }} {{ user.last_name }}!<br>
+Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
 
 {% if user.is_superuser %}
     <a href="{% url 'data:index' %}"><< Back to Default View</a>

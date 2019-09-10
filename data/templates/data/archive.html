@@ -15,7 +15,7 @@
     <hr>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
         <input type="submit" value="Upload .pgdb Archive" name="submit">
-        <input type="file" name="file" id="file">
+        <input type="file" name="file" id="file" onchange="this.form.submit();">
         {% csrf_token %}
     </form>
 
