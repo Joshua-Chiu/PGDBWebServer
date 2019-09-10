@@ -31,6 +31,7 @@
                 <option value="11" >Grade 11</option>
                 <option value="12" >Grade 12</option>
         </select>
+        <select name="start-year" id="year"></select>
         {% csrf_token %}
     </form>
 
@@ -40,6 +41,18 @@
         <input type="text" name="query" id="query">
         {% csrf_token %}
     </form>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var start = new Date().getFullYear();
+        var end = 1970;
+        var options = "";
+        for(var year = start ; year >=end; year--){
+          options += "<option>"+ year +"</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+    </script>
 {% endblock %}
 
 
