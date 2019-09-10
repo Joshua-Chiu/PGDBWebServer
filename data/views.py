@@ -172,9 +172,9 @@ def archive_submit(request):
 
                         g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
 
-                        for p in g[5]:
+                        for p in g[5]: # fix so that the codes are the last 2 digits instead of last 4
                             if (len(PointCodes.objects.filter(catagory=p[0].text).filter(code=int(p[1].text))) == 0):
-                                type = PointCodes(catagory=p[0].text, code=int(p[1].text), description="")
+                                type = PointCodes(catagory=p[0].text, code=int(p[1].text), description=str(p[0].text) + str(p[1].text))
                                 type.save()
                             else:
                                 type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
