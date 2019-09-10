@@ -155,7 +155,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
-SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', False)
+SECURE_SSL_REDIRECT = ('True' == os.environ.get('DEBUG', 'False'))
 
 # Extra lookup directories for collectstatic to find static files
 STATICFILES_DIRS = (
