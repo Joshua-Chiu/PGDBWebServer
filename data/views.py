@@ -183,7 +183,7 @@ def archive_submit(request):
                                 type=type,
                                 amount=float(p[2].text),
                             )
-                    print(f"added student {int(s[0].text)}")
+                    # print(f"added student {int(s[0].text)}")
                 except:
                     student_num = int(s[0].text)
                     print(f"Failed to add student {int(s[0].text)}")
