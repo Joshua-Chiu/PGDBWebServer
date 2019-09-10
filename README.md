@@ -23,7 +23,7 @@ refer to requirements.txt
 ## Things that should be fixed at some point
 
 - [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom attributes and make homeroom a string for special classes
-- [ ] remove the entirety JQuery from the git repository
+- [x] remove the entirety JQuery from the git repository
 - [ ] modular non hard-coded way of making awards/pins and point catagories so more can be added/removed easily
 - [ ] fix last modified date on Student so it updates when points are added
 - [ ] remove Scholar class and make it's attributes part of Grade
@@ -36,13 +36,20 @@ refer to requirements.txt
 - [ ] allow students to be kept in the database but marked as inactive so they don't show up in searches or other stuff unless it's explicitly enabled
 - [ ] allow exporting of students from search page like admin csv export
 - [ ] make reports report work
-- [ ] make archive page not ugly
+- [x] make archive page not ugly
 - [ ] make converter.py create start year for students missing it by taking the average of students with a start year and allow an optional grade argument for wdb_convert
 - [ ] make a button to download pgdb file archive of students and delete them at the same time
 - [ ] change all tsv import and export to csv
 - [ ] add dashboard features like recent changes and statistics
+- [ ] make sure incorrect inputs from users like files or text don't cause crashes
 
 ## helpful information
+
+wdb csvs:
+
+* only known way to convert to csv is to open in libreoffice
+* convert the csv to pgdb with converter.py
+* must contain only one grade
 
 students enter the system through:
 

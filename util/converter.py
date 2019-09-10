@@ -60,7 +60,7 @@ def get_if_exists(index, row):
         return row[index]
     return ""
 
-def wdb_convert(csvfile, grade_num):
+def wdb_convert(csvfile, grade_num, start_year):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
 
     root = ET.Element("PGDB")
@@ -85,15 +85,14 @@ def wdb_convert(csvfile, grade_num):
         ET.SubElement(student, "last").text = get_if_exists(info["last"], row)
         ET.SubElement(student, "legal_name").text = get_if_exists(info["legal_name"], row)
         ET.SubElement(student, "sex").text = get_if_exists(info["gender"], row)
-        grad_year = get_if_exists(info["year_entered"], row)
-        ET.SubElement(student, "grad_year").text = str(int(grad_year if grad_year else 0) + 5)
+        ET.SubElement(student, "grad_year").text = str(start_year + 13 - grade_num)
 
         grades = ET.SubElement(student, "grades")
         for g in range(8, grade_num + 1):
             grade = ET.SubElement(grades, "grade")
 
             ET.SubElement(grade, "grade_num").text = str(g)
-            ET.SubElement(grade, "start_year").text = str(0)
+            ET.SubElement(grade, "start_year").text = str(start_year - (grade_num - g))
             ET.SubElement(grade, "anecdote").text = get_if_exists(anecdote, row)
 
             ET.SubElement(grade, "AverageT1").text = get_if_exists(scholar_dict[(g, 1)], row) or "0.0"
@@ -107,8 +106,8 @@ def wdb_convert(csvfile, grade_num):
                     except:
                         continue
 
-                    amount = round(value, 1)
-                    code = round(((value * 10) % 1) * 10_000)
+                    amount = round(value, 3)
+                    code = round(((value * 1000) % 1) * 100)
 
                     point = ET.SubElement(points, "point")
                     ET.SubElement(point, "catagory").text = catagory
@@ -121,11 +120,12 @@ def wdb_convert(csvfile, grade_num):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("needs filename and grade argument")
+        print("needs filename, grade, and grad year argument")
         exit()
     file = sys.argv[1]
     grade = int(sys.argv[2])
+    grad_year = int(sys.argv[3])
 
     with open(file) as csvfile:
-        print(wdb_convert(csvfile, grade))
+        print(wdb_convert(csvfile, grade, grad_year))
 
