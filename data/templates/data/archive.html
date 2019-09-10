@@ -24,13 +24,13 @@
         <input type="submit" value="Upload DOS csv" name="submit">
         <input type="file" name="file" id="file">
         <select name="grade">
-                <option value="" >Select</option>
                 <option value="08" >Grade 08</option>
                 <option value="09" >Grade 09</option>
                 <option value="10" >Grade 10</option>
                 <option value="11" >Grade 11</option>
                 <option value="12" >Grade 12</option>
         </select>
+        of
         <select name="start-year" id="year"></select>
         {% csrf_token %}
     </form>
@@ -45,11 +45,11 @@
 
 {% block javascript %}
     <script>
-        var start = new Date().getFullYear();
+        var start = new Date().getFullYear() + 1;
         var end = 1970;
         var options = "";
         for(var year = start ; year >=end; year--){
-          options += "<option>"+ year +"</option>";
+          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
         }
         document.getElementById("year").innerHTML = options;
     </script>
