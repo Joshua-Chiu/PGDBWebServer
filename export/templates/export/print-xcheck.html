@@ -1,0 +1,132 @@
+{% extends 'data/base.html' %}
+
+{% load mathfilters %}
+{% load staticfiles %}
+
+{% block title %}Data Crosscheck{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+{% endblock %}
+
+{% block content%}
+    <div>
+    <h2 class="heading">Printing Reports</h2>
+    </div>
+
+    <form method="get" class="search_bar">
+        <fieldset style="border: 0">
+            Year: <select name="start-year" id="year"></select>
+
+            Grade:
+            <select name="grade">
+                <option value="08" >Grade 08</option>
+                <option value="09" >Grade 09</option>
+                <option value="10" >Grade 10</option>
+                <option value="11" >Grade 11</option>
+                <option value="12" >Grade 12</option>
+            </select>
+
+            Graduation Awards:
+            <select name="grad-awards">
+                <option value="" >Select</option>
+                <option value="se-candidates">Service Candidates</option>
+                <option value="at-candidates">Athletics Candidates</option>
+                <option value="sc-candidates">Scholar Candidates</option>
+                <option value="fa-candidates">Fine Arts Candidates</option>
+                <option value="me-candidates">Merit Candidates</option>
+            </select>
+
+            <input type="submit" value="Enter" onclick="form.action='printing';" />
+        </fieldset>
+    </form>
+
+    <div>
+        <button class="button default" onclick="PrintElem('XCheckList')">Print Student List</button>
+    </div>
+
+    <h2>Service Crosscheck</h2>
+    {% if student_list %}
+    <div id="XCheckList">
+        <table class="sortable">
+            <!-- Header Row-->
+            <tr>
+                <td style="min-width:50px">
+                    <strong>First</strong>
+                </td>
+                <td style="min-width:50px">
+                    <strong>Last</strong>
+                </td>
+                <td style="min-width:50px">
+                    <strong>Student #</strong>
+                </td>
+                <td>
+                    <strong>Homeroom</strong>
+                </td>
+                <td style="min-width:50px">
+                    <strong>Data</strong>
+                </td>
+            </tr>
+        {% for student in student_list %}
+            <tr>
+                <td>{{ student.first }} ({{ student.legal }})</td>
+                <td>{{ student.last }}</td>
+                <td>{{ student.student_num }}</td>
+                <td>{{ student.homeroom }}</td>
+                <td>
+                    {% for grade in student.grade_set.all %}
+                        {% ifequal 10 grade.grade|stringformat:"02d"|add:"0" %}
+                            {% for point in grade.points_set.all %}
+                                {% ifequal "SE" point.type.catagory %}
+                                    <span class="point">{{ point.amount }}</span>
+                                    <span class="code description">{{ point.type.description }}</span>
+                                    <span style="display: inline-block; width: 2ch;">&#9;</span>
+                                {% endifequal %}
+                            {% endfor %}
+                        {% endifequal %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+    </script>
+
+    <script>
+        function PrintElem(elem)
+        {
+            const mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+            mywindow.document.write('');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write('<h3>' + document.title  + '</h3>');
+            mywindow.document.write(document.getElementById(elem).innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+    </script>
+{% endblock %}

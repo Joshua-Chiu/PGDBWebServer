@@ -8,13 +8,15 @@ from util.queryParse import parseQuery
 def index(request):
     template = get_template('export/index.html')
     context = {
-
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
-def printing(request):
-    template = get_template('export/print.html')
+def print_annual(request):
+    template = get_template('export/print-annual.html')
 
     query = ""
 
@@ -31,8 +33,42 @@ def printing(request):
 
     context = {
         'student_list': students,
+        'type': query.split(':')[-1].capitalize(),
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
+
+
+def print_grad(request):
+    template = get_template('export/print-grad.html')
+
+    query = ""
+    students = parseQuery(query)
+
+    context = {
+        'student_list': students,
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
+
+
+def print_xcheck(request):
+    template = get_template('export/print-xcheck.html')
+
+    query = ""
+    students = parseQuery(query)
+
+    context = {
+        'student_list': students,
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 
 def export_files(request):
@@ -40,4 +76,7 @@ def export_files(request):
     context = {
 
     }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
