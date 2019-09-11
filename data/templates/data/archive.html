@@ -21,7 +21,7 @@
 
     <hr>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
-        <input type="submit" value="Upload DOS csv" name="submit">
+        <input type="submit" value="Upload DOS .csv" name="submit">
         <input type="file" name="file" id="file">
         <select name="grade">
                 <option value="08" >Grade 08</option>
@@ -43,10 +43,12 @@
     </form>
 
     <hr>
-    {% if logs %}
+    {% if logs.0 != "Import Successful" %}
         {% for log in logs %}
             Error: {{ log }}<br>
         {% endfor %}
+    {% else %}
+        Import Successful
     {% endif %}
 
 

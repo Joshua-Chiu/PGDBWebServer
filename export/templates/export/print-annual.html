@@ -69,8 +69,11 @@
                 <td width="200px">
                     <strong>Certificate</strong>
                 </td>
-                <td width="400px">
+                <td width="200px">
                     <strong>Name</strong>
+                </td>
+                <td width="200px">
+                    <strong>Last Name</strong>
                 </td>
                 <td width="150px">
                     <strong>Student Number</strong>
@@ -82,7 +85,8 @@
         {% for student in student_list %}
             <tr>
                 <td>{{ type }}</td>
-                <td>{{ student.first }} ({{ student.legal }}) {{ student.last }}</td>
+                <td>{{ student.first }} ({{ student.legal }})</td>
+                <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
                 <td>{{ student.homeroom }}</td>
             </tr>
