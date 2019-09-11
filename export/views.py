@@ -48,7 +48,7 @@ def print_grad(request):
     students = parseQuery(query)
 
     context = {
-        'student_list': students,
+        'student_list': students[:20],
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -63,7 +63,7 @@ def print_xcheck(request):
     students = parseQuery(query)
 
     context = {
-        'student_list': students,
+        'student_list': students[:20],
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
