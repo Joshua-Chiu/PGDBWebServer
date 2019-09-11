@@ -1,0 +1,127 @@
+{% extends 'data/base.html' %}
+
+{% load mathfilters %}
+{% load staticfiles %}
+
+{% block title %}Annual Certificates{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+{% endblock %}
+
+{% block content%}
+    <!--Content goes here-->
+    <div>
+    <h2 class="heading">Printing Reports</h2>
+</div>
+    <form method="get" class="search_bar">
+        <fieldset style="border: 0">
+            Year: <select name="year" id="year"></select>
+
+            Grade:
+            <select name="grade">
+                <option value="" >Select</option>
+                <option value="08" >Grade 08</option>
+                <option value="09" >Grade 09</option>
+                <option value="10" >Grade 10</option>
+                <option value="11" >Grade 11</option>
+                <option value="12" >Grade 12</option>
+            </select>
+
+            Annual Certificates:
+            <select name="annual">
+                <option value="" >Select</option>
+                <option value="service" >Service</option>
+                <option value="athletics" >Athletics</option>
+                <option value="honourroll" >Scholar Honour Roll</option>
+                <option value="principalslist" >Scholar Principal's List</option>
+                <option value="fine-arts" >Fine Arts</option>
+            </select>
+
+            Cumulative Awards:
+            <select name="cumulative">
+                <option value="" >Select</option>
+                <option value="silver" >Greyhound Silver Pin</option>
+                <option value="gold" >Greyhound Gold Pin</option>
+                <option value="goldplus" >Greyhound Gold+ Bar</option>
+                <option value="platinum" >Greyhound Platinum Pin</option>
+                <option value="big-block" >Athletics Big Block</option>
+            </select>
+
+            <input type="submit" value="Enter" onclick="javascript: form.action='print-annual';" />
+        </fieldset>
+    </form>
+
+    <div>
+        <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
+        <button class="button default" onclick="PrintElem('GeneratedList')">Print Certificates</button>
+    </div>
+
+    {% if student_list %}
+    <div id="GeneratedList">
+        <table class="sortable">
+            <!-- Header Row-->
+            <tr>
+                <td width="200px">
+                    <strong>Certificate</strong>
+                </td>
+                <td width="400px">
+                    <strong>Name</strong>
+                </td>
+                <td width="150px">
+                    <strong>Student Number</strong>
+                </td>
+                <td>
+                    <strong>Homeroom</strong>
+                </td>
+            </tr>
+        {% for student in student_list %}
+            <tr>
+                <td>{{ type }}</td>
+                <td>{{ student.first }} ({{ student.legal }}) {{ student.last }}</td>
+                <td>{{ student.student_num }}</td>
+                <td>{{ student.homeroom }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        var start = new Date().getFullYear() + 1;
+        var end = 1970;
+        var options = "";
+        for(var year = start ; year >=end; year--){
+          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+    </script>
+
+    <script>
+        function PrintElem(elem)
+        {
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+            mywindow.document.write('');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write('<h3>' + document.title  + '</h3>');
+            mywindow.document.write(document.getElementById(elem).innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            //mywindow.close();
+
+            return true;
+        }
+    </script>
+{% endblock %}

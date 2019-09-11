@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Printing Certificates{% endblock %}
+{% block title %}Graduation Candidates{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -14,59 +14,17 @@
 {% endblock %}
 
 {% block content%}
-    <!--Content goes here-->
     <div>
     <h2 class="heading">Printing Reports</h2>
-</div>
+    </div>
+
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year:
-            <select name="year">
-                <option value="" >Select</option>
-                <option value="08" >Current Year</option>
-                <option value="09" >Previous Year (-)</option>
-                <option value="10" >Previous Year (-)</option>
-                <option value="11" >Previous Year (-)</option>
-                <option value="12" >Previous Year (-)</option>
-            </select>
+            Year: <select name="start-year" id="year"></select>
+
             Grade:
             <select name="grade">
-                <option value="" >Select</option>
-                <option value="08" >Grade 08</option>
-                <option value="09" >Grade 09</option>
-                <option value="10" >Grade 10</option>
-                <option value="11" >Grade 11</option>
-                <option value="12" >Grade 12</option>
-            </select>
-
-            Data Crosscheck:
-            <select name="annual">
-                <option value="" >Select</option>
-                <option value="service" >Service</option>
-                <option value="athletics" >Athletics</option>
-                <option value="scholar-hr" >Scholar Term 1</option>
-                <option value="scholar-hr" >Scholar Term 2</option>
-                <option value="fine-arts" >Fine Arts</option>
-            </select>
-
-            Annual Certificates:
-            <select name="annual">
-                <option value="" >Select</option>
-                <option value="service" >Service</option>
-                <option value="athletics" >Athletics</option>
-                <option value="honourroll" >Scholar Honour Roll</option>
-                <option value="principalslist" >Scholar Principal's List</option>
-                <option value="fine-arts" >Fine Arts</option>
-            </select>
-
-            Cumulative Awards:
-            <select name="cumulative">
-                <option value="" >Select</option>
-                <option value="silver" >Greyhound Silver Pin</option>
-                <option value="gold" >Greyhound Gold Pin</option>
-                <option value="goldplus" >Greyhound Gold+ Bar</option>
-                <option value="platinum" >Greyhound Platinum Pin</option>
-                <option value="big-block" >Athletics Big Block</option>
+                <option value="12">Grade 12</option>
             </select>
 
             Graduation Awards:
@@ -84,39 +42,8 @@
     </form>
 
     <div>
-        <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
-        <button class="button default" onclick="PrintElem('GeneratedList')">Print Certificates</button>
+        <button class="button default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
-
-    {% if student_list %}
-    <div id="GeneratedList">
-        <table class="sortable">
-            <!-- Header Row-->
-            <tr>
-                <td width="200px">
-                    <strong>Certificate</strong>
-                </td>
-                <td width="400px">
-                    <strong>Name</strong>
-                </td>
-                <td width="150px">
-                    <strong>Student Number</strong>
-                </td>
-                <td>
-                    <strong>Homeroom</strong>
-                </td>
-            </tr>
-        {% for student in student_list %}
-            <tr>
-                <td>Certificate</td>
-                <td>{{ student.first }} ({{ student.legal }}) {{ student.last }}</td>
-                <td>{{ student.student_num }}</td>
-                <td>{{ student.homeroom }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-    </div>
-    {% endif %}
 
     <h2>Service Candidates</h2>
     {% if student_list %}
@@ -136,8 +63,8 @@
                                 {% for point in grade.points_set.all %}
                                     {% ifequal "SE" point.type.catagory %}
                                         <span class="point">{{ point.amount }}</span>
-                                        <span style="display: inline-block; width: 2ch;">&#9;</span>
                                         <span class="code description">{{ point.type.description }}</span>
+                                        <span style="display: inline-block; width: 2ch;">&#9;</span>
                                     {% endifequal %}
                                 {% endfor %}
                             </td>
@@ -147,7 +74,14 @@
                 {% endfor %}
                 <tr>
                     <td>TOTAL:</td>
-                    <td>11-12: {{ student.SE_11_12_total|floatformat:"2" }}  &emsp; 08-12: {{ student.grade_set.all.0.cumulative_SE }}</td>
+                    <td>11-12: {{ student.SE_11_12_total|floatformat:"2" }}  &emsp;
+                        08-12:
+                        {% for grade in student.grade_set.all %}
+                            {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
+                                {{ grade.cumulative_SE|floatformat:"2" }}
+                            {% endifequal %}
+                        {% endfor %}
+                    </td>
                 </tr>
                 <tr>
                     <td>PINS:</td>
@@ -160,13 +94,22 @@
 
                 </tr>
             </table>
-            <br>
+            <hr>
         {% endfor %}
     </div>
     {% endif %}
 
 {% endblock %}
 {% block javascript %}
+    <script>
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+    </script>
 
     <script>
         function PrintElem(elem)

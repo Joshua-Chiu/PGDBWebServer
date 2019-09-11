@@ -7,9 +7,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
 <!--Nav Bar-->
 <div class="topnav">
     <ul>
-        <li style="float: left; border-right: 1px solid #bbb;">
-            <a href="{% url 'admin:index' %}">Administration</a>
-        </li>
+        <li style="float: left; border-right: 1px solid #bbb;"><a href="{% url 'admin:index' %}">Administration</a></li>
 
         <li>
             <form action="{% url 'data:search' %}">
@@ -17,9 +15,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
             </form>
         </li>
 
-        <li>
-            <a href="{% url 'data:help' %}">Help</a>
-        </li>
+        <li><a href="{% url 'data:help' %}">Help</a></li>
 
         <li>
             <div class="dropdown">
@@ -43,6 +39,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 <div class="dropdown-content">
                     <a href="{% url 'data:codes' %}">Codes</a>
                     <a href="{% url 'data:plist' %}">Plist</a>
+                    <a href="{% url 'data:archive' %}">Archives</a>
                 </div>
             </div>
         </li>
@@ -52,9 +49,9 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'export:printing' %}">Print Reports</a>
-                    <a href="{% url 'data:archive' %}">Archives</a>
-                    <a href="{% url 'export:index' %}">Other</a>
+                    <a href="{% url 'export:print-annual' %}">Annual</a>
+                    <a href="{% url 'export:print-grad' %}">Graduation</a>
+                    <a href="{% url 'export:print-xcheck' %}">Crosscheck</a>
                 </div>
             </div>
         </li>
@@ -73,6 +70,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 </div>
             </div>
         </li>
+
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'entry:index' %}">Direct Entry</a></button>
