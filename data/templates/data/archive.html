@@ -41,6 +41,15 @@
         <input type="text" name="query" id="query">
         {% csrf_token %}
     </form>
+
+    <hr>
+    {% if logs %}
+        {% for log in logs %}
+            Error: {{ log }}<br>
+        {% endfor %}
+    {% endif %}
+
+
 {% endblock %}
 
 {% block javascript %}

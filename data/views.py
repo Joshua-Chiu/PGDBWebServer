@@ -137,6 +137,7 @@ def archive(request):
 
 
 def archive_submit(request):
+    logs = []
     if request.method == "POST":
         if "file" in request.FILES:
             tree = ET.parse(request.FILES["file"])
@@ -147,6 +148,7 @@ def archive_submit(request):
                 try:
                     if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
                         print(f"student with number {s[0].text} already exists")
+                        logs.append(f"student with number {s[0].text} already exists")
                         continue
 
                     s_obj = Student(
@@ -187,6 +189,7 @@ def archive_submit(request):
                 except:
                     student_num = int(s[0].text)
                     print(f"Failed to add student {int(s[0].text)}")
+                    logs.append(f"Failed to add student {int(s[0].text)}")
 
                     # delete the partially formed student
                     if len(Student.objects.filter(student_num=student_num)) != 0:
@@ -195,7 +198,16 @@ def archive_submit(request):
             for plist in root[1]:
                 print(plist)
 
-    return HttpResponseRedirect('/data/archive')
+    template = get_template('data/archive.html')
+    if not logs:
+        logs.append("Import Successful")
+    context = {
+        "logs": logs,
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
 
 def archive_wdb_submit(request):
     if request.method == "POST":
