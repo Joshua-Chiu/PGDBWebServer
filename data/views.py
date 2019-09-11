@@ -201,7 +201,10 @@ def archive_wdb_submit(request):
     if request.method == "POST":
         if "file" in request.FILES:
             grade = int(request.POST["grade"])
-            start_year = int(request.POST["start_year"])
+            print(request.POST)
+
+            start_year = int(request.POST["start-year"])
+
             pgdb_file = wdb_convert((l.decode() for l in request.FILES["file"]), grade, grad_year)
 
             response = HttpResponse(pgdb_file, content_type='application/xml')
