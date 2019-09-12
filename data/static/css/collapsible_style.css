@@ -174,3 +174,7 @@ textarea {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+span{
+    font-size: 14px;
+}

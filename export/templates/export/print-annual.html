@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Annual Certificates{% endblock %}
+{% block title %}Annual Awards{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -59,6 +59,7 @@
     <div>
         <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
         <button class="button default" onclick="PrintElem('GeneratedList')">Print Certificates</button>
+        Number of Students in list: {{ student_list|length }}
     </div>
 
     {% if student_list %}
@@ -66,25 +67,25 @@
         <table class="sortable">
             <!-- Header Row-->
             <tr>
-                <td width="200px">
-                    <strong>Certificate</strong>
+                <td>
+                    <strong>&nbsp;Award&nbsp;</strong>
                 </td>
                 <td width="200px">
-                    <strong>Name</strong>
+                    <strong>&nbsp;Name</strong>
                 </td>
                 <td width="200px">
-                    <strong>Last Name</strong>
+                    <strong>&nbsp;Last Name</strong>
                 </td>
-                <td width="150px">
-                    <strong>Student Number</strong>
+                <td width="100px">
+                    <strong>&nbsp;Student #&nbsp;</strong>
                 </td>
                 <td>
-                    <strong>Homeroom</strong>
+                    <strong>&nbsp;Homeroom</strong>
                 </td>
             </tr>
         {% for student in student_list %}
             <tr>
-                <td>{{ type }} {{ forloop.counter }}</td>
+                <td>{{ type }}</td>
                 <td>{{ student.first }} ({{ student.legal }})</td>
                 <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
@@ -105,27 +106,5 @@
           options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
         }
         document.getElementById("year").innerHTML = options;
-    </script>
-
-    <script>
-        function PrintElem(elem)
-        {
-            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
-
-            mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-            mywindow.document.write('');
-            mywindow.document.write('</head><body>');
-            mywindow.document.write('<h3>' + document.title  + '</h3>');
-            mywindow.document.write(document.getElementById(elem).innerHTML);
-            mywindow.document.write('</body></html>');
-
-            mywindow.document.close(); // necessary for IE >= 10
-            mywindow.focus(); // necessary for IE >= 10*/
-
-            mywindow.print();
-            //mywindow.close();
-
-            return true;
-        }
     </script>
 {% endblock %}

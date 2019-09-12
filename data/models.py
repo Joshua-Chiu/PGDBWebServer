@@ -146,17 +146,14 @@ class Student(models.Model):
     @property
     def goldPlus_pin(self):
         if self.gold_pin:
-            if (self.get_cumulative_SE(10) + self.get_cumulative_AT(10) + self.get_cumulative_FA(
-                    10) + self.get_cumulative_SC(10) > 89.5 and self.get_cumulative_SE(
-                10) > 29.5):  # ser grade 11 > 19.5
+            if self.get_cumulative_SE(10) > 29.5 and self.SE_11_total > 19.5:  # ser grade 11 > 19.5
                 return 11
         return None
 
     @property
     def platinum_pin(self):
         if self.gold_pin:
-            if self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(
-                    12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5:  # ser 11 for
+            if (self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5) and (self.SE_11_total > 19.5 and self.SE_12_total > 19.5):  # ser 11 for
                 return 12
         return None
 

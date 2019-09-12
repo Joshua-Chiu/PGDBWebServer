@@ -71,6 +71,26 @@
           });
         });
     </script>
+    <script>
+        function PrintElem(elem){
+            const mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+            mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}</style>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write('<h3>' + document.title  + '</h3>');
+            mywindow.document.write(document.getElementById(elem).innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            //mywindow.close();
+
+            return true;
+        }
+    </script>
     {% block javascript %}{% endblock %}
 </footer>
 {% comment %}

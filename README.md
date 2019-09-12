@@ -42,6 +42,8 @@ refer to requirements.txt
 - [ ] change all tsv import and export to csv
 - [ ] add dashboard features like recent changes and statistics
 - [ ] make sure incorrect inputs from users like files or text don't cause crashes
+- [ ] make anecdotes work
+- [ ] cumulative awards require a minimum of a certain year for gold+ & platinum
 
 ## helpful information
 
