@@ -1,11 +1,13 @@
 from django.db import models
 import math
 import datetime
+
+
 # run manage.py makemigrations data && manage.py migrate to add to db
 
 
 class PlistCutoff(models.Model):
-    YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year+1)]
+    YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year + 1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
     grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
@@ -28,7 +30,7 @@ class PlistCutoff(models.Model):
 
     def __str__(self):
         # return str(self.year) + "'s Principal list cutoffs"
-        return f"{self.year}-{self.year+1}'s Principal's list cutoffs"
+        return f"{self.year}-{self.year + 1}'s Principal's list cutoffs"
 
     class Meta:
         verbose_name = 'Principal List Cutoff'
@@ -39,8 +41,10 @@ class Student(models.Model):
     first = models.CharField(max_length=30, verbose_name='First Name')
     last = models.CharField(max_length=30, verbose_name='Last Name')
     legal = models.CharField(max_length=30, verbose_name='Legal Name')
-    student_num = models.PositiveIntegerField(verbose_name='Student Number', help_text="This number must be unique as it is used to identify students")
-    homeroom = models.CharField(max_length=15, verbose_name='Homeroom', help_text="Do not change unless you know what you are doing")
+    student_num = models.PositiveIntegerField(verbose_name='Student Number',
+                                              help_text="This number must be unique as it is used to identify students")
+    homeroom = models.CharField(max_length=15, verbose_name='Homeroom',
+                                help_text="Do not change unless you know what you are doing")
     sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accepts any letter of the alphabet")
     # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
@@ -116,35 +120,43 @@ class Student(models.Model):
 
     @property
     def average_11_12(self):
-        return (self.grade_set.get(grade=11).scholar_set.all()[0].term1 + self.grade_set.get(grade=11).scholar_set.all()[0].term2 + self.grade_set.get(grade=12).scholar_set.all()[0].term1 + self.grade_set.get(grade=12).scholar_set.all()[0].term2) / 4
+        return (self.grade_set.get(grade=11).scholar_set.all()[0].term1 +
+                self.grade_set.get(grade=11).scholar_set.all()[0].term2 +
+                self.grade_set.get(grade=12).scholar_set.all()[0].term1 +
+                self.grade_set.get(grade=12).scholar_set.all()[0].term2) / 4
 
     @property
     def silver_pin(self):
-        for i in range(8, 12+1):
+        for i in range(8, 12 + 1):
             if self.get_cumulative_SE(i) > 9.45:
-                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 49.45:
+                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(
+                        i) + self.get_cumulative_SC(i) > 49.45:
                     return i
         return None
 
     @property
     def gold_pin(self):
-        for i in range(8, 12+1):
+        for i in range(8, 12 + 1):
             if self.get_cumulative_SE(i) > 29.45:
-                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(i) + self.get_cumulative_SC(i) > 89.45:
+                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(
+                        i) + self.get_cumulative_SC(i) > 89.45:
                     return i
         return None
 
     @property
     def goldPlus_pin(self):
         if self.gold_pin:
-            if (self.get_cumulative_SE(11) + self.get_cumulative_AT(11) + self.get_cumulative_FA(11) + self.get_cumulative_SC(11) > 90):
+            if (self.get_cumulative_SE(10) + self.get_cumulative_AT(10) + self.get_cumulative_FA(
+                    10) + self.get_cumulative_SC(10) > 89.5 and self.get_cumulative_SE(
+                10) > 29.5):  # ser grade 11 > 19.5
                 return 11
         return None
 
     @property
     def platinum_pin(self):
-        if self.goldPlus_pin:
-            if self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(12) + self.get_cumulative_SC(12) > 110:
+        if self.gold_pin:
+            if self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(
+                    12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5:  # ser 11 for
                 return 12
         return None
 
@@ -207,7 +219,7 @@ class Grade(models.Model):
 
         def toPoints(avg):
             if avg >= 79.50:
-                return math.sqrt(-(79-avg)) + 1.4
+                return math.sqrt(-(79 - avg)) + 1.4
             else:
                 return 0
 
@@ -215,12 +227,13 @@ class Grade(models.Model):
 
     @property
     def honourroll(self):
-        return self.SC_total != 0
+        return (self.scholar_set.all()[0].term1 > 79.5 and self.scholar_set.all()[
+            0].term2 > 79.45) and not self.principalslist
 
     @property
     def principalslist(self):
-        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year) and\
-               self.scholar_set.all()[0].term2 > PlistCutoff.get(year=self.start_year)
+        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 1) and \
+               self.scholar_set.all()[0].term2 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
     def __str__(self):
         return f"{self.grade} {self.start_year}"

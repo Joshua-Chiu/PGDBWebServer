@@ -63,7 +63,7 @@ def print_xcheck(request):
     students = parseQuery(query)
 
     context = {
-        'student_list': students[:20],
+        'student_list': students,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

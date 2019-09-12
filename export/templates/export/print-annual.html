@@ -84,7 +84,7 @@
             </tr>
         {% for student in student_list %}
             <tr>
-                <td>{{ type }}</td>
+                <td>{{ type }} {{ forloop.counter }}</td>
                 <td>{{ student.first }} ({{ student.legal }})</td>
                 <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
