@@ -13,14 +13,15 @@ import csv
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls import url, include
 from django.template.loader import get_template
+import re
 
 admin.site.register(PlistCutoff)
 
 
 def increase_grade(modeladmin, request, queryset):
     for student in queryset:
-        new_grade = int(student.homeroom[:2]) + 1
-        student.homeroom = str(new_grade).zfill(2) + student.homeroom[2:]
+        new_grade = int(re.findall('\d+', student.homeroom)[0]) + 1
+        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
 
         if new_grade > 12:
             pass  # mark inactive
@@ -39,7 +40,7 @@ def mark_inactive(modeladmin, request, queryset):
 
 def export_as_tsv(modeladmin, request, queryset):
     field_names = modeladmin.resource_class.Meta.fields
-    file_name = "student_export_thing" # TODO better name include date maybe
+    file_name = "student_export_thing"  # TODO better name include date maybe
 
     response = HttpResponse(content_type="text/tsv")
     response['Content-Disposition'] = f"attachment; filename={file_name}.tsv"
@@ -84,7 +85,7 @@ class StudentAdmin(admin.ModelAdmin):
                 # skip if student exists
                 if Student.objects.filter(student_num=int(student_num)):
                     print(f"student {student_num} already exists")
-                    #continue
+                    # continue
 
                 student = Student(first=first, last=last, legal=legal, student_num=student_num,
                                   homeroom=homeroom, sex=sex, grad_year=grad_year)
@@ -92,9 +93,9 @@ class StudentAdmin(admin.ModelAdmin):
 
                 # add grades
                 for i in range(int(student.homeroom[:2]) - 7):
-                    student.grade_set.create(grade=8+i,
-                                             start_year=timezone.now().year-int(student.homeroom[:2])+8+i)
-                    student.grade_set.get(grade=8+i).scholar_set.create(term1=0, term2=0)
+                    student.grade_set.create(grade=8 + i,
+                                             start_year=timezone.now().year - int(student.homeroom[:2]) + 8 + i)
+                    student.grade_set.get(grade=8 + i).scholar_set.create(term1=0, term2=0)
 
                 student.save()
 
@@ -119,6 +120,7 @@ admin.site.register(Student, StudentAdmin)
 @receiver(post_import)
 def _post_import(model, **kwargs):
     pass
+
 
 @receiver(post_export)
 def _post_export(model, **kwargs):

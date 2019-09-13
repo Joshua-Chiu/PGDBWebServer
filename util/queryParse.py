@@ -1,6 +1,7 @@
 from data.models import Student
 from itertools import zip_longest
 
+
 def parseQuery(query):
     students = Student.objects.all()
 
@@ -68,4 +69,3 @@ def parseQuery(query):
                     students = new_students
 
     return students
-
