@@ -33,7 +33,7 @@ def print_annual(request):
 
     context = {
         'student_list': students,
-        'type': query.split(':')[-1].capitalize(),
+        'type': query.replace(':', ' ').replace("award ", "").title(),
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

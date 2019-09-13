@@ -70,13 +70,13 @@
                 <td>
                     <strong>&nbsp;Award&nbsp;</strong>
                 </td>
-                <td width="200px">
+                <td>
                     <strong>&nbsp;Name</strong>
                 </td>
-                <td width="200px">
+                <td>
                     <strong>&nbsp;Last Name</strong>
                 </td>
-                <td width="100px">
+                <td>
                     <strong>&nbsp;Student #&nbsp;</strong>
                 </td>
                 <td>
@@ -85,7 +85,7 @@
             </tr>
         {% for student in student_list %}
             <tr>
-                <td>{{ type }}</td>
+                <td>{{ type }}&nbsp;&nbsp;&nbsp;</td>
                 <td>{{ student.first }} ({{ student.legal }})</td>
                 <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
