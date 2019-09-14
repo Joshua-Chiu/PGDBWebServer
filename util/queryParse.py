@@ -71,6 +71,7 @@ def parseQuery(query):
 
                     elif k == 'annual_cert':
                         new_students = students
+
                         type, grade = v.split("_")
                         for s in students:
                             if type == "SE":
@@ -81,6 +82,13 @@ def parseQuery(query):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "FA":
                                 if not s.grade_set.get(grade=int(grade)).FA_total > 10:
+                                    new_students = new_students.exclude(id=s.id)
+
+                            elif type == "honourroll":
+                                if not s.grade_set.get(grade=int(grade)).honourroll:
+                                    new_students = new_students.exclude(id=s.id)
+                            elif type == "principalslist":
+                                if not s.grade_set.get(grade=int(grade)).principalslist:
                                     new_students = new_students.exclude(id=s.id)
 
                         students = new_students
