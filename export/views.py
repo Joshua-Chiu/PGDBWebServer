@@ -25,7 +25,7 @@ def print_annual(request):
     if "cumulative" in request.GET and request.GET["cumulative"]:
         query += "award:" + request.GET["cumulative"] + " "
     if "annual" in request.GET and request.GET["annual"]:
-        query += "award:" + request.GET["annual"] + " "
+        query += "annual_cert:" + request.GET["annual"] + "_" + request.GET["grade"] + " "
 
     print(query)
 
