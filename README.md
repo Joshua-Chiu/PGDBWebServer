@@ -39,7 +39,7 @@ refer to requirements.txt
 - [x] make archive page not ugly
 - [ ] make converter.py create start year for students missing it by taking the average of students with a start year and allow an optional grade argument for wdb_convert
 - [ ] make a button to download pgdb file archive of students and delete them at the same time
-- [ ] change all tsv import and export to csv
+- [x] change all tsv import and export to csv
 - [ ] add dashboard features like recent changes and statistics
 - [ ] make sure incorrect inputs from users like files or text don't cause crashes
 - [ ] make anecdotes work

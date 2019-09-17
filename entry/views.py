@@ -71,12 +71,12 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 #if it's the start line skip it
-                if line.decode("utf-8") == "student_number	code	amount\n":
+                if line.decode("utf-8") == "student_number,code,amount\n":
                     continue
 
                 # print(line.decode("utf-8").strip())
-                print(line.decode("utf-8").strip().split("\t"))
-                snum, code, amount = line.decode("utf-8").strip().split("\t")[:3]
+                print(line.decode("utf-8").strip().split(","))
+                snum, code, amount = line.decode("utf-8").strip().split(",")[:3]
 
                 student = Student.objects.get(student_num=snum)
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
