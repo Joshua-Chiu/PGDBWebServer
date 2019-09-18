@@ -38,13 +38,13 @@ def mark_inactive(modeladmin, request, queryset):
     pass
 
 
-def export_as_tsv(modeladmin, request, queryset):
+def export_as_csv(modeladmin, request, queryset):
     field_names = modeladmin.resource_class.Meta.fields
     file_name = "student_export_thing"  # TODO better name include date maybe
 
-    response = HttpResponse(content_type="text/tsv")
-    response['Content-Disposition'] = f"attachment; filename={file_name}.tsv"
-    writer = csv.writer(response, dialect="excel-tab", lineterminator="\n")
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = f"attachment; filename={file_name}.csv"
+    writer = csv.writer(response, dialect="excel", lineterminator="\n")
 
     writer.writerow(field_names)
     for obj in queryset:
@@ -53,7 +53,7 @@ def export_as_tsv(modeladmin, request, queryset):
     return response
 
 
-export_as_tsv.short_description = "Export Selected as TSV"
+export_as_csv.short_description = "Export Selected as CSV"
 
 
 class StudentResource(resources.ModelResource):
@@ -66,12 +66,12 @@ class StudentResource(resources.ModelResource):
 
 class StudentAdmin(admin.ModelAdmin):
     resource_class = StudentResource
-    formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.TSV)
+    formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
     list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
     list_display_links = ('last', 'first')
-    actions = [increase_grade, export_as_tsv, mark_inactive]
+    actions = [increase_grade, export_as_csv, mark_inactive]
 
-    def import_as_tsv(self, request):
+    def import_as_csv(self, request):
         if "file" in request.FILES:
             print("asdf")
             for line in request.FILES['file']:
@@ -109,7 +109,7 @@ class StudentAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(StudentAdmin, self).get_urls()
         my_urls = [
-            url(r"^import/$", self.import_as_tsv)
+            url(r"^import/$", self.import_as_csv)
         ]
         return my_urls + urls
 
