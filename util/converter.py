@@ -16,12 +16,12 @@ info = {
 
 # (type, grade)
 points_dict = {
-    ("SE", 8):  [87,  88,  89,  90,  91,  92,  93 ],
-    ("AT", 8):  [94,  95,  96,  97,  98,  99,  100],
-    ("FA", 8):  [103, 104, 105, 106, 107, 108, 109],
-    ("SE", 9):  [110, 111, 112, 113, 114, 115, 116],
-    ("AT", 9):  [117, 118, 119, 120, 121, 122, 123],
-    ("FA", 9):  [126, 127, 128, 129, 130, 131, 132],
+    ("SE", 8): [87, 88, 89, 90, 91, 92, 93],
+    ("AT", 8): [94, 95, 96, 97, 98, 99, 100],
+    ("FA", 8): [103, 104, 105, 106, 107, 108, 109],
+    ("SE", 9): [110, 111, 112, 113, 114, 115, 116],
+    ("AT", 9): [117, 118, 119, 120, 121, 122, 123],
+    ("FA", 9): [126, 127, 128, 129, 130, 131, 132],
     ("SE", 10): [133, 134, 135, 136, 137, 138, 139],
     ("AT", 10): [140, 141, 142, 143, 144, 145, 146],
     ("FA", 10): [149, 150, 151, 152, 153, 154, 155],
@@ -55,10 +55,12 @@ if len(sys.argv) < 2:
 
 file = sys.argv[1]
 
+
 def get_if_exists(index, row):
     if len(row) > index:
         return row[index]
     return ""
+
 
 def wdb_convert(csvfile, grade_num, start_year):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
@@ -106,7 +108,7 @@ def wdb_convert(csvfile, grade_num, start_year):
                     except:
                         continue
 
-                    amount = round(value, 3)
+                    amount = math.floor(value * 1000) / 1000
                     code = round(((value * 1000) % 1) * 100)
 
                     point = ET.SubElement(points, "point")
@@ -118,6 +120,7 @@ def wdb_convert(csvfile, grade_num, start_year):
 
     return ET.tostring(root, encoding="utf-8", method="xml").decode()
 
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("needs filename, grade, and grad year argument")
@@ -128,4 +131,3 @@ if __name__ == "__main__":
 
     with open(file) as csvfile:
         print(wdb_convert(csvfile, grade, grad_year))
-
