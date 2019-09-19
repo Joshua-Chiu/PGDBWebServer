@@ -75,13 +75,13 @@ def parseQuery(query):
                         type, grade = v.split("_")
                         for s in students:
                             if type == "SE":
-                                if not s.grade_set.get(grade=int(grade)).SE_total > 10:
+                                if not s.grade_set.get(grade=int(grade)).SE_total > 9.5:
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "AT":
-                                if not s.grade_set.get(grade=int(grade)).AT_total > 10:
+                                if not s.grade_set.get(grade=int(grade)).AT_total > 9.5:
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "FA":
-                                if not s.grade_set.get(grade=int(grade)).FA_total > 10:
+                                if not s.grade_set.get(grade=int(grade)).FA_total > 9.5:
                                     new_students = new_students.exclude(id=s.id)
 
                             elif type == "honourroll":
