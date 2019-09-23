@@ -31,9 +31,22 @@ def print_annual(request):
 
     students = parseQuery(query)
 
+    awards_dict = {
+        "annual_cert": "Annual",
+        ":": " ",
+        "_": " ",
+        "grade": "Gr",
+
+    }
+
+    for key, value in awards_dict.items():
+        query = query.replace(key.lower(), value)
+        print(key + query)
+    print(query)
+
     context = {
         'student_list': students,
-        'type': query.replace(':', ' ').replace("award ", "").title(),
+        'type': query
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
