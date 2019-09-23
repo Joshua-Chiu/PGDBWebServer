@@ -44,6 +44,7 @@ refer to requirements.txt
 - [ ] make sure incorrect inputs from users like files or text don't cause crashes
 - [ ] make anecdotes work
 - [ ] cumulative awards require a minimum of a certain year for gold+ & platinum
+- [ ] when doing searches avoid python for-loops and properties; try to use sql queries instead
 
 ## helpful information
 
