@@ -31,7 +31,7 @@ def search(request):
         'student_list': students,
         'query': request.GET['query']
     }
-    if request.user.is_superuser:
+    if request.user.can_view:
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
@@ -43,7 +43,7 @@ def student_info(request, num):
         'student': Student.objects.get(id=num),
         'plists': PlistCutoff.objects.all()
     }
-    if request.user.is_superuser:
+    if request.user.is_authenticated and (request.user.can_view or request.user.is_superuser):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
@@ -51,80 +51,84 @@ def student_info(request, num):
 
 @login_required
 def student_submit(request, num):
-    student = Student.objects.get(id=num)
-    items = list(request.POST.items())[1:]
-    anecdotes = [item for item in items if item[0].find("anecdote") != -1]
-    points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
-    scholar_fields = [item for item in items if item[0].find("SC") != -1]
-    points_list = points_list + scholar_fields
-    code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
+    if (not request.user.no_entry) or request.user.is_superuser:
+        student = Student.objects.get(id=num)
+        items = list(request.POST.items())[1:]
+        anecdotes = [item for item in items if item[0].find("anecdote") != -1]
+        points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
+        scholar_fields = [item for item in items if item[0].find("SC") != -1]
+        points_list = points_list + scholar_fields
+        code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
 
-    # anecdotes
-    for n, anecdote in enumerate(anecdotes):
-        # print(anecdote[1])
-        grade = student.grade_set.get(grade=int(student.homeroom[:2])-n)
-        grade.anecdote = anecdote[1]
-        grade.save()
+        # anecdotes
+        for n, anecdote in enumerate(anecdotes):
+            # print(anecdote[1])
+            grade = student.grade_set.get(grade=int(student.homeroom[:2])-n)
+            grade.anecdote = anecdote[1]
+            if request.user.has_perm('data.change_points'):
+                grade.save()
 
-    # delete codes buttons
-    for button in code_delete_buttons:
-        # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
-        grade, catagory, code = button[0].strip().split(' ')[1:]
-        point = student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
-        point.delete()
-        # print(point)
-        # print("button: ", grade, type, code)
+        # delete codes buttons
+        for button in code_delete_buttons:
+            # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
+            grade, catagory, code = button[0].strip().split(' ')[1:]
+            point = student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
+            point.delete()
+            # print(point)
+            # print("button: ", grade, type, code)
 
-    # points and codes
-    if request.method == 'POST':
-        # print("received POST request")
-        # for k, v in request.POST.items():
-        #     print(k, "|", v)
+        # points and codes
+        if request.method == 'POST':
+            # print("received POST request")
+            # for k, v in request.POST.items():
+            #     print(k, "|", v)
 
-        # iterate through pairs of point amount and code
-        for point_field, code_field in zip(points_list[::2], points_list[1::2]):
+            # iterate through pairs of point amount and code
+            for point_field, code_field in zip(points_list[::2], points_list[1::2]):
 
-            # get info like grade and point type e.g. SE, AT
-            info = point_field[0].split(' ')
-            grade_num = int(info[0])
-            type = info[1]
+                # get info like grade and point type e.g. SE, AT
+                info = point_field[0].split(' ')
+                grade_num = int(info[0])
+                type = info[1]
 
-            # decide if it's scholar or other type
-            if type == "SC":
-                # scholar gets its own class from the other points
-                if point_field[1] == '' and code_field[1] == '':
-                    continue
+                # decide if it's scholar or other type
+                if type == "SC":
+                    # scholar gets its own class from the other points
+                    if point_field[1] == '' and code_field[1] == '':
+                        continue
 
-                if point_field[1] == '': t1 = 0
-                else: t1 = float(point_field[1])
+                    if point_field[1] == '': t1 = 0
+                    else: t1 = float(point_field[1])
 
-                if code_field[1] == '': t2 = 0
-                else: t2 = float(code_field[1])
+                    if code_field[1] == '': t2 = 0
+                    else: t2 = float(code_field[1])
 
-                # set the scholar average
-                grade = student.grade_set.get(grade=grade_num)
-                scholar = grade.scholar_set.all()[0]
-                scholar.term1 = t1
-                scholar.term2 = t2
-                scholar.save()
-            else:
-                if point_field[1] == '' or code_field[1] == '':
-                    continue
+                    # set the scholar average
+                    grade = student.grade_set.get(grade=grade_num)
+                    scholar = grade.scholar_set.all()[0]
+                    scholar.term1 = t1
+                    scholar.term2 = t2
+                    if request.user.has_perm('data.change_scholar'):
+                        scholar.save()
+                else:
+                    if point_field[1] == '' or code_field[1] == '':
+                        continue
 
-                amount = float(point_field[1])
-                code = int(code_field[1])
+                    amount = float(point_field[1])
+                    code = int(code_field[1])
 
-                # find the point class with the same code and catagory 
-                try:
-                    typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
-                except PointCodes.DoesNotExist as e:
-                    typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
-                    typeClass.save()
+                    # find the point class with the same code and catagory
+                    try:
+                        typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
+                    except PointCodes.DoesNotExist as e:
+                        typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
+                        if request.user.has_perm('data.add_PointCodes'):
+                            typeClass.save()
 
-                grade = student.grade_set.get(grade=grade_num)
-                grade.points_set.create(type=typeClass, amount=amount)
+                    grade = student.grade_set.get(grade=grade_num)
+                    grade.points_set.create(type=typeClass, amount=amount)
 
-    return HttpResponseRedirect("/data/student/{}".format(num))
+    return HttpResponseRedirect(f"/data/student/{num}")
 
 
 def archive(request):
@@ -139,64 +143,68 @@ def archive(request):
 def archive_submit(request):
     logs = []
     if request.method == "POST":
-        if "file" in request.FILES:
-            tree = ET.parse(request.FILES["file"])
-            root = tree.getroot()
+        if request.user.has_perm('data.add_student'):
+            if "file" in request.FILES:
+                tree = ET.parse(request.FILES["file"])
+                root = tree.getroot()
 
-            # all students
-            for s in root[0]:
-                try:
-                    if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
-                        print(f"student with number {s[0].text} already exists")
-                        logs.append(f"student with number {s[0].text} already exists")
-                        continue
+                # all students
+                for s in root[0]:
+                    try:
+                        if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
+                            print(f"student with number {s[0].text} already exists")
+                            logs.append(f"student with number {s[0].text} already exists")
+                            continue
 
-                    s_obj = Student(
-                        student_num=int(s[0].text),
-                        homeroom=f"{s[1].text}{s[2].text}",
-                        first=s[3].text,
-                        last=s[4].text,
-                        legal=s[5].text,
-                        sex=s[6].text,
-                        grad_year=int(s[7].text)
-                    )
-
-                    s_obj.save()
-
-                    for g in s[8]:
-                        g_obj = Grade(
-                            grade=int(g[0].text),
-                            start_year=int(g[1].text),
-                            anecdote=s[2].text,
+                        s_obj = Student(
+                            student_num=int(s[0].text),
+                            homeroom=f"{s[1].text}{s[2].text}",
+                            first=s[3].text,
+                            last=s[4].text,
+                            legal=s[5].text,
+                            sex=s[6].text,
+                            grad_year=int(s[7].text)
                         )
-                        s_obj.grade_set.add(g_obj, bulk=False)
-                        g_obj.save()
+                        s_obj.save()
 
-                        g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
-
-                        for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
-                            if (len(PointCodes.objects.filter(catagory=p[0].text).filter(code=int(p[1].text))) == 0):
-                                type = PointCodes(catagory=p[0].text, code=int(p[1].text), description=str(p[0].text) + str(p[1].text))
-                                type.save()
-                            else:
-                                type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
-
-                            g_obj.points_set.create(
-                                type=type,
-                                amount=float(p[2].text),
+                        for g in s[8]:
+                            g_obj = Grade(
+                                grade=int(g[0].text),
+                                start_year=int(g[1].text),
+                                anecdote=s[2].text,
                             )
-                    # print(f"added student {int(s[0].text)}")
-                except:
-                    student_num = int(s[0].text)
-                    print(f"Failed to add student {int(s[0].text)}")
-                    logs.append(f"Failed to add student {int(s[0].text)}")
+                            s_obj.grade_set.add(g_obj, bulk=False)
+                            g_obj.save()
 
-                    # delete the partially formed student
-                    if len(Student.objects.filter(student_num=student_num)) != 0:
-                        Student.objects.get(student_num=student_num).delete()
+                            g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
 
-            for plist in root[1]:
-                print(plist)
+                            for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
+                                if (len(PointCodes.objects.filter(catagory=p[0].text).filter(code=int(p[1].text))) == 0):
+                                    type = PointCodes(catagory=p[0].text, code=int(p[1].text), description=str(p[0].text) + str(p[1].text))
+                                    type.save()
+                                else:
+                                    type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
+
+                                g_obj.points_set.create(
+                                    type=type,
+                                    amount=float(p[2].text),
+                                )
+                        # print(f"added student {int(s[0].text)}")
+                    except:
+                        student_num = int(s[0].text)
+                        print(f"Failed to add student {int(s[0].text)}")
+                        logs.append(f"Failed to add student {int(s[0].text)}")
+
+                        # delete the partially formed student
+                        if len(Student.objects.filter(student_num=student_num)) != 0:
+                            Student.objects.get(student_num=student_num).delete()
+
+                for plist in root[1]:
+                    print(plist)
+        else:
+            logs.append("Permission error: Please make sure you can import students")
+
+
 
     template = get_template('data/archive.html')
     if not logs:

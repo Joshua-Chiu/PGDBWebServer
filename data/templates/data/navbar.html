@@ -14,7 +14,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 <input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()">
             </form>
         </li>
-
+        {% if user.is_superuser %}
         <li><a href="{% url 'data:help' %}">Help</a></li>
 
         <li>
@@ -70,7 +70,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 </div>
             </div>
         </li>
-
+        {% endif %}
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'entry:index' %}">Direct Entry</a></button>

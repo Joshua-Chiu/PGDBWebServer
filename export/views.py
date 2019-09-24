@@ -27,8 +27,6 @@ def print_annual(request):
     if "annual" in request.GET and request.GET["annual"]:
         query += "annual_cert:" + request.GET["annual"] + "_" + request.GET["grade"] + " "
 
-    print(query)
-
     students = parseQuery(query)
 
     awards_dict = {
@@ -41,8 +39,6 @@ def print_annual(request):
 
     for key, value in awards_dict.items():
         query = query.replace(key.lower(), value)
-        print(key + query)
-    print(query)
 
     context = {
         'student_list': students,

@@ -5,11 +5,11 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
 {% else %}
     <a href="{% url 'entry:index' %}"><< Home</a>
 {%  endif %}
-
+&emsp;
 {% if user.is_staff %}
 <a href="{% url 'admin:index' %}">Administration</a>
 {% endif %}
-
+&emsp;
 <a href="{% url 'logout' %}">Logout</a>
 <div id="clockbox" class="date">
 <p>{% now "l, F d, Y g:i:s A" %}</p>
