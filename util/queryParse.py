@@ -50,31 +50,40 @@ def parseQuery(query):
                             if not s in students_with_grade:
                                 students = students.exclude(id=s.id)
 
-                    elif k == 'award':
+                    # award: or award_12:
+                    elif "award" in k:
+                        if "_" in k:
+                            print("asdf")
+                            grade = int(k.split("_")[1])
+                            grades = [grade]
+                        else:
+                            grades = [8, 9, 10, 11, 12]
+                            grade = 0
+
                         new_students = students
                         if v == "silver":
                             for s in students:
-                                if not s.silver_pin:
+                                if not s.silver_pin in grades:
                                     new_students = new_students.exclude(id=s.id)
-                        if v == "gold":
+                        elif v == "gold":
                             for s in students:
-                                if not s.gold_pin:
+                                if not s.gold_pin in grades:
                                     new_students = new_students.exclude(id=s.id)
-                        if v == "goldplus":
+                        elif v == "goldplus":
                             for s in students:
-                                if not s.goldPlus_pin:
+                                if not s.goldPlus_pin in grades:
                                     new_students = new_students.exclude(id=s.id)
-                        if v == "platinum":
+                        elif v == "platinum":
                             for s in students:
-                                if not s.platinum_pin:
+                                if not s.platinum_pin in grades:
                                     new_students = new_students.exclude(id=s.id)
-                        if v == "bigblock":
+                        elif v == "bigblock":
                             for s in students:
-                                if not s.bigblock_award:
+                                if not s.bigblock_award in grades:
                                     new_students = new_students.exclude(id=s.id)
-                        if v == "honourroll":
+                        elif v == "honourroll":
                             for s in students:
-                                if not s.grade_set.get(grade=s.homeroom[:2]).honourroll:
+                                if not s.grade_set.get(grade=(grade or int(s.homeroom[:2]))).honourroll:
                                     new_students = new_students.exclude(id=s.id)
 
                         students = new_students
