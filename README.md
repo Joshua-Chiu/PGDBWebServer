@@ -19,6 +19,8 @@ refer to requirements.txt
 
 * create databse `PGDB`
 * create user `pgadmin` with password `2.71828`
+* `python manage.py migrate`
+* `python manage.py defaultGroups`
 
 ## Things that should be fixed at some point
 

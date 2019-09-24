@@ -41,37 +41,37 @@
                 {{ student.currentyear|slice:"5:8" }}
                 <button onclick="nullify()" class="btn danger">NULLIFY</button>
                 <p>Comments</p>
-                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" >{{ grade_object.anecdote }}</textarea>
+                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea>
 
             <!-- DATA ENTRY HAPPENS HERE -->
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" max="1000" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %}>
-                <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2">
+                <input class="inputs" max="1000" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %}>
+                <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input class="inputs" max="6" id="athletics" type="number" name="{{grade}} AT points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %}>
-                <input class="codes" id="athletics" type="number" name="{{grade}} AT code" maxlength="2">
+                <input class="inputs" max="6" id="athletics" type="number" name="{{grade}} AT points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %}>
+                <input class="codes" id="athletics" type="number" name="{{grade}} AT code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" max="10" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %}>
-                <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2">
+                <input class="inputs" max="10" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %}>
+                <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td rowspan="2">
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T1 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
+                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
                     <br>
 
                     <!--<input onclick="nullify()" type="checkbox" name="nullify-se" value="nullify-se" checked>-->
                     <label for="scholar">T2 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001">
+                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
                     <br>
 
                     <label for="scholar">T1 Plist:
