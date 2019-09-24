@@ -16,7 +16,7 @@ from util.converter import wdb_convert
 @login_required()
 def search(request):
     template = get_template('data/search.html')
-    
+
     # if no query exists make an empty list
     if request.GET['query']:
         query = request.GET['query']
@@ -63,7 +63,7 @@ def student_submit(request, num):
         # anecdotes
         for n, anecdote in enumerate(anecdotes):
             # print(anecdote[1])
-            grade = student.grade_set.get(grade=int(student.homeroom[:2])-n)
+            grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
             grade.anecdote = anecdote[1]
             if request.user.has_perm('data.change_points'):
                 grade.save()
@@ -72,7 +72,9 @@ def student_submit(request, num):
         for button in code_delete_buttons:
             # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
             grade, catagory, code = button[0].strip().split(' ')[1:]
-            point = student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
+            point = \
+            student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[
+                0]
             point.delete()
             # print(point)
             # print("button: ", grade, type, code)
@@ -97,11 +99,15 @@ def student_submit(request, num):
                     if point_field[1] == '' and code_field[1] == '':
                         continue
 
-                    if point_field[1] == '': t1 = 0
-                    else: t1 = float(point_field[1])
+                    if point_field[1] == '':
+                        t1 = 0
+                    else:
+                        t1 = float(point_field[1])
 
-                    if code_field[1] == '': t2 = 0
-                    else: t2 = float(code_field[1])
+                    if code_field[1] == '':
+                        t2 = 0
+                    else:
+                        t2 = float(code_field[1])
 
                     # set the scholar average
                     grade = student.grade_set.get(grade=grade_num)
@@ -179,8 +185,10 @@ def archive_submit(request):
                             g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
 
                             for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
-                                if (len(PointCodes.objects.filter(catagory=p[0].text).filter(code=int(p[1].text))) == 0):
-                                    type = PointCodes(catagory=p[0].text, code=int(p[1].text), description=str(p[0].text) + str(p[1].text))
+                                if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
+                                        code=int(p[1].text))) == 0):
+                                    type = PointCodes(catagory=p[0].text, code=int(p[1].text),
+                                                      description=str(p[0].text) + str(p[1].text))
                                     type.save()
                                 else:
                                     type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
@@ -204,8 +212,6 @@ def archive_submit(request):
         else:
             logs.append("Permission error: Please make sure you can import students")
 
-
-
     template = get_template('data/archive.html')
     if not logs:
         logs.append("Import Successful")
@@ -216,6 +222,7 @@ def archive_submit(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
+
 
 def archive_wdb_submit(request):
     if request.method == "POST":
@@ -230,6 +237,7 @@ def archive_wdb_submit(request):
             return response
 
     return HttpResponseRedirect("/data/archive")
+
 
 def archive_file(request):
     if not "query" in request.POST:
@@ -279,7 +287,7 @@ def archive_file(request):
             # if a plist for this year exists add it to the list
             if grade.start_year not in relevent_plists and \
                     len(PlistCutoff.objects.filter(year=grade.start_year)) == 1:
-                        relevent_plists.append(grade.start_year)
+                relevent_plists.append(grade.start_year)
 
     plists = ET.SubElement(root, "plists")
     for plist in relevent_plists:
@@ -298,7 +306,6 @@ def archive_file(request):
         ET.SubElement(plist_tag, 'grade_11_T2').text = str(plist_object.grade_11_T2)
         ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
         ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
-
 
     xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
@@ -331,10 +338,10 @@ def codes(request):
 def plist(request):
     template = get_template('data/plist.html')
     context = {
-            'plist': PlistCutoff.objects.all(),
-            'year': datetime.datetime.now().year,
-            'month': datetime.datetime.now().month
-            }
+        'plist': PlistCutoff.objects.all(),
+        'year': datetime.datetime.now().year,
+        'month': datetime.datetime.now().month
+    }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
@@ -376,14 +383,13 @@ def autofocus_submit(request, num):
 
 
 def codes_submit(request):
-
     # sort the codes into a list where each code is an item
     items = list(request.POST.items())[1:]
     args = [iter(items)] * 3
     code_info = list(zip_longest(*args))
 
     for code in code_info:
-        if (not code[0][1]) or (not code [1][1]):
+        if (not code[0][1]) or (not code[1][1]):
             continue
 
         # if there is an already existing code don't create a new one
