@@ -1,4 +1,4 @@
-from data.models import Student
+from data.models import Student, Grade
 from itertools import zip_longest
 
 
@@ -27,7 +27,7 @@ def parseQuery(query):
                     continue
                 items[term[0]] = term[1]
 
-            # if it's an attribute of student filter by it
+            # iterate through every parameter pair and check if it exists or is a student attr
             for k, v in items.items():
                 if hasattr(Student, k):
                     val = "{0}__icontains".format(k)
@@ -40,6 +40,16 @@ def parseQuery(query):
                             v = '0' + v
                         # print('homeroom__contains', v)
                         students = students.filter(**{'homeroom__contains': v})
+
+                    # grade_00_year
+                    elif k[:6] == "grade_" and k[8:] == "_year":
+                        grade = int(k[6:8])
+                        grades = Grade.objects.filter(start_year=int(v)).filter(grade=grade)
+                        students_with_grade = [g.Student for g in grades]
+                        for s in students:
+                            if not s in students_with_grade:
+                                students = students.exclude(id=s.id)
+
                     elif k == 'award':
                         new_students = students
                         if v == "silver":
@@ -94,6 +104,7 @@ def parseQuery(query):
                         students = new_students
 
         return students
-    except:
+    except Exception as e:
         print(f"oh no failed to parse query: {query}")
+        print(e)
         return Student.objects.none()
