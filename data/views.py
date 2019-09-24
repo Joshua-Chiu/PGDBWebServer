@@ -31,7 +31,7 @@ def search(request):
         'student_list': students,
         'query': request.GET['query']
     }
-    if request.user.can_view:
+    if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
@@ -43,7 +43,7 @@ def student_info(request, num):
         'student': Student.objects.get(id=num),
         'plists': PlistCutoff.objects.all()
     }
-    if request.user.is_authenticated and (request.user.can_view or request.user.is_superuser):
+    if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')

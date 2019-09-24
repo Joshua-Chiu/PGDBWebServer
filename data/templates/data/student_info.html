@@ -1,4 +1,5 @@
 {% extends 'data/base.html' %}
+{% load has_group %}
 {% load staticfiles %}
 {% load mathfilters %}
 
@@ -22,13 +23,28 @@
     <hr>
     <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
     {%csrf_token%}
+    {% if user.is_superuser or user.can_view %}
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
-                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0%}
+                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0 %}
                 {% endifequal %}
             {% endfor %}
         {% endfor %}
+    {% else %}
+        {% if request.user|has_group:"Service" %}
+            {% include 'entry/overview.html' with type='Service' %}
+        {% endif %}
+        {% if request.user|has_group:"Athletics" %}
+            {% include 'entry/overview.html' with type='Athletics' %}
+        {% endif %}
+        {% if request.user|has_group:"Scholar" %}
+            {% include 'entry/overview.html' with type='Scholar' %}
+        {% endif %}
+        {% if request.user|has_group:"Fine Arts" %}
+            {% include 'entry/overview.html' with type='Fine Arts' %}
+        {% endif %}
+    {% endif %}
 
 
     </form>
