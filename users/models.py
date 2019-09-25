@@ -11,10 +11,10 @@ class CustomUser(AbstractUser):
                                              (5, 'Scholar T2')])
 
     can_view = models.BooleanField(default=False, verbose_name='Can view student page',
-                                   help_text="Designates whether the user can see the student view.")
+                                   help_text="Designates whether the user can see the student view. Note: If a user is a superuser, this is disregarded.")
 
     no_entry = models.BooleanField(default=True, verbose_name='No entry at student page',
-                                   help_text="Designates whether the user can enter data at the student view.")
+                                   help_text="Designates whether the user can enter data at the student view. Note: If a user is a superuser, this is disregarded.")
 
     @register.filter(name='has_group')
     def has_group(self, group_name):
