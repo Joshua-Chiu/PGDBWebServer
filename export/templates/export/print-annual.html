@@ -11,6 +11,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 {% endblock %}
 
 {% block content%}
@@ -58,7 +59,7 @@
 
     <div>
         <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
-        <button class="button default" onclick="PrintElem('GeneratedList')">Print Certificates</button>
+        <button class="button default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
         Number of Students in list: {{ student_list|length }}
     </div>
 
@@ -102,9 +103,49 @@
         var start = new Date().getFullYear() + 1;
         var end = 1970;
         var options = "";
+        options += "<option value=\"\">Select</option>";
         for(var year = start ; year >=end; year--){
           options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
         }
         document.getElementById("year").innerHTML = options;
+    </script>
+    <script>
+        (function(API){API.myText = function(txt, options, x, y) {
+                options = options ||{};
+                if( options.align === "center" ){
+
+                    var fontSize = this.internal.getFontSize();
+                    var pageWidth = this.internal.pageSize.width;
+                    txtWidth = this.getStringUnitWidth(txt)*fontSize/this.internal.scaleFactor;
+
+                    // Calculate text's x coordinate
+                    x = ( pageWidth - txtWidth ) / 2;
+                }
+
+                // Draw text at x,y
+                this.text(txt,x,y);
+            }})(jsPDF.API);
+    function PrintCert(elem) {
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            format: 'letter'
+        });
+
+        doc.myText(formatText(elem),{align: "center"},0,16);
+        //doc.save('Certificates.pdf');
+
+        doc.addPage();
+        var string = doc.output('datauristring');
+        var embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>"
+        var x = window.open('', 'PRINT', 'height=400,width=600');
+        x.document.open();
+        x.document.write(embed);
+        x.document.close();
+    }
+    function formatText(elem) {
+        elem = document.getElementById(elem).innerHTML;
+        console.log(elem);
+        return elem;
+    }
     </script>
 {% endblock %}
