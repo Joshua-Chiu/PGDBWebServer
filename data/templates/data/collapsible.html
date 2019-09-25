@@ -39,7 +39,7 @@
                     <!--Table left content-->
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
-                <button onclick="nullify()" class="btn danger">NULLIFY</button>
+                <button onclick="nullify()" class="btn danger" {% if user.no_entry %}disabled{% endif %}>NULLIFY</button>
                 <p>Comments</p>
                 <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea>
 
