@@ -71,14 +71,18 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 #if it's the start line skip it
-                if line.decode("utf-8") == "student_number,code,amount\n":
+                if line.decode("utf-8") == "Student Number,Last Name,Minutes of Service,Code\n":
                     continue
 
                 # print(line.decode("utf-8").strip())
                 print(line.decode("utf-8").strip().split(","))
-                snum, code, amount = line.decode("utf-8").strip().split(",")[:3]
+                snum, last_name, minutes, code = line.decode("utf-8").strip().split(",")[:4]
 
-                student = Student.objects.get(student_num=snum)
+                student = Student.objects.get(student_num=int(snum))
+
+                if not student.last.lower() == last_name.lower():
+                    continue
+
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
 
                 # create point type if missing
@@ -88,7 +92,8 @@ def upload_file(request, point_catagory):
                     point_type = PointCodes(catagory=point_catagory, code=code, description="")
                     point_type.save()
 
-                grade.points_set.create(type=point_type, amount=amount)
+                points = int(minutes) / 300
+                grade.points_set.create(type=point_type, amount=points)
 
     return HttpResponseRedirect('/entry/service')
 
