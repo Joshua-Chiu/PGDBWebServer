@@ -20,7 +20,7 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="start-year" id="year"></select>
+            Year: <select name="year" id="year"></select>
 
             Grade:
             <select name="grade">
@@ -34,14 +34,14 @@
             Graduation Awards:
             <select name="grad-awards">
                 <option value="" >Select</option>
-                <option value="se-candidates">Service Candidates</option>
-                <option value="at-candidates">Athletics Candidates</option>
-                <option value="sc-candidates">Scholar Candidates</option>
-                <option value="fa-candidates">Fine Arts Candidates</option>
-                <option value="me-candidates">Merit Candidates</option>
+                <option value="SE">Service Candidates</option>
+                <option value="AT">Athletics Candidates</option>
+                <option value="SC">Scholar Candidates</option>
+                <option value="FA">Fine Arts Candidates</option>
+                <option value="ME">Merit Candidates</option>
             </select>
 
-            <input type="submit" value="Enter" onclick="form.action='printing';" />
+            <input type="submit" value="Enter" onclick="form.action='print-xcheck';" />
         </fieldset>
     </form>
 
@@ -79,9 +79,9 @@
                 <td>{{ student.homeroom }}</td>
                 <td>
                     {% for grade in student.grade_set.all %}
-                        {% ifequal 10 grade.grade|stringformat:"02d"|add:"0" %}
+                        {% ifequal grade_num grade.grade|stringformat:"02d"|add:"0" %}
                             {% for point in grade.points_set.all %}
-                                {% ifequal "SE" point.type.catagory %}
+                                {% ifequal award_type point.type.catagory %}
                                     <span class="point">{{ point.amount }}</span>
                                     <span class="code description">{{ point.type.description }}</span>
                                     <span style="display: inline-block; width: 2ch;">&#9;</span>

@@ -75,10 +75,30 @@ def print_xcheck(request):
     template = get_template('export/print-xcheck.html')
 
     query = ""
+
+    grade = int(request.GET.get("grade") or "0")
+    award_type = request.GET.get("grad-awards")
+
+    if "year" in request.GET and request.GET["year"]:
+        query += "grade_" + str(grade) + "_year:" + request.GET["year"] + " "
+    else:
+        query += "grade:" + str(grade) + " "
+
     students = parseQuery(query)
+
+    print(students[:10])
+
+    # filter out students with no points of the right type
+    new_students = students
+    for s in students:
+        if len(s.grade_set.get(grade=grade).points_set.filter(type__catagory=award_type)) == 0:
+            new_students = new_students.exclude(id=s.id)
+    students = new_students
 
     context = {
         'student_list': students,
+        'grade_num': grade,
+        'award_type': award_type,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
