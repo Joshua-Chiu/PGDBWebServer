@@ -24,21 +24,20 @@
 
             Grade:
             <select name="grade">
-                <option value="08" >Grade 08</option>
-                <option value="09" >Grade 09</option>
-                <option value="10" >Grade 10</option>
-                <option value="11" >Grade 11</option>
-                <option value="12" >Grade 12</option>
+                <option {% ifequal grade_num 08 %}selected{% endifequal %} value="08" >Grade 08</option>
+                <option {% ifequal grade_num 09 %}selected{% endifequal %} value="09" >Grade 09</option>
+                <option {% ifequal grade_num 10 %}selected{% endifequal %} value="10" >Grade 10</option>
+                <option {% ifequal grade_num 11 %}selected{% endifequal %} value="11" >Grade 11</option>
+                <option {% ifequal grade_num 12 %}selected{% endifequal %} value="12" >Grade 12</option>
             </select>
 
-            Graduation Awards:
-            <select name="grad-awards">
+            Type:
+            <select name="type">
                 <option value="" >Select</option>
-                <option value="SE">Service Candidates</option>
-                <option value="AT">Athletics Candidates</option>
-                <option value="SC">Scholar Candidates</option>
-                <option value="FA">Fine Arts Candidates</option>
-                <option value="ME">Merit Candidates</option>
+                <option value="SE">Service</option>
+                <option value="AT">Athletics</option>
+                <option value="SC">Scholar</option>
+                <option value="FA">Fine Arts</option>
             </select>
 
             <input type="submit" value="Enter" onclick="form.action='print-xcheck';" />

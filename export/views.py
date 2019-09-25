@@ -81,7 +81,7 @@ def print_xcheck(request):
     query = ""
 
     grade = int(request.GET.get("grade") or "0")
-    award_type = request.GET.get("grad-awards")
+    award_type = request.GET.get("type")
 
     if "year" in request.GET and request.GET["year"]:
         query += "grade_" + str(grade) + "_year:" + request.GET["year"] + " "
