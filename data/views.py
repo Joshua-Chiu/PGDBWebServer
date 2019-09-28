@@ -52,6 +52,7 @@ def student_info(request, num):
 @login_required
 def student_submit(request, num):
     if (not request.user.no_entry) or request.user.is_superuser:
+        entered_by = request.user
         student = Student.objects.get(id=num)
         items = list(request.POST.items())[1:]
         anecdotes = [item for item in items if item[0].find("anecdote") != -1]
@@ -123,7 +124,7 @@ def student_submit(request, num):
                     amount = float(point_field[1])
                     code = int(code_field[1])
 
-                    # find the point class with the same code and catagory
+                    # find the point class with the same code and category
                     try:
                         typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
                     except PointCodes.DoesNotExist as e:
@@ -132,7 +133,7 @@ def student_submit(request, num):
                             typeClass.save()
 
                     grade = student.grade_set.get(grade=grade_num)
-                    grade.points_set.create(type=typeClass, amount=amount)
+                    grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
