@@ -177,7 +177,7 @@ def archive_submit(request):
                             g_obj = Grade(
                                 grade=int(g[0].text),
                                 start_year=int(g[1].text),
-                                anecdote=s[2].text,
+                                anecdote=g[2].text or "",
                             )
                             s_obj.grade_set.add(g_obj, bulk=False)
                             g_obj.save()
@@ -198,7 +198,7 @@ def archive_submit(request):
                                     amount=float(p[2].text),
                                 )
                         # print(f"added student {int(s[0].text)}")
-                    except:
+                    except Exception as e:
                         student_num = int(s[0].text)
                         print(f"Failed to add student {int(s[0].text)}")
                         logs.append(f"Failed to add student {int(s[0].text)}")
