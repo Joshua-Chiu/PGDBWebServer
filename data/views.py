@@ -52,7 +52,7 @@ def student_info(request, num):
 @login_required
 def student_submit(request, num):
     if (not request.user.no_entry) or request.user.is_superuser:
-        entered_by = request.user.username
+        entered_by = request.user
         student = Student.objects.get(id=num)
         items = list(request.POST.items())[1:]
         anecdotes = [item for item in items if item[0].find("anecdote") != -1]
