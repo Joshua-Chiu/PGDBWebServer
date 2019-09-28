@@ -328,7 +328,9 @@ def settings(request):
 
 def codes(request):
     template = get_template('data/codes.html')
-    context = {'codes': PointCodes.objects.order_by("catagory")}
+    context = {
+        'codes': PointCodes.objects.all()
+    }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
