@@ -167,6 +167,12 @@ class Student(models.Model):
     def __str__(self):
         return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
+    list_max_show_all = 1000
+    list_per_page = 200
+
+    class Meta:
+        ordering = ['last', 'first']
+
 
 class Grade(models.Model):
     Student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -243,6 +249,9 @@ class Grade(models.Model):
     def plist_T2(self):
         return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
+    class Meta:
+        ordering = ['-grade']
+
 
 class PointCodes(models.Model):
     catagory = models.CharField(max_length=2)
@@ -251,6 +260,9 @@ class PointCodes(models.Model):
 
     def __str__(self):
         return f"{self.catagory} {self.code}"
+
+    class Meta:
+        ordering = ['catagory', 'code']
 
 
 class Points(models.Model):

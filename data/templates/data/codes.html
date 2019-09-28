@@ -26,7 +26,7 @@
                 <option value="SC" {% ifequal code.catagory "SC" %}selected{% endifequal %}>Scholar</option>
             </select>
 
-            Code: <input type='text' name="{{ forloop.counter0 }}type" value="{{ code.code }}">
+            Code: <input type='number' name="{{ forloop.counter0 }}type" value="{{ code.code }}">
             Description: <input type='text' name="{{ forloop.counter0 }}description" value="{{ code.description }}">
             <button onclick="">X</button>
         </fieldset>

@@ -8,13 +8,12 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
 <div class="topnav">
     <ul>
         <li style="float: left; border-right: 1px solid #bbb;"><a href="{% url 'admin:index' %}">Administration</a></li>
-        {% if user.is_superuser or user.can_view %}
+
         <li>
             <form action="{% url 'data:search' %}">
                 <input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()">
             </form>
         </li>
-        {% endif %}
         {% if user.is_superuser %}
         <li><a href="{% url 'data:help' %}">Help</a></li>
 

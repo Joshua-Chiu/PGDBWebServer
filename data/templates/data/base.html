@@ -74,6 +74,7 @@
     <script>
         function PrintElem(elem){
             const mywindow = window.open('', 'PRINT', 'height=400,width=600');
+            mywindow.document.documentElement.innerHTML = '';
 
             mywindow.document.write('<html><head><title>' + document.title  + '</title>');
             mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}</style>');

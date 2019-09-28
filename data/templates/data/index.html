@@ -13,10 +13,36 @@
 
 {% block content%}
     <h2>Dashboard</h2>
-    <ul>
-        <li>List all login attempts with more than 5 failed attempts</li>
-        <li>Recent Changes</li>
-        <li>Student Statistics</li>
-        <li></li>
-    </ul>
+        <ul>
+            <li>List all login attempts with more than 5 failed attempts</li>
+            <li>Recent Changes</li>
+            <li>Student Statistics</li>
+            <li></li>
+        </ul>
+
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span>Status: Good service; no errors</span>
+        <span style="margin-left:6em ">Next scheduled service: Undefined</span>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    function myAlertTop(){
+      $(".myAlert-top").show();
+      setTimeout(function(){
+        $(".myAlert-top").hide();
+      }, 2000);
+    }
+
+    function myAlertBottom(){
+      $(".myAlert-bottom").show();
+      setTimeout(function(){
+        $(".myAlert-bottom").hide();
+      }, 2000);
+    }
+
+    </script>
 {% endblock %}

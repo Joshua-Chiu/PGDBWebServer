@@ -19,19 +19,26 @@ def print_annual(request):
     template = get_template('export/print-annual.html')
 
     query = ""
+    year = ""
+    award = ""
+    grade = 0
 
     if "grade" in request.GET and request.GET["grade"]:
         if "year" in request.GET and request.GET["year"]:
             query += "grade_" + request.GET["grade"] + "_year:" + request.GET["year"] + " "
+            year = request.GET["year"]
+            grade = request.GET["grade"]
         else:
             query += "grade:" + request.GET["grade"] + " "
     if "cumulative" in request.GET and request.GET["cumulative"]:
         if "year" in request.GET and request.GET["year"]:
             query += "award_" + request.GET["grade"] + ":" + request.GET["cumulative"] + " "
+            award = request.GET["cumulative"]
         else:
             query += "award" + ":" + request.GET["cumulative"] + " "
     if "annual" in request.GET and request.GET["annual"]:
         query += "annual_cert:" + request.GET["annual"] + "_" + request.GET["grade"] + " "
+        award = request.GET["annual"]
 
     students = parseQuery(query)
 
@@ -47,12 +54,13 @@ def print_annual(request):
     for key, value in awards_dict.items():
         query = query.replace(key, value)
 
-
-    print(query)
-
     context = {
         'student_list': students,
-        'type': query.title()
+        'type': query.title(),
+        'year': year,
+        'award': award,
+        "grade": int(grade),
+
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -82,15 +90,18 @@ def print_xcheck(request):
 
     grade = int(request.GET.get("grade") or "0")
     award_type = request.GET.get("type")
+    award_type_display = award_type or ""
+    year = ""
 
     if "year" in request.GET and request.GET["year"]:
+        year = request.GET["year"]
         query += "grade_" + str(grade) + "_year:" + request.GET["year"] + " "
     else:
         query += "grade:" + str(grade) + " "
 
     students = parseQuery(query)
 
-    print(students[:10])
+    # print(students[:10])
 
     # filter out students with no points of the right type
     new_students = students
@@ -99,10 +110,21 @@ def print_xcheck(request):
             new_students = new_students.exclude(id=s.id)
     students = new_students
 
+    awards_dict = {
+        "AT": "Athletics",
+        "SE": "Service",
+        "FA": "Fine Arts",
+        "SC": "Scholarship",
+    }
+    for key, value in awards_dict.items():
+        award_type_display = award_type_display.replace(key, value)
+
     context = {
         'student_list': students,
         'grade_num': grade,
         'award_type': award_type,
+        'award_type_display': award_type_display,
+        'year': year,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

@@ -26,12 +26,13 @@ refer to requirements.txt
 
 - [ ] turn homeroom attribute in student class into 2 seperate grade and homeroom attributes and make homeroom a string for special classes
 - [x] remove the entirety JQuery from the git repository
+- [ ] create student in admin and create a grade object too
 - [ ] modular non hard-coded way of making awards/pins and point catagories so more can be added/removed easily
 - [ ] fix last modified date on Student so it updates when points are added
 - [ ] remove Scholar class and make it's attributes part of Grade
 - [ ] instead of Grade pointing to a student have the Student class have five grade attributes
 - [ ] have the archive thing import/export plists
-- [ ] make the Points constructor create PointCodes if missing
+- [x] make the Points constructor create PointCodes if missing
 - [ ] in xml make ids of objects attributes instead of child tags e.g. <student student_num=1234>, <grade grade=12>
 - [ ] allow search to filter by T1 or T2 averages greater than a value
 - [ ] see list of actions by different users
@@ -44,8 +45,8 @@ refer to requirements.txt
 - [x] change all tsv import and export to csv
 - [ ] add dashboard features like recent changes and statistics
 - [ ] make sure incorrect inputs from users like files or text don't cause crashes
-- [ ] make anecdotes work
-- [ ] cumulative awards require a minimum of a certain year for gold+ & platinum
+- [x] make anecdotes work
+- [x] cumulative awards require a minimum of a certain year for gold+ & platinum
 - [ ] when doing searches avoid python for-loops and properties; try to use sql queries instead
 
 ## helpful information
