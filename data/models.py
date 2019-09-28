@@ -168,7 +168,7 @@ class Student(models.Model):
         return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
     class Meta:
-        ordering = ['last']
+        ordering = ['last', 'first']
 
 
 class Grade(models.Model):
