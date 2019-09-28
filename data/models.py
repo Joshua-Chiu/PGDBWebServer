@@ -260,6 +260,7 @@ class Points(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     type = models.ForeignKey(PointCodes, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6, decimal_places=3)
+    entered_by = models.CharField(max_length=15, blank=True, default="Administration")
 
     def __str__(self):
         return f"{self.type} {self.amount}"
