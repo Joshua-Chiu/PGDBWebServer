@@ -11,7 +11,8 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="{% static 'jspdf.js' %}"></script>
+    <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
 {% block content%}
@@ -26,34 +27,34 @@
             Grade:
             <select name="grade">
                 <option value="" >Select</option>
-                <option value="08" >Grade 08</option>
-                <option value="09" >Grade 09</option>
-                <option value="10" >Grade 10</option>
-                <option value="11" >Grade 11</option>
-                <option value="12" >Grade 12</option>
+                <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
+                <option {% ifequal grade 09 %}selected {% endifequal %}value="09" >Grade 09</option>
+                <option {% ifequal grade 10 %}selected {% endifequal %}value="10" >Grade 10</option>
+                <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
+                <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
             </select>
 
             Annual Certificates:
             <select name="annual">
                 <option value="" >Select</option>
-                <option value="SE" >Service</option>
-                <option value="AT" >Athletics</option>
-                <option value="honourroll" >Scholar Honour Roll</option>
-                <option value="principalslist" >Scholar Principal's List</option>
-                <option value="FA" >Fine Arts</option>
+                <option {% ifequal award "SE" %}selected {% endifequal %}value="SE" >Service</option>
+                <option {% ifequal award "AT" %}selected {% endifequal %}value="AT" >Athletics</option>
+                <option {% ifequal award "honourroll" %}selected {% endifequal %}value="honourroll" >Scholar Honour Roll</option>
+                <option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Scholar Principal's List</option>
+                <option {% ifequal award "FA" %}selected {% endifequal %}value="FA" >Fine Arts</option>
             </select>
 
             Cumulative Awards:
             <select name="cumulative">
                 <option value="" >Select</option>
-                <option value="silver" >Greyhound Silver Pin</option>
-                <option value="gold" >Greyhound Gold Pin</option>
-                <option value="goldplus" >Greyhound Gold+ Bar</option>
-                <option value="platinum" >Greyhound Platinum Pin</option>
-                <option value="big-block" >Athletics Big Block</option>
+                <option {% ifequal award "silver" %}selected {% endifequal %}value="silver" >Greyhound Silver Pin</option>
+                <option {% ifequal award "gold" %}selected {% endifequal %}value="gold" >Greyhound Gold Pin</option>
+                <option {% ifequal award "goldplus" %}selected {% endifequal %}value="goldplus" >Greyhound Gold+ Bar</option>
+                <option {% ifequal award "platinum" %}selected {% endifequal %}value="platinum" >Greyhound Platinum Pin</option>
+                <option {% ifequal award "big-block" %}selected {% endifequal %}value="big-block" >Athletics Big Block</option>
             </select>
 
-            <input type="submit" value="Enter" onclick="javascript: form.action='print-annual';" />
+            <input type="submit" value="Enter" onclick="form.action='print-annual';" />
         </fieldset>
     </form>
 
@@ -68,21 +69,11 @@
         <table class="sortable">
             <!-- Header Row-->
             <tr>
-                <td>
-                    <strong>&nbsp;Award&nbsp;</strong>
-                </td>
-                <td>
-                    <strong>&nbsp;Name</strong>
-                </td>
-                <td>
-                    <strong>&nbsp;Last Name</strong>
-                </td>
-                <td>
-                    <strong>&nbsp;Student #&nbsp;</strong>
-                </td>
-                <td>
-                    <strong>&nbsp;Homeroom</strong>
-                </td>
+                <td><strong>&nbsp;Award&nbsp;</strong></td>
+                <td><strong>&nbsp;Name</strong></td>
+                <td><strong>&nbsp;Last Name</strong></td>
+                <td><strong>&nbsp;Student #&nbsp;</strong></td>
+                <td><strong>&nbsp;Homeroom</strong></td>
             </tr>
         {% for student in student_list %}
             <tr>
@@ -100,12 +91,17 @@
 {% endblock %}
 {% block javascript %}
     <script>
-        var start = new Date().getFullYear() + 1;
-        var end = 1970;
-        var options = "";
-        options += "<option value=\"\">Select</option>";
-        for(var year = start ; year >=end; year--){
-          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option ";
+          {% if year %}
+          if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% endif %}
+          options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
         }
         document.getElementById("year").innerHTML = options;
     </script>
@@ -131,21 +127,51 @@
             format: 'letter'
         });
 
-        doc.myText(formatText(elem),{align: "center"},0,16);
+        doc.setFont('vivaldin');// set font parameters to vivaldon
+        doc.setFontType('italic');
+        doc.setFontSize(28);
+
+        var type = "{{ award }}";
+        var studentList = formatText(elem); //format table html from the table
+
+        for(let i = 0; i < studentList.length; i++){
+            console.log(studentList[i][0] + " " + studentList[i][1]); //first + last
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,16);
+            doc.myText(type,{align: "center"},0,70);
+            doc.myText(studentList[i][2],{align: "center"},0,100);
+
+
+            console.log(studentList[i][2]); //identifier
+            doc.addPage();
+
+        }
+        doc.deletePage(studentList.length + 1); //delete last blank page in file
+
+        //doc.myText("Test",{align: "center"},0,16);
         //doc.save('Certificates.pdf');
 
-        doc.addPage();
+
         var string = doc.output('datauristring');
-        var embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>"
+        var embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>";
         var x = window.open('', 'PRINT', 'height=400,width=600');
         x.document.open();
         x.document.write(embed);
         x.document.close();
     }
     function formatText(elem) {
-        elem = document.getElementById(elem).innerHTML;
-        console.log(elem);
-        return elem;
+        elem = document.getElementById(elem);
+        elem = elem.children[0].children[1]; //gets table body
+        var studentList = [];
+        for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
+            var student = elem.children[i];
+            var first_name = student.children[1].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
+            var last_name = student.children[2].innerHTML;
+            var identifier = student.children[3].innerHTML + " - " + student.children[4].innerHTML; // get student number and homeroom
+            //console.log(first_name + " " + last_name + " " + identifier);
+
+            studentList.push([first_name, last_name, identifier]);
+        }
+        return studentList;
     }
     </script>
 {% endblock %}

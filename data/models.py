@@ -167,6 +167,9 @@ class Student(models.Model):
     def __str__(self):
         return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
+    class Meta:
+        ordering = ['last']
+
 
 class Grade(models.Model):
     Student = models.ForeignKey(Student, on_delete=models.CASCADE)
