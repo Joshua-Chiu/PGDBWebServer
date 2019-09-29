@@ -14,47 +14,59 @@
 {% block content%}
     <body>
         <h2>Direct Entry (Fine Arts)</h2>
+        <h4>Single entry</h4>
             <form action="" method="post">
                 <fieldset>
                     Student Number: <input class="student-number" type='number' name="student-number" value="">
-                    Points: <input class="min" type='number' name="points" value="" style="width: 40px">
+                    Points: <input class="min" type='number' name="minutes" value="" style="width: 40px" min="0" max="10">
                     Code: <input class="code" type="number" name="code" value="" style="width: 40px">
                     . . . . .
-                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Hours: <a id="hours" class="hours">NO HOURS DOCUMENTED</a> | Type: <a id="code" class="code">NO CODE</a>
+                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Type: <a id="code" class="code">NO CODE</a>
+                    <button value="submit">Submit</button>
+                    {% csrf_token %}
                 </fieldset>
             </form>
+        <h4>Form entry</h4>
+            <p>Visit the home/help page to access import template files</p>
             <form action="{% url 'entry:upload_file' 'FA' %}" method="post" enctype="multipart/form-data">
               <input type="submit" value="Upload file" name="submit">
               <input type="file" name="file" id="file">
               {% csrf_token %}
             </form>
+        <h4>My recent actions</h4>
     </body>
 {% endblock %}
 {% block javascript %}
 <script>
-    $(".student-number").keyup(function () {
-        if (this.value.length > 0) {
-            document.getElementById('name').innerHTML=this.value;
-        } else {
-            document.getElementById('name').innerHTML="TYPE IN STUDENT NUMBER";
-        }
-    });
-
-    $(".min").keyup(function () {
-        if (this.value.length > 0) {
-            document.getElementById('hours').innerHTML="" + Math.floor(parseInt(this.value)/60) + ":" + parseInt(this.value)%60;
-        } else {
-            document.getElementById('hours').innerHTML="NO HOURS DOCUMENTED";
-        }
-    });
-
     $(".code").keyup(function () {
-        if (this.value.length > 0) {
-            document.getElementById('code').innerHTML=this.value;
-        } else {
-            document.getElementById('code').innerHTML="NO CODE";
-        }
-    });
+           const code_num = this.value;
+           console.log(code_num);
+           $.ajax({
+               url: '{% url "entry:validate_point_code" %}',
+               data: {
+                   'code': code_num,
+                   'category': 'FA',
+               },
+               dataType: 'json',
+               success: function (data) {
+                       document.getElementById('code').innerHTML=data.code_description;
+               }
+           });
+        });
+
+        $(".student-number").keyup(function () {
+           const student_id = this.value;
+           $.ajax({
+               url: '{% url "entry:validate_student_name" %}',
+               data: {
+                   'student_id': student_id
+               },
+               dataType: 'json',
+               success: function (data) {
+                       document.getElementById('name').innerHTML=data.student_name;
+               }
+           });
+        });
 
 
 

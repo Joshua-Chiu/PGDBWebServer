@@ -12,5 +12,6 @@ urlpatterns = [
     path('scholar', views.scholar, name='scholar'),
     path('error', views.error, name='error'),
     path('upload_file/<slug:point_catagory>', views.upload_file, name='upload_file'),
-    url(r'^ajax/get_student_name/$', views.get_student_name, name='get_student_name'),
+    path('ajax/validate_student_name/', views.validate_student_name, name='validate_student_name'),
+    path('ajax/validate_point_code/', views.validate_point_code, name='validate_point_code'),
 ]

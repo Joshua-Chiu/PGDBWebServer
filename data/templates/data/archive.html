@@ -12,17 +12,17 @@
 {% endblock %}
 
 {% block content%}
-    <hr>
+
+    <h4>Import .pgdb Archive File</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
-        <input type="submit" value="Upload .pgdb Archive" name="submit">
-        <input type="file" name="file" id="file" onchange="this.form.submit();">
+        <!--<input type="submit" value="Upload .pgdb Archive" name="submit">-->
+        <input type="file" name="file" id="file" onchange="form.submit()" >
         {% csrf_token %}
     </form>
-
     <hr>
+
+    <h4>Migrate from DOS Database</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
-        <input type="submit" value="Upload DOS .csv" name="submit">
-        <input type="file" name="file" id="file">
         <select name="grade">
                 <option value="08" >Grade 08</option>
                 <option value="09" >Grade 09</option>
@@ -32,10 +32,12 @@
         </select>
         of
         <select name="start-year" id="year"></select>
+        <input type="file" name="file" id="file" onchange="form.submit()" >
         {% csrf_token %}
     </form>
 
     <hr>
+    <h4>Stuff</h4>
     <form method="post" action="{% url 'data:archive_file'%}">
         <input type="submit" value="do stuff" name="submit">
         <input type="text" name="query" id="query">

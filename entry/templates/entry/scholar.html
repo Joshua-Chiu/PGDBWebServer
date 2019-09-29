@@ -14,16 +14,16 @@
 {% block content%}
     <body>
         <h2>Direct Entry (Scholar)</h2>
-
-        <form action="" method="post">
-                <fieldset>
-                    Student Number: <input class="student-number" type='number' name="student-number" value="">
-                    Term 1 Percentage: <input class="t1" type='number' name="t1" value="" style="width: 40px">
-                    Term 2 Percentage: <input class="t2" type="number" name="t2" value="" style="width: 40px">
-                    . . . . .
-                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a>
-                </fieldset>
-        </form>
+        <h4>Single entry</h4>
+            <form action="" method="post">
+                    <fieldset>
+                        Student Number: <input class="student-number" type='number' name="student-number" value="">
+                        Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px">
+                        Term 2 Percentage: <input class="t2" type="number" id="t2" name="t2" value="" style="width: 40px">
+                        . . . . .
+                        Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a>
+                    </fieldset>
+            </form>
 
         <button>Import Scholarship Scores</button><br>
     </body>
@@ -31,11 +31,19 @@
 {% block javascript %}
     <script>
         $(".student-number").keyup(function () {
-            if (this.value.length > 0) {
-                document.getElementById('name').innerHTML=this.value;
-            } else {
-                document.getElementById('name').innerHTML="TYPE IN STUDENT NUMBER";
-            }
+           const student_id = this.value;
+           $.ajax({
+               url: '{% url "entry:validate_student_name" %}',
+               data: {
+                   'student_id': student_id
+               },
+               dataType: 'json',
+               success: function (data) {
+                       document.getElementById('name').innerHTML=data.student_name;
+                       $('input[name=t1]').val(data.t1);
+                       $('input[name=t2]').val(data.t2);
+               }
+           });
         });
     </script>
 {% endblock %}

@@ -70,7 +70,7 @@ def upload_file(request, point_catagory):
     if request.method == "POST":
         if "file" in request.FILES:
             for line in request.FILES['file']:
-                #if it's the start line skip it
+                # if it's the start line skip it
                 if line.decode("utf-8") == "Student Number,Last Name,Minutes of Service,Code\n":
                     continue
 
@@ -98,11 +98,35 @@ def upload_file(request, point_catagory):
     return HttpResponseRedirect('/entry/service')
 
 
-def get_student_name(request):
+def validate_student_name(request):
     student_id = request.GET.get('student_id', None)
-    print(student_id)
-    data = {
-        'exists': Student.objects.filter(student_num__iexact=student_id).exists(),
-        'name': Student.objects.filter(student_num__iexact=student_id).first,
-    }
+    student = Student.objects.filter(student_num__iexact=student_id)
+    # grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+    if student.exists():
+        data = {
+            'student_name': student[0].first + " " + student[0].last,
+            # 't1': 0,
+            # 't2': 0,
+        }
+    else:
+        data = {
+            'student_name': "Student not found",
+            't1': 0,
+            't2': 0,
+        }
+    return JsonResponse(data)
+
+
+def validate_point_code(request):
+    code_num = request.GET.get('code', None)
+    category = request.GET.get('category', None)
+    code = PointCodes.objects.filter(code__iexact=code_num, catagory__iexact=category)
+    if code.exists():
+        data = {
+            'code_description': code[0].description,
+        }
+    else:
+        data = {
+            'code_description': "Code not found",
+        }
     return JsonResponse(data)

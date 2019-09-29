@@ -160,7 +160,7 @@ def archive_submit(request):
                     try:
                         if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
                             print(f"student with number {s[0].text} already exists")
-                            logs.append(f"student with number {s[0].text} already exists")
+                            logs.append(f"student with number {s[0].text} \t ({s[4].text}, {s[3].text}) already exists")
                             continue
 
                         s_obj = Student(
