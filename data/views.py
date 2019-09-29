@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes, PlistCutoff, Grade
+from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
@@ -416,7 +416,8 @@ def codes_submit(request):
 def index(request):
     template = get_template('data/index.html')
     context = {
-        'student_list': Student.objects.all()
+        'student_list': Student.objects.all(),
+        'recent': Points.objects.all().order_by('-id')[:100],
     }
 
     if request.user.is_superuser:

@@ -23,7 +23,7 @@
     <h4>My recent actions</h4>
     <table>
         <thead>
-        <tr><th>Student</th><th>Point</th></tr>
+        <tr><th>&emsp14;Student&emsp14;</th><th>Point</th></tr>
         </thead>
     {% for log in recent %}
         <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>: {{ log.amount }} Points for {{ log.type.description }}</td></tr>

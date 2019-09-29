@@ -13,19 +13,34 @@
 
 {% block content%}
     <h2>Dashboard</h2>
-        <ul>
+    <hr>
+
+    <div style="float: left; overflow: auto; height: 250px;">
+        <table>
+            <caption><strong>Recent Actions</strong></caption>
+            <thead>
+            <tr><th>Student</th><th>Point</th><th>User</th></tr>
+            </thead>
+        {% for log in recent %}
+            <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>{{ log.amount }} Points for {{ log.type.description }} in Grade {{ log.Grade.grade }}&emsp14; </td><td>{% if log.entered_by.username %}{{ log.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
+        {% endfor %}
+        <tr><td colspan="3">Show All</td></tr>
+        </table>
+    </div>
+    <div>
+        <ul style="float: right;">
             <li>List all login attempts with more than 5 failed attempts</li>
-            <li>Recent Changes</li>
+            <li>django-async-include to reduce load times</li>
             <li>Student Statistics</li>
             <li>Database Integrity Check</li>
         </ul>
+    </div>
 
     <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <span>Status: Good service; no errors</span>
         <span style="margin-left:6em ">Next scheduled service: Undefined</span>
     </div>
-
 {% endblock %}
 
 {% block javascript %}
