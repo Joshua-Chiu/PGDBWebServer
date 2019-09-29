@@ -13,13 +13,17 @@
 
 {% block content%}
     <h2>Dashboard</h2>
-    Sample Input Files
+    <h4>Sample Input Files</h4>
     <ul>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">Direct Entry Import (Fill in - Athletics)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">Direct Entry Import (Fill in - Scholarship)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
     </ul>
+    <h4>My recent actions</h4>
+    {% for log in recent %}
+        <span>{{ log }}</span><br>
+    {% endfor %}
 {% endblock %}
 
 

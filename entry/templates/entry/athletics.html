@@ -29,9 +29,8 @@
         <h4>Form entry</h4>
             <p>Visit the home/help page to access import template files</p>
             <form action="{% url 'entry:upload_file' 'AT' %}" method="post" enctype="multipart/form-data">
-              <input type="submit" value="Upload file" name="submit">
-              <input type="file" name="file" id="file">
-              {% csrf_token %}
+                <input type="file" name="file" id="file" onchange="form.submit();">
+                {% csrf_token %}
             </form>
         <h4>My recent actions</h4>
     </body>

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
-from data.models import Student, PointCodes
+from data.models import Student, PointCodes, Points
 from django.http import JsonResponse
 
 
@@ -12,6 +12,7 @@ def checkUser(user, category):
 def index(request):
     template = get_template('entry/index.html')
     context = {
+        'recent': Points.objects.filter(entered_by=request.user)
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -67,6 +68,8 @@ def error(request):
 
 
 def upload_file(request, point_catagory):
+    logs = []
+    entered_by = request.user
     if request.method == "POST":
         if "file" in request.FILES:
             for line in request.FILES['file']:
@@ -78,9 +81,20 @@ def upload_file(request, point_catagory):
                 print(line.decode("utf-8").strip().split(","))
                 snum, last_name, minutes, code = line.decode("utf-8").strip().split(",")[:4]
 
-                student = Student.objects.get(student_num=int(snum))
+                points = minutes
+                if point_catagory == "SE":  # divide by 300 only if it's SE
+                    points = '%.3f' % (int(minutes) / 300)
+
+                if Student.objects.filter(student_num__iexact=snum).exists():
+                    student = Student.objects.get(student_num=int(snum))
+                else:
+                    logs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
+                                "STUDENT NUMBER NOT FOUND")
+                    continue
 
                 if not student.last.lower() == last_name.lower():
+                    logs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
+                                "LAST NAME DOES NOT MATCH")
                     continue
 
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
@@ -89,13 +103,18 @@ def upload_file(request, point_catagory):
                 try:
                     point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
                 except PointCodes.DoesNotExist:
-                    point_type = PointCodes(catagory=point_catagory, code=code, description="")
+                    point_type = PointCodes(catagory=point_catagory, code=code, description=point_catagory + code)
                     point_type.save()
 
-                points = int(minutes) / 300
-                grade.points_set.create(type=point_type, amount=points)
+                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
+                logs.append(f"Success: {points} point(s) of {point_type.description} for {student.first} {student.last} was entered.")
 
-    return HttpResponseRedirect('/entry/service')
+    template = get_template('entry/submission-summary.html')
+    context = {
+        'logs': logs,
+        'category': point_catagory,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def validate_student_name(request):

@@ -1,0 +1,43 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Submission Summary{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/entry_styles.css' %}">
+{% endblock %}
+
+{% block content%}
+    <body>
+        <h2>Submission Summary - Do not refresh</h2>
+        <h4>Please save this summary for your reference.</h4>
+        <button class="button default" onclick="PrintElem('logs')">Print Student List</button>
+        <p id="logs">
+            {% if logs %}
+                {% for log in logs %}
+                    {% if "Success:" in log %}
+                    <span>{{ log }}</span><br>
+                    {% else %}
+                    <span style="color:red;">{{ log }}</span><br>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                No data imported
+            {% endif %}
+        </p>
+
+        <hr>
+        <h4><a href="
+            {% if category == 'SE' %}{% url 'entry:service' %}
+            {% elif category == 'AT' %}{% url 'entry:athletics' %}
+            {% elif category == 'SC' %}{% url 'entry:scholar' %}
+            {% elif category == 'FA' %}{% url 'entry:fine-arts' %}{% endif %}
+            ">Take me home to the place I belong</a></h4>
+    </body>
+{% endblock %}
+
