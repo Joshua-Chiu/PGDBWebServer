@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/entry_style.css' %}">
 {% endblock %}
 
 {% block content%}
@@ -21,9 +21,14 @@
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
     </ul>
     <h4>My recent actions</h4>
+    <table>
+        <thead>
+        <tr><th>Student</th><th>Point</th></tr>
+        </thead>
     {% for log in recent %}
-        <span>{{ log }}</span><br>
+        <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>: {{ log.amount }} Points for {{ log.type.description }}</td></tr>
     {% endfor %}
+    </table>
 {% endblock %}
 
 

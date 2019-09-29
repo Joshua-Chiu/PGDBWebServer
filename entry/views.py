@@ -12,7 +12,7 @@ def checkUser(user, category):
 def index(request):
     template = get_template('entry/index.html')
     context = {
-        'recent': Points.objects.filter(entered_by=request.user)
+        'recent': Points.objects.filter(entered_by=request.user).order_by('-id')
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
