@@ -101,18 +101,19 @@ def upload_file(request, point_catagory):
 def validate_student_name(request):
     student_id = request.GET.get('student_id', None)
     student = Student.objects.filter(student_num__iexact=student_id)
-    # grade = student.grade_set.get(grade=int(student.homeroom[:2]))
     if student.exists():
+        student = student[0]
+        grade = student.grade_set.get(grade=int(student.homeroom[:2]))
         data = {
-            'student_name': student[0].first + " " + student[0].last,
-            # 't1': 0,
-            # 't2': 0,
+            'student_name': student.first + " " + student.last,
+            't1': grade.scholar_set.all()[0].term1,
+            't2': grade.scholar_set.all()[0].term2,
         }
     else:
         data = {
             'student_name': "Student not found",
-            't1': 0,
-            't2': 0,
+            't1': '0',
+            't2': '0',
         }
     return JsonResponse(data)
 
