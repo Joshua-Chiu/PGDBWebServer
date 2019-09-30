@@ -13,26 +13,31 @@
 
 {% block content%}
     <body>
-        <h2>Direct Entry (Service)</h2>
-        <h4>Single entry</h4>
-        <form action="{% url "entry:point_submit" "SE" %}" method="post">
-                <fieldset>
-                    <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
-                    Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
-                    Code: <input class="code" type="number" name="code" value="" style="width: 40px">
-                    . . . . .
-                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Hours: <a id="hours" class="hours">NONE</a> | Type: <a id="code" class="code">NO CODE</a>
-                    <button value="submit">Submit</button>
-                    {% csrf_token %}
-                </fieldset>
-            </form>
-            <h4>Form entry</h4>
-                <p>Visit the home/help page to access import template files</p>
-                <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file" onchange="form.submit();">
-                    {% csrf_token %}
-                </form>
-            <h4>My recent actions</h4>
+    <h2>Direct Entry (Service)</h2>
+    <h4>Single entry</h4>
+    <form action="{% url "entry:point_submit" "SE" %}" name="single" method="post" onsubmit="return validateForm();">
+        <fieldset>
+            <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
+            Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
+            Code: <input class="code" type="number" name="code" value="" style="width: 40px">
+            . . . . .
+            Name: <a id="name" class="name">Student not found</a> | Hours: <a id="hours" class="hours">NONE</a> | Type: <a id="code" class="code">Code not found</a>
+            <button value="submit">Submit</button>
+            {% csrf_token %}
+        </fieldset>
+    </form>
+    <h4>Form entry</h4>
+    <p>Visit the home/help page to access import template files</p>
+    <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file" onchange="form.submit();">
+        {% csrf_token %}
+    </form>
+    <h4>My recent actions</h4>
+    <table>
+        {% for point in points %}
+            <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+        {% endfor %}
+    </table>
     </body>
 {% endblock %}
 {% block javascript %}
@@ -74,5 +79,17 @@
                }
            });
         });
+
+        function validateForm() {
+            if(document.getElementById('name').innerHTML === "Student not found"){
+                return false;
+            }
+            if(document.getElementById('hours').innerHTML === "NONE"){
+                return false;
+            }
+            if(document.getElementById('code').innerHTML === "Code not found"){
+                return false;
+            }
+        }
     </script>
 {% endblock %}

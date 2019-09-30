@@ -28,6 +28,7 @@ def service(request):
     if request.user.is_authenticated and checkUser(request.user, "Service"):
         template = get_template('entry/service.html')
         context = {
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='SE').order_by('-id')
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -38,6 +39,7 @@ def athletics(request):
     if request.user.is_authenticated and checkUser(request.user, "Athletics"):
         template = get_template('entry/athletics.html')
         context = {
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='AT').order_by('-id')
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -47,7 +49,9 @@ def athletics(request):
 def fine_arts(request):
     if request.user.is_authenticated and checkUser(request.user, "Fine Arts"):
         template = get_template('entry/fine-arts.html')
-        context = {}
+        context = {
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='FA').order_by('-id')
+        }
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('error')
@@ -83,13 +87,15 @@ def point_submit(request, point_catagory):
         student = Student.objects.get(student_num=snum)
         grade = student.grade_set.get(grade=int(student.homeroom[:2]))
         grade.points_set.create(
-            type = PointCodes.objects.filter(catagory=point_catagory).get(code=code),
-            amount = points,
+            type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
+            amount=points,
+            entered_by=request.user,
         )
         # except:
         #     print("failed to submit")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 def upload_file(request, point_catagory):
     logs = []

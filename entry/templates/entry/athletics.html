@@ -17,11 +17,11 @@
         <h4>Single entry</h4>
             <form action="{% url "entry:point_submit" "AT" %}" method="post">
                 <fieldset>
-                    Student Number: <input class="student-number" type='number' name="student-number" value="">
-                    Points: <input class="min" type='number' name="minutes" value="" style="width: 40px" min="0" max="6">
-                    Code: <input class="code" type="number" name="code" value="" style="width: 40px">
+                    <label>Student Number: <input class="student-number" required="required" type='number' name="student-number" value=""></label>
+                    <label>Points: <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px" min="0" max="6"></label>
+                    <label>Code: <input class="code" required="required" type="number" name="code" value="" style="width: 40px"></label>
                     . . . . .
-                    Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a> | Type: <a id="code" class="code">NO CODE</a>
+                    Name: <a id="name" class="name">Student not found</a> | Type: <a id="code" class="code">Code not found</a>
                     <button value="submit">Submit</button>
                     {% csrf_token %}
                 </fieldset>
@@ -33,6 +33,11 @@
                 {% csrf_token %}
             </form>
         <h4>My recent actions</h4>
+        <table>
+            {% for point in points %}
+                <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+            {% endfor %}
+        </table>
     </body>
 {% endblock %}
 {% block javascript %}
@@ -67,7 +72,13 @@
            });
         });
 
-
-
+        function validateForm() {
+            if(document.getElementById('name').innerHTML === "Student not found"){
+                return false;
+            }
+            if(document.getElementById('code').innerHTML === "Code not found"){
+                return false;
+            }
+        }
 </script>
 {% endblock %}

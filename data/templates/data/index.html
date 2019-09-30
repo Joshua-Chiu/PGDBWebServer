@@ -29,12 +29,14 @@
     <div style="float: left; overflow: auto; height: 260px; padding-left: 2em">
         <table style="width: 600px;" class="index">
             <caption><strong>Upcoming Events</strong></caption>
-                <thead>
-                    <tr><th>Outages</th><th>Note</th><th>Time</th></tr>
-                </thead>
+        {% if maintenance %}
+            <thead>
+            <tr><th>Outages</th><th>Note</th><th>Time</th></tr>
+            </thead>
             {% for maintenance in maintenance %}
                 <tr><td>{{ maintenance.action }}</td><td>{{ maintenance.note }}</td><td>{{ maintenance.start }} to<br> {{ maintenance.end }}</td></tr>
             {% endfor %}
+        {% endif %}
                 <thead>
                     <tr><th>Type</th><th>Note</th><th>Time</th></tr>
                 </thead>

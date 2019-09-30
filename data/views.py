@@ -171,7 +171,7 @@ def archive_submit(request):
 
                         s_obj = Student(
                             student_num=int(s[0].text),
-                            homeroom=f"{s[1].text}{s[2].text}",
+                            homeroom=f"{s[1].text.zfill(2)}{s[2].text}",
                             first=s[3].text,
                             last=s[4].text,
                             legal=s[5].text,
@@ -383,12 +383,10 @@ def plist_submit(request):
 
 
 def autofocus_submit(request, num):
-    user = CustomUser.objects.all()[0]
-
+    user = CustomUser.objects.get(username=request.user.username)
     user.autofocus = num
     user.save()
-
-    return HttpResponseRedirect("/data")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def codes_submit(request):
