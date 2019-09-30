@@ -14,9 +14,8 @@
 {% block content%}
     <h2>Dashboard</h2>
     <hr>
-
-    <div style="float: left; overflow: auto; height: 250px;">
-        <table>
+    <div style="float: left; overflow: auto; height: 260px;">
+        <table style="float: left;" class="index">
             <caption><strong>Recent Actions</strong></caption>
             <thead>
             <tr><th>Student</th><th>Point</th><th>User</th></tr>
@@ -24,22 +23,47 @@
         {% for log in recent %}
             <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>{{ log.amount }} Points for {{ log.type.description }} in Grade {{ log.Grade.grade }}&emsp14; </td><td>{% if log.entered_by.username %}{{ log.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
         {% endfor %}
-        <tr><td colspan="3">Show All</td></tr>
+            <tr><td colspan="3"><a href="#">Show All</a></td></tr>
         </table>
     </div>
-    <div>
-        <ul style="float: right;">
+    <div style="float: left; overflow: auto; height: 260px; padding-left: 2em">
+        <table style="width: 600px;" class="index">
+            <caption><strong>Upcoming Events</strong></caption>
+                <thead>
+                    <tr><th>Maintenance</th><th>Note</th><th>Time</th></tr>
+                </thead>
+            {% for maintenance in maintenance %}
+                <tr><td>{{ maintenance.action }}</td><td>{{ maintenance.note }}</td><td>{{ maintenance.start }} to<br> {{ maintenance.end }}</td></tr>
+            {% endfor %}
+                <thead>
+                    <tr><th>Type</th><th>Note</th><th>Time</th></tr>
+                </thead>
+            {% for notice in notice %}
+                <tr><td>{{ notice.title }}</td><td>{{ notice.note }}</td><td>{{ notice.start }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div style="clear: both;">
+        <hr>
+        <ul>
             <li>List all login attempts with more than 5 failed attempts</li>
             <li>django-async-include to reduce load times</li>
             <li>Student Statistics</li>
             <li>Database Integrity Check</li>
         </ul>
     </div>
-
     <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <span>Status: Good service; no errors</span>
-        <span style="margin-left:6em ">Next scheduled service: Undefined</span>
+        <span>
+            {% if notice %}
+                {{ notice.0.title }}: {{ notice.0.note }} ({{ notice.0.start }})
+            {% endif %}
+        </span>
+        <span style="margin-left:6em ">
+            {% if maintenance %}
+                {{ maintenance.0.action }}: Maintenance from {{ maintenance.0.start }} to {{ maintenance.0.end }}
+            {% endif %}
+        </span>
     </div>
 {% endblock %}
 

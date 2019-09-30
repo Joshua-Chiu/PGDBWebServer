@@ -6,11 +6,17 @@ from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
 import io
+import os
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 from util.converter import wdb_convert
+
+import dateutil.parser
+import httplib2
+from googleapiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 @login_required()
@@ -51,89 +57,89 @@ def student_info(request, num):
 
 @login_required
 def student_submit(request, num):
-    if (not request.user.no_entry) or request.user.is_superuser:
-        entered_by = request.user
-        student = Student.objects.get(id=num)
-        items = list(request.POST.items())[1:]
-        anecdotes = [item for item in items if item[0].find("anecdote") != -1]
-        points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
-        scholar_fields = [item for item in items if item[0].find("SC") != -1]
-        points_list = points_list + scholar_fields
-        code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
+    entered_by = request.user
+    student = Student.objects.get(id=num)
+    items = list(request.POST.items())[1:]
+    anecdotes = [item for item in items if item[0].find("anecdote") != -1]
+    points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
+    scholar_fields = [item for item in items if item[0].find("SC") != -1]
+    points_list = points_list + scholar_fields
+    code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
 
-        # anecdotes
-        for n, anecdote in enumerate(anecdotes):
-            # print(anecdote[1])
-            grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
-            grade.anecdote = anecdote[1]
-            if request.user.has_perm('data.change_points'):
-                grade.save()
+    # anecdotes
+    for n, anecdote in enumerate(anecdotes):
+        # print(anecdote[1])
+        grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
+        grade.anecdote = anecdote[1]
+        if request.user.has_perm('data.change_points'):
+            grade.save()
 
-        # delete codes buttons
-        for button in code_delete_buttons:
-            # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
-            grade, catagory, code = button[0].strip().split(' ')[1:]
-            point = \
+    # delete codes buttons
+    for button in code_delete_buttons:
+        # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
+        grade, catagory, code = button[0].strip().split(' ')[1:]
+        point = \
             student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[
                 0]
+        if request.user.has_perm('data.change_points') or point.entered_by == request.user:
             point.delete()
-            # print(point)
-            # print("button: ", grade, type, code)
+        # print(point)
+        # print("button: ", grade, type, code)
 
-        # points and codes
-        if request.method == 'POST':
-            # print("received POST request")
-            # for k, v in request.POST.items():
-            #     print(k, "|", v)
+    # points and codes
+    if request.method == 'POST':
+        # print("received POST request")
+        # for k, v in request.POST.items():
+        #     print(k, "|", v)
 
-            # iterate through pairs of point amount and code
-            for point_field, code_field in zip(points_list[::2], points_list[1::2]):
+        # iterate through pairs of point amount and code
+        for point_field, code_field in zip(points_list[::2], points_list[1::2]):
 
-                # get info like grade and point type e.g. SE, AT
-                info = point_field[0].split(' ')
-                grade_num = int(info[0])
-                type = info[1]
+            # get info like grade and point type e.g. SE, AT
+            info = point_field[0].split(' ')
+            grade_num = int(info[0])
+            type = info[1]
 
-                # decide if it's scholar or other type
-                if type == "SC":
-                    # scholar gets its own class from the other points
-                    if point_field[1] == '' and code_field[1] == '':
-                        continue
+            # decide if it's scholar or other type
+            if type == "SC":
+                # scholar gets its own class from the other points
+                if point_field[1] == '' and code_field[1] == '':
+                    continue
 
-                    if point_field[1] == '':
-                        t1 = 0
-                    else:
-                        t1 = float(point_field[1])
-
-                    if code_field[1] == '':
-                        t2 = 0
-                    else:
-                        t2 = float(code_field[1])
-
-                    # set the scholar average
-                    grade = student.grade_set.get(grade=grade_num)
-                    scholar = grade.scholar_set.all()[0]
-                    scholar.term1 = t1
-                    scholar.term2 = t2
-                    if request.user.has_perm('data.change_scholar'):
-                        scholar.save()
+                if point_field[1] == '':
+                    t1 = 0
                 else:
-                    if point_field[1] == '' or code_field[1] == '':
-                        continue
+                    t1 = float(point_field[1])
 
-                    amount = float(point_field[1])
-                    code = int(code_field[1])
+                if code_field[1] == '':
+                    t2 = 0
+                else:
+                    t2 = float(code_field[1])
 
-                    # find the point class with the same code and category
-                    try:
-                        typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
-                    except PointCodes.DoesNotExist as e:
-                        typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
-                        if request.user.has_perm('data.add_PointCodes'):
-                            typeClass.save()
+                # set the scholar average
+                grade = student.grade_set.get(grade=grade_num)
+                scholar = grade.scholar_set.all()[0]
+                scholar.term1 = t1
+                scholar.term2 = t2
+                if request.user.has_perm('data.change_scholar'):
+                    scholar.save()
+            else:
+                if point_field[1] == '' or code_field[1] == '':
+                    continue
 
-                    grade = student.grade_set.get(grade=grade_num)
-                    grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
+                amount = float(point_field[1])
+                code = int(code_field[1])
+
+                # find the point class with the same code and category
+                try:
+                    typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
+                except PointCodes.DoesNotExist as e:
+                    typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
+                    if request.user.has_perm('data.add_PointCodes'):
+                        typeClass.save()
+
+                grade = student.grade_set.get(grade=grade_num)
+                grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
@@ -414,8 +420,11 @@ def codes_submit(request):
 
 
 def index(request):
+    maintenance, notice = google_calendar()
     template = get_template('data/index.html')
     context = {
+        'maintenance': maintenance,
+        'notice': notice,
         'student_list': Student.objects.all(),
         'recent': Points.objects.all().order_by('-id')[:100],
     }
@@ -435,3 +444,37 @@ def help(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
+
+
+def google_calendar():
+    maintenance = []
+    notice = []
+    time_format = '%d %B, %H:%M %p'
+
+    now = datetime.datetime.utcnow().isoformat() + 'Z'
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
+
+    secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
+    http = credentials.authorize(httplib2.Http())
+    service = build('calendar', 'v3', http=http)
+    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, ).execute()
+    events = events.get('items', [])
+
+    for event in events:
+        if "MAINTENANCE:" in event.get("summary"):
+            maintenance.append({
+                'action': event['summary'].replace("MAINTENANCE: ", ""),
+                'note': event['description'],
+                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+            })
+        else:
+            notice.append({
+                'title': event['summary'].replace("NOTICE: ", ""),
+                'note': event['description'],
+                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+            })
+
+    return maintenance, notice
