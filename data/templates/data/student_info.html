@@ -32,17 +32,18 @@
             {% endfor %}
         {% endfor %}
     {% else %}
+        <div style="clear: both;"><h3>My Entries</h3></div>
         {% if request.user|has_group:"Service" %}
-            {% include 'entry/overview.html' with type='Service' %}
+            {% include 'entry/overview.html' with type='SE' grade=student.grade_set.all.0 %}
         {% endif %}
         {% if request.user|has_group:"Athletics" %}
-            {% include 'entry/overview.html' with type='Athletics' %}
+            {% include 'entry/overview.html' with type='AT' grade=student.grade_set.all.0 %}
         {% endif %}
         {% if request.user|has_group:"Scholar" %}
-            {% include 'entry/overview.html' with type='Scholar' %}
+            {% include 'entry/overview.html' with type='SC' grade=student.grade_set.all.0 %}
         {% endif %}
         {% if request.user|has_group:"Fine Arts" %}
-            {% include 'entry/overview.html' with type='Fine Arts' %}
+            {% include 'entry/overview.html' with type='FA' grade=student.grade_set.all.0 %}
         {% endif %}
     {% endif %}
 

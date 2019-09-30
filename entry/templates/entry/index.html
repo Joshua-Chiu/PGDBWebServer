@@ -8,18 +8,41 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/entry_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index_styles.css' %}">
 {% endblock %}
 
 {% block content%}
     <h2>Dashboard</h2>
-    Sample Input Files
+    <h4>Sample Input Files</h4>
     <ul>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">Direct Entry Import (Fill in - Athletics)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">Direct Entry Import (Fill in - Scholarship)</a></li>
         <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
     </ul>
+    <h4>My recent actions</h4>
+    <table>
+        <thead>
+        <tr><th>&emsp14;Student&emsp14;</th><th>Point</th></tr>
+        </thead>
+    {% for log in recent %}
+        <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>: {{ log.amount }} Points for {{ log.type.description }}</td></tr>
+    {% endfor %}
+    </table>
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span>
+            {% if notice %}
+                {{ notice.0.title }}: {{ notice.0.note }} ({{ notice.0.start }})
+            {% endif %}
+        </span>
+        <span style="margin-left:6em ">
+            {% if maintenance %}
+                {{ maintenance.0.action }}: Maintenance from {{ maintenance.0.start }} to {{ maintenance.0.end }}
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}
 
 

@@ -1,9 +1,15 @@
-<table border="1" style="display: inline-block">
-    <caption>{{ type }}</caption>
+<table border="1" style="display: inline-block; float: left; margin:0 10px;">
+    <caption>{{ type }} {{ grade.grade }}</caption>
     <thead>
-    <th>Point</th><th>Code</th>
+    <th>Point Amount</th><th>Code Definition</th>
     </thead>
     <tbody>
-    <tr><td>A</td><td>B</td></tr>
+    {% for point in grade.points_set.all %}
+        {% ifequal type point.type.catagory %}
+            {% ifequal point.entered_by user %}
+                <tr><td>{{ point.amount }}&emsp;</td><td>{{ point.type.description }}&emsp;<input type="submit" name="deletePoint {{ grade.grade }} {{ point.type }}" value="X" /></td></tr>
+            {% endifequal %}
+        {% endifequal %}
+    {% endfor %}
     </tbody>
 </table>

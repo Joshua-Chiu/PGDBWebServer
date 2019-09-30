@@ -19,15 +19,15 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
 
         <li>
             <div class="dropdown">
-                <button class="dropbtn"><a href="{% url 'data:index' %}">Student List</a></button>
+                <button class="dropbtn"><a href="{% url 'data:index' %}">Dashboard</a></button>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="/data/search?query=grade%3A8">Grade 08</a>
-                    <a href="/data/search?query=grade%3A9">Grade 09</a>
-                    <a href="/data/search?query=grade%3A10">Grade 10</a>
-                    <a href="/data/search?query=grade%3A11">Grade 11</a>
-                    <a href="/data/search?query=grade%3A12">Grade 12</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A08">Grade 08</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A09">Grade 09</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A10">Grade 10</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A11">Grade 11</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A12">Grade 12</a>
                 </div>
             </div>
         </li>
@@ -39,7 +39,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 <div class="dropdown-content">
                     <a href="{% url 'data:codes' %}">Codes</a>
                     <a href="{% url 'data:plist' %}">Plist</a>
-                    <a href="{% url 'data:archive' %}">Archives</a>
+                    <a href="{% url 'data:archive' %}">Converters</a>
                 </div>
             </div>
         </li>

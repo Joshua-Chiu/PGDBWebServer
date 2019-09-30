@@ -6,6 +6,14 @@ body {
     background-color: powderblue;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+.index td, th {
+    border: 1px solid black;
+}
+
 .student ul {
     border: none;
     list-style-type: disc;

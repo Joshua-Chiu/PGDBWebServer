@@ -19,10 +19,11 @@ USERS = [
     ['pgadmin', '2.718281', True, True, True, False, []],
     ['npetheriot', 'wK7CSZVQnv', True, True, True, False, []],
     ['jdouglas', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
-    ['dlai', 'eNHx4cwpJZ', False, False, True, True, ['Service']],
-    ['jtchan', 'PEd7Cbsp5e', False, False, True, True, ['Scholar', 'Service']],
+    ['dlai', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
+    ['jtchan', 'PEd7Cbsp5e', True, True, True, False, []],
     ['gjones', 'hg5MmWjhzL', True, True, True, False, []],
-    ['syip', 'hg5MmWjhzL', False, False, True, True, ['Service']],
+    ['syip', 'hg5MmWjhzL', False, False, False, True, ['Service']],
+    ['ccordoni', 'yUAp2WPMrJ', False, False, True, True, []],
 ]
 
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
