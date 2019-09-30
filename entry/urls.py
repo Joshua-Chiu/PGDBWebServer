@@ -12,6 +12,7 @@ urlpatterns = [
     path('scholar', views.scholar, name='scholar'),
     path('error', views.error, name='error'),
     path('upload_file/<slug:point_catagory>', views.upload_file, name='upload_file'),
+    path('point_submit/<slug:point_catagory>', views.point_submit, name='point_submit'),
     path('ajax/validate_student_name/', views.validate_student_name, name='validate_student_name'),
     path('ajax/validate_point_code/', views.validate_point_code, name='validate_point_code'),
 ]

@@ -71,6 +71,26 @@ def error(request):
         return HttpResponseRedirect('/data')
 
 
+def point_submit(request, point_catagory):
+    if request.method == "POST":
+        # try:
+        snum = int(request.POST["student-number"])
+        code = int(request.POST["code"])
+        points = int(request.POST["minutes"])
+        if point_catagory == "SE":
+            points /= 300
+
+        student = Student.objects.get(student_num=snum)
+        grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+        grade.points_set.create(
+            type = PointCodes.objects.filter(catagory=point_catagory).get(code=code),
+            amount = points,
+        )
+        # except:
+        #     print("failed to submit")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 def upload_file(request, point_catagory):
     logs = []
     entered_by = request.user

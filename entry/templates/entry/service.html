@@ -15,7 +15,7 @@
     <body>
         <h2>Direct Entry (Service)</h2>
         <h4>Single entry</h4>
-            <form action="" method="post">
+        <form action="{% url "entry:point_submit" "SE" %}" method="post">
                 <fieldset>
                     <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
                     Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
