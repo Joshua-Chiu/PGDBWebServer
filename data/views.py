@@ -19,7 +19,7 @@ from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
 
-@login_required()
+@login_required
 def search(request):
     template = get_template('data/search.html')
 
