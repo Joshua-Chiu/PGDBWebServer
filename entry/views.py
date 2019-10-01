@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
@@ -97,6 +98,7 @@ def point_submit(request, point_catagory):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+@login_required
 def upload_file(request, point_catagory):
     logs = []
     entered_by = request.user
@@ -104,12 +106,26 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 # if it's the start line skip it
-                if line.decode(
-                        "utf-8") == "Student Number,Last Name,Minutes of Service,Code\n" and point_catagory == "SE":
-                    continue
-                if line.decode("utf-8") == "Student Number,Last Name,Athletic Points,Code\n" and point_catagory == "AT":
-                    continue
-                if line.decode("utf-8") == "Student Number,Last Name,Fine Art Points,Code\n" and point_catagory == "FA":
+                if line.decode("utf-8") == "Student Number,Last Name,Minutes of Service,Code\n":
+                    if point_catagory == "SE":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+                if line.decode("utf-8") == "Student Number,Last Name,Athletic Points,Code\n":
+                    if point_catagory == "AT":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+                if line.decode("utf-8") == "Student Number,Last Name,Fine Art Points,Code\n":
+                    if point_catagory == "FA":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+
+                if line.decode("utf-8") == ",,,\n":  # skip blank lines
                     continue
 
                 # print(line.decode("utf-8").strip())

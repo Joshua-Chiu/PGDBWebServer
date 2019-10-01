@@ -35,6 +35,20 @@
         <input type="file" name="file" id="file" onchange="form.submit()" >
         {% csrf_token %}
     </form>
+    <hr>
+
+    <h4>Create Honour Roll, Principal's List and GE Rolls Recipients</h4>
+    <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
+        <select name="grade">
+                <option value="08" >Grade 08</option>
+                <option value="09" >Grade 09</option>
+                <option value="10" >Grade 10</option>
+                <option value="11" >Grade 11</option>
+                <option value="12" >Grade 12</option>
+        </select>
+        <input type="file" name="file" id="file" onchange="form.submit()" >
+        {% csrf_token %}
+    </form>
 
     <hr>
     <h4>Stuff</h4>
