@@ -67,6 +67,24 @@ def scholar(request):
         return HttpResponseRedirect('error')
 
 
+def scholar_submit(request):
+    if request.method == "POST":
+        try:
+            snum = int(request.POST["student-number"])
+            term1 = int(request.POST["t1"])
+            term2 = int(request.POST["t2"])
+
+            student = Student.objects.get(student_num=snum)
+            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+            grade.scholar_set.all()[0].term1 = term1
+            grade.scholar_set.all()[0].term2 = term2
+            grade.scholar_set.all()[0].save()
+        except:
+            print("failed to submit scholar")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def error(request):
     template = get_template('entry/error.html')
     context = {}
@@ -78,22 +96,22 @@ def error(request):
 
 def point_submit(request, point_catagory):
     if request.method == "POST":
-        # try:
-        snum = int(request.POST["student-number"])
-        code = int(request.POST["code"])
-        points = int(request.POST["minutes"])
-        if point_catagory == "SE":
-            points /= 300
+        try:
+            snum = int(request.POST["student-number"])
+            code = int(request.POST["code"])
+            points = int(request.POST["minutes"])
+            if point_catagory == "SE":
+                points /= 300
 
-        student = Student.objects.get(student_num=snum)
-        grade = student.grade_set.get(grade=int(student.homeroom[:2]))
-        grade.points_set.create(
-            type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
-            amount=points,
-            entered_by=request.user,
-        )
-        # except:
-        #     print("failed to submit")
+            student = Student.objects.get(student_num=snum)
+            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+            grade.points_set.create(
+                type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
+                amount=points,
+                entered_by=request.user,
+            )
+        except:
+            print("failed to submit")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
