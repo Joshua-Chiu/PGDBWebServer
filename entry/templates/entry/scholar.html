@@ -15,7 +15,7 @@
     <body>
         <h2>Direct Entry (Scholar)</h2>
         <h4>Single entry</h4>
-            <form action="" method="post">
+        <form action="{% url 'entry:scholar_submit' %}" method="post">
                     <fieldset>
                         <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
                         <label>Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px"></label>
@@ -26,8 +26,18 @@
                         {% csrf_token %}
                     </fieldset>
             </form>
-
-        <button>Import Scholarship Scores</button><br>
+        <h4>Form entry</h4>
+            <p>Visit the home/help page to access import template files</p>
+            <form action="{% url 'entry:upload_file' 'SC' %}" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="file" onchange="form.submit();">
+                {% csrf_token %}
+            </form>
+        <h4>My recent actions</h4>
+        <table>
+            {% for point in points %}
+                <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+            {% endfor %}
+        </table>
     </body>
 {% endblock %}
 {% block javascript %}

@@ -18,16 +18,17 @@
     <form action="{% url "entry:point_submit" "SE" %}" name="single" method="post" onsubmit="return validateForm();">
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
-            Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px">
-            Code: <input class="code" type="number" name="code" value="" style="width: 40px">
-            . . . . .
-            Name: <a id="name" class="name">Student not found</a> | Hours: <a id="hours" class="hours">NONE</a> | Type: <a id="code" class="code">Code not found</a>
+            <a id="name" class="name">Student not found</a> |
+            <labeL>Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px"></labeL> =
+            <a id="hours" class="hours">NONE</a> |
+            <labeL>Code: <input class="code" type="number" name="code" value="" style="width: 40px"></labeL>
+            <a id="code" class="code">Code not found</a>
             <button value="submit">Submit</button>
             {% csrf_token %}
         </fieldset>
     </form>
     <h4>Form entry</h4>
-    <p>Visit the home/help page to access import template files</p>
+    <p>Visit the home/help page to access import template files<br><a href="{% url 'entry:dictionary' 'SE' %}">Click here to get the code dictionary</a></p>
     <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file" onchange="form.submit();">
         {% csrf_token %}

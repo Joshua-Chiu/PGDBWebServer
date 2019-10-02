@@ -75,7 +75,7 @@ def print_grad(request):
     students = parseQuery(query)
 
     context = {
-        'student_list': students[:20],
+        'student_list': students[:2],
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

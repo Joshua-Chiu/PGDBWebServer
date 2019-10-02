@@ -30,6 +30,8 @@ GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
 PERMISSIONS = ['change', ]  # For now only view permission by default for all, others include add, delete, change
 
+POINTTYPES = []
+
 
 class Command(BaseCommand):
     help = 'Creates 4 default groups for users and create pgadmin'
@@ -66,4 +68,6 @@ class Command(BaseCommand):
                 Group.objects.get(name=group).user_set.add(user)
             print(f"Updated '{u[0]}' and with groups '{u[6]}'")
 
-        print("Created default user and groups.")
+        # for u in POINTTYPES:
+
+        print("Created default definitions, user and groups.")

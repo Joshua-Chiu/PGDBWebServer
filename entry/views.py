@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
@@ -66,6 +67,24 @@ def scholar(request):
         return HttpResponseRedirect('error')
 
 
+def scholar_submit(request):
+    if request.method == "POST":
+        try:
+            snum = int(request.POST["student-number"])
+            term1 = int(request.POST["t1"])
+            term2 = int(request.POST["t2"])
+
+            student = Student.objects.get(student_num=snum)
+            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+            grade.scholar_set.all()[0].term1 = term1
+            grade.scholar_set.all()[0].term2 = term2
+            grade.scholar_set.all()[0].save()
+        except:
+            print("failed to submit scholar")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def error(request):
     template = get_template('entry/error.html')
     context = {}
@@ -75,28 +94,38 @@ def error(request):
         return HttpResponseRedirect('/data')
 
 
+@login_required
+def dictionary(request, point_catagory):
+    template = get_template('entry/dictionary.html')
+    context = {
+        'codes': PointCodes.objects.filter(catagory=point_catagory)
+    }
+    return HttpResponse(template.render(context, request))
+
+
 def point_submit(request, point_catagory):
     if request.method == "POST":
-        # try:
-        snum = int(request.POST["student-number"])
-        code = int(request.POST["code"])
-        points = int(request.POST["minutes"])
-        if point_catagory == "SE":
-            points /= 300
+        try:
+            snum = int(request.POST["student-number"])
+            code = int(request.POST["code"])
+            points = int(request.POST["minutes"])
+            if point_catagory == "SE":
+                points /= 300
 
-        student = Student.objects.get(student_num=snum)
-        grade = student.grade_set.get(grade=int(student.homeroom[:2]))
-        grade.points_set.create(
-            type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
-            amount=points,
-            entered_by=request.user,
-        )
-        # except:
-        #     print("failed to submit")
+            student = Student.objects.get(student_num=snum)
+            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+            grade.points_set.create(
+                type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
+                amount=points,
+                entered_by=request.user,
+            )
+        except:
+            print("failed to submit")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+@login_required
 def upload_file(request, point_catagory):
     logs = []
     entered_by = request.user
@@ -104,12 +133,32 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 # if it's the start line skip it
-                if line.decode(
-                        "utf-8") == "Student Number,Last Name,Minutes of Service,Code\n" and point_catagory == "SE":
-                    continue
-                if line.decode("utf-8") == "Student Number,Last Name,Athletic Points,Code\n" and point_catagory == "AT":
-                    continue
-                if line.decode("utf-8") == "Student Number,Last Name,Fine Art Points,Code\n" and point_catagory == "FA":
+                if line.decode("utf-8") == "Student Number,Last Name,Minutes of Service,Code\n":
+                    if point_catagory == "SE":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+                if line.decode("utf-8") == "Student Number,Last Name,Athletic Points,Code\n":
+                    if point_catagory == "AT":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+                if line.decode("utf-8") == "Student Number,Last Name,Fine Art Points,Code\n":
+                    if point_catagory == "FA":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+                if line.decode("utf-8") == "Student Number,Last Name,Average T1,Average T2\n":
+                    if point_catagory == "FA":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
+
+                if line.decode("utf-8") == ",,,\n":  # skip blank lines
                     continue
 
                 # print(line.decode("utf-8").strip())
@@ -145,11 +194,12 @@ def upload_file(request, point_catagory):
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
 
                 # create point type if missing
-                try:
+                if PointCodes.objects.filter(catagory=point_catagory).filter(code=code).exists():
                     point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
-                except PointCodes.DoesNotExist:
-                    point_type = PointCodes(catagory=point_catagory, code=code, description=point_catagory + code)
-                    point_type.save()
+                else:
+                    logs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
+                                "CODE UNDEFINED")
+                    continue
 
                 grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
                 logs.append(
