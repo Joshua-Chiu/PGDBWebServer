@@ -106,7 +106,17 @@
         const end = 1970;
         let options = "";
         for(let year = start ; year >=end; year--){
-          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
+          options += "<option ";
+          {% if year %}
+          if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% else %}
+          if(year === start - 1){
+              options += "selected ";
+          }
+          {% endif %}
+          options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
         }
         document.getElementById("year").innerHTML = options;
     </script>

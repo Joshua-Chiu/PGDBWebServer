@@ -7,7 +7,7 @@ import datetime
 
 
 class PlistCutoff(models.Model):
-    YEAR_CHOICES = [(r, f"{r} ⟶ {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
+    YEAR_CHOICES = [(r, f"{r} → {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
     grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)

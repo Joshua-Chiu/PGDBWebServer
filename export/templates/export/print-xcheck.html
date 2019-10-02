@@ -97,6 +97,10 @@
           if(year === {{ year }}){
               options += "selected ";
           }
+          {% else %}
+          if(year === start - 1){
+              options += "selected ";
+          }
           {% endif %}
           options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
         }

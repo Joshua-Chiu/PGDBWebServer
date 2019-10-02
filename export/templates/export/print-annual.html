@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Annual Awards{% endblock %}
+{% block title %}{% if type %}{{ type }}{% else %}Annual Awards{% endif %}{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -12,8 +12,11 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
     <script src="{% static 'jspdf.js' %}"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>-->
     <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
-{% endblock %}
+    <script src="jquery.tabletoCSV.js"></script>
+
+    {% endblock %}
 
 {% block content%}
     <!--Content goes here-->
@@ -61,29 +64,33 @@
     <div>
         <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
         <button class="button default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
-        Number of Students in list: {{ student_list|length }}
+        <button class="button default" id="export" data-export="export">Export to CSV</button>
     </div>
 
     {% if student_list %}
     <div id="GeneratedList">
         <table class="sortable">
+
+            <caption>Number of Students in list: {{ student_list|length }}</caption>
             <!-- Header Row-->
+        <thead>
             <tr>
-                <td><strong>&nbsp;Award&nbsp;</strong></td>
-                <td><strong>&nbsp;Name</strong></td>
+                <td><strong>&nbsp;First Name</strong></td>
                 <td><strong>&nbsp;Last Name</strong></td>
                 <td><strong>&nbsp;Student #&nbsp;</strong></td>
                 <td><strong>&nbsp;Homeroom</strong></td>
             </tr>
+        </thead>
+        <tbody>
         {% for student in student_list %}
             <tr>
-                <td>{{ type }}&nbsp;&nbsp;&nbsp;</td>
                 <td>{{ student.first }} ({{ student.legal }})</td>
                 <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
                 <td>{{ student.homeroom }}</td>
             </tr>
         {% endfor %}
+        </tbody>
         </table>
     </div>
     {% endif %}
@@ -98,6 +105,10 @@
           options += "<option ";
           {% if year %}
           if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% else %}
+          if(year === start - 1){
               options += "selected ";
           }
           {% endif %}
@@ -160,13 +171,14 @@
     }
     function formatText(elem) {
         elem = document.getElementById(elem);
-        elem = elem.children[0].children[1]; //gets table body
+        elem = elem.children[0].children[2]; //gets table body
+        console.log(elem);
         var studentList = [];
         for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
             var student = elem.children[i];
-            var first_name = student.children[1].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
-            var last_name = student.children[2].innerHTML;
-            var identifier = student.children[3].innerHTML + " - " + student.children[4].innerHTML; // get student number and homeroom
+            var first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
+            var last_name = student.children[1].innerHTML;
+            var identifier = student.children[2].innerHTML + " - " + student.children[3].innerHTML; // get student number and homeroom
             //console.log(first_name + " " + last_name + " " + identifier);
 
             studentList.push([first_name, last_name, identifier]);
