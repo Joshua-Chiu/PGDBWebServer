@@ -1,0 +1,27 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Dictionary{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/navbar_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <h2>Codes</h2>
+    <table><thead>
+    <tr><th>Code&nbsp;</th><th>Description</th></tr>
+    </thead><tbody>
+    {% for code in codes %}
+        <tr><td>{{ code.code }}</td><td> {{ code.description }}</td></tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascript %}{% endblock %}

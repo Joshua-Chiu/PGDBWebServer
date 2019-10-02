@@ -94,6 +94,15 @@ def error(request):
         return HttpResponseRedirect('/data')
 
 
+@login_required
+def dictionary(request, point_catagory):
+    template = get_template('entry/dictionary.html')
+    context = {
+        'codes': PointCodes.objects.filter(catagory=point_catagory)
+    }
+    return HttpResponse(template.render(context, request))
+
+
 def point_submit(request, point_catagory):
     if request.method == "POST":
         try:
@@ -142,6 +151,12 @@ def upload_file(request, point_catagory):
                     else:
                         logs.append("Error: File submitted at wrong entry point.")
                         break
+                if line.decode("utf-8") == "Student Number,Last Name,Average T1,Average T2\n":
+                    if point_catagory == "FA":
+                        continue
+                    else:
+                        logs.append("Error: File submitted at wrong entry point.")
+                        break
 
                 if line.decode("utf-8") == ",,,\n":  # skip blank lines
                     continue
@@ -179,11 +194,12 @@ def upload_file(request, point_catagory):
                 grade = student.grade_set.get(grade=int(student.homeroom[:2]))
 
                 # create point type if missing
-                try:
+                if PointCodes.objects.filter(catagory=point_catagory).filter(code=code).exists():
                     point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
-                except PointCodes.DoesNotExist:
-                    point_type = PointCodes(catagory=point_catagory, code=code, description=point_catagory + code)
-                    point_type.save()
+                else:
+                    logs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
+                                "CODE UNDEFINED")
+                    continue
 
                 grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
                 logs.append(
