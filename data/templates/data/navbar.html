@@ -49,7 +49,8 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                 <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'export:print-annual' %}">Annual</a>
+                    <a href="{% url 'export:print-annual' %}">Annual Awards</a>
+                    <a href="{% url 'export:print-trophies' %}">Annual Trophies</a>
                     <a href="{% url 'export:print-grad' %}">Graduation</a>
                     <a href="{% url 'export:print-xcheck' %}">Crosscheck</a>
                 </div>

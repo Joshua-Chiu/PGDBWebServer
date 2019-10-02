@@ -18,17 +18,17 @@
         <form action="{% url 'entry:scholar_submit' %}" method="post">
                     <fieldset>
                         <label>Student Number: <input class="student-number" type='number' name="student-number" value=""></label>
-                        <label>Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px"></label>
-                        <label>Term 2 Percentage: <input class="t2" type="number" id="t2" name="t2" value="" style="width: 40px"></label>
+                        <label>Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px" step="0.001"></label>
+                        <label>Term 2 Percentage: <input class="t2" type="number" id="t2" name="t2" value="" style="width: 40px" step="0.001"></label>
                         . . . . .
-                        Name: <a id="name" class="name">TYPE IN STUDENT NUMBER</a>
-                        <button value="submit">Submit</button>
+                        Name: <a id="name" class="name">Student not found</a>
+                        <button value="submit" onsubmit="confirm('Submitting this file will overwrite all existing data for students averages.');">Submit</button>
                         {% csrf_token %}
                     </fieldset>
             </form>
         <h4>Form entry</h4>
             <p>Visit the home/help page to access import template files</p>
-            <form action="{% url 'entry:upload_file' 'SC' %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'entry:scholar_upload_file' %}" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" id="file" onchange="form.submit();">
                 {% csrf_token %}
             </form>

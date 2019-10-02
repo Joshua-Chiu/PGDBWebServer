@@ -256,7 +256,7 @@ class Grade(models.Model):
 class PointCodes(models.Model):
     catagory = models.CharField(max_length=2)
     code = models.SmallIntegerField()
-    description = models.CharField(max_length=20)
+    description = models.CharField(max_length=30)
 
     def __str__(self):
         return f"{self.catagory} {self.code}"

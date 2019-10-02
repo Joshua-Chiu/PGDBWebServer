@@ -16,6 +16,9 @@ class CustomUser(AbstractUser):
     no_entry = models.BooleanField(default=True, verbose_name='No entry at student page',
                                    help_text="Designates whether the user can enter data at the student view. Note: If a user is a superuser, this is disregarded.")
 
+    can_upload = models.BooleanField(default=False, verbose_name='Upload at Direct',
+                                   help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
+
     @register.filter(name='has_group')
     def has_group(self, group_name):
         try:
