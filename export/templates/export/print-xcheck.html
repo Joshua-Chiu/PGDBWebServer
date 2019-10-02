@@ -20,8 +20,6 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="year" id="year"></select>
-
             Grade:
             <select name="grade">
                 <option {% ifequal grade_num 08 %}selected{% endifequal %} value="08" >Grade 08</option>
@@ -30,6 +28,8 @@
                 <option {% ifequal grade_num 11 %}selected{% endifequal %} value="11" >Grade 11</option>
                 <option {% ifequal grade_num 12 %}selected{% endifequal %} value="12" >Grade 12</option>
             </select>
+
+            Year: <select name="year" id="year"></select>
 
             Type:
             <select name="type">

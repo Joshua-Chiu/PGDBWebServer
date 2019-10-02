@@ -25,8 +25,6 @@
 </div>
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="year" id="year"></select>
-
             Grade:
             <select name="grade">
                 <option value="" >Select</option>
@@ -36,6 +34,8 @@
                 <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
                 <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
             </select>
+
+            Year: <select name="year" id="year"></select>
 
             Annual Certificates:
             <select name="annual">
