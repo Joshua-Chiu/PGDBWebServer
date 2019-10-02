@@ -134,7 +134,7 @@ POINTTYPES = [
     ['AT', 71, 'Skiing / Snow Boarding'],
     ['AT', 72, 'Premier Soccer'],
     ['AT', 73, 'Cheerleading / Dance Team'],
-    ['AT', 74, 'Team Manager (For athletic points)'],
+    ['AT', 74, 'Team Manager (athletic points)'],
 
     ['FA', 1, 'Vocal Jazz'],
     ['FA', 2, 'Choir'],

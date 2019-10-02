@@ -71,14 +71,15 @@ def scholar_submit(request):
     if request.method == "POST":
         try:
             snum = int(request.POST["student-number"])
-            term1 = int(request.POST["t1"])
-            term2 = int(request.POST["t2"])
+            term1 = float(request.POST["t1"])
+            term2 = float(request.POST["t2"])
 
             student = Student.objects.get(student_num=snum)
             grade = student.grade_set.get(grade=int(student.homeroom[:2]))
-            grade.scholar_set.all()[0].term1 = term1
-            grade.scholar_set.all()[0].term2 = term2
-            grade.scholar_set.all()[0].save()
+            s = grade.scholar_set.all()[0]
+            s.term1 = term1
+            s.term2 = term2
+            s.save()
         except:
             print("failed to submit scholar")
 
@@ -222,8 +223,8 @@ def validate_student_name(request):
         grade = student.grade_set.get(grade=int(student.homeroom[:2]))
         data = {
             'student_name': student.first + " " + student.last,
-            't1': grade.scholar_set.all()[0].term1,
-            't2': grade.scholar_set.all()[0].term2,
+            't1': round(grade.scholar_set.all()[0].term1, 3),
+            't2': round(grade.scholar_set.all()[0].term2, 3),
         }
     else:
         data = {
