@@ -83,6 +83,21 @@ def print_grad(request):
         return HttpResponseRedirect('/')
 
 
+def print_trophies(request):
+    template = get_template('export/print-trophies.html')
+
+    query = ""
+    students = parseQuery(query)
+
+    context = {
+        'student_list': students[:2],
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect('/')
+
+
 def print_xcheck(request):
     template = get_template('export/print-xcheck.html')
 
