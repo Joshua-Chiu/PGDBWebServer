@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'entry.apps.EntryConfig',
     'export.apps.ReportsConfig',
     'data.apps.dataConfig',
+    'accounts.apps.AccountsConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,8 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mathfilters',
-    'accounts.apps.AccountsConfig',
-    'users.apps.UsersConfig',
     'import_export',
     'session_security',
 ]

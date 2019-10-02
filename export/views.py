@@ -95,7 +95,7 @@ def print_xcheck(request):
 
     if "year" in request.GET and request.GET["year"]:
         year = request.GET["year"]
-        query += "grade_" + str(grade) + "_year:" + request.GET["year"] + " "
+        query += "grade_" + str(grade).zfill(2) + "_year:" + request.GET["year"] + " "
     else:
         query += "grade:" + str(grade) + " "
 
