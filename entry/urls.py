@@ -11,6 +11,7 @@ urlpatterns = [
     path('fine-arts', views.fine_arts, name='fine-arts'),
     path('scholar', views.scholar, name='scholar'),
     path('scholar_submit', views.scholar_submit, name='scholar_submit'),
+    path('scholar_upload_file', views.scholar_upload_file, name='scholar_upload_file'),
     path('error', views.error, name='error'),
     path('dictionary/<slug:point_catagory>', views.dictionary, name='dictionary'),
     path('upload_file/<slug:point_catagory>', views.upload_file, name='upload_file'),
