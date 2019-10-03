@@ -152,6 +152,16 @@ SESSION_SECURITY_EXPIRE_AFTER = os.environ.get('SESSION_SECURITY_EXPIRE_AFTER', 
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+# Email Settings
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pointgreydb@gmail.com'
+EMAIL_HOST_PASSWORD = 'Petheriots'
+SERVER_EMAIL = 'pointgreydb@gmail.com'
+
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))

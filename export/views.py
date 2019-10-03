@@ -49,10 +49,17 @@ def print_annual(request):
         "grade": "gr",
         "award": "",
         "year": "",
+        "SE": "Service",
+        "AT": "Athletics",
+        "SC": "Scholarship",
+        "FA": "Fine Arts",
 
     }
+    award_formatted = award
     for key, value in awards_dict.items():
         query = query.replace(key, value)
+    for key, value in awards_dict.items():
+        award_formatted = award_formatted.replace(key, value)
 
     context = {
         'student_list': students,
@@ -60,7 +67,7 @@ def print_annual(request):
         'year': year,
         'award': award,
         "grade": int(grade),
-
+        'award_formatted': award_formatted
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

@@ -32,12 +32,6 @@
                 <input type="file" name="file" id="file" onchange="form.submit();">
                 {% csrf_token %}
             </form>
-        <h4>My recent actions</h4>
-        <table>
-            {% for point in points %}
-                <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
-            {% endfor %}
-        </table>
     </body>
 {% endblock %}
 {% block javascript %}
