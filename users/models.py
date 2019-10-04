@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 
 register = template.Library()
 
+
 class CustomUser(AbstractUser):
     autofocus = models.IntegerField(default=1,
                                     choices=[(1, 'Service'), (2, 'Athletics'), (3, 'Fine Arts'), (4, 'Scholar T1'),
@@ -17,7 +18,7 @@ class CustomUser(AbstractUser):
                                    help_text="Designates whether the user can enter data at the student view. Note: If a user is a superuser, this is disregarded.")
 
     can_upload = models.BooleanField(default=False, verbose_name='Upload at Direct',
-                                   help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
+                                     help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
 
     @register.filter(name='has_group')
     def has_group(self, group_name):

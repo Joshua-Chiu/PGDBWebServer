@@ -71,7 +71,6 @@ def print_annual(request):
 
     with open(config.principal_signature.path, 'rb') as img:
         p_sig_string = str(base64.b64encode(img.read()))[2:-1]
-        print(p_sig_string)
 
     context = {
         'student_list': students,
