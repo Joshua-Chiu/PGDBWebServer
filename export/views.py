@@ -3,7 +3,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from data.models import Student
 from util.queryParse import parseQuery
+from configuration.models import Configuration
 
+from io import BytesIO
+from PIL import Image
+from subprocess import Popen, PIPE
+from io import StringIO
+import base64
 
 def index(request):
     template = get_template('export/index.html')
@@ -61,13 +67,20 @@ def print_annual(request):
     for key, value in awards_dict.items():
         award_formatted = award_formatted.replace(key, value)
 
+    config = Configuration.objects.get()
+
+    with open(config.principal_signature.path, 'rb') as img:
+        p_sig_string = str(base64.b64encode(img.read()))[2:-1]
+        print(p_sig_string)
+
     context = {
         'student_list': students,
         'type': query.title(),
         'year': year,
         'award': award,
         "grade": int(grade),
-        'award_formatted': award_formatted
+        'award_formatted': award_formatted,
+        "principals_signature": p_sig_string,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
