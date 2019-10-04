@@ -97,10 +97,15 @@ def print_grad(request):
     query = f"grade_12_year:{year}"
     students = parseQuery(query)
 
-    students = sorted(students, key=lambda student: student.SE_11_12_total, reverse=True)[:30]
+    if not award == "ME":
+        students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
+    else:
+        # TODO ME candidates
+        pass
 
     context = {
         'student_list': students,
+        'point_type': award,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
