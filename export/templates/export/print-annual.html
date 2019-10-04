@@ -78,7 +78,7 @@
             <tr>
                 <td><strong>&nbsp;First Name</strong></td>
                 <td><strong>&nbsp;Last Name</strong></td>
-                <td><strong>&nbsp;Student #&nbsp;</strong></td>
+                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
                 <td><strong>&nbsp;Homeroom</strong></td>
             </tr>
         </thead>
@@ -201,10 +201,11 @@
         var downloadLink;
         var dataType = 'application/vnd.ms-excel';
         var tableSelect = document.getElementById(tableID);
-        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+        console.log(tableSelect);
+        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
 
         // Specify file name
-        filename = filename?filename+'.xls':'excel_data.xls';
+        filename = filename?filename+'.xls':'{{ type }}.xls';
 
         // Create download link element
         downloadLink = document.createElement("a");

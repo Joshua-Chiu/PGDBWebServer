@@ -39,9 +39,10 @@
                     <!--Table left content-->
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
-                <button onclick="submitForms();" class="btn" {% if user.no_entry %}disabled{% endif %}>SAVE</button>
                 <p>Comments</p>
-                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea>
+                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea><hr>
+                <button style="clear: both;" onclick="submitForms();" class="btn" {% if user.no_entry %}disabled{% endif %}>SAVE</button>
+            </td>
 
             <!-- DATA ENTRY HAPPENS HERE -->
 
@@ -94,13 +95,13 @@
     <!--Where all the points are displayed-->
         <tr>
             <td align="center">
-                Notes for Service
+                {{ config.se_help_text }}
             </td>
             <td align="center">
-                Notes for Athletics
+                {{ config.at_help_text }}
             </td>
             <td align="center">
-                Notes for Fine Arts
+                {{ config.fa_help_text }}
             </td>
         </tr>
     <tr>
