@@ -23,7 +23,6 @@ input[type='checkbox'] {
 
 input[type=number]{
     width: 50px;
-
 }
 
 input::-webkit-inner-spin-button {

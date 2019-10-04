@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '5wqlq*_!b197zx2i1m2*)j*cqz^l!1^aium+1
 DEBUG = ('True' == os.environ.get('DEBUG', 'True'))
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['*'])
-
 
 # Application definition
 
@@ -43,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
     'mathfilters',
     'import_export',
     'session_security',
@@ -58,6 +57,7 @@ MIDDLEWARE = [
     'session_security.middleware.SessionSecurityMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'PGDBWebServer.urls'
@@ -78,9 +78,7 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'PGDBWebServer.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -122,7 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -135,7 +132,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -151,7 +147,16 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SECURITY_WARN_AFTER = os.environ.get('SESSION_SECURITY_WARN_AFTER', 540)
 SESSION_SECURITY_EXPIRE_AFTER = os.environ.get('SESSION_SECURITY_EXPIRE_AFTER', 600)
 
+# Authentication
 AUTH_USER_MODEL = 'users.CustomUser'
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',  # limits to disable accounts after failed logins
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AXES_FAILURE_LIMIT = 3
+AXES_ONLY_USER_FAILURES = True
 
 # Email Settings
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
@@ -160,7 +165,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'pointgreydb@gmail.com'
-EMAIL_HOST_PASSWORD = 'Petheriots'
+EMAIL_HOST_PASSWORD = 'Petheriotis'
 SERVER_EMAIL = 'pointgreydb@gmail.com'
 
 # Heroku Deployment Configurations
@@ -179,5 +184,6 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 import dj_database_url
+
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
