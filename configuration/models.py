@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Configuration(models.Model):
     principal_signature = models.ImageField(upload_to='export/uploads', default='export/uploads/no-img.png')
-    login_failure_limit = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)])
+    login_failure_limit = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=3)
 
     def save(self, *args, **kwargs):
         if not self.pk and Configuration.objects.exists():
