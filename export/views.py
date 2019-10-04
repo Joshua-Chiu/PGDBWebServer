@@ -91,11 +91,17 @@ def print_annual(request):
 def print_grad(request):
     template = get_template('export/print-grad.html')
 
-    query = ""
+    year = request.GET.get("year")
+    grade = request.GET.get("grade")
+    award = request.GET.get("grad-awards")
+
+    query = f"grade_12_year:{year}"
     students = parseQuery(query)
 
+    students = sorted(students, key=lambda student: student.SE_11_12_total, reverse=True)[:30]
+
     context = {
-        'student_list': students[:2],
+        'student_list': students,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

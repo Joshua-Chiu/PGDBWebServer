@@ -53,7 +53,6 @@ def parseQuery(query):
                     # award: or award_12:
                     elif "award" in k:
                         if "_" in k:
-                            print("asdf")
                             grade = int(k.split("_")[1])
                             grades = [grade]
                         else:
