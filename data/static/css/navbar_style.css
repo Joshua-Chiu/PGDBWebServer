@@ -3,13 +3,13 @@
 }
 
 body {
-    background-color: powderblue;
+    background-color: lightblue;
 }
 
 p {}
 
 h1 {
-    color: blue;
+    color: darkgray;
 }
 .title{
     padding-left: 60px;
