@@ -3,7 +3,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from data.models import Student
 from util.queryParse import parseQuery
+from configuration.models import Configuration
 
+from io import BytesIO
+from PIL import Image
+from subprocess import Popen, PIPE
+from io import StringIO
+import base64
 
 def index(request):
     template = get_template('export/index.html')
@@ -49,10 +55,22 @@ def print_annual(request):
         "grade": "gr",
         "award": "",
         "year": "",
+        "SE": "Service",
+        "AT": "Athletics",
+        "SC": "Scholarship",
+        "FA": "Fine Arts",
 
     }
+    award_formatted = award
     for key, value in awards_dict.items():
         query = query.replace(key, value)
+    for key, value in awards_dict.items():
+        award_formatted = award_formatted.replace(key, value)
+
+    config = Configuration.objects.get()
+
+    with open(config.principal_signature.path, 'rb') as img:
+        p_sig_string = str(base64.b64encode(img.read()))[2:-1]
 
     context = {
         'student_list': students,
@@ -60,7 +78,8 @@ def print_annual(request):
         'year': year,
         'award': award,
         "grade": int(grade),
-
+        'award_formatted': award_formatted,
+        "principals_signature": p_sig_string,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -71,11 +90,22 @@ def print_annual(request):
 def print_grad(request):
     template = get_template('export/print-grad.html')
 
-    query = ""
+    year = request.GET.get("year")
+    grade = request.GET.get("grade")
+    award = request.GET.get("grad-awards")
+
+    query = f"grade_12_year:{year}"
     students = parseQuery(query)
 
+    if not award == "ME":
+        students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
+    else:
+        # TODO ME candidates
+        pass
+
     context = {
-        'student_list': students[:2],
+        'student_list': students,
+        'point_type': award,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

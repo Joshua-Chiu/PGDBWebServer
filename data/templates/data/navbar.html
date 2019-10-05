@@ -38,7 +38,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
                     <a href="{% url 'data:codes' %}">Codes</a>
-                    <a href="{% url 'data:plist' %}">Plist</a>
+                    <a href="{% url 'data:plist' %}">Modify Plist</a>
                     <a href="{% url 'data:archive' %}">Converters</a>
                 </div>
             </div>

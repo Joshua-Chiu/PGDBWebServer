@@ -111,20 +111,6 @@ function post(path, params, method) {
 </script>
 
 <script>
-    $(".inputs").keyup(function () {
-    if (this.value.length == this.maxLength && parseFloat(this.value) <= this.max) {
-      $(this).next('.codes').focus();
-    }
-});
-    $(".codes").keyup(function () {
-        if (this.value.length == this.maxLength) {
-            submitForms();
-            this.value = ''
-        }
-});
-</script>
-<!--
-<script>
     $(document).ready(function () {
         $('input').keydown(function (e) {
             if (e.keyCode == 39) {
@@ -134,15 +120,9 @@ function post(path, params, method) {
     });
 </script>
 <script>
-function nullify() {
-var txt;
-  if (confirm("This removes a student's qualification for the selected award")) {
-    txt = "Nullified!";
-  } else {
-    txt = "";
-  }
-  document.getElementById("nullification-status").innerHTML = txt;
+function validateForm() {
+
+
 }
 </script>
--->
 {% endblock %}

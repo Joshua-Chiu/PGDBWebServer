@@ -12,9 +12,7 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
     <script src="{% static 'jspdf.js' %}"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>-->
     <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
-    <script src="jquery.tabletoCSV.js"></script>
 
     {% endblock %}
 
@@ -25,7 +23,7 @@
 </div>
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Grade:
+            <labeL>Grade:
             <select name="grade">
                 <option value="" >Select</option>
                 <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
@@ -34,10 +32,11 @@
                 <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
                 <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
             </select>
+            </labeL>
 
-            Year: <select name="year" id="year"></select>
+            <labeL>Year: <select name="year" id="year"></select></labeL>
 
-            Annual Certificates:
+            <label>Annual Certificates:
             <select name="annual">
                 <option value="" >Select</option>
                 <option {% ifequal award "SE" %}selected {% endifequal %}value="SE" >Service</option>
@@ -46,8 +45,9 @@
                 <option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Scholar Principal's List</option>
                 <option {% ifequal award "FA" %}selected {% endifequal %}value="FA" >Fine Arts</option>
             </select>
+            </label>
 
-            Cumulative Awards:
+            <label>Cumulative Awards:
             <select name="cumulative">
                 <option value="" >Select</option>
                 <option {% ifequal award "silver" %}selected {% endifequal %}value="silver" >Greyhound Silver Pin</option>
@@ -56,6 +56,7 @@
                 <option {% ifequal award "platinum" %}selected {% endifequal %}value="platinum" >Greyhound Platinum Pin</option>
                 <option {% ifequal award "big-block" %}selected {% endifequal %}value="big-block" >Athletics Big Block</option>
             </select>
+            </label>
 
             <input type="submit" value="Enter" onclick="form.action='print-annual';" />
         </fieldset>
@@ -64,7 +65,7 @@
     <div>
         <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
         <button class="button default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
-        <button class="button default" id="export" data-export="export">Export to CSV</button>
+        <button class="button default" onclick="exportTableToExcel('GeneratedList')">Export to Excel</button>
     </div>
 
     {% if student_list %}
@@ -77,7 +78,7 @@
             <tr>
                 <td><strong>&nbsp;First Name</strong></td>
                 <td><strong>&nbsp;Last Name</strong></td>
-                <td><strong>&nbsp;Student #&nbsp;</strong></td>
+                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
                 <td><strong>&nbsp;Homeroom</strong></td>
             </tr>
         </thead>
@@ -138,21 +139,30 @@
             format: 'letter'
         });
 
-        doc.setFont('vivaldin');// set font parameters to vivaldon
-        doc.setFontType('italic');
-        doc.setFontSize(28);
 
-        var type = "{{ award }}";
-        var studentList = formatText(elem); //format table html from the table
+        const imgData = 'data:image/png;base64,{{ principals_signature }}';
+        console.log(imgData);
+        const type = "{{ award_formatted }}";
+        const studentList = formatText(elem); //format table html from the table
+        doc.addFont('vivaldin', 'italic');
 
         for(let i = 0; i < studentList.length; i++){
-            console.log(studentList[i][0] + " " + studentList[i][1]); //first + last
-            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,16);
-            doc.myText(type,{align: "center"},0,70);
-            doc.myText(studentList[i][2],{align: "center"},0,100);
+            doc.setFont('vivaldin', 'italic');// set font parameters to vivaldin
+            doc.setFontSize(48);
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,80); //first + last
 
+            doc.setFontSize(40);
+            doc.myText(type,{align: "center"},0,100);
 
+            doc.setFontSize(32);
+            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0,120);
+
+            doc.setFontSize(7);
+            doc.setFont('Arial', 'normal');
+            doc.text(200,200,studentList[i][2]);
             console.log(studentList[i][2]); //identifier
+            doc.addImage(imgData, 'JPEG', 200, 150, 30, 15);
+
             doc.addPage();
 
         }
@@ -184,6 +194,39 @@
             studentList.push([first_name, last_name, identifier]);
         }
         return studentList;
+    }
+    </script>
+    <script>
+    function exportTableToExcel(tableID, filename = ''){
+        var downloadLink;
+        var dataType = 'application/vnd.ms-excel';
+        var tableSelect = document.getElementById(tableID);
+        console.log(tableSelect);
+        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
+
+        // Specify file name
+        filename = filename?filename+'.xls':'{{ type }}.xls';
+
+        // Create download link element
+        downloadLink = document.createElement("a");
+
+        document.body.appendChild(downloadLink);
+
+        if(navigator.msSaveOrOpenBlob){
+            var blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBlob( blob, filename);
+        }else{
+            // Create a link to the file
+            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+            // Setting the file name
+            downloadLink.download = filename;
+
+            //triggering the function
+            downloadLink.click();
+        }
     }
     </script>
 {% endblock %}

@@ -17,7 +17,7 @@
         <h4>Single entry</h4>
             <form action="{% url "entry:point_submit" "AT" %}" method="post">
                 <fieldset>
-                    <label>Student Number: <input class="student-number" required="required" type='number' name="student-number" value=""></label>
+                    <label>Student Number: <input class="student-number" required="required" type='number' name="student-number" value="" autofocus></label>
                     <a id="name" class="name">Student not found</a> |
                     <label>Points: <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px" min="0" max="6"></label>
                     <label>Code: <input class="code" required="required" type="number" name="code" value="" style="width: 40px"></label>

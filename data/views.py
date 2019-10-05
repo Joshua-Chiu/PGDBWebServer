@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Student, PointCodes, PlistCutoff, Grade, Points
+from configuration.models import Configuration
 from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
@@ -47,7 +48,8 @@ def student_info(request, num):
     template = get_template('data/student_info.html')
     context = {
         'student': Student.objects.get(id=num),
-        'plists': PlistCutoff.objects.all()
+        'plists': PlistCutoff.objects.all(),
+        'config': Configuration.objects.get()
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))

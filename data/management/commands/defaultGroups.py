@@ -11,7 +11,8 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
-from data.views import PointCodes
+from data.models import PointCodes
+from configuration.models import Configuration
 
 User = get_user_model()
 
@@ -206,12 +207,15 @@ class Command(BaseCommand):
         for u in POINTTYPES:
             category, code, description = u
             if len(description) >= 30:
-                print(f'{code}')
+                print(f'Error creating Code {code} due to description length')
             try:
                 point = PointCodes.objects.get(catagory=category, code=code)
                 point.description = description
                 point.save()
             except PointCodes.DoesNotExist:
                 point = PointCodes.objects.create(catagory=category, code=code, description=description)
+
+        config = Configuration.objects.create()
+        config.save()
 
         print("Created default definitions, user and groups.")
