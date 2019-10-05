@@ -477,4 +477,4 @@ def google_calendar():
                 'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
             })
 
-    return maintenance, notice
+    return maintenance[::-1], notice
