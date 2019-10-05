@@ -47,7 +47,7 @@ class Student(models.Model):
     student_num = models.PositiveIntegerField(verbose_name='Student Number',
                                               help_text="This number must be unique as it is used to identify students")
     homeroom = models.CharField(max_length=15, verbose_name='Homeroom',
-                                help_text="Do not change unless you know what you are doing")
+                                help_text="Do not change the grade number after creation. Use the dropdown actions at the Student list to move student")
     sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accepts any letter of the alphabet")
     # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
@@ -60,7 +60,10 @@ class Student(models.Model):
         grade = int(re.findall('\d+', self.homeroom)[0])
         if self.id is None:
             super(Student, self).save(*args, **kwargs)  # Save self if new student
-            for i in range(8, grade + 1):
+        for i in range(8, grade + 1):
+            try:
+                self.grade_set.get(grade=i)
+            except Grade.DoesNotExist:
                 self.grade_set.create(grade=i, start_year=self.grad_year - (13 - i))
                 self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
 
