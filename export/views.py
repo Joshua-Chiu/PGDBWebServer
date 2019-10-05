@@ -116,11 +116,22 @@ def print_grad(request):
 def print_trophies(request):
     template = get_template('export/print-trophies.html')
 
-    query = ""
+    year = request.GET.get("year")
+    grade = request.GET.get("grade")
+    award = request.GET.get("grad-awards")
+
+    query = f"grade_{grade}_year:{year}"
     students = parseQuery(query)
 
+    if not award == "ME":
+        students = sorted(students, key=lambda student: getattr(student.grade_set.get(grade=grade), f"{award}_total"), reverse=True)[:30]
+    else:
+        # TODO ME candidates
+        pass
+
     context = {
-        'student_list': students[:2],
+        'student_list': students,
+        'point_type': award,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

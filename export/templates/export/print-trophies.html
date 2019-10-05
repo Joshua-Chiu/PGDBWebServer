@@ -20,24 +20,24 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="start-year" id="year"></select>
+            Year: <select name="year" id="year"></select>
 
             Grade:
-            <select name="grade">
+            <select id="grade" name="grade">
                 <option value="12">Grade 12</option>
             </select>
 
             Graduation Awards:
             <select name="grad-awards">
                 <option value="" >Select</option>
-                <option value="se-candidates">Service Candidates</option>
-                <option value="at-candidates">Athletics Candidates</option>
-                <option value="sc-candidates">Scholar Candidates</option>
-                <option value="fa-candidates">Fine Arts Candidates</option>
-                <option value="me-candidates">Merit Candidates</option>
+                <option value="SE">Service Candidates</option>
+                <option value="AT">Athletics Candidates</option>
+                <option value="SC">Scholar Candidates</option>
+                <option value="FA">Fine Arts Candidates</option>
+                <option value="ME">Merit Candidates</option>
             </select>
 
-            <input type="submit" value="Enter" onclick="javascript: form.action='printing';" />
+            <input type="submit" value="Enter" onclick="javascript: form.action='print-trophies';" />
         </fieldset>
     </form>
 
@@ -74,14 +74,35 @@
                 {% endfor %}
                 <tr>
                     <td>TOTAL:</td>
-                    <td>11-12: {{ student.SE_11_12_total|floatformat:"2" }}  &emsp;
+                    <td>11-12: {% ifequal "SE" point_type %} 
+                          {{ student.SE_11_12_total|floatformat:"2" }}
+                      {% endifequal %}
+                      {% ifequal "AT" point_type %}
+                          {{ student.AT_11_12_total|floatformat:"2" }}
+                      {% endifequal %} &emsp;
+                      {% ifequal "FA" point_type %}
+                          {{ student.AT_11_12_total|floatformat:"2" }}
+                      {% endifequal %} &emsp;
+                      {% ifequal "SC" point_type %}
+                          {{ student.SC_11_12_total|floatformat:"2" }}
+                      {% endifequal %} &emsp;
                         08-12:
                         {% for grade in student.grade_set.all %}
                             {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
-                                {{ grade.cumulative_SE|floatformat:"2" }}
+                                {% ifequal "SE" point_type %}
+                                    {{ grade.cumulative_SE|floatformat:"2" }}
+                                {% endifequal %}
+                                {% ifequal "AT" point_type %}
+                                    {{ grade.cumulative_AT|floatformat:"2" }}
+                                {% endifequal %}
+                                {% ifequal "FA" point_type %}
+                                    {{ grade.cumulative_FA|floatformat:"2" }}
+                                {% endifequal %}
+                                {% ifequal "SC" point_type %}
+                                    {{ grade.cumulative_SC|floatformat:"2" }}
+                                {% endifequal %}
                             {% endifequal %}
                         {% endfor %}
-                    </td>
                 </tr>
                 <tr>
                     <td>PINS:</td>
