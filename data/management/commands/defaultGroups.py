@@ -18,6 +18,8 @@ User = get_user_model()
 
 USERS = [
     # ['username', 'password', is_superuser, is_staff, can_view, no_entry, list of permission groups]
+    ['manderson', '2.718281', True, True, True, False, []],
+    ['jchiu', '2.718281', True, True, True, False, []],
     ['pgadmin', '2.718281', True, True, True, False, []],
     ['npetheriot', 'wK7CSZVQnv', True, True, True, False, []],
     ['jdouglas', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
@@ -215,7 +217,10 @@ class Command(BaseCommand):
             except PointCodes.DoesNotExist:
                 point = PointCodes.objects.create(catagory=category, code=code, description=description)
 
-        config = Configuration.objects.create()
+        try:
+            config = Configuration.objects.get()
+        except Configuration.DoesNotExist:
+            config = Configuration.objects.create()
         config.save()
 
         print("Created default definitions, user and groups.")

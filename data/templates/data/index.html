@@ -15,7 +15,7 @@
     <h2>Dashboard</h2>
     <hr>
     <div style="float: left; overflow: auto; height: 260px;">
-        <table style="float: left;" class="index">
+        <table style="float: left; padding-right: 2em" class="index">
             <caption><strong>Recent Actions</strong></caption>
             <thead>
             <tr><th>Student</th><th>Point</th><th>User</th></tr>
@@ -26,7 +26,7 @@
             <tr><td colspan="3"><a href="#">Show All</a></td></tr>
         </table>
     </div>
-    <div style="float: left; overflow: auto; height: 260px; padding-left: 2em">
+    <div style="float: left; overflow: auto; height: 260px;">
         <table style="width: 600px;" class="index">
             <caption><strong>Upcoming Events</strong></caption>
         {% if maintenance %}
@@ -48,9 +48,8 @@
     <div style="clear: both;">
         <hr>
         <ul>
-            <li>django-async-include to reduce load times</li>
+            <li><button class="btn" >Database Integrity Check</button></li>
             <li>Student Statistics</li>
-            <li>Database Integrity Check</li>
         </ul>
     </div>
     <div class="alert">

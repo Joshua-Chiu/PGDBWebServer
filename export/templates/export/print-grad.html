@@ -20,14 +20,11 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="year" id="year"></select>
+            <label>Year: <select name="year" id="year"></select></label>
 
-            Grade:
-            <select name="grade">
-                <option value="12">Grade 12</option>
-            </select>
+            <label>Grade:<select name="grade"><option value="12">Grade 12</option></select></label>
 
-            Graduation Awards:
+            <label>Graduation Awards:
             <select name="grad-awards">
                 <option value="" >Select</option>
                 <option value="SE">Service Candidates</option>
@@ -35,14 +32,14 @@
                 <option value="SC">Scholar Candidates</option>
                 <option value="FA">Fine Arts Candidates</option>
                 <option value="ME">Merit Candidates</option>
-            </select>
+            </select></label>
 
-            <input type="submit" value="Enter" onclick="javascript: form.action='print-grad';" />
+            <input type="submit" value="Enter" onclick="form.action='print-grad';" />
         </fieldset>
     </form>
 
     <div>
-        <button class="button default" onclick="PrintElem('GradList')">Print Student List</button>
+        <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
     <h2>{{ point_type }} Candidates</h2>

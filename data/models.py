@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import math
 import datetime
+from django.core.exceptions import ValidationError
+import re
+
 
 # run manage.py makemigrations data && manage.py migrate to add to db
 
@@ -49,6 +52,19 @@ class Student(models.Model):
     # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     last_modified = models.DateField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and Student.objects.filter(student_num=self.student_num).exists():
+            # if you'll not check for self.pk then error will also raised in update of exists model
+            raise ValidationError(f'There can be only one student with student_num {self.student_num}')
+        grade = int(re.findall('\d+', self.homeroom)[0])
+        if self.id is None:
+            super(Student, self).save(*args, **kwargs)  # Save self if new student
+            for i in range(8, grade + 1):
+                self.grade_set.create(grade=i, start_year=self.grad_year - (13 - i))
+                self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
+
+        return super(Student, self).save(*args, **kwargs)
 
     # please help me there are far too many functions and i just keep adding more
 
@@ -153,7 +169,9 @@ class Student(models.Model):
     @property
     def platinum_pin(self):
         if self.gold_pin:
-            if (self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5) and (self.SE_11_total > 19.5 and self.SE_12_total > 19.5):  # ser 11 for
+            if (self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(
+                    12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5) and (
+                    self.SE_11_total > 19.5 and self.SE_12_total > 19.5):  # ser 11 for
                 return 12
         return None
 
@@ -235,7 +253,8 @@ class Grade(models.Model):
 
     @property
     def principalslist(self):
-        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 1) and \
+        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade,
+                                                                                                         1) and \
                self.scholar_set.all()[0].term2 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
     def __str__(self):
@@ -277,8 +296,8 @@ class Points(models.Model):
 
 class Scholar(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    term1 = models.DecimalField(max_digits=8, decimal_places=5, null=True)
-    term2 = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+    term1 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
+    term2 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
 
     def __str__(self):
         return f"T1 {self.term1} T2 {self.term2}"

@@ -132,5 +132,3 @@ class DataAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         print(obj)
         super().save_model(request, obj, form, change)
-
-
