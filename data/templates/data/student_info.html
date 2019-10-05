@@ -125,4 +125,11 @@ function validateForm() {
 
 }
 </script>
+<script>
+window.onbeforeunload = closingCode;
+function closingCode(){
+   document.getElementById("form0").submit();
+   return null;
+}
+</script>
 {% endblock %}
