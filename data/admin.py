@@ -26,9 +26,7 @@ def increase_grade(modeladmin, request, queryset):
         if new_grade > 12:
             pass  # mark inactive
         else:
-            student.grade_set.create(grade=new_grade, start_year=timezone.now().year)
-            student.grade_set.get(grade=new_grade).scholar_set.create(term1=0, term2=0)
-            student.save()  # also create new grade set
+            student.save()
 
 
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '

@@ -20,24 +20,27 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="year" id="year"></select>
+            <label>Year: <select name="year" id="year"></select></label>
 
-            Grade:
+            <label>Grade:
             <select id="grade" name="grade">
+                <option value="08">Grade 8</option>
+                <option value="09">Grade 9</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
                 <option value="12">Grade 12</option>
-            </select>
+            </select></label>
 
-            Graduation Awards:
-            <select name="grad-awards">
+            <label>Graduation Awards:<select name="grad-awards">
                 <option value="" >Select</option>
                 <option value="SE">Service Candidates</option>
                 <option value="AT">Athletics Candidates</option>
                 <option value="SC">Scholar Candidates</option>
                 <option value="FA">Fine Arts Candidates</option>
                 <option value="ME">Merit Candidates</option>
-            </select>
+            </select></label>
 
-            <input type="submit" value="Enter" onclick="javascript: form.action='print-trophies';" />
+            <input type="submit" value="Enter" onclick="form.action='print-trophies';" />
         </fieldset>
     </form>
 

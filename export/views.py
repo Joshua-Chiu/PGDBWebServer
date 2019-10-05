@@ -11,6 +11,7 @@ from subprocess import Popen, PIPE
 from io import StringIO
 import base64
 
+
 def index(request):
     template = get_template('export/index.html')
     context = {
@@ -49,24 +50,28 @@ def print_annual(request):
     students = parseQuery(query)
 
     awards_dict = {
-        ":": " ",
-        "_": " ",
-        "annual cert": "annual",
-        "grade": "gr",
-        "award": "",
-        "year": "",
         "SE": "Service",
         "AT": "Athletics",
-        "SC": "Scholarship",
+        "honourroll": "Scholarship",
+        "principalslist": "Scholarship",
         "FA": "Fine Arts",
+        "silver": "Silver Greyhound",
+        "gold": "Gold Greyhound",
+        "goldplus": "Gold Plus",
+        "platinum": "Platinum",
 
     }
     award_formatted = award
-    for key, value in awards_dict.items():
-        query = query.replace(key, value)
-    for key, value in awards_dict.items():
-        award_formatted = award_formatted.replace(key, value)
+    if query:
+        for key, value in awards_dict.items():
+            award_formatted = award_formatted.replace(key, value)
 
+        if any(award in s for s in ["SE", "AT", "FA", ]):
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} CERTIFICATE RECIPIENTS"
+        elif any(award in s for s in ["honourroll", "principalslist", ]):
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award.upper()} CERTIFICATE RECIPIENTS"
+        else:
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} PIN RECIPIENTS"
     config = Configuration.objects.get()
 
     with open(config.principal_signature.path, 'rb') as img:
@@ -74,7 +79,7 @@ def print_annual(request):
 
     context = {
         'student_list': students,
-        'type': query.title(),
+        'type': query,
         'year': year,
         'award': award,
         "grade": int(grade),
@@ -91,7 +96,6 @@ def print_grad(request):
     template = get_template('export/print-grad.html')
 
     year = request.GET.get("year")
-    grade = request.GET.get("grade")
     award = request.GET.get("grad-awards")
 
     query = f"grade_12_year:{year}"

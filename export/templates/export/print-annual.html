@@ -23,16 +23,14 @@
 </div>
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            <labeL>Grade:
-            <select name="grade">
+            <labeL>Grade:<select name="grade">
                 <option value="" >Select</option>
                 <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
                 <option {% ifequal grade 09 %}selected {% endifequal %}value="09" >Grade 09</option>
                 <option {% ifequal grade 10 %}selected {% endifequal %}value="10" >Grade 10</option>
                 <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
                 <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
-            </select>
-            </labeL>
+            </select></labeL>
 
             <labeL>Year: <select name="year" id="year"></select></labeL>
 
@@ -65,7 +63,7 @@
     <div>
         <button class="btn default" onclick="PrintElem('GeneratedList')">Print Student List</button>
         <button class="btn default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
-        <button class="btn default" onclick="exportTableToExcel('GeneratedList')">Export to Excel</button>
+        <button class="btn default" onclick="exportTableToExcel('GeneratedList', '{{ type }}')">Export to Excel</button>
     </div>
 
     {% if student_list %}
