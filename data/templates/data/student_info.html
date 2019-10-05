@@ -100,9 +100,7 @@ function post(path, params, method) {
             if(this.value.length < 6){
             wasEmpty = true;
             }
-        });
-        $('.scholar').keypress(function(e){
-            if(e.which == 42){
+            if(e.which === 42){
                 query.focus();
                 return false;
             }
@@ -113,23 +111,21 @@ function post(path, params, method) {
 <script>
     $(document).ready(function () {
         $('input').keydown(function (e) {
-            if (e.keyCode == 39) {
+            if (e.keyCode === 39) {
                 $(this).next('input').focus();
             }
         });
+    });
+    $(".inputs").keyup(function () {
+        if (this.value.length === this.maxLength && parseFloat(this.value) <= this.max) {
+          $(this).next('.codes').focus();
+        }
     });
 </script>
 <script>
 function validateForm() {
 
 
-}
-</script>
-<script>
-window.onbeforeunload = closingCode;
-function closingCode(){
-   document.getElementById("form0").submit();
-   return null;
 }
 </script>
 {% endblock %}
