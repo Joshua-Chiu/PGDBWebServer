@@ -14,17 +14,23 @@
     {% block stylesheet %}{% endblock %}
 </head>
 <body>
-<div style="background-color: inherit;">
+<div class="top">
     <div class="toptext" style="display:inline;text-align:left; float: left;">
         <a href="https://www.vsb.bc.ca/schools/point-grey/Families/Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="Point Grey Secondary Logogit " height="50" width="50"></a>
     </div>
 
     <div>
-        <h1 class="toptext" class="title"><a href="{% url "data:index" %}" style="text-decoration: none;">Point Grey Awards Database</a></h1>
+        <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none;">Point Grey Awards Database</a></h1>
     </div>
+    <div style="background-color: inherit">
+        Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
+        <a href="{% url 'logout' %}">Logout</a>
 
-        {% block navbar %}{% include 'data/navbar.html' %}{% endblock %}
+        <div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
+        <hr>
+    </div>
 </div>
+{% block navbar %}{% include 'data/navbar.html' %}{% endblock %}
 <main>
     {% block content %}<!--For sortable, change the name value to a value of their name and sort by that for alpha by last-->{% endblock %}
 </main>

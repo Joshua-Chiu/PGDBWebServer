@@ -6,7 +6,11 @@ html, body {
     background-color: powderblue;
     padding:0;
     margin:0;
+}
 
+.top {
+    padding: 5px;
+    background-color: inherit;
 }
 
 main {
@@ -20,7 +24,7 @@ h1 {
 .title{
     padding-left: 60px;
     padding-top: 5px;
-    padding-bottom: 0px;
+    margin-top: 5px;
 }
 
 /*Nav Bar*/

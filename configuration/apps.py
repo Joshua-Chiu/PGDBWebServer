@@ -1,5 +1,10 @@
-from django.apps import AppConfig
+from django import apps
+from axes.apps import AppConfig
 
 
-class ConfigurationConfig(AppConfig):
+class AxesConfig(AppConfig):
+    verbose_name = "Access"
+
+
+class ConfigurationConfig(apps.AppConfig):
     name = 'configuration'
