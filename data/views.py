@@ -183,15 +183,16 @@ def archive_submit(request):
                         s_obj.save()
 
                         for g in s[8]:
-                            g_obj = Grade(
-                                grade=int(g[0].text),
-                                start_year=int(g[1].text),
-                                anecdote=g[2].text or "",
-                            )
-                            s_obj.grade_set.add(g_obj, bulk=False)
+
+                            g_obj = s_obj.grade_set.get(grade=int(g[0].text))
+                            g_obj.anecdote = g[2].text or ""
+
+                            g_obj.scholar_set.term1 = float(g[3].text)
+                            g_obj.scholar_set.term2 = float(g[4].text)
+
                             g_obj.save()
 
-                            g_obj.scholar_set.create(term1=float(g[3].text), term2=float(g[4].text))
+
 
                             for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
                                 if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -202,10 +203,7 @@ def archive_submit(request):
                                 else:
                                     type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
-                                g_obj.points_set.create(
-                                    type=type,
-                                    amount=float(p[2].text),
-                                )
+                                g_obj.points_set.create(type=type, amount=float(p[2].text),)
                         # print(f"added student {int(s[0].text)}")
                     except Exception as e:
                         student_num = int(s[0].text)

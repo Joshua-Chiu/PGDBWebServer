@@ -91,26 +91,17 @@ class StudentAdmin(admin.ModelAdmin):
             for line in request.FILES['file']:
                 # if it's the start line skip it
                 if line.decode("utf-8") == \
-                        "first	last	legal	student_num	homeroom	sex	grad_year\n":
+                        "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
                     continue
 
                 print(line.decode("utf-8").strip().split("\t"))
-                first, last, legal, student_num, homeroom, sex, grad_year = line.decode("utf-8").strip().split("\t")
+                student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
                 # skip if student exists
                 if Student.objects.filter(student_num=int(student_num)):
                     print(f"student {student_num} already exists")
                     # continue
 
-                student = Student(first=first, last=last, legal=legal, student_num=student_num,
-                                  homeroom=homeroom, sex=sex, grad_year=grad_year)
-                student.save()
-
-                # add grades
-                for i in range(int(student.homeroom[:2]) - 7):
-                    student.grade_set.create(grade=8 + i,
-                                             start_year=timezone.now().year - int(student.homeroom[:2]) + 8 + i)
-                    student.grade_set.get(grade=8 + i).scholar_set.create(term1=0, term2=0)
-
+                student = Student(first=first, last=last, legal=legal, student_num=int(student_num), homeroom=homeroom, sex=sex, grad_year=int(grad_year))
                 student.save()
 
         template = get_template('admin/data/student/import.html')

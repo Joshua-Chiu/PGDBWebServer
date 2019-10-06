@@ -24,20 +24,19 @@
 
             <label>Grade:
             <select id="grade" name="grade">
-                <option value="08">Grade 8</option>
-                <option value="09">Grade 9</option>
-                <option value="10">Grade 10</option>
-                <option value="11">Grade 11</option>
-                <option value="12">Grade 12</option>
+                <option {% ifequal grade 08 %}selected {% endifequal %}value="08">Grade 8</option>
+                <option {% ifequal grade 09 %}selected {% endifequal %}value="09">Grade 9</option>
+                <option {% ifequal grade 10 %}selected {% endifequal %}value="10">Grade 10</option>
+                <option {% ifequal grade 11 %}selected {% endifequal %}value="11">Grade 11</option>
+                <option {% ifequal grade 12 %}selected {% endifequal %}value="12">Grade 12</option>
             </select></label>
 
-            <label>Graduation Awards:<select name="grad-awards">
+            <label>Trophy Type: <select name="trophy-awards">
                 <option value="" >Select</option>
                 <option value="SE">Service Candidates</option>
                 <option value="AT">Athletics Candidates</option>
                 <option value="SC">Scholar Candidates</option>
                 <option value="FA">Fine Arts Candidates</option>
-                <option value="ME">Merit Candidates</option>
             </select></label>
 
             <input type="submit" value="Enter" onclick="form.action='print-trophies';" />

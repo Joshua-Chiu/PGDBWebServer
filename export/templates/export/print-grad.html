@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Graduation Candidates{% endblock %}
+{% block title %}{% if type %}{{ type }}{% else %}Graduation{% endif %} Candidates{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -27,11 +27,11 @@
             <label>Graduation Awards:
             <select name="grad-awards">
                 <option value="" >Select</option>
-                <option value="SE">Service Candidates</option>
-                <option value="AT">Athletics Candidates</option>
-                <option value="SC">Scholar Candidates</option>
-                <option value="FA">Fine Arts Candidates</option>
-                <option value="ME">Merit Candidates</option>
+                <option {% ifequal award "SE" %}selected {% endifequal %}value="SE">Service Candidates</option>
+                <option {% ifequal award "AT" %}selected {% endifequal %}value="AT">Athletics Candidates</option>
+                <option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>
+                <option {% ifequal award "FA" %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>
+                <option {% ifequal award "ME" %}selected {% endifequal %}value="ME">Merit Candidates</option>
             </select></label>
 
             <input type="submit" value="Enter" onclick="form.action='print-grad';" />
