@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Graduation Candidates{% endblock %}
+{% block title %}{% if type %}{{ type }}{% else %}Graduation{% endif %} Candidates{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -20,32 +20,29 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            Year: <select name="year" id="year"></select>
+            <label>Year: <select name="year" id="year"></select></label>
 
-            Grade:
-            <select name="grade">
-                <option value="12">Grade 12</option>
-            </select>
+            <label>Grade:<select name="grade"><option value="12">Grade 12</option></select></label>
 
-            Graduation Awards:
+            <label>Graduation Awards:
             <select name="grad-awards">
                 <option value="" >Select</option>
-                <option value="SE">Service Candidates</option>
-                <option value="AT">Athletics Candidates</option>
-                <option value="SC">Scholar Candidates</option>
-                <option value="FA">Fine Arts Candidates</option>
-                <option value="ME">Merit Candidates</option>
-            </select>
+                <option {% ifequal award "SE" %}selected {% endifequal %}value="SE">Service Candidates</option>
+                <option {% ifequal award "AT" %}selected {% endifequal %}value="AT">Athletics Candidates</option>
+                <option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>
+                <option {% ifequal award "FA" %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>
+                <option {% ifequal award "ME" %}selected {% endifequal %}value="ME">Merit Candidates</option>
+            </select></label>
 
-            <input type="submit" value="Enter" onclick="javascript: form.action='print-grad';" />
+            <input type="submit" value="Enter" onclick="form.action='print-grad';" />
         </fieldset>
     </form>
 
     <div>
-        <button class="button default" onclick="PrintElem('GradList')">Print Student List</button>
+        <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
-    <h2>Service Candidates</h2>
+    <h2>{{ point_type }} Candidates</h2>
     {% if student_list %}
     <div id="GradList">
         {% for student in student_list %}

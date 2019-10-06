@@ -2,19 +2,30 @@
  font-family: "Helvetica", Helvetica, sans-serif;
 }
 
-body {
+html, body {
     background-color: powderblue;
+    padding:0;
+    margin:0;
 }
 
-p {}
+.top {
+    padding: 5px;
+    background-color: inherit;
+}
+
+main {
+    padding: 5px;
+    margin: 3px;
+}
 
 h1 {
-    color: blue;
+    color: darkgray;
 }
 .title{
     padding-left: 60px;
     padding-top: 5px;
-    padding-bottom: 0px;
+    margin-top: 5px;
+    margin-bottom: 0;
 }
 
 /*Nav Bar*/
@@ -126,4 +137,28 @@ a {
 }
 a:visited {
     color: #000000;
+}
+
+/* button stuff */
+.btn {
+    border: 1px solid inherit;
+    background-color: gray;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    color: white;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.btn:hover {
+    background: darkgrey;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.default {
+    color: black;
+}
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

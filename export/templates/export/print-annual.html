@@ -23,16 +23,14 @@
 </div>
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            <labeL>Grade:
-            <select name="grade">
+            <labeL>Grade: <select name="grade">
                 <option value="" >Select</option>
                 <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
                 <option {% ifequal grade 09 %}selected {% endifequal %}value="09" >Grade 09</option>
                 <option {% ifequal grade 10 %}selected {% endifequal %}value="10" >Grade 10</option>
                 <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
                 <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
-            </select>
-            </labeL>
+            </select></labeL>
 
             <labeL>Year: <select name="year" id="year"></select></labeL>
 
@@ -63,9 +61,9 @@
     </form>
 
     <div>
-        <button class="button default" onclick="PrintElem('GeneratedList')">Print Student List</button>
-        <button class="button default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
-        <button class="button default" onclick="exportTableToExcel('GeneratedList')">Export to Excel</button>
+        <button class="btn default" onclick="PrintElem('GeneratedList')">Print Student List</button>
+        <button class="btn default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
+        <button class="btn default" onclick="exportTableToExcel('GeneratedList', '{{ type }}')">Export to Excel</button>
     </div>
 
     {% if student_list %}
@@ -149,19 +147,20 @@
         for(let i = 0; i < studentList.length; i++){
             doc.setFont('vivaldin', 'italic');// set font parameters to vivaldin
             doc.setFontSize(48);
-            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,80); //first + last
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,94); //first + last
 
             doc.setFontSize(40);
-            doc.myText(type,{align: "center"},0,100);
+            doc.myText(type ,{align: "center"},0,131);
 
             doc.setFontSize(32);
-            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0,120);
+            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 153);
 
             doc.setFontSize(7);
             doc.setFont('Arial', 'normal');
-            doc.text(200,200,studentList[i][2]);
+            doc.text(210, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
-            doc.addImage(imgData, 'JPEG', 200, 150, 30, 15);
+
+            doc.addImage(imgData, 'JPEG', 183, 171, 30, 15);
 
             doc.addPage();
 

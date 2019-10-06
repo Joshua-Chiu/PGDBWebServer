@@ -5,10 +5,6 @@
 
 {% block title %}{{ student.first }} {{ student.last }}{% endblock %}
 
-{% block navbar %}
-    {% include 'data/navbar.html' %}
-{% endblock %}
-
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/studentinfo_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
@@ -100,9 +96,7 @@ function post(path, params, method) {
             if(this.value.length < 6){
             wasEmpty = true;
             }
-        });
-        $('.scholar').keypress(function(e){
-            if(e.which == 42){
+            if(e.which === 42){
                 query.focus();
                 return false;
             }
@@ -113,10 +107,15 @@ function post(path, params, method) {
 <script>
     $(document).ready(function () {
         $('input').keydown(function (e) {
-            if (e.keyCode == 39) {
+            if (e.keyCode === 39) {
                 $(this).next('input').focus();
             }
         });
+    });
+    $(".inputs").keyup(function () {
+        if (this.value.length === this.maxLength && parseFloat(this.value) <= this.max) {
+          $(this).next('.codes').focus();
+        }
     });
 </script>
 <script>

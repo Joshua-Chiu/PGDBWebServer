@@ -26,12 +26,25 @@ def increase_grade(modeladmin, request, queryset):
         if new_grade > 12:
             pass  # mark inactive
         else:
-            student.grade_set.create(grade=new_grade, start_year=timezone.now().year)
-            student.grade_set.get(grade=new_grade).scholar_set.create(term1=0, term2=0)
-            student.save()  # also create new grade set
+            student.save()
 
 
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+
+
+def decrease_grade(modeladmin, request, queryset):
+    for student in queryset:
+        new_grade = int(re.findall('\d+', student.homeroom)[0]) - 1
+        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
+
+        if new_grade < 8:
+            pass  # mark inactive
+        else:
+            student.grade_set.get(grade=new_grade + 1).delete()
+            student.save()  # also delete oldest grade set
+
+
+decrease_grade.short_description = 'Decrease Grade DATA LOSS POSSIBLE FOR THE HIGHEST GRADE'
 
 
 def mark_inactive(modeladmin, request, queryset):
@@ -69,7 +82,8 @@ class StudentAdmin(admin.ModelAdmin):
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
     list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
     list_display_links = ('last', 'first')
-    actions = [increase_grade, export_as_csv, mark_inactive]
+    actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive]
+    search_fields = ('first', 'last', 'student_num',)
 
     def import_as_csv(self, request):
         if "file" in request.FILES:
@@ -77,26 +91,17 @@ class StudentAdmin(admin.ModelAdmin):
             for line in request.FILES['file']:
                 # if it's the start line skip it
                 if line.decode("utf-8") == \
-                        "first	last	legal	student_num	homeroom	sex	grad_year\n":
+                        "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
                     continue
 
                 print(line.decode("utf-8").strip().split("\t"))
-                first, last, legal, student_num, homeroom, sex, grad_year = line.decode("utf-8").strip().split("\t")
+                student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
                 # skip if student exists
                 if Student.objects.filter(student_num=int(student_num)):
                     print(f"student {student_num} already exists")
                     # continue
 
-                student = Student(first=first, last=last, legal=legal, student_num=student_num,
-                                  homeroom=homeroom, sex=sex, grad_year=grad_year)
-                student.save()
-
-                # add grades
-                for i in range(int(student.homeroom[:2]) - 7):
-                    student.grade_set.create(grade=8 + i,
-                                             start_year=timezone.now().year - int(student.homeroom[:2]) + 8 + i)
-                    student.grade_set.get(grade=8 + i).scholar_set.create(term1=0, term2=0)
-
+                student = Student(first=first, last=last, legal=legal, student_num=int(student_num), homeroom=homeroom, sex=sex, grad_year=int(grad_year))
                 student.save()
 
         template = get_template('admin/data/student/import.html')

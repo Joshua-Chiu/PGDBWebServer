@@ -41,7 +41,7 @@
                 {{ student.currentyear|slice:"5:8" }}
                 <p>Comments</p>
                 <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea><hr>
-                <button style="clear: both;" onclick="submitForms();" class="btn" {% if user.no_entry %}disabled{% endif %}>SAVE COMMENT</button>
+                <button style="clear: both;" onclick="submitForms();" class="btn {% if user.no_entry %}disabled{% endif %}">SAVE COMMENT</button>
             </td>
 
             <!-- DATA ENTRY HAPPENS HERE -->
@@ -116,7 +116,7 @@
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
+                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             <br>
                             <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
                         </div>
@@ -136,7 +136,7 @@
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
+                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             <br>
                             <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
                         </div>
@@ -156,7 +156,7 @@
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" />
+                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             <br>
                             <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
                         </div>

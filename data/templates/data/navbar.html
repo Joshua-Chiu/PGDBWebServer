@@ -1,9 +1,3 @@
-Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
-<a href="{% url 'logout' %}">Logout</a>
-
-<div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
-<hr>
-
 <!--Nav Bar-->
 <div class="topnav">
     <ul>
@@ -11,7 +5,7 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
 
         <li>
             <form action="{% url 'data:search' %}">
-                <input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()">
+                <label for="query"><input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()"></label>
             </form>
         </li>
         {% if user.is_superuser %}
@@ -21,7 +15,6 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'data:index' %}">Dashboard</a></button>
                     <i class="fa fa-caret-down"></i>
-                </button>
                 <div class="dropdown-content">
                     <a href="{% url 'data:search' %}?query=grade%3A08">Grade 08</a>
                     <a href="{% url 'data:search' %}?query=grade%3A09">Grade 09</a>
@@ -61,7 +54,6 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
             <div class="dropdown">
                 <button class="dropbtn"><a>Cursor Default</a></button>
                     <i class="fa fa-caret-down"></i>
-                </button>
                 <div class="dropdown-content">
                     <a href="{% url 'data:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
                     <a type="submit" href="{% url 'data:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
@@ -76,7 +68,6 @@ Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'entry:index' %}">Direct Entry</a></button>
                     <i class="fa fa-caret-down"></i>
-                </button>
                 <div class="dropdown-content">
                     <a href="{% url 'entry:service' %}">Service</a>
                     <a href="{% url 'entry:athletics' %}">Athletics</a>

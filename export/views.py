@@ -11,6 +11,7 @@ from subprocess import Popen, PIPE
 from io import StringIO
 import base64
 
+
 def index(request):
     template = get_template('export/index.html')
     context = {
@@ -49,24 +50,28 @@ def print_annual(request):
     students = parseQuery(query)
 
     awards_dict = {
-        ":": " ",
-        "_": " ",
-        "annual cert": "annual",
-        "grade": "gr",
-        "award": "",
-        "year": "",
         "SE": "Service",
         "AT": "Athletics",
-        "SC": "Scholarship",
+        "honourroll": "Scholarship",
+        "principalslist": "Scholarship",
         "FA": "Fine Arts",
+        "silver": "Silver Greyhound",
+        "gold": "Gold Greyhound",
+        "goldplus": "Gold Plus",
+        "platinum": "Platinum",
 
     }
     award_formatted = award
-    for key, value in awards_dict.items():
-        query = query.replace(key, value)
-    for key, value in awards_dict.items():
-        award_formatted = award_formatted.replace(key, value)
+    if query:
+        for key, value in awards_dict.items():
+            award_formatted = award_formatted.replace(key, value)
 
+        if any(award in s for s in ["SE", "AT", "FA", ]):
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} CERTIFICATE RECIPIENTS"
+        elif any(award in s for s in ["honourroll", "principalslist", ]):
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award.upper()} CERTIFICATE RECIPIENTS"
+        else:
+            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} PIN RECIPIENTS"
     config = Configuration.objects.get()
 
     with open(config.principal_signature.path, 'rb') as img:
@@ -74,7 +79,7 @@ def print_annual(request):
 
     context = {
         'student_list': students,
-        'type': query.title(),
+        'type': query,
         'year': year,
         'award': award,
         "grade": int(grade),
@@ -91,7 +96,6 @@ def print_grad(request):
     template = get_template('export/print-grad.html')
 
     year = request.GET.get("year")
-    grade = request.GET.get("grade")
     award = request.GET.get("grad-awards")
 
     query = f"grade_12_year:{year}"
@@ -106,6 +110,8 @@ def print_grad(request):
     context = {
         'student_list': students,
         'point_type': award,
+        'year': year,
+        'award': award,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -116,11 +122,22 @@ def print_grad(request):
 def print_trophies(request):
     template = get_template('export/print-trophies.html')
 
-    query = ""
+    year = request.GET.get("year") or 2010
+    grade = request.GET.get("grade") or 8
+    award = request.GET.get("trophy-awards") or 'SE'
+
+    query = f"grade_{grade}_year:{year}"
     students = parseQuery(query)
+    if request.POST:
+        if not query == "ME":
+            students = sorted(students, key=lambda student: getattr(student.grade_set.get(grade=grade), f"{award}_total"), reverse=True)[:30]
 
     context = {
-        'student_list': students[:2],
+        'student_list': students,
+        'point_type': award,
+        'year': year,
+        'award': award,
+        "grade": int(grade),
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

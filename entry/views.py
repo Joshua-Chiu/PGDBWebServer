@@ -278,7 +278,7 @@ def validate_student_name(request):
 
 
 def validate_point_code(request):
-    code_num = request.GET.get('code', None)
+    code_num = int(request.GET.get('code', None))
     category = request.GET.get('category', None)
     code = PointCodes.objects.filter(code__iexact=code_num, catagory__iexact=category)
     if code.exists():
