@@ -22,13 +22,14 @@
     <div>
         <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none;">Point Grey Awards Database</a></h1>
     </div>
-    <div style="background-color: inherit">
-        Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
-        <a href="{% url 'logout' %}">Logout</a>
-
-        <div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
-        <hr>
-    </div>
+        <div style="clear: both;">
+        {% if user.is_authenticated %}
+            Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+            <div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>
+            <hr>
+        </div>
 </div>
 {% block navbar %}{% include 'data/navbar.html' %}{% endblock %}
 <main>
