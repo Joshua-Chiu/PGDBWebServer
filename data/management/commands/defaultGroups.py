@@ -17,17 +17,17 @@ from configuration.models import Configuration
 User = get_user_model()
 
 USERS = [
-    # ['username', 'password', is_superuser, is_staff, can_view, no_entry, list of permission groups]
-    ['manderson', '2.718281', True, True, True, False, []],
-    ['jchiu', '2.718281', True, True, True, False, []],
-    ['pgadmin', '2.718281', True, True, True, False, []],
-    ['npetheriot', 'wK7CSZVQnv', True, True, True, False, []],
-    ['jdouglas', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
-    ['dlai', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
-    ['jtchan', 'PEd7Cbsp5e', True, True, True, False, []],
-    ['gjones', 'hg5MmWjhzL', True, True, True, False, []],
-    ['syip', 'hg5MmWjhzL', False, False, False, True, ['Service']],
-    ['ccordoni', 'yUAp2WPMrJ', False, False, True, True, []],
+    # ['username', 'first', 'last, 'email', 'password', is_superuser, is_staff, can_view, no_entry, permission groups]
+    ['manderson', 'Mason', 'Anderson', 'masonanderson0@gmail.com', '2.718281', True, True, True, False, []],
+    ['jchiu', 'Joshua', 'Chiu', 'joshuachiu2020@gmail.com', '2.718281', True, True, True, False, []],
+    ['pgadmin', 'Point Grey', 'Administration', 'pointgreydb@gmail.com', '2.718281', True, True, True, False, []],
+    ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
+    ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
+    ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
+    ['jtchan', 'Jennie', 'Chan', 'jtchan@vsb.bc.ca', 'PEd7Cbsp5e', True, True, True, False, []],
+    ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
+    ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
+    ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
 ]
 
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
@@ -190,21 +190,26 @@ class Command(BaseCommand):
                     new_group.permissions.add(model_add_perm)
 
         for u in USERS:
+            username, first, last, email, pwd, is_super, is_staff, can_view, no_entry, groups = u
             try:
-                user = User.objects.create_user(u[0], password=u[1])
+                user = User.objects.create_user(username=username, email=email, password=pwd)
             except:
                 logging.warning(f"Error creating user with name '{u[0]}'.")
                 user = User.objects.get(username=u[0])
+                user.email = email
 
-            user.is_superuser = u[2]
-            user.is_staff = u[3]
-            user.can_view = u[4]
-            user.no_entry = u[5]
+            user.first_name = first
+            user.last_name = last
+
+            user.is_superuser = is_super
+            user.is_staff = is_staff
+            user.can_view = can_view
+            user.no_entry = no_entry
             user.save()
 
-            for group in u[6]:
+            for group in groups:
                 Group.objects.get(name=group).user_set.add(user)
-            print(f"Updated '{u[0]}' and with groups '{u[6]}'")
+            print(f"Updated '{username}' and with groups '{groups}'")
 
         for u in POINTTYPES:
             category, code, description = u
