@@ -17,8 +17,7 @@ Import
 
 {% block content %}
     <form method="post" enctype="multipart/form-data">
-        <input type="submit" value="Upload file" name="submit">
-        <input type="file" name="file" id="file">
+        <input class="clearable-file-input" type="file" name="file" id="file" onchange="form.submit()">
         {% csrf_token %}
     </form>
 {% endblock %}
