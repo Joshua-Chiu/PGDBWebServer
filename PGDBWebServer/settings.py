@@ -161,6 +161,7 @@ AXES_ONLY_USER_FAILURES = True
 
 # Email Settings
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+'''
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'Petheriotis'
@@ -168,6 +169,15 @@ EMAIL_HOST_USER = 'pointgreydb@gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 SERVER_EMAIL = 'pointgreydb@gmail.com'
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY', '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')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.ca>"
 
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
