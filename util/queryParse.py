@@ -57,7 +57,7 @@ def parseQuery(query):
                             grades = [grade]
                         else:
                             grades = [8, 9, 10, 11, 12]
-                            grade = s.homeroom[:2]
+                            grade = 0
 
                         new_students = students
                         if v == "silver":
@@ -82,11 +82,7 @@ def parseQuery(query):
                                     new_students = new_students.exclude(id=s.id)
                         elif v == "honourroll":
                             for s in students:
-                                if not s.grade_set.get(grade=grade).honourroll:
-                                    new_students = new_students.exclude(id=s.id)
-                        elif v == "bigblock":
-                            for s in students:
-                                if not s.bigblock in grades:
+                                if not s.grade_set.get(grade=(grade or int(s.homeroom[:2]))).honourroll:
                                     new_students = new_students.exclude(id=s.id)
 
                         students = new_students
