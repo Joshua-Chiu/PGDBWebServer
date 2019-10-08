@@ -187,12 +187,13 @@ def archive_submit(request):
                             g_obj = s_obj.grade_set.get(grade=int(g[0].text))
                             g_obj.anecdote = g[2].text or ""
 
-                            g_obj.scholar_set.term1 = float(g[3].text)
-                            g_obj.scholar_set.term2 = float(g[4].text)
+                            scholar = g_obj.scholar_set.all().first()
+
+                            scholar.term1 = float(g[3].text)
+                            scholar.term2 = float(g[4].text)
+                            scholar.save()
 
                             g_obj.save()
-
-
 
                             for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
                                 if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -206,6 +207,7 @@ def archive_submit(request):
                                 g_obj.points_set.create(type=type, amount=float(p[2].text),)
                         # print(f"added student {int(s[0].text)}")
                     except Exception as e:
+                        raise e
                         student_num = int(s[0].text)
                         print(f"Failed to add student {int(s[0].text)}")
                         logs.append(f"Failed to add student {int(s[0].text)}")
