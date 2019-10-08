@@ -52,7 +52,16 @@
                 <option {% ifequal award "gold" %}selected {% endifequal %}value="gold" >Greyhound Gold Pin</option>
                 <option {% ifequal award "goldplus" %}selected {% endifequal %}value="goldplus" >Greyhound Gold+ Bar</option>
                 <option {% ifequal award "platinum" %}selected {% endifequal %}value="platinum" >Greyhound Platinum Pin</option>
+            </select>
+            </label>
+
+            <label>Athletic Awards:
+            <select name="cumulative">
+                <option value="" >Select</option>
                 <option {% ifequal award "big-block" %}selected {% endifequal %}value="big-block" >Athletics Big Block</option>
+                <option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
+                <option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>
+                <option {% ifequal award "5ST" %}selected {% endifequal %}value="5ST" >Annual 5 Sport Athletes</option>
             </select>
             </label>
 

@@ -63,6 +63,7 @@ class Student(models.Model):
         for i in range(8, grade + 1):
             try:
                 self.grade_set.get(grade=i)
+                self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
             except Grade.DoesNotExist:
                 self.grade_set.create(grade=i, start_year=self.grad_year - (13 - i))
                 self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)

@@ -19,4 +19,5 @@ urlpatterns = [
     path('archive_submit', views.archive_submit, name='archive_submit'),
     path('archive_wdb_submit', views.archive_wdb_submit, name='archive_wdb_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
+    path('status', views.ajax_import_status, name='status')
 ]

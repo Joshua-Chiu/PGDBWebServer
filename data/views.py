@@ -476,3 +476,10 @@ def google_calendar():
             })
 
     return maintenance[::-1], notice
+
+
+def ajax_import_status(request):
+    data = {
+        'status': "10%",
+    }
+    return JsonResponse(data)
