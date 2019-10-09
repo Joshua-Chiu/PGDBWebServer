@@ -15,6 +15,7 @@
     <body>
         <h2>Direct Entry (Fine Arts)</h2>
         <h4>Single entry</h4>
+        <a href="{% url 'entry:dictionary' 'FA' %}">Click here to get the code dictionary</a>
             <form action="{% url "entry:point_submit" "FA" %}" method="post">
                 <fieldset>
                     <label>Student Number: <input class="student-number" required="required" type='number' name="student-number" value="" autofocus></label>
@@ -28,7 +29,7 @@
             </form>
         {% if user.can_upload or user.is_superuser %}
         <h4>Form entry</h4>
-        <p>Visit the home/help page to access import template files<br><a href="{% url 'entry:dictionary' 'FA' %}">Click here to get the code dictionary</a></p>
+        <p>Visit the home/help page to access import template files</p>
 
         <form action="{% url 'entry:upload_file' 'FA' %}" method="post" enctype="multipart/form-data">
             <input type="file" name="file" id="file" onchange="form.submit();">

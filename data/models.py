@@ -44,10 +44,10 @@ class Student(models.Model):
     first = models.CharField(max_length=30, verbose_name='First Name')
     last = models.CharField(max_length=30, verbose_name='Last Name')
     legal = models.CharField(max_length=30, verbose_name='Legal Name')
-    student_num = models.PositiveIntegerField(verbose_name='Student Number',
+    student_num = models.PositiveIntegerField(verbose_name='Student Number', unique=True,
                                               help_text="This number must be unique as it is used to identify students")
     homeroom = models.CharField(max_length=15, verbose_name='Homeroom',
-                                help_text="Do not change the grade number after creation. Use the dropdown actions at the Student list to move student")
+                                help_text="Use the dropdown actions at the Student list to move student down a grade")
     sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accepts any letter of the alphabet")
     # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")

@@ -81,7 +81,8 @@ def scholar_submit(request):
             scholar.term1 = term1
             scholar.term2 = term2
             scholar.save()
-        except:
+        except Exception as e:
+            print(e)
             print("failed to submit scholar")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -162,7 +163,8 @@ def point_submit(request, point_catagory):
                 amount=points,
                 entered_by=request.user,
             )
-        except:
+        except Exception as e:
+            print(e)
             print("failed to submit")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

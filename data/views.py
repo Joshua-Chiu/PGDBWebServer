@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from configuration.models import Configuration
 from users.models import CustomUser
@@ -204,10 +204,9 @@ def archive_submit(request):
                                 else:
                                     type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
-                                g_obj.points_set.create(type=type, amount=float(p[2].text),)
+                                g_obj.points_set.create(type=type, amount=float(p[2].text), )
                         # print(f"added student {int(s[0].text)}")
                     except Exception as e:
-                        raise e
                         student_num = int(s[0].text)
                         print(f"Failed to add student {int(s[0].text)}")
                         logs.append(f"Failed to add student {int(s[0].text)}")
@@ -458,7 +457,8 @@ def google_calendar():
     credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
     http = credentials.authorize(httplib2.Http())
     service = build('calendar', 'v3', http=http)
-    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, ).execute()
+    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
+                                   orderBy='startTime').execute()
     events = events.get('items', [])
 
     for event in events:
@@ -477,7 +477,7 @@ def google_calendar():
                 'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
             })
 
-    return maintenance[::-1], notice
+    return maintenance, notice
 
 
 def ajax_import_status(request):
