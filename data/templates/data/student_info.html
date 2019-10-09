@@ -117,6 +117,12 @@ function post(path, params, method) {
           $(this).next('.codes').focus();
         }
     });
+    $(".codes").keyup(function () {
+        if (this.value.length === this.maxLength) {
+          submitForms();
+        }
+    });
+
 </script>
 <script>
 function validateForm() {
