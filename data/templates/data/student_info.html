@@ -49,34 +49,25 @@
 <script>
 function submitForms() {
     document.getElementById("form0").submit();
-}
+    }
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
-
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
     var form = document.createElement("form");
     form.setAttribute("method", method);
     form.setAttribute("action", path);
-
     for(var key in params) {
         if(params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
-
             form.appendChild(hiddenField);
         }
     }
-
     document.body.appendChild(form);
     form.submit();
-}
-
-
-function validateForm() {
-    /* code here */
 }
 </script>
 
@@ -94,7 +85,7 @@ $(function(){
         wasEmpty = true;
         }
         if(e.which === 42){
-            query.focus();
+            $('query').focus();
             return false;
         }
     });
@@ -123,7 +114,7 @@ $(".codes").keyup(function () {
 });
 // fill in all calculating values from ajax
 $(document).ready(function() {
-    let student_num = {{ student.student_num }};
+    var student_num = {{ student.student_num }};
     $.ajax({
            url: '{% url "data:ajax_student_cumulative_data" %}',
            data: {
