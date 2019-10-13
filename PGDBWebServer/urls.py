@@ -29,6 +29,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/icon.png')),
     url(r'session_security/', include('session_security.urls')),
+    url(r'^async_include/', include('async_include.urls', namespace="async_include")),
 ]
 
 admin.site.site_header = "Point Grey Database Management"

@@ -13,14 +13,12 @@
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
     <script src="{% static 'jspdf.js' %}"></script>
     <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
-
-    {% endblock %}
+{% endblock %}
 
 {% block content%}
-    <!--Content goes here-->
     <div>
-    <h2 class="heading">Printing Reports</h2>
-</div>
+        <h2 class="heading">Printing Reports</h2>
+    </div>
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
             <labeL>Grade: <select name="grade">
@@ -76,34 +74,11 @@
     </div>
 
     {% if student_list %}
-    <div id="GeneratedList">
-        <table class="sortable">
-
-            <caption>Number of Students in list: {{ student_list|length }}</caption>
-            <!-- Header Row-->
-        <thead>
-            <tr>
-                <td><strong>&nbsp;First Name</strong></td>
-                <td><strong>&nbsp;Last Name</strong></td>
-                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
-                <td><strong>&nbsp;Homeroom</strong></td>
-            </tr>
-        </thead>
-        <tbody>
-        {% for student in student_list %}
-            <tr>
-                <td>{{ student.first }} ({{ student.legal }})</td>
-                <td>{{ student.last }}</td>
-                <td>{{ student.student_num }}</td>
-                <td>{{ student.homeroom }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-    </div>
+        {% include 'export/award_templates/student_list.html' with student_list=student_list %}
     {% endif %}
 
 {% endblock %}
+
 {% block javascript %}
     <script>
         const start = new Date().getFullYear() + 1;
@@ -127,15 +102,16 @@
     <script>
         (function(API){API.myText = function(txt, options, x, y) {
                 options = options ||{};
-                if( options.align === "center" ){
+            let txtWidth;
+            if (options.align === "center") {
 
-                    var fontSize = this.internal.getFontSize();
-                    var pageWidth = this.internal.pageSize.width;
-                    txtWidth = this.getStringUnitWidth(txt)*fontSize/this.internal.scaleFactor;
+                const fontSize = this.internal.getFontSize();
+                const pageWidth = this.internal.pageSize.width;
+                txtWidth = this.getStringUnitWidth(txt) * fontSize / this.internal.scaleFactor;
 
-                    // Calculate text's x coordinate
-                    x = ( pageWidth - txtWidth ) / 2;
-                }
+                // Calculate text's x coordinate
+                x = (pageWidth - txtWidth) / 2;
+            }
 
                 // Draw text at x,y
                 this.text(txt,x,y);
@@ -180,9 +156,9 @@
         //doc.save('Certificates.pdf');
 
 
-        var string = doc.output('datauristring');
-        var embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>";
-        var x = window.open('', 'PRINT', 'height=400,width=600');
+        const string = doc.output('datauristring');
+        const embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>";
+        const x = window.open('', 'PRINT', 'height=400,width=600');
         x.document.open();
         x.document.write(embed);
         x.document.close();
@@ -191,12 +167,12 @@
         elem = document.getElementById(elem);
         elem = elem.children[0].children[2]; //gets table body
         console.log(elem);
-        var studentList = [];
+        const studentList = [];
         for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
-            var student = elem.children[i];
-            var first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
-            var last_name = student.children[1].innerHTML;
-            var identifier = student.children[2].innerHTML + " - " + student.children[3].innerHTML; // get student number and homeroom
+            const student = elem.children[i];
+            const first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
+            const last_name = student.children[1].innerHTML;
+            const identifier = student.children[2].innerHTML + " - " + student.children[3].innerHTML; // get student number and homeroom
             //console.log(first_name + " " + last_name + " " + identifier);
 
             studentList.push([first_name, last_name, identifier]);
@@ -206,11 +182,11 @@
     </script>
     <script>
     function exportTableToExcel(tableID, filename = ''){
-        var downloadLink;
-        var dataType = 'application/vnd.ms-excel';
-        var tableSelect = document.getElementById(tableID);
+        let downloadLink;
+        const dataType = 'application/vnd.ms-excel';
+        const tableSelect = document.getElementById(tableID);
         console.log(tableSelect);
-        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
+        const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
 
         // Specify file name
         filename = filename?filename+'.xls':'{{ type }}.xls';
@@ -221,7 +197,7 @@
         document.body.appendChild(downloadLink);
 
         if(navigator.msSaveOrOpenBlob){
-            var blob = new Blob(['\ufeff', tableHTML], {
+            const blob = new Blob(['\ufeff', tableHTML], {
                 type: dataType
             });
             navigator.msSaveOrOpenBlob( blob, filename);

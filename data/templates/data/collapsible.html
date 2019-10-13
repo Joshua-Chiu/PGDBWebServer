@@ -11,16 +11,13 @@
       {% ifequal grade current_grade %}</strong>
         ({{ grade_object.start_year }} - {{ grade_object.start_year|add:1 }})
     {% endifequal %}
-    {% if year|add:grade < student.date_added|date:"Y"|abs|add:current_grade %}
-        <strong>NOT AT PG</strong>
-    {% endif %}
   </label>
 
   <div class="collapsible-content">
 
 
     <div class="content-inner">
-      <table border="1px" class="main-table" >
+      <table class="main-table" style="width: 100%">
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
@@ -122,17 +119,15 @@
                         </div>
                     {% endifequal %}
                 {% endfor %}
-
         </td>
         <td height="10" rowspan="2">
-            <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "AT" point.type.catagory %}
                         <div class="tooltip">
                             {% if point.amount <= 6 %}
                                 <span class="point">{{ point.amount }}</span>
                             {% else %}
-                                <span class="point" style="color:red">{{ point.amount }}</span>
+                                <span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
@@ -142,17 +137,15 @@
                         </div>
                     {% endifequal %}
                 {% endfor %}
-            </table>
         </td>
         <td height="10" rowspan="2">
-            <table width="100%" class="data-table">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "FA" point.type.catagory %}
                         <div class="tooltip">
-                            {% if point.amount <= 10 %}
+                            {% if point.amount <= 6 %}
                                 <span class="point">{{ point.amount }}</span>
                             {% else %}
-                                <span class="point" style="color:red">{{ point.amount }}</span>
+                                <span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
@@ -162,7 +155,6 @@
                         </div>
                     {% endifequal %}
                 {% endfor %}
-            </table>
         </td>
         <td height="15" colspan="2">
             <strong>Cumulative Awards</strong>
@@ -179,16 +171,17 @@
             Big Block<br>
         </td>
         <td>
+        {% comment %}
             {% if student.silver_pin %}Grade {{ student.silver_pin }}{% endif %}<br>
             {% if student.gold_pin %}Grade {{ student.gold_pin }}{% endif %}<br>
             {% if student.goldPlus_pin %}Grade {{ student.goldPlus_pin }}{% endif %}<br>
             {% if student.platinum_pin %}Grade {{ student.platinum_pin }}{% endif %}<br>
             {% if student.bigblock_award %}Grade {{ student.bigblock_award }}{% endif %}<br>
-
+        {% endcomment %}
         </td>
     </tr>
     </table>
-
+{% comment %}
 <!-- Cumulative Awards Datatable-->
     <table border="0" class="cumulative-table" frame="box">
         <tr>
@@ -236,6 +229,7 @@
             </tr>
         </table>
     {% endifequal %}
+    {% endcomment %}
     </div>
   </div>
 </div>

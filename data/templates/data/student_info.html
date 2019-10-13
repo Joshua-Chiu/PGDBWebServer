@@ -120,6 +120,7 @@ function post(path, params, method) {
     $(".codes").keyup(function () {
         if (this.value.length === this.maxLength) {
           submitForms();
+          this.value = "";
         }
     });
 

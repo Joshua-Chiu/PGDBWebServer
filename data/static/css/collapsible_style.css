@@ -12,7 +12,7 @@
 }
 
 .wrap-collabsible {
-  margin-bottom: 1.2rem 0;
+  margin-bottom: 1.2rem;
 }
 
 /*
@@ -90,18 +90,8 @@ textarea {
     padding: .5rem 1rem;
 }
 
-.main-table {
-}
-
-.data-table {
-    overflow-y: scroll;
-    height: 100%;
-    vert-align: top
-
-}
-.data-table td {
-    width: 10px;
-    text-align: "."
+table, td{
+    border: 1px solid black;
 }
 
 .cumulative-table {
@@ -136,7 +126,6 @@ textarea {
 
 .code {
     display: inline-block;
-    width: 100px;
     text-align: left;
 }
 

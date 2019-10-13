@@ -1,0 +1,72 @@
+<div id="GradList">
+    {% for student in student_list %}
+        <table>
+            <tr>
+                <td>CANDIDATE: </td>
+                <td>{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
+            </tr>
+            {% for i in i|rjust:5 %}
+                {% for grade in student.grade_set.all %}
+                    {% ifequal 8|add:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
+                    <tr>
+                        <td>GR {{ grade.grade|stringformat:"02d"|add:"0" }}:</td>
+                        <td>
+                            {% for point in grade.points_set.all %}
+                                {% ifequal point_type point.type.catagory %}
+                                    <span class="point">{{ point.amount }}</span>
+                                    <span class="code description">{{ point.type.description }}</span>
+                                    <span style="display: inline-block; width: 2ch;">&#9;</span>
+                                {% endifequal %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endifequal %}
+                {% endfor %}
+            {% endfor %}
+            <tr>
+                <td>TOTAL:</td>
+                <td>11-12: {% ifequal "SE" point_type %}
+                      {{ student.SE_11_12_total|floatformat:"2" }}
+                  {% endifequal %}
+                  {% ifequal "AT" point_type %}
+                      {{ student.AT_11_12_total|floatformat:"2" }}
+                  {% endifequal %} &emsp;
+                  {% ifequal "FA" point_type %}
+                      {{ student.AT_11_12_total|floatformat:"2" }}
+                  {% endifequal %} &emsp;
+                  {% ifequal "SC" point_type %}
+                      {{ student.SC_11_12_total|floatformat:"2" }}
+                  {% endifequal %} &emsp;
+                    08-12:
+                    {% for grade in student.grade_set.all %}
+                        {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
+                            {% ifequal "SE" point_type %}
+                                {{ grade.cumulative_SE|floatformat:"2" }}
+                            {% endifequal %}
+                            {% ifequal "AT" point_type %}
+                                {{ grade.cumulative_AT|floatformat:"2" }}
+                            {% endifequal %}
+                            {% ifequal "FA" point_type %}
+                                {{ grade.cumulative_FA|floatformat:"2" }}
+                            {% endifequal %}
+                            {% ifequal "SC" point_type %}
+                                {{ grade.cumulative_SC|floatformat:"2" }}
+                            {% endifequal %}
+                        {% endifequal %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>PINS:</td>
+                <td>
+                    {% if student.silver_pin %}Silver in Grade {{ student.silver_pin }}, {% endif %}
+                    {% if student.gold_pin %}Gold in Grade {{ student.gold_pin }}, {% endif %}
+                    {% if student.goldPlus_pin %}Gold+ in Grade {{ student.goldPlus_pin }}, {% endif %}
+                    {% if student.platinum_pin %}Platinum in Grade {{ student.platinum_pin }}, {% endif %}
+                </td>
+
+            </tr>
+        </table>
+        <hr>
+    {% endfor %}
+</div>
