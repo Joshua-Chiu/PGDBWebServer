@@ -33,10 +33,10 @@
 
             <label>Trophy Type: <select name="trophy-awards">
                 <option value="" >Select</option>
-                <option value="SE">Service Candidates</option>
-                <option value="AT">Athletics Candidates</option>
-                <option value="SC">Scholar Candidates</option>
-                <option value="FA">Fine Arts Candidates</option>
+                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="SE">Service Candidates</option>
+                <option {% ifequal "AT" point_type %}selected {% endifequal %}value="AT">Athletics Candidates</option>
+                <option {% ifequal "SC" point_type %}selected {% endifequal %}value="SC">Scholar Candidates</option>
+                <option {% ifequal "FA" point_type %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>
             </select></label>
 
             <input type="submit" value="Enter" onclick="form.action='print-trophies';" />
@@ -63,7 +63,7 @@
                             <td>GR {{ grade.grade|stringformat:"02d"|add:"0" }}:</td>
                             <td>
                                 {% for point in grade.points_set.all %}
-                                    {% ifequal "SE" point.type.catagory %}
+                                    {% ifequal point_type point.type.catagory %}
                                         <span class="point">{{ point.amount }}</span>
                                         <span class="code description">{{ point.type.description }}</span>
                                         <span style="display: inline-block; width: 2ch;">&#9;</span>

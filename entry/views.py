@@ -280,15 +280,15 @@ def validate_student_name(request):
 
 
 def validate_point_code(request):
-    code_num = int(request.GET.get('code', None))
+    code_num = request.GET.get('code', None)
     category = request.GET.get('category', None)
-    code = PointCodes.objects.filter(code__iexact=code_num, catagory__iexact=category)
-    if code.exists():
-        data = {
-            'code_description': code[0].description,
-        }
-    else:
-        data = {
-            'code_description': "Code not found",
-        }
+    data = {
+        'code_description': "Code not found",
+    }
+    if code_num:
+        code = PointCodes.objects.filter(code__iexact=int(code_num), catagory__iexact=category)
+        if code.exists():
+            data = {
+                'code_description': code[0].description,
+            }
     return JsonResponse(data)
