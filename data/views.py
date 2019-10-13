@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from configuration.models import Configuration
 from users.models import CustomUser
@@ -7,17 +7,13 @@ from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
 import io
-import os
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 from util.converter import wdb_convert
 
-import dateutil.parser
-import httplib2
-from googleapiclient.discovery import build
-from oauth2client.service_account import ServiceAccountCredentials
+from .ajax_views import *
 
 
 @login_required
@@ -46,10 +42,12 @@ def search(request):
 
 def student_info(request, num):
     template = get_template('data/student_info.html')
+    student = Student.objects.get(id=num)
     context = {
-        'student': Student.objects.get(id=num),
+        'student': student,
         'plists': PlistCutoff.objects.all(),
-        'config': Configuration.objects.get()
+        'config': Configuration.objects.get(),
+        'current_grade': ''.join([n for n in student.homeroom if n.isdigit()]),
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -443,45 +441,3 @@ def help(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
-
-
-def google_calendar():
-    maintenance = []
-    notice = []
-    time_format = '%d %B, %H:%M %p'
-
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
-    SCOPES = 'https://www.googleapis.com/auth/calendar'
-
-    secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
-    http = credentials.authorize(httplib2.Http())
-    service = build('calendar', 'v3', http=http)
-    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
-                                   orderBy='startTime').execute()
-    events = events.get('items', [])
-
-    for event in events:
-        if "MAINTENANCE:" in event.get("summary"):
-            maintenance.append({
-                'action': event['summary'].replace("MAINTENANCE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
-        else:
-            notice.append({
-                'title': event['summary'].replace("NOTICE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
-
-    return maintenance, notice
-
-
-def ajax_import_status(request):
-    data = {
-        'status': "10%",
-    }
-    return JsonResponse(data)

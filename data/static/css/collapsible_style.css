@@ -90,7 +90,7 @@ textarea {
     padding: .5rem 1rem;
 }
 
-table, td{
+.main-table td{
     border: 1px solid black;
 }
 
@@ -161,8 +161,4 @@ table, td{
 }
 .tooltip:hover .tooltiptext {
   visibility: visible;
-}
-
-span{
-    font-size: 14px;
 }

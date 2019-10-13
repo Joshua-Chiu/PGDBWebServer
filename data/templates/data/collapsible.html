@@ -17,7 +17,7 @@
 
 
     <div class="content-inner">
-      <table class="main-table" style="width: 100%">
+      <table class="main-table" style="width: 100%; border: 1px solid black">
         <tr>
             <!-- Totals and Table headers-->
             <td>Grade: {{ grade }}</td>
@@ -91,13 +91,13 @@
 
     <!--Where all the points are displayed-->
         <tr>
-            <td align="center">
+            <td style="text-align: center">
                 {{ config.se_help_text }}
             </td>
-            <td align="center">
+            <td style="text-align: center">
                 {{ config.at_help_text }}
             </td>
-            <td align="center">
+            <td style="text-align: center">
                 {{ config.fa_help_text }}
             </td>
         </tr>
@@ -113,6 +113,7 @@
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
+                        <span style="display: inline-block; width: 2ch; horiz-align: right">&#9;</span>
                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             <br>
                             <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
@@ -131,6 +132,7 @@
                             {% endif %}
                             <span style="display: inline-block; width: 2ch;">&#9;</span>
                             <span class="code description">{{ point.type.description }}</span>
+                            <span style="float:left; width:100%">&#9;</span>
                             <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             <br>
                             <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
@@ -171,35 +173,32 @@
             Big Block<br>
         </td>
         <td>
-        {% comment %}
-            {% if student.silver_pin %}Grade {{ student.silver_pin }}{% endif %}<br>
-            {% if student.gold_pin %}Grade {{ student.gold_pin }}{% endif %}<br>
-            {% if student.goldPlus_pin %}Grade {{ student.goldPlus_pin }}{% endif %}<br>
-            {% if student.platinum_pin %}Grade {{ student.platinum_pin }}{% endif %}<br>
-            {% if student.bigblock_award %}Grade {{ student.bigblock_award }}{% endif %}<br>
-        {% endcomment %}
+            <span id="silver {{ grade }}">Calculating</span><br>
+            <span id="gold {{ grade }}">Calculating</span><br>
+            <span id="gold+ {{ grade }}">Calculating</span><br>
+            <span id="platinum {{ grade }}">Calculating</span><br>
+            <span id="bigblock {{ grade }}">Calculating</span><br>
         </td>
     </tr>
     </table>
-{% comment %}
+
 <!-- Cumulative Awards Datatable-->
-    <table border="0" class="cumulative-table" frame="box">
+    <table class="cumulative-table">
         <tr>
             <th colspan="4" style="border:1px solid black;"><strong>Cumulative Awards</strong></th>
         </tr>
         <tr>
-            <td>Total Points:</td><td>{{ grade_object.cumulative_SE|addition:grade_object.cumulative_AT|addition:grade_object.cumulative_SC|addition:grade_object.cumulative_FA|floatformat:"2" }}</td>
+            <td>Total Points:</td><td><span id="total{{ grade }}">Calculating</span></td>
         </tr><tr>
-            <td>Service Points: </td><td>{{ grade_object.cumulative_SE|floatformat:"2" }}</td>
+            <td>Service Points: </td><td><span id="SE{{ grade }}">Calculating</span></td>
         </tr><tr>
-            <td>Athletics Points: </td><td>{{ grade_object.cumulative_AT|floatformat:"2" }}</td>
+            <td>Athletics Points: </td><td><span id="AT{{ grade }}">Calculating</span></td>
         </tr><tr>
-            <td>Scholar Points: </td><td>{{ grade_object.cumulative_SC|floatformat:"2" }}</td>
+            <td>Scholar Points: </td><td><span id="SC{{ grade }}">Calculating</span></td>
         </tr><tr>
-            <td>Fine Arts Points: </td><td>{{ grade_object.cumulative_FA|floatformat:"2" }}</td>
+            <td>Fine Arts Points: </td><td><span id="FA{{ grade }}">Calculating</span></td>
         </tr>
     </table>
-
 <!-- Grad Calculations Table-->
     {% ifequal grade "12" %}
         <table class="grad-calc-table">
@@ -219,17 +218,16 @@
                 </td>
 
                 <td width="120px">
-                    : {{ student.average_11_12|floatformat:"2" }} %<br>
-                    : {{ student.SE_11_12_total|floatformat:"2" }} Points<br>
-                    : {{ student.AT_11_12_total|floatformat:"2" }} Points<br>
-                    : {{ student.SC_11_12_total|floatformat:"2" }} Points <br>
-                    : {{ student.FA_11_12_total|floatformat:"2" }} Points<br>
-                    : {{ student.all_11_12_total|floatformat:"2" }} Points<br>
+                    : <span id="grad avg">{{ student.average_11_12|floatformat:"2" }} %</span><br>
+                    : <span id="grad se">{{ student.SE_11_12_total|floatformat:"2" }} Points</span><br>
+                    : <span id="grad at">{{ student.AT_11_12_total|floatformat:"2" }} Points</span><br>
+                    : <span id="grad sc">{{ student.SC_11_12_total|floatformat:"2" }} Points</span><br>
+                    : <span id="grad fa">{{ student.FA_11_12_total|floatformat:"2" }} Points</span><br>
+                    : <span id="grad total">{{ student.all_11_12_total|floatformat:"2" }} Points</span><br>
                 </td>
             </tr>
         </table>
     {% endifequal %}
-    {% endcomment %}
     </div>
   </div>
 </div>

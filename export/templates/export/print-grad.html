@@ -42,9 +42,8 @@
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
-    <h2>{{ point_type }} Candidates</h2>
     {% if student_list %}
-        {% async_include 'export/award_templates/grad_award.html' with student_list=student_list point_type=point_type %}
+        {% async_include 'export/award_templates/grad_award_se.html' with student_list=student_list point_type=point_type %}
     {% endif %}
 
 {% endblock %}
