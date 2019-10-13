@@ -22,4 +22,5 @@ urlpatterns = [
     path('status', views.ajax_import_status, name='status'),
     path('ajax/import_status/', views.ajax_import_status, name='ajax_import_status'),
     path('ajax/student_cumulative_data/', views.ajax_student_cumulative_data, name='ajax_student_cumulative_data'),
+    path('ajax/student_points_data/', views.ajax_student_points_data, name="ajax_student_points_data")
 ]

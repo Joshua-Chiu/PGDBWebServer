@@ -50,6 +50,13 @@ def ajax_import_status(request):
     return JsonResponse(data)
 
 
+def ajax_student_points_data(request):
+    snum = request.GET.get('student_num', None)
+    student = Student.objects.get(student_num=snum)
+    data = {}
+    return JsonResponse(data)
+
+
 def ajax_student_cumulative_data(request):
     snum = request.GET.get('student_num', None)
     student = Student.objects.get(student_num=snum)

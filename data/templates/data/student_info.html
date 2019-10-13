@@ -116,36 +116,42 @@ $(".codes").keyup(function () {
 $(document).ready(function() {
     var student_num = {{ student.student_num }};
     $.ajax({
-           url: '{% url "data:ajax_student_cumulative_data" %}',
-           data: {
-               'student_num': student_num
-           },
-           dataType: 'json',
-           success: function (data) {
-               // Put in all the cumulative awards across all 5 grades
-               for (let i = 8; i <= {{ current_grade }}; i++){
-                   var grade = ("0" + i).slice (-2);
-                   if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
-                   if(data['gold'] !== null) document.getElementById('gold ' + grade).innerHTML = "Grade " + data['gold'];
-                   if(data['goldplus'] !== null) document.getElementById('gold+ ' + grade).innerHTML = "Grade " + data['goldplus'];
-                   if(data['platinum'] !== null) document.getElementById('platinum ' + grade).innerHTML = "Grade " + data['platinum'];
-                   if(data['bigblock'] !== null) document.getElementById('bigblock ' + grade).innerHTML = "Grade " + data['bigblock'];
-                   document.getElementById('SE' + grade).innerHTML = data['SE' + grade].toFixed(2);
-                   document.getElementById('AT' + grade).innerHTML = data['AT' + grade].toFixed(2);
-                   document.getElementById('SC' + grade).innerHTML = data['SC' + grade].toFixed(2);
-                   document.getElementById('FA' + grade).innerHTML = data['FA' + grade].toFixed(2);
-                   document.getElementById('TOTAL' + grade).innerHTML = data['TOTAL' + grade].toFixed(2);
-               }
-               if (12 <= {{ current_grade }}) {
-                   document.getElementById('grad avg').innerHTML = data['gradAVG'].toFixed(2) + "  %";
-                   document.getElementById('grad se').innerHTML = data['gradSE'].toFixed(2) + "  Points";
-                   document.getElementById('grad at').innerHTML = data['gradAT'].toFixed(2) + "  Points";
-                   document.getElementById('grad sc').innerHTML = data['gradSC'].toFixed(2) + "  Points";
-                   document.getElementById('grad fa').innerHTML = data['gradFA'].toFixed(2) + "  Points";
-                   document.getElementById('grad total').innerHTML = data['gradTOTAL'].toFixed(2) + "  Points";
-                }
-           }
-       });
+        url: '{% url "data:ajax_student_cumulative_data" %}',
+        data: {'student_num': student_num},
+        dataType: 'json',
+        success: function (data) {
+            // Put in all the cumulative awards across all 5 grades
+            for (let i = 8; i <= {{ current_grade }}; i++){
+                var grade = ("0" + i).slice (-2);
+                if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
+                if(data['gold'] !== null) document.getElementById('gold ' + grade).innerHTML = "Grade " + data['gold'];
+                if(data['goldplus'] !== null) document.getElementById('gold+ ' + grade).innerHTML = "Grade " + data['goldplus'];
+                if(data['platinum'] !== null) document.getElementById('platinum ' + grade).innerHTML = "Grade " + data['platinum'];
+                if(data['bigblock'] !== null) document.getElementById('bigblock ' + grade).innerHTML = "Grade " + data['bigblock'];
+                document.getElementById('SE' + grade).innerHTML = data['SE' + grade].toFixed(2);
+                document.getElementById('AT' + grade).innerHTML = data['AT' + grade].toFixed(2);
+                document.getElementById('SC' + grade).innerHTML = data['SC' + grade].toFixed(2);
+                document.getElementById('FA' + grade).innerHTML = data['FA' + grade].toFixed(2);
+                document.getElementById('TOTAL' + grade).innerHTML = data['TOTAL' + grade].toFixed(2);
+            }
+            if (12 <= {{ current_grade }}) {
+                document.getElementById('grad avg').innerHTML = data['gradAVG'].toFixed(2) + "  %";
+                document.getElementById('grad se').innerHTML = data['gradSE'].toFixed(2) + "  Points";
+                document.getElementById('grad at').innerHTML = data['gradAT'].toFixed(2) + "  Points";
+                document.getElementById('grad sc').innerHTML = data['gradSC'].toFixed(2) + "  Points";
+                document.getElementById('grad fa').innerHTML = data['gradFA'].toFixed(2) + "  Points";
+                document.getElementById('grad total').innerHTML = data['gradTOTAL'].toFixed(2) + "  Points";
+            }
+       }
+    });
+    $.ajax({
+        url: '{% url "data:ajax_student_points_data" %}',
+        data: {'student_num': student_num},
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+        }
+    })
 });
 </script>
 {% endblock %}
