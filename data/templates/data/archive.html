@@ -12,7 +12,6 @@
 {% endblock %}
 
 {% block content%}
-
     <h4>Import .pgdb Archive File</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
         <!--<input type="submit" value="Upload .pgdb Archive" name="submit">-->
@@ -54,18 +53,10 @@
     <h4>Stuff</h4>
     <form method="post" action="{% url 'data:archive_file'%}">
         <input type="submit" value="do stuff" name="submit">
-        <input type="text" name="query" id="query">
+        <label><input type="text" name="query" id="query"></label>
         {% csrf_token %}
     </form>
-
     <hr>
-    {% if logs.0 != "Import Successful" %}
-        {% for log in logs %}
-            Error: {{ log }}<br>
-        {% endfor %}
-    {% else %}
-        Import Successful
-    {% endif %}
 
 
 {% endblock %}

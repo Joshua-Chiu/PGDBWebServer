@@ -7,10 +7,32 @@
     {% include 'data/navbar.html' %}
 {% endblock %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static '' %}">
+{% block content%}
+    <h2>We are now processing your file</h2>
+    <a href="./">You may safely leave this page</a>
+    <hr>
+    <p id="logs"></p>
+
 {% endblock %}
 
-{% block content%}
-    <h2>We are now processing your file.</h2>
+{% block javascript %}
+    {% comment %}
+    <script>
+    function status (){
+            $.ajax({
+                url: '{% url "data:ajax_import_status" %}',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    let logs = data['logs'];
+                    for(let i = 0; i < logs.length; i++){
+                        console.log(logs[i]);
+                        $("p").append(logs[i] + "<br>");
+                    }
+                }
+            });
+        }
+    setTimeout(status, 1000);
+    </script>
+    {% endcomment %}
 {% endblock %}
