@@ -15,10 +15,8 @@
     <h2><strong><a>{{ student.last }}, {{ student.first }} ({{ student.legal }})</a></strong></h2>
     <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Grad Year: <strong>{{ student.grad_year}}</strong> | <a href="{% url 'admin:data_student_change' student.id %}">Edit</a></p>
     <hr>
-
-    {%csrf_token%}
     {% if user.is_superuser or user.can_view %}
-        <form action="{% url "data:student_submit" student.id %}" id="form" name="col form" method="post">
+        <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
@@ -26,6 +24,7 @@
                 {% endifequal %}
             {% endfor %}
         {% endfor %}
+        {%csrf_token%}
         </form>
     {% else %}
         <div style="clear: both;"><h3>My Entries</h3></div>
@@ -49,7 +48,7 @@
 <!--Script for the getting post requests-->
 <script>
 function submitForms() {
-    document.getElementById("form").submit();
+    document.getElementById("form0").submit();
 }
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
@@ -122,7 +121,7 @@ $(".codes").keyup(function () {
       this.value = "";
     }
 });
-// fill in all calculating values
+// fill in all calculating values from ajax
 $(document).ready(function() {
     let student_num = {{ student.student_num }};
     $.ajax({
@@ -135,7 +134,7 @@ $(document).ready(function() {
                // Put in all the cumulative awards across all 5 grades
                for (let i = 8; i <= {{ current_grade }}; i++){
                    var grade = ("0" + i).slice (-2);
-                   if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver'];
+                   if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
                    if(data['gold'] !== null) document.getElementById('gold ' + grade).innerHTML = "Grade " + data['gold'];
                    if(data['goldplus'] !== null) document.getElementById('gold+ ' + grade).innerHTML = "Grade " + data['goldplus'];
                    if(data['platinum'] !== null) document.getElementById('platinum ' + grade).innerHTML = "Grade " + data['platinum'];
