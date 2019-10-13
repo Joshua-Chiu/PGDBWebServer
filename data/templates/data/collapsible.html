@@ -173,22 +173,22 @@
             Big Block<br>
         </td>
         <td>
-            <span id="silver {{ grade }}">Calculating</span><br>
-            <span id="gold {{ grade }}">Calculating</span><br>
-            <span id="gold+ {{ grade }}">Calculating</span><br>
-            <span id="platinum {{ grade }}">Calculating</span><br>
-            <span id="bigblock {{ grade }}">Calculating</span><br>
+            <span id="silver {{ grade }}"></span><br>
+            <span id="gold {{ grade }}"></span><br>
+            <span id="gold+ {{ grade }}"></span><br>
+            <span id="platinum {{ grade }}"></span><br>
+            <span id="bigblock {{ grade }}"></span><br>
         </td>
     </tr>
     </table>
 
 <!-- Cumulative Awards Datatable-->
-    <table class="cumulative-table">
+    <table style="border:1px solid black;" class="cumulative-table">
         <tr>
-            <th colspan="4" style="border:1px solid black;"><strong>Cumulative Awards</strong></th>
+            <th colspan="4"><strong>Cumulative Totals</strong></th>
         </tr>
         <tr>
-            <td>Total Points:</td><td><span id="total{{ grade }}">Calculating</span></td>
+            <td>Total Points:</td><td><span id="TOTAL{{ grade }}">Calculating</span></td>
         </tr><tr>
             <td>Service Points: </td><td><span id="SE{{ grade }}">Calculating</span></td>
         </tr><tr>
@@ -218,12 +218,12 @@
                 </td>
 
                 <td width="120px">
-                    : <span id="grad avg">{{ student.average_11_12|floatformat:"2" }} %</span><br>
-                    : <span id="grad se">{{ student.SE_11_12_total|floatformat:"2" }} Points</span><br>
-                    : <span id="grad at">{{ student.AT_11_12_total|floatformat:"2" }} Points</span><br>
-                    : <span id="grad sc">{{ student.SC_11_12_total|floatformat:"2" }} Points</span><br>
-                    : <span id="grad fa">{{ student.FA_11_12_total|floatformat:"2" }} Points</span><br>
-                    : <span id="grad total">{{ student.all_11_12_total|floatformat:"2" }} Points</span><br>
+                    : <span id="grad avg"></span><br>
+                    : <span id="grad se"></span><br>
+                    : <span id="grad at"></span><br>
+                    : <span id="grad sc"></span><br>
+                    : <span id="grad fa"></span><br>
+                    : <span id="grad total"></span><br>
                 </td>
             </tr>
         </table>
