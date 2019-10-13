@@ -1,7 +1,6 @@
 {% extends 'data/base.html' %}
 
 {% load staticfiles %}
-{% load async_include %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Graduation{% endif %} Candidates{% endblock %}
 
@@ -43,7 +42,7 @@
     </div>
 
     {% if student_list %}
-        {% async_include 'export/award_templates/grad_award_se.html' with student_list=student_list point_type=point_type %}
+        {% include 'export/award_templates/grad_award_se.html' with student_list=student_list point_type=point_type %}
     {% endif %}
 
 {% endblock %}

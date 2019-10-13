@@ -77,7 +77,6 @@
                         {{ grade_object.plist_T2 }}
                     </label>
             </td>
-
             <!-- Annual awards -->
             <td rowspan="2">
                 {% if grade_object.SE_total >= 9.5 %}Service{% endif %}<br>
@@ -102,62 +101,54 @@
             </td>
         </tr>
     <tr>
-        <td height="10" rowspan="2">
+        <td height="10" rowspan="2"><table style="border-collapse: collapse;">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "SE" point.type.catagory %}
-                        <div class="tooltip">
-                            {% if point.amount <= 6 %}
-                                <span class="point">{{ point.amount }}</span>
-                            {% else %}
-                                <span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>
-                            {% endif %}
-                            <span style="display: inline-block; width: 2ch;">&#9;</span>
-                            <span class="code description">{{ point.type.description }}</span>
-                        <span style="display: inline-block; width: 2ch; horiz-align: right">&#9;</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
-                            <br>
-                            <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
-                        </div>
+                        <tr>
+                            <td style="border: none;"><div class="tooltip">
+                                {% if point.amount <= 6 %}<span class="point">{{ point.amount }}</span>{% else %}<span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>{% endif %}
+                                <span style="display: inline-block; width: 2ch;">&#9;</span>
+                                <span class="code description">{{ point.type.description }}</span>
+                                <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
+                            </div></td><td style="border: none;">
+                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                            </td>
+                        </tr>
                     {% endifequal %}
                 {% endfor %}
-        </td>
-        <td height="10" rowspan="2">
+        </table></td>
+        <td height="10" rowspan="2"><table style="border-collapse: collapse;">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "AT" point.type.catagory %}
-                        <div class="tooltip">
-                            {% if point.amount <= 6 %}
-                                <span class="point">{{ point.amount }}</span>
-                            {% else %}
-                                <span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>
-                            {% endif %}
-                            <span style="display: inline-block; width: 2ch;">&#9;</span>
-                            <span class="code description">{{ point.type.description }}</span>
-                            <span style="float:left; width:100%">&#9;</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
-                            <br>
-                            <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
-                        </div>
+                        <tr>
+                            <td style="border: none;"><div class="tooltip">
+                                {% if point.amount <= 6 %}<span class="point">{{ point.amount }}</span>{% else %}<span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>{% endif %}
+                                <span style="display: inline-block; width: 2ch;">&#9;</span>
+                                <span class="code description">{{ point.type.description }}</span>
+                                <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
+                            </div></td><td style="border: none;">
+                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                            </td>
+                        </tr>
                     {% endifequal %}
                 {% endfor %}
-        </td>
-        <td height="10" rowspan="2">
+        </table></td>
+        <td height="10" rowspan="2"><table style="border-collapse: collapse;">
                 {% for point in grade_object.points_set.all %}
                     {% ifequal "FA" point.type.catagory %}
-                        <div class="tooltip">
-                            {% if point.amount <= 6 %}
-                                <span class="point">{{ point.amount }}</span>
-                            {% else %}
-                                <span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>
-                            {% endif %}
-                            <span style="display: inline-block; width: 2ch;">&#9;</span>
-                            <span class="code description">{{ point.type.description }}</span>
-                            <input type="submit" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
-                            <br>
-                            <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
-                        </div>
+                        <tr>
+                            <td style="border: none;"><div class="tooltip">
+                                {% if point.amount <= 6 %}<span class="point">{{ point.amount }}</span>{% else %}<span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>{% endif %}
+                                <span style="display: inline-block; width: 2ch;">&#9;</span>
+                                <span class="code description">{{ point.type.description }}</span>
+                                <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}</span>
+                            </div></td><td style="border: none;">
+                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                            </td>
+                        </tr>
                     {% endifequal %}
                 {% endfor %}
-        </td>
+        </table></td>
         <td height="15" colspan="2">
             <strong>Cumulative Awards</strong>
         </td>
@@ -217,7 +208,7 @@
                     11/12 All Points<br>
                 </td>
 
-                <td width="120px">
+                <td style="width: 120px">
                     : <span id="grad avg"></span><br>
                     : <span id="grad se"></span><br>
                     : <span id="grad at"></span><br>

@@ -53,11 +53,12 @@ def ajax_import_status(request):
 def ajax_student_cumulative_data(request):
     snum = request.GET.get('student_num', None)
     student = Student.objects.get(student_num=snum)
+    grade = int("".join(filter(str.isdigit, student.homeroom)))
     data = {
         'silver': student.silver_pin,
         'gold': student.gold_pin,
-        'goldplus': student.goldPlus_pin,
-        'platinum': student.platinum_pin,
+        'goldplus': None,
+        'platinum': None,
         'bigblock': student.bigblock_award,
         'TOTAL08': round(sum([student.get_cumulative_SE(8), student.get_cumulative_AT(8), student.get_cumulative_SC(8), student.get_cumulative_FA(8)]), 2),
         'TOTAL09': round(sum([student.get_cumulative_SE(9), student.get_cumulative_AT(9), student.get_cumulative_SC(9), student.get_cumulative_FA(9)]), 2),
@@ -84,12 +85,23 @@ def ajax_student_cumulative_data(request):
         'FA10': round(student.get_cumulative_FA(10), 2),
         'FA11': round(student.get_cumulative_FA(11), 2),
         'FA12': round(student.get_cumulative_FA(12), 2),
-        'gradAVG': float(round(student.average_11_12, 2)),
-        'gradSE': round(student.SE_11_12_total, 2),
-        'gradAT': round(student.AT_11_12_total, 2),
-        'gradSC': round(student.SC_11_12_total, 2),
-        'gradFA': round(student.FA_11_12_total, 2),
-        'gradTOTAL': round(sum([student.SE_11_12_total, student.AT_11_12_total, student.SC_11_12_total, student.FA_11_12_total]), 2),
     }
+    if grade >= 12:
+        grad = {
+            'platinum': student.platinum_pin,
+            'gradAVG': float(round(student.average_11_12, 2)),
+            'gradSE': round(student.SE_11_12_total, 2),
+            'gradAT': round(student.AT_11_12_total, 2),
+            'gradSC': round(student.SC_11_12_total, 2),
+            'gradFA': round(student.FA_11_12_total, 2),
+            'gradTOTAL': round(
+                sum([student.SE_11_12_total, student.AT_11_12_total, student.SC_11_12_total, student.FA_11_12_total]),
+                2),
+        }
+        data.update(grad)
+        data.update({'goldplus': student.goldPlus_pin, })
+    elif grade >= 11:
+        data.update({'goldplus': student.goldPlus_pin, })
+
     return JsonResponse(data)
 
