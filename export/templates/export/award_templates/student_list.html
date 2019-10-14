@@ -1,0 +1,25 @@
+<div id="GeneratedList">
+        <table class="sortable">
+
+            <caption>Number of Students in list: {{ student_list|length }}</caption>
+            <!-- Header Row-->
+        <thead>
+            <tr>
+                <td><strong>&nbsp;First Name</strong></td>
+                <td><strong>&nbsp;Last Name</strong></td>
+                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
+                <td><strong>&nbsp;Homeroom</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for student in student_list %}
+            <tr>
+                <td>{{ student.first }} ({{ student.legal }})</td>
+                <td>{{ student.last }}</td>
+                <td>{{ student.student_num }}</td>
+                <td>{{ student.homeroom }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

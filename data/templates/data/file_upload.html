@@ -1,0 +1,44 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Processing...{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block content%}
+    <h2 id="Progress"></h2>
+    <a href="./">You may safely leave this page</a>
+    <hr>
+    <ol id="logs"></ol>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    function status (){
+        $.ajax({
+            url: '{% url "data:ajax_import_status" %}',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                if(data['done']==='true') {
+                    let logs = data['logs'];
+                    for (let i = 0; i < logs.length; i++) {
+                        console.log(logs[i]);
+                        $("ol").append("<li>" + logs[i] + "</li>");
+                    }
+                    clearInterval(status_update);
+                    document.getElementById('Progress').innerHTML = "We processed your file - please see belows for errors";
+                    document.title = "Done"
+                } else {
+                    document.getElementById('Progress').innerHTML = "We are now processing your file in the background";
+                    document.title = "Processing..."
+                }
+            }
+        });
+    }
+    const status_update = setInterval(status, 100);
+    </script>
+{% endblock %}

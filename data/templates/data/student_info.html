@@ -11,22 +11,21 @@
 {% endblock %}
 
 {% block content%}
-    {% now "Y" as current_year %}
-    {% now "n" as current_month %}
     <!--Student Info-->
     <h2><strong><a>{{ student.last }}, {{ student.first }} ({{ student.legal }})</a></strong></h2>
     <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Grad Year: <strong>{{ student.grad_year}}</strong> | <a href="{% url 'admin:data_student_change' student.id %}">Edit</a></p>
     <hr>
-    <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
-    {%csrf_token%}
     {% if user.is_superuser or user.can_view %}
+        <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
-                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" year=current_year month=current_month|floatformat:"0" grade_object=grade current_grade=student.homeroom|slice:":2" scholar=grade.scholar_set.all.0 %}
+                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 %}
                 {% endifequal %}
             {% endfor %}
         {% endfor %}
+        {%csrf_token%}
+        </form>
     {% else %}
         <div style="clear: both;"><h3>My Entries</h3></div>
         {% if request.user|has_group:"Service" %}
@@ -43,8 +42,6 @@
         {% endif %}
     {% endif %}
 
-
-    </form>
 {% endblock %}
 
 {% block javascript %}
@@ -52,76 +49,109 @@
 <script>
 function submitForms() {
     document.getElementById("form0").submit();
-    //document.getElementById("form 08").submit();
-    //document.getElementById("form 09").submit();
-    //document.getElementById("form 10").submit();
-    //document.getElementById("form 11").submit();
-    //document.getElementById("form 12").submit();
     }
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
-
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
     var form = document.createElement("form");
     form.setAttribute("method", method);
     form.setAttribute("action", path);
-
     for(var key in params) {
         if(params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
-
             form.appendChild(hiddenField);
         }
     }
-
     document.body.appendChild(form);
     form.submit();
 }
 </script>
 
-<!--prevent submit or query from changing field-->
 <script>
-    let wasEmpty = false;
-    $(function(){
-        $('.scholar').keyup(function(e){
-            if(this.value.length >= 6 && wasEmpty){
-                if(parseFloat(this.value) <= this.max){
-                    submitForms();
-                }
+//prevent submit or query from changing field
+let wasEmpty = false;
+$(function(){
+    $('.scholar').keyup(function(e){
+        if(this.value.length >= 6 && wasEmpty){
+            if(parseFloat(this.value) <= this.max){
+                submitForms();
             }
-            if(this.value.length < 6){
-            wasEmpty = true;
-            }
-            if(e.which === 42){
-                query.focus();
-                return false;
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('input').keydown(function (e) {
-            if (e.keyCode === 39) {
-                $(this).next('input').focus();
-            }
-        });
-    });
-    $(".inputs").keyup(function () {
-        if (this.value.length === this.maxLength && parseFloat(this.value) <= this.max) {
-          $(this).next('.codes').focus();
+        }
+        if(this.value.length < 6){
+        wasEmpty = true;
+        }
+        if(e.which === 42){
+            $('query').focus();
+            return false;
         }
     });
-</script>
-<script>
-function validateForm() {
+});
 
-
-}
+// right arrow key for next input,
+$(document).ready(function () {
+    $('input').keydown(function (e) {
+        if (e.keyCode === 39) {
+            $(this).next('input').focus();
+        }
+    });
+});
+// only jump to next key when value is valid
+$(".inputs").keyup(function () {
+    if (this.value.length === this.maxLength && parseFloat(this.value) <= this.max) {
+      $(this).next('.codes').focus();
+    }
+});
+// submit form when the code is at 2 digits
+$(".codes").keyup(function () {
+    if (this.value.length === this.maxLength) {
+      submitForms();
+      this.value = "";
+    }
+});
+// fill in all calculating values from ajax
+$(document).ready(function() {
+    var student_num = {{ student.student_num }};
+    $.ajax({
+        url: '{% url "data:ajax_student_cumulative_data" %}',
+        data: {'student_num': student_num},
+        dataType: 'json',
+        success: function (data) {
+            // Put in all the cumulative awards across all 5 grades
+            for (let i = 8; i <= {{ current_grade }}; i++){
+                var grade = ("0" + i).slice (-2);
+                if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
+                if(data['gold'] !== null) document.getElementById('gold ' + grade).innerHTML = "Grade " + data['gold'];
+                if(data['goldplus'] !== null) document.getElementById('gold+ ' + grade).innerHTML = "Grade " + data['goldplus'];
+                if(data['platinum'] !== null) document.getElementById('platinum ' + grade).innerHTML = "Grade " + data['platinum'];
+                if(data['bigblock'] !== null) document.getElementById('bigblock ' + grade).innerHTML = "Grade " + data['bigblock'];
+                document.getElementById('SE' + grade).innerHTML = data['SE' + grade].toFixed(2);
+                document.getElementById('AT' + grade).innerHTML = data['AT' + grade].toFixed(2);
+                document.getElementById('SC' + grade).innerHTML = data['SC' + grade].toFixed(2);
+                document.getElementById('FA' + grade).innerHTML = data['FA' + grade].toFixed(2);
+                document.getElementById('TOTAL' + grade).innerHTML = data['TOTAL' + grade].toFixed(2);
+            }
+            if (12 <= {{ current_grade }}) {
+                document.getElementById('grad avg').innerHTML = data['gradAVG'].toFixed(2) + "  %";
+                document.getElementById('grad se').innerHTML = data['gradSE'].toFixed(2) + "  Points";
+                document.getElementById('grad at').innerHTML = data['gradAT'].toFixed(2) + "  Points";
+                document.getElementById('grad sc').innerHTML = data['gradSC'].toFixed(2) + "  Points";
+                document.getElementById('grad fa').innerHTML = data['gradFA'].toFixed(2) + "  Points";
+                document.getElementById('grad total').innerHTML = data['gradTOTAL'].toFixed(2) + "  Points";
+            }
+       }
+    });
+    $.ajax({
+        url: '{% url "data:ajax_student_points_data" %}',
+        data: {'student_num': student_num},
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+        }
+    })
+});
 </script>
 {% endblock %}

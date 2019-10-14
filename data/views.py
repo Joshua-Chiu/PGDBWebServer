@@ -7,17 +7,16 @@ from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
 import io
-import os
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 from util.converter import wdb_convert
+from threading import Thread
 
-import dateutil.parser
-import httplib2
-from googleapiclient.discovery import build
-from oauth2client.service_account import ServiceAccountCredentials
+from .ajax_views import *
+
+logs = []
 
 
 @login_required
@@ -46,10 +45,12 @@ def search(request):
 
 def student_info(request, num):
     template = get_template('data/student_info.html')
+    student = Student.objects.get(id=num)
     context = {
-        'student': Student.objects.get(id=num),
+        'student': student,
         'plists': PlistCutoff.objects.all(),
-        'config': Configuration.objects.get()
+        'config': Configuration.objects.get(),
+        'current_grade': ''.join([n for n in student.homeroom if n.isdigit()]),
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -156,72 +157,18 @@ def archive(request):
 
 
 def archive_submit(request):
+    global logs
     logs = []
     if request.method == "POST":
         if request.user.has_perm('data.add_student'):
             if "file" in request.FILES:
-                tree = ET.parse(request.FILES["file"])
-                root = tree.getroot()
-
-                # all students
-                for s in root[0]:
-                    try:
-                        if len(Student.objects.filter(student_num=int(s[0].text))) != 0:
-                            print(f"student with number {s[0].text} already exists")
-                            logs.append(f"student with number {s[0].text} \t ({s[4].text}, {s[3].text}) already exists")
-                            continue
-
-                        s_obj = Student(
-                            student_num=int(s[0].text),
-                            homeroom=f"{s[1].text.zfill(2)}{s[2].text}",
-                            first=s[3].text,
-                            last=s[4].text,
-                            legal=s[5].text,
-                            sex=s[6].text,
-                            grad_year=int(s[7].text)
-                        )
-                        s_obj.save()
-
-                        for g in s[8]:
-
-                            g_obj = s_obj.grade_set.get(grade=int(g[0].text))
-                            g_obj.anecdote = g[2].text or ""
-
-                            g_obj.scholar_set.term1 = float(g[3].text)
-                            g_obj.scholar_set.term2 = float(g[4].text)
-
-                            g_obj.save()
-
-
-
-                            for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
-                                if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
-                                        code=int(p[1].text))) == 0):
-                                    type = PointCodes(catagory=p[0].text, code=int(p[1].text),
-                                                      description=str(p[0].text) + str(p[1].text))
-                                    type.save()
-                                else:
-                                    type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
-
-                                g_obj.points_set.create(type=type, amount=float(p[2].text),)
-                        # print(f"added student {int(s[0].text)}")
-                    except Exception as e:
-                        student_num = int(s[0].text)
-                        print(f"Failed to add student {int(s[0].text)}")
-                        logs.append(f"Failed to add student {int(s[0].text)}")
-
-                        # delete the partially formed student
-                        if len(Student.objects.filter(student_num=student_num)) != 0:
-                            Student.objects.get(student_num=student_num).delete()
-
-                for plist in root[1]:
-                    print(plist)
+                file = ET.parse(request.FILES["file"])
+                import_thread = Thread(target=import_pgdb_file, args=(file,))
+                import_thread.start()
+                logs.append("We will now import the file in the background")
         else:
             logs.append("Permission error: Please make sure you can import students")
-
-    template = get_template('data/archive.html')
-    if not logs:
-        logs.append("Import Successful")
+    template = get_template('data/file_upload.html')
     context = {
         "logs": logs,
     }
@@ -247,7 +194,7 @@ def archive_wdb_submit(request):
 
 
 def archive_file(request):
-    if not "query" in request.POST:
+    if "query" not in request.POST:
         raise Http404
     query = request.POST['query']
 
@@ -258,61 +205,7 @@ def archive_file(request):
     # plists from years that students being exported are in
     relevent_plists = []
 
-    root = ET.Element('PGDB')
-
-    students = ET.SubElement(root, "students")
-    for student in student_list:
-        student_tag = ET.SubElement(students, 'student')
-        ET.SubElement(student_tag, 'number').text = str(student.student_num)
-        ET.SubElement(student_tag, 'current_grade').text = str(student.homeroom[:-1])
-        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
-        ET.SubElement(student_tag, 'first').text = student.first
-        ET.SubElement(student_tag, 'last').text = student.last
-        ET.SubElement(student_tag, 'legal_name').text = student.legal
-        ET.SubElement(student_tag, 'sex').text = student.sex
-        ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
-
-        grades = ET.SubElement(student_tag, 'grades')
-        for grade in student.grade_set.all():
-            grade_tag = ET.SubElement(grades, 'grade')
-
-            ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
-            ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
-            ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
-
-            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.scholar_set.all()[0].term2)
-            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.scholar_set.all()[0].term1)
-
-            points_tag = ET.SubElement(grade_tag, 'points')
-            for point in grade.points_set.all():
-                point_tag = ET.SubElement(points_tag, 'point')
-
-                ET.SubElement(point_tag, 'catagory').text = str(point.type.catagory)
-                ET.SubElement(point_tag, 'code').text = str(point.type.code)
-                ET.SubElement(point_tag, 'amount').text = str(point.amount)
-
-            # if a plist for this year exists add it to the list
-            if grade.start_year not in relevent_plists and \
-                    len(PlistCutoff.objects.filter(year=grade.start_year)) == 1:
-                relevent_plists.append(grade.start_year)
-
-    plists = ET.SubElement(root, "plists")
-    for plist in relevent_plists:
-        plist_object = PlistCutoff.objects.get(year=plist)
-        plist_tag = ET.SubElement(plists, 'plist')
-
-        ET.SubElement(plist_tag, 'year').text = str(plist)
-
-        ET.SubElement(plist_tag, 'grade_8_T1').text = str(plist_object.grade_8_T1)
-        ET.SubElement(plist_tag, 'grade_8_T2').text = str(plist_object.grade_8_T2)
-        ET.SubElement(plist_tag, 'grade_9_T1').text = str(plist_object.grade_9_T1)
-        ET.SubElement(plist_tag, 'grade_9_T2').text = str(plist_object.grade_9_T2)
-        ET.SubElement(plist_tag, 'grade_10_T1').text = str(plist_object.grade_10_T1)
-        ET.SubElement(plist_tag, 'grade_10_T2').text = str(plist_object.grade_10_T2)
-        ET.SubElement(plist_tag, 'grade_11_T1').text = str(plist_object.grade_11_T1)
-        ET.SubElement(plist_tag, 'grade_11_T2').text = str(plist_object.grade_11_T2)
-        ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
-        ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
+    root = export_pgdb_archive(student_list, relevent_plists)
 
     xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
@@ -442,37 +335,3 @@ def help(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect('/')
-
-
-def google_calendar():
-    maintenance = []
-    notice = []
-    time_format = '%d %B, %H:%M %p'
-
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
-    SCOPES = 'https://www.googleapis.com/auth/calendar'
-
-    secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
-    http = credentials.authorize(httplib2.Http())
-    service = build('calendar', 'v3', http=http)
-    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, ).execute()
-    events = events.get('items', [])
-
-    for event in events:
-        if "MAINTENANCE:" in event.get("summary"):
-            maintenance.append({
-                'action': event['summary'].replace("MAINTENANCE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
-        else:
-            notice.append({
-                'title': event['summary'].replace("NOTICE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
-
-    return maintenance[::-1], notice

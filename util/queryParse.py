@@ -109,6 +109,7 @@ def parseQuery(query):
                                 if not s.grade_set.get(grade=int(grade)).principalslist:
                                     new_students = new_students.exclude(id=s.id)
 
+
                         students = new_students
 
         return students
