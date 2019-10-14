@@ -15,6 +15,7 @@ from util.converter import wdb_convert
 from threading import Thread
 
 from .ajax_views import *
+
 logs = []
 
 
@@ -162,7 +163,7 @@ def archive_submit(request):
         if request.user.has_perm('data.add_student'):
             if "file" in request.FILES:
                 file = ET.parse(request.FILES["file"])
-                import_thread = Thread(target=import_pgdb_file, args=(file, ))
+                import_thread = Thread(target=import_pgdb_file, args=(file,))
                 import_thread.start()
                 logs.append("We will now import the file in the background")
         else:
@@ -193,7 +194,7 @@ def archive_wdb_submit(request):
 
 
 def archive_file(request):
-    if not "query" in request.POST:
+    if "query" not in request.POST:
         raise Http404
     query = request.POST['query']
 
@@ -204,61 +205,7 @@ def archive_file(request):
     # plists from years that students being exported are in
     relevent_plists = []
 
-    root = ET.Element('PGDB')
-
-    students = ET.SubElement(root, "students")
-    for student in student_list:
-        student_tag = ET.SubElement(students, 'student')
-        ET.SubElement(student_tag, 'number').text = str(student.student_num)
-        ET.SubElement(student_tag, 'current_grade').text = str(student.homeroom[:-1])
-        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
-        ET.SubElement(student_tag, 'first').text = student.first
-        ET.SubElement(student_tag, 'last').text = student.last
-        ET.SubElement(student_tag, 'legal_name').text = student.legal
-        ET.SubElement(student_tag, 'sex').text = student.sex
-        ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
-
-        grades = ET.SubElement(student_tag, 'grades')
-        for grade in student.grade_set.all():
-            grade_tag = ET.SubElement(grades, 'grade')
-
-            ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
-            ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
-            ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
-
-            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.scholar_set.all()[0].term2)
-            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.scholar_set.all()[0].term1)
-
-            points_tag = ET.SubElement(grade_tag, 'points')
-            for point in grade.points_set.all():
-                point_tag = ET.SubElement(points_tag, 'point')
-
-                ET.SubElement(point_tag, 'catagory').text = str(point.type.catagory)
-                ET.SubElement(point_tag, 'code').text = str(point.type.code)
-                ET.SubElement(point_tag, 'amount').text = str(point.amount)
-
-            # if a plist for this year exists add it to the list
-            if grade.start_year not in relevent_plists and \
-                    len(PlistCutoff.objects.filter(year=grade.start_year)) == 1:
-                relevent_plists.append(grade.start_year)
-
-    plists = ET.SubElement(root, "plists")
-    for plist in relevent_plists:
-        plist_object = PlistCutoff.objects.get(year=plist)
-        plist_tag = ET.SubElement(plists, 'plist')
-
-        ET.SubElement(plist_tag, 'year').text = str(plist)
-
-        ET.SubElement(plist_tag, 'grade_8_T1').text = str(plist_object.grade_8_T1)
-        ET.SubElement(plist_tag, 'grade_8_T2').text = str(plist_object.grade_8_T2)
-        ET.SubElement(plist_tag, 'grade_9_T1').text = str(plist_object.grade_9_T1)
-        ET.SubElement(plist_tag, 'grade_9_T2').text = str(plist_object.grade_9_T2)
-        ET.SubElement(plist_tag, 'grade_10_T1').text = str(plist_object.grade_10_T1)
-        ET.SubElement(plist_tag, 'grade_10_T2').text = str(plist_object.grade_10_T2)
-        ET.SubElement(plist_tag, 'grade_11_T1').text = str(plist_object.grade_11_T1)
-        ET.SubElement(plist_tag, 'grade_11_T2').text = str(plist_object.grade_11_T2)
-        ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
-        ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
+    root = export_pgdb_archive(student_list, relevent_plists)
 
     xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
