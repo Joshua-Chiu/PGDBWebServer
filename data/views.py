@@ -62,8 +62,8 @@ def student_info(request, num):
 def student_submit(request, num):
     entered_by = request.user
     student = Student.objects.get(id=num)
-    items = list(request.POST.items())[1:]
-    anecdotes = [item for item in items if item[0].find("anecdote") != -1]
+    items = list(request.POST.items())
+    anecdotes = [item for item in items if "anecdote" in item[0] != -1]
     points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
     scholar_fields = [item for item in items if item[0].find("SC") != -1]
     points_list = points_list + scholar_fields
@@ -71,7 +71,7 @@ def student_submit(request, num):
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
-        # print(anecdote[1])
+        print(anecdote[1], n)
         grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
