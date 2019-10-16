@@ -24,13 +24,16 @@
             dataType: 'json',
             success: function (data) {
                 if(data['done']==='true') {
+                    clearInterval(status_update);
                     let logs = data['logs'];
                     for (let i = 0; i < logs.length; i++) {
                         console.log(logs[i]);
                         $("ol").append("<li>" + logs[i] + "</li>");
                     }
-                    clearInterval(status_update);
                     document.getElementById('Progress').innerHTML = "We processed your file - please see belows for errors";
+                    if(logs.length === 0){
+                        document.getElementById('Progress').innerHTML = "We processed your file - no errors";
+                    }
                     document.title = "Done"
                 } else {
                     document.getElementById('Progress').innerHTML = "We are now processing your file in the background";

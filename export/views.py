@@ -110,8 +110,7 @@ def print_grad(request):
     if not award == "ME":
         students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
     else:
-        # TODO ME candidates
-        pass
+        students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:30]
 
     context = {
         'student_list': students,

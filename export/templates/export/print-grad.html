@@ -41,11 +41,29 @@
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
-    {% if student_list %}
-        {% include 'export/award_templates/grad_award_se.html' with student_list=student_list point_type=point_type %}
-    {% endif %}
+    {% if student_list  %}
+        {% ifequal award "SE" %}
+            {% include 'export/award_templates/grad_award_se.html' with student_list=student_list %}
+        {% endifequal %}
 
+        {% ifequal award "AT" %}
+            {% include 'export/award_templates/grad_award_at.html' with student_list=student_list %}
+        {% endifequal %}
+
+        {% ifequal award "SC" %}
+            {% include 'export/award_templates/grad_award_sc.html' with student_list=student_list %}
+        {% endifequal %}
+
+        {% ifequal award "FA" %}
+            {% include 'export/award_templates/grad_award_fa.html' with student_list=student_list %}
+        {% endifequal %}
+
+        {% ifequal award "ME" %}
+            {% include 'export/award_templates/grad_award_me.html' with student_list=student_list %}
+        {% endifequal %}
+    {% endif %}
 {% endblock %}
+
 {% block javascript %}
     <script>
         const start = new Date().getFullYear() + 1;

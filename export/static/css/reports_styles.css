@@ -38,3 +38,10 @@
 .sortable td {
     border: 1px solid black;
 }
+
+.gradList table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: inherit}

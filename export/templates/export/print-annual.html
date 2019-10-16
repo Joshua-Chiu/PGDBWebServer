@@ -11,7 +11,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
-    <script src="{% static 'jspdf.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
@@ -142,10 +142,10 @@
 
             doc.setFontSize(7);
             doc.setFont('Arial', 'normal');
-            doc.text(210, 210, studentList[i][2]);
+            doc.text(220, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
 
-            doc.addImage(imgData, 'JPEG', 183, 171, 30, 15);
+            doc.addImage(imgData, 'JPEG', 184, 172, 40, 15);
 
             doc.addPage();
 
