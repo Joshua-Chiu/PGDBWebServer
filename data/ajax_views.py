@@ -16,7 +16,7 @@ done = False
 
 def google_calendar():
     maintenance = []
-    notice = []
+    notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     now = datetime.datetime.utcnow().isoformat() + 'Z'
     SCOPES = 'https://www.googleapis.com/auth/calendar'
@@ -24,33 +24,36 @@ def google_calendar():
     secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
     credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
     http = credentials.authorize(httplib2.Http())
-    service = build('calendar', 'v3', http=http)
-    events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
-                                   orderBy='startTime').execute()
-    events = events.get('items', [])
+    try:
+        service = build('calendar', 'v3', http=http)
+        events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
+                                       orderBy='startTime').execute()
+        events = events.get('items', [])
 
-    for event in events:
-        if "MAINTENANCE:" in event.get("summary"):
-            maintenance.append({
-                'action': event['summary'].replace("MAINTENANCE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
-        else:
-            notice.append({
-                'title': event['summary'].replace("NOTICE: ", ""),
-                'note': event['description'],
-                'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-            })
+        for event in events:
+            if "MAINTENANCE:" in event.get("summary"):
+                maintenance.append({
+                    'action': event['summary'].replace("MAINTENANCE: ", ""),
+                    'note': event['description'],
+                    'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                    'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                })
+            else:
+                notice.append({
+                    'title': event['summary'].replace("NOTICE: ", ""),
+                    'note': event['description'],
+                    'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                    'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                })
+    except httplib2.ServerNotFoundError:
+        pass
 
     return maintenance, notice
 
 
 def ajax_student_points_data(request):
-    snum = request.GET.get('student_num', None)
-    student = Student.objects.get(student_num=snum)
+    #  snum = request.GET.get('student_num', None)
+    #  student = Student.objects.get(student_num=snum)
     data = {}
     return JsonResponse(data)
 
@@ -65,11 +68,16 @@ def ajax_student_cumulative_data(request):
         'goldplus': None,
         'platinum': None,
         'bigblock': student.bigblock_award,
-        'TOTAL08': round(sum([student.get_cumulative_SE(8), student.get_cumulative_AT(8), student.get_cumulative_SC(8), student.get_cumulative_FA(8)]), 2),
-        'TOTAL09': round(sum([student.get_cumulative_SE(9), student.get_cumulative_AT(9), student.get_cumulative_SC(9), student.get_cumulative_FA(9)]), 2),
-        'TOTAL10': round(sum([student.get_cumulative_SE(10), student.get_cumulative_AT(10), student.get_cumulative_SC(10), student.get_cumulative_FA(10)]), 2),
-        'TOTAL11': round(sum([student.get_cumulative_SE(11), student.get_cumulative_AT(11), student.get_cumulative_SC(11), student.get_cumulative_FA(11)]), 2),
-        'TOTAL12': round(sum([student.get_cumulative_SE(12), student.get_cumulative_AT(12), student.get_cumulative_SC(12), student.get_cumulative_FA(12)]), 2),
+        'TOTAL08': round(sum([student.get_cumulative_SE(8), student.get_cumulative_AT(8),
+                              student.get_cumulative_SC(8), student.get_cumulative_FA(8)]), 2),
+        'TOTAL09': round(sum([student.get_cumulative_SE(9), student.get_cumulative_AT(9),
+                              student.get_cumulative_SC(9), student.get_cumulative_FA(9)]), 2),
+        'TOTAL10': round(sum([student.get_cumulative_SE(10), student.get_cumulative_AT(10),
+                              student.get_cumulative_SC(10), student.get_cumulative_FA(10)]), 2),
+        'TOTAL11': round(sum([student.get_cumulative_SE(11), student.get_cumulative_AT(11),
+                              student.get_cumulative_SC(11), student.get_cumulative_FA(11)]), 2),
+        'TOTAL12': round(sum([student.get_cumulative_SE(12), student.get_cumulative_AT(12),
+                              student.get_cumulative_SC(12), student.get_cumulative_FA(12)]), 2),
         'SE08': round(student.get_cumulative_SE(8), 2),
         'SE09': round(student.get_cumulative_SE(9), 2),
         'SE10': round(student.get_cumulative_SE(10), 2),
@@ -107,6 +115,21 @@ def ajax_student_cumulative_data(request):
         data.update({'goldplus': student.goldPlus_pin, })
     elif grade >= 11:
         data.update({'goldplus': student.goldPlus_pin, })
+
+    # add annual certificates to data dict
+    for g in range(8, grade + 1):
+        grade_object = student.grade_set.get(grade=g)
+        data['annual SE ' + str(g).zfill(2)] = grade_object.SE_total
+        data['annual AT ' + str(g).zfill(2)] = grade_object.AT_total
+        data['annual FA ' + str(g).zfill(2)] = grade_object.FA_total
+        data['annual SC ' + str(g).zfill(2)] = grade_object.SC_total
+
+        data['annual HR ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= 79.45 and grade_object.scholar_set.get().term2 >= 79.45
+        try:
+            data['annual PL ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= grade_object.plist_T1 and \
+                                              grade_object.scholar_set.get().term2 >= grade_object.plist_T2
+        except PlistCutoff.DoesNotExist:
+            data['annual PL ' + str(g).zfill(2)] = False
 
     return JsonResponse(data)
 

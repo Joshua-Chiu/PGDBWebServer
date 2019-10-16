@@ -128,11 +128,23 @@ $(document).ready(function() {
                 if(data['goldplus'] !== null) document.getElementById('gold+ ' + grade).innerHTML = "Grade " + data['goldplus'];
                 if(data['platinum'] !== null) document.getElementById('platinum ' + grade).innerHTML = "Grade " + data['platinum'];
                 if(data['bigblock'] !== null) document.getElementById('bigblock ' + grade).innerHTML = "Grade " + data['bigblock'];
+
                 document.getElementById('SE' + grade).innerHTML = data['SE' + grade].toFixed(2);
                 document.getElementById('AT' + grade).innerHTML = data['AT' + grade].toFixed(2);
                 document.getElementById('SC' + grade).innerHTML = data['SC' + grade].toFixed(2);
                 document.getElementById('FA' + grade).innerHTML = data['FA' + grade].toFixed(2);
                 document.getElementById('TOTAL' + grade).innerHTML = data['TOTAL' + grade].toFixed(2);
+
+                if(data['annual SE ' + grade] >= 9.5) document.getElementById('annual SE ' + grade).innerHTML = "Service"; else document.getElementById('annual SE ' + grade).innerHTML = "";
+                if(data['annual AT ' + grade] >= 9.5) document.getElementById('annual AT ' + grade).innerHTML = "Athletics";
+                if(data['annual FA ' + grade] >= 9.5) document.getElementById('annual FA ' + grade).innerHTML = "Fine Arts";
+                if(data['annual HR ' + grade]) document.getElementById('annual SC ' + grade).innerHTML = "Scholarship";
+                if(data['annual PL ' + grade]) document.getElementById('annual PL ' + grade).innerHTML = "PL";
+
+                document.getElementById('annual SE' + grade + ' total').innerHTML = data['annual SE ' + grade].toFixed(2);
+                document.getElementById('annual AT' + grade + ' total').innerHTML = data['annual AT ' + grade].toFixed(2);
+                document.getElementById('annual FA' + grade + ' total').innerHTML = data['annual FA ' + grade].toFixed(2);
+                document.getElementById('annual SC' + grade + ' total').innerHTML = data['annual SC ' + grade].toFixed(2);
             }
             if (12 <= {{ current_grade }}) {
                 document.getElementById('grad avg').innerHTML = data['gradAVG'].toFixed(2) + "  %";
