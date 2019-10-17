@@ -9,10 +9,10 @@
             </tr>
                 {% for grade in student.grade_set.all %}
                     {% ifequal 11 grade.grade|stringformat:"02d"|add:"0" %}
-                        <tr><td>Grade 11 T1: {{ grade.scholar.term1|floatformat:"3" }}</td><td>Grade 11 T2: {{ grade.scholar.term2|floatformat:"3" }}</td></tr>
+                        <tr><td>Grade 11 T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }}</td><td>Grade 11 T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }}</td></tr>
                     {% endifequal %}
                     {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
-                        <tr><td>Grade 12 T1: {{ grade.scholar.term1|floatformat:"3" }}</td><td>Grade 12 T2: {{ grade.scholar.term2|floatformat:"3" }}</td></tr>
+                        <tr><td>Grade 12 T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }}</td><td>Grade 12 T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }}</td></tr>
                     {% endifequal %}
                 {% endfor %}
         </table>
