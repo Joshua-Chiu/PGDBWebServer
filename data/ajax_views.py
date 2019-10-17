@@ -16,7 +16,7 @@ done = False
 
 def google_calendar():
     maintenance = []
-    notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
+    notice = []
 
     now = datetime.datetime.utcnow().isoformat() + 'Z'
     SCOPES = 'https://www.googleapis.com/auth/calendar'
@@ -46,7 +46,7 @@ def google_calendar():
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
     except httplib2.ServerNotFoundError:
-        pass
+        notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     return maintenance, notice
 

@@ -7,7 +7,6 @@ from django.template.loader import get_template
 from itertools import zip_longest
 import datetime
 import io
-import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required

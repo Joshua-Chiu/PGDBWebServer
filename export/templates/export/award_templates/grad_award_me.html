@@ -17,6 +17,7 @@
                 <tr><td>Total 08-12: </td><td>{{ grade.cumulative_SE|add:grade.cumulative_AT|add:grade.cumulative_SC|add:grade.cumulative_FA|floatformat:"2" }}</td></tr>
             {% endifequal %}
         {% endfor %}
+        {% comment %}
         <tr>
             <td>PINS:</td>
             <td>Silver: {{ student.silver_pin }}</td>
@@ -24,6 +25,7 @@
             <td>Gold+: {{ student.goldPlus_pin }}</td>
             <td>Platinum: {{ student.platinum_pin }}</td>
         </tr>
+        {% endcomment %}
         </table>
         <hr>
     {% endfor %}
