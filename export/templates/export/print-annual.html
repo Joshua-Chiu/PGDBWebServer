@@ -74,7 +74,11 @@
     </div>
 
     {% if student_list %}
-        {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+        {% if award == "big-block" %}
+            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+        {% else %}
+            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+        {% endif %}
     {% endif %}
 
 {% endblock %}

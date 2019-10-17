@@ -1,0 +1,42 @@
+<h2>Service Candidates</h2>
+
+<div id="AnnualList">
+    {% for student in student_list %}
+        <table>
+            <tr>
+                <td>CANDIDATE: </td>
+                <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
+
+                {% for gr in student.grade_set.all %}
+                    <tr>
+                    <td>GR {{ gr.grade|stringformat:"02d"|add:"0" }}:</td>
+                        {% for point in gr.points_set.all %}
+                            {% ifequal "SE" point.type.catagory %}
+                                <td>
+                                    <span class="point">{{ point.amount }}</span>
+                                    <span class="code description">{{ point.type.description }}</span>
+                                    <span>&emsp;</span>
+                                </td>
+                            {% endifequal %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            <tr>
+                {% for gr in student.grade_set.all %}
+                    {% ifequal gr.grade grade %}
+                        <td>TOTAL:</td>
+                        <td>Current Year: {{ gr.SE_total|floatformat:"2" }}</td>
+                        <td>
+                            Cumulative:
+
+                                {% ifequal grade gr.grade|stringformat:"02d"|add:"0" %}
+                                        {{ gr.cumulative_SE|floatformat:"2" }}
+                                {% endifequal %}
+                        </td>
+                    {% endifequal %}
+                {% endfor %}
+            </tr>
+        </table>
+        <hr>
+    {% endfor %}
+</div>

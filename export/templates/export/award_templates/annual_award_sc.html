@@ -1,0 +1,18 @@
+<h2>Scholar Candidates</h2>
+
+<div id="AnnualList">
+    {% for student in student_list %}
+        <table>
+            <tr>
+                <td>CANDIDATE: </td>
+                <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
+            </tr>
+                {% for gr in student.grade_set.all %}
+                    {% ifequal grade gr.grade|stringformat:"02d"|add:"0" %}
+                        <tr><td>Grade {{ grade }} T1: {{ gr.scholar_set.all.0.term1|floatformat:"3" }}</td><td>Grade {{ grade }} T2: {{ gr.scholar_set.all.0.term2|floatformat:"3" }}</td></tr>
+                    {% endifequal %}
+                {% endfor %}
+        </table>
+        <hr>
+    {% endfor %}
+</div>
