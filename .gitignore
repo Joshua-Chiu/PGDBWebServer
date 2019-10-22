@@ -14,3 +14,5 @@ data/__pycache__
 .tags
 .DS_Store
 uploads/
+staticfiles/
+
