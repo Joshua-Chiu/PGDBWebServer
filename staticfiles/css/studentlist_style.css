@@ -1,0 +1,66 @@
+table {
+    border-collapse: collapse;
+}
+
+.index td, th {
+    border: 1px solid black;
+}
+
+.student ul {
+    border: none;
+    list-style-type: disc;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.student td{
+    /* border: 1px solid black; */
+    overflow-y: auto;
+}
+
+.sortable th{
+    text-align: left;
+}
+
+table.sortable tbody tr:nth-child(2n) td {
+  background: inherit;
+}
+table.sortable tbody tr:nth-child(2n+1) td {
+  background: #ccffff;
+}
+
+table.sortable th::after, th.sorttable_sorted::after, th.sorttable_sorted_reverse::after {
+  content: " ";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+/* The alert message box */
+.alert{
+    position: fixed;
+    bottom:0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: grey; /* Red */
+    color: white;
+}
+
+/* The close button */
+.closebtn {
+  margin-right: 2%;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}

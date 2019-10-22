@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from util.converter import wdb_convert
 from threading import Thread
 
+from axes.utils import reset
 from .ajax_views import *
 
 logs = []
@@ -318,6 +319,8 @@ def index(request):
         'student_list': Student.objects.all(),
         'recent': Points.objects.all().order_by('-id')[:100],
     }
+    if request.user.is_authenticated:
+        reset(username=request.user.username)
 
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

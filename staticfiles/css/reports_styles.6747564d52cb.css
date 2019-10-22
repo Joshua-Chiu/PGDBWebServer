@@ -1,0 +1,47 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .GeneratedList {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 10px;
+        right: 10px;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+.heading {
+
+}
+
+.default {
+    color: black;
+}
+
+.sortable {
+    display: inline-block;
+    list-style-type: none;
+    border: 1px solid black;
+}
+
+.sortable th {
+    text-align: left;
+    border: 1px solid black;
+}
+
+.sortable td {
+    border: 1px solid black;
+}
+
+.gradList table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: inherit}

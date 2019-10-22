@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import authenticate, login
-from axes.utils import reset
+
 
 def index(request):
     return HttpResponseRedirect('/')
@@ -13,5 +13,4 @@ def login(request):
         user = authenticate(request=request, username=username, password=password)  # checking username and pwd
         if user is not None:
             if user.is_active:
-                reset(username=username)
                 login(request, user)

@@ -9,6 +9,7 @@ import dateutil.parser
 import httplib2
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
+from axes.utils import reset
 
 logs = []
 done = False
@@ -270,3 +271,8 @@ def ajax_import_status(request):
     }
 
     return JsonResponse(data)
+
+
+def reset_users(request):
+    reset(request.GET['username'])
+    return HttpResponseRedirect(request.path)

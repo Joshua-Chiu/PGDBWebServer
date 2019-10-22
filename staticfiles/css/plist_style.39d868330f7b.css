@@ -1,0 +1,8 @@
+input[type=number]{
+    width: 70px;
+}
+
+table{
+    float: left;
+    margin-left: 10px;
+}
