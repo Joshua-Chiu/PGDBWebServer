@@ -7,10 +7,14 @@ register = template.Library()
 
 
 class CustomUser(AbstractUser):
+    # Personalization Fields
     autofocus = models.IntegerField(default=1,
                                     choices=[(1, 'Service'), (2, 'Athletics'), (3, 'Fine Arts'), (4, 'Scholar T1'),
                                              (5, 'Scholar T2')])
+    header_colour = models.CharField(max_length=7, default='#ADD8E6')
+    page_colour = models.CharField(max_length=7, default='#ADD8E6')
 
+    # Permission Booleans
     can_view = models.BooleanField(default=False, verbose_name='Can view student page',
                                    help_text="Designates whether the user can see the student view. Note: If a user is a superuser, this is disregarded.")
 

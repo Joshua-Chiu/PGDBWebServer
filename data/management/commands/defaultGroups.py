@@ -34,7 +34,8 @@ GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
 PERMISSIONS = ['change', ]  # For now only view permission by default for all, others include add, delete, change
 
-POINTTYPES = [
+POINT_TYPES = [
+    ['SE', 0, 'See Comment Area'],
     ['SE', 1, 'Service Club'],
     ['SE', 2, 'Special Teacher Service'],
     ['SE', 3, 'Library Club'],
@@ -98,6 +99,7 @@ POINTTYPES = [
     ['SE', 67, 'Service to Science Dep\'t'],
     ['SE', 68, 'Team Coach (for service)'],
 
+    ['AT', 0, 'See Comment Area'],
     ['AT', 1, 'Bantam Fieldhockey'],
     ['AT', 2, 'Juvenile Fieldhockey'],
     ['AT', 3, 'Junior Fieldhockey'],
@@ -139,6 +141,7 @@ POINTTYPES = [
     ['AT', 73, 'Cheerleading / Dance Team'],
     ['AT', 74, 'Team Manager (athletic points)'],
 
+    ['FA', 0, 'See Comment Area'],
     ['FA', 1, 'Vocal Jazz'],
     ['FA', 2, 'Choir'],
     ['FA', 3, 'Stage Hand'],
@@ -167,7 +170,6 @@ POINTTYPES = [
     ['FA', 27, 'Music Department - Choir'],
     ['FA', 27, 'Music Department - Concert'],
     ['FA', 27, 'Music Department Activity'],
-
 ]
 
 
@@ -211,7 +213,7 @@ class Command(BaseCommand):
                 Group.objects.get(name=group).user_set.add(user)
             print(f"Updated '{username}' and with groups '{groups}'")
 
-        for u in POINTTYPES:
+        for u in POINT_TYPES:
             category, code, description = u
             if len(description) >= 30:
                 print(f'Error creating Code {code} due to description length')

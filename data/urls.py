@@ -13,13 +13,18 @@ urlpatterns = [
     path('settings/plist', views.plist, name='plist'),
     path('settings/codes/submit', views.codes_submit, name='codes_submit'),
     path('settings/plist_submit', views.plist_submit, name='plist_submit'),
+
     path('help', views.help, name='help'),
+
     path('archive', views.archive, name='archive'),
     path('archive_file', views.archive_file, name='archive_file'),
     path('archive_submit', views.archive_submit, name='archive_submit'),
     path('archive_wdb_submit', views.archive_wdb_submit, name='archive_wdb_submit'),
+
+    path('personalisation', views.personalisation, name='personalisation'),
+    path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
-    path('status', views.ajax_import_status, name='status'),
+
     path('ajax/import_status/', views.ajax_import_status, name='ajax_import_status'),
     path('ajax/student_cumulative_data/', views.ajax_student_cumulative_data, name='ajax_student_cumulative_data'),
     path('ajax/student_points_data/', views.ajax_student_points_data, name="ajax_student_points_data")

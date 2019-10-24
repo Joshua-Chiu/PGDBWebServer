@@ -32,7 +32,7 @@
                 <div class="dropdown-content">
                     <a href="{% url 'data:codes' %}">Codes</a>
                     <a href="{% url 'data:plist' %}">Modify Plist</a>
-                    <a href="{% url 'data:archive' %}">Converters</a>
+                    <a href="{% url 'data:personalisation' %}">Personalize Site</a>
                 </div>
             </div>
         </li>
@@ -63,6 +63,10 @@
                 </div>
             </div>
         </li>
+        {% else %}
+            <li>
+            <a href="{% url 'data:personalisation' %}">Personalize Site</a>
+            </li>
         {% endif %}
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">

@@ -330,6 +330,27 @@ def index(request):
         return HttpResponseRedirect('/')
 
 
+@login_required
+def personalisation(request):
+    template = get_template('data/personalisation.html')
+    context = {
+        'user': request.user
+    }
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def personalisation_submit(request):
+    user = request.user
+    items = request.POST
+
+    user.header_colour = items['top']
+    user.page_colour = items['page']
+    user.save()
+
+    return HttpResponseRedirect('/data/personalisation')
+
+
 def help(request):
     template = get_template('data/help.html')
     context = {}

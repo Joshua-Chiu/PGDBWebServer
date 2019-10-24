@@ -1,0 +1,26 @@
+{% extends 'data/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Personalisations{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <form action="{% url "data:personalisation_submit" %}" name="personal" method="post">
+    <table>
+        <tr><td><label for="first">First Name:</label></td><td><input id="first" type="text" value="{{ user.first_name }}" disabled></td></tr>
+        <tr><td><label for="last">Last Name:</label></td><td><input id="last" type="text" value="{{ user.last_name }}" disabled></td></tr>
+        <tr><td><label for="top">Top bar colour:</label></td><td><input type="color" name="top" id="top" value="{{ user.header_colour }}"></td></tr>
+        <tr><td><label for="page">Page colour:</label></td><td><input type="color" name="page" id="page" value="{{ user.page_colour }}"></td></tr>
+    </table>{% csrf_token %}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
+
+

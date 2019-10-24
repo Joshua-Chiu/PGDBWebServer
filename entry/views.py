@@ -90,7 +90,6 @@ def scholar_submit(request):
 
 def scholar_upload_file(request):
     error_msgs = []
-    entered_by = request.user
     if request.method == "POST":
         if "file" in request.FILES:
             for line in request.FILES['file']:

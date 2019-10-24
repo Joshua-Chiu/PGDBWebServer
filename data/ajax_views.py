@@ -46,7 +46,8 @@ def google_calendar():
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
-    except httplib2.ServerNotFoundError:
+    # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
+    except:
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     return maintenance, notice
