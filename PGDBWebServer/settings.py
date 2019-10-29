@@ -172,7 +172,7 @@ SERVER_EMAIL = 'pointgreydb@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY', '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')
+EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
