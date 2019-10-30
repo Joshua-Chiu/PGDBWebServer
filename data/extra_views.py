@@ -1,6 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 import os
 import datetime
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.template.loader import render_to_string
+
 from .models import Student, PointCodes, PlistCutoff
 
 from django.db import close_old_connections
@@ -277,3 +280,12 @@ def ajax_import_status(request):
 def reset_users(request):
     reset(request.GET['username'])
     return HttpResponseRedirect(request.path)
+
+
+def custom_css(request):
+    css = static('base_style.css')
+    context = {
+        'user': request.user,
+    }
+    print(render_to_string(css, context))
+    return render_to_string(css, context)

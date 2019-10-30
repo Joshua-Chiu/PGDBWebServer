@@ -14,7 +14,7 @@ from util.converter import wdb_convert
 from threading import Thread
 
 from axes.utils import reset
-from .ajax_views import *
+from .extra_views import *
 
 logs = []
 
