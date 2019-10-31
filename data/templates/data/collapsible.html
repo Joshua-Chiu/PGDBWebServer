@@ -64,12 +64,12 @@
             <td rowspan="2">
                     <label for="scholar">T1 Average: </label>
                     <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
-                    <input type="checkbox" checked><!--nullify average; don't assign points-->
+                    <label><input class="scholar" name="{{grade}} SC T1 NULLIFY" type="checkbox"></label><!--nullify average; don't assign points-->
                 <br>
 
                     <label for="scholar">T2 Average: </label>
                     <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
-                    <input type="checkbox" checked><!--nullify average; don't assign points-->
+                    <label><input class="scholar" name="{{grade}} SC T2 NULLIFY" type="checkbox"></label><!--nullify average; don't assign points-->
                 <br>
 
                     <label for="scholar">T1 Plist:
@@ -81,10 +81,10 @@
             </td>
             <!-- Annual awards -->
             <td rowspan="2">
-                <input type="checkbox" checked><!--nullify certificate; do assign points--><span id="annual SE {{ grade }}">Calculating...</span><br>
-                <input type="checkbox" checked><!--nullify certificate; do assign points--><span id="annual AT {{ grade }}"></span><br>
-                <input type="checkbox" checked><!--nullify certificate; do assign points--><span id="annual FA {{ grade }}"></span><br>
-                <input type="checkbox" checked><!--nullify certificate; do assign points--><span id="annual SC {{ grade }}"></span> <span id="annual PL {{ grade }}"></span>
+                <label><input name="SE {{ grade }} NULLIFY" type="checkbox"></label><!--nullify certificate; do assign points--><span id="annual SE {{ grade }}">Calculating...</span><br>
+                <label><input name="SE {{ grade }} NULLIFY" type="checkbox"></label><!--nullify certificate; do assign points--><span id="annual AT {{ grade }}"></span><br>
+                <label><input name="SE {{ grade }} NULLIFY" type="checkbox"></label><!--nullify certificate; do assign points--><span id="annual FA {{ grade }}"></span><br>
+                <label><input name="SE {{ grade }} NULLIFY" type="checkbox"{% if certificates.service %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual SC {{ grade }}"></span> <span id="annual PL {{ grade }}"></span>
 
 <br>
             </td>

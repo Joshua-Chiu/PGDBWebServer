@@ -20,7 +20,7 @@
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
-                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 %}
+                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 certificates=grade.certificates.all.0 %}
                 {% endifequal %}
             {% endfor %}
         {% endfor %}

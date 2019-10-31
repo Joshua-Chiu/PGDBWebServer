@@ -281,11 +281,3 @@ def reset_users(request):
     reset(request.GET['username'])
     return HttpResponseRedirect(request.path)
 
-
-def custom_css(request):
-    css = static('base_style.css')
-    context = {
-        'user': request.user,
-    }
-    print(render_to_string(css, context))
-    return render_to_string(css, context)

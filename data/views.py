@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes, PlistCutoff, Grade, Points
+from .models import Student, PointCodes, PlistCutoff, Grade, Points, Certificates
 from configuration.models import Configuration
 from users.models import CustomUser
 from django.template.loader import get_template

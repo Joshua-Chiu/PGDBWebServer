@@ -317,8 +317,8 @@ class Awards(models.Model):
 
 class Certificates(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    service = models.BooleanField()
-    athletics = models.BooleanField()
-    honour = models.BooleanField()
-    p_list = models.BooleanField()
-    fine_arts = models.BooleanField()
+    service = models.BooleanField(default=True)
+    athletics = models.BooleanField(default=True)
+    honour = models.BooleanField(default=True)
+    p_list = models.BooleanField(default=True)
+    fine_arts = models.BooleanField(default=True)
