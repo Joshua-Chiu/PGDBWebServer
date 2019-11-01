@@ -20,7 +20,7 @@
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
-                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 certificates=grade.certificates.all.0 %}
+                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 certificates=grade.certificates_set.all.0 %}
                 {% endifequal %}
             {% endfor %}
         {% endfor %}
@@ -165,5 +165,45 @@ $(document).ready(function() {
         }
     })
 });
+
+function validate(type) {
+    switch(type) {
+        case 'SE':
+            alert("This nullifies a student's standing for the annual SERVICE certificate. This does not impacts the student's cumulative points total.\n\n" +
+                "Checked = Student will receive the SERVICE certificate\n\n" +
+                "Unchecked = Student will not receive the SERVICE certificate");
+            break;
+        case 'AT':
+            alert("This nullifies a student's standing for the annual ATHLETIC certificate. This does not impacts the student's cumulative points total.\n\n" +
+                "Checked = Student will receive the ATHLETIC certificate\n\n" +
+                "Unchecked = Student will not receive the ATHLETIC certificate");
+            break;
+        case 'SC':
+        alert("This nullifies a student's standing for the annual HONOUR ROLL/PRINCIPAL'S certificate. This does not impacts the student's cumulative points total.\n\n" +
+            "Checked = Student will receive the HONOUR ROLL/PRINCIPAL'S certificate\n\n" +
+            "Unchecked = Student will not receive the HONOUR ROLL/PRINCIPAL'S certificate");
+            break;
+        case 'FA':
+            alert("This nullifies a student's standing for the annual FINE ARTS certificate. This does not impacts the student's cumulative points total.\n\n" +
+                "Checked = Student will receive the FINE ARTS certificate\n\n" +
+                "Unchecked = Student will not receive the FINE ARTS certificate");
+            break;
+        case 'T1':
+            alert("This nullifies a student's academic points for Term 1. This impacts the student's cumulative points total.\n\n" +
+                "Checked = Student will receive points gained from their academic standing\n\n" +
+                "Unchecked = Student will not receive points gained from their academic standing");
+            break;
+        case 'T2':
+            alert("This nullifies a student's academic points for Term 2. This impacts the student's cumulative points total.\n\n" +
+                "Checked = Student will receive points gained from their academic standing\n\n" +
+                "Unchecked = Student will not receive points gained from their academic standing");
+            break;
+        default:
+            alert
+            ("This nullifies a student's standing for annual/cumulative awards.\n\n" +
+                "Checked = Points are accounted for/Student will receive the selected certificate\n\n" +
+                "Unchecked = Points are removed from the cumulative total/Student will not receive the selected certificate\n\n");
+    }
+}
 </script>
 {% endblock %}

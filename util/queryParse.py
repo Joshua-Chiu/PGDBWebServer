@@ -92,23 +92,23 @@ def parseQuery(query):
 
                         type, grade = v.split("_")
                         for s in students:
+                            grade_set = s.grade_set.get(grade=int(grade))
                             if type == "SE":
-                                if not s.grade_set.get(grade=int(grade)).SE_total > 9.5:
+                                if not (grade_set.SE_total > 9.5 and grade_set.certificates_set.first().service):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "AT":
-                                if not s.grade_set.get(grade=int(grade)).AT_total > 9.5:
+                                if not (grade_set.AT_total > 9.5 and grade_set.certificates_set.first().athletics):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "FA":
-                                if not s.grade_set.get(grade=int(grade)).FA_total > 9.5:
+                                if not (grade_set.FA_total > 9.5 and grade_set.certificates_set.first().fine_arts):
                                     new_students = new_students.exclude(id=s.id)
 
                             elif type == "honourroll":
-                                if not s.grade_set.get(grade=int(grade)).honourroll:
+                                if not (grade_set.honourroll and grade_set.certificates_set.first().honour):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "principalslist":
-                                if not s.grade_set.get(grade=int(grade)).principalslist:
+                                if not (grade_set.principalslist and grade_set.certificates_set.first().honour):
                                     new_students = new_students.exclude(id=s.id)
-
 
                         students = new_students
 

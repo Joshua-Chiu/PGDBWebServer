@@ -65,13 +65,15 @@ def student_submit(request, num):
     items = list(request.POST.items())
     anecdotes = [item for item in items if "anecdote" in item[0] != -1]
     points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
-    scholar_fields = [item for item in items if item[0].find("SC") != -1]
+    scholar_fields = [item for item in items if item[0].find(" SC ") != -1]
     points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
+    nullification = dict(item for item in items if item[0].find("nullify") != -1)
+    print(nullification)
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
-        print(anecdote[1], n)
+        # print(anecdote[1], n)
         grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
@@ -143,6 +145,19 @@ def student_submit(request, num):
 
                 grade = student.grade_set.get(grade=grade_num)
                 grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
+
+    # nullification TODO: make it figure out the unposted unchecked boxes from html
+    for grade_num in range(8, int(student.homeroom[:2]) + 1):
+        grade = student.grade_set.get(grade=grade_num)
+        cert = grade.certificates_set.all().first()
+        cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
+        cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
+        # print(cert.service)
+        cert.save()
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
