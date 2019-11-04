@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}{% if award_type_display %}{{ award_type_display }}{% else %}Data{% endif %} Crosscheck{% endblock %}
+{% block title %}{% if award_type_display %}Grade {{ grade_num }} {{ year }}-{{ year|add:1 }} {{ award_type_display }}{% else %}Data{% endif %} Crosscheck{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -20,7 +20,7 @@
 
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
-            <label>Grade:<select name="grade">
+            <label>Grade: <select name="grade">
                 <option {% ifequal grade_num 08 %}selected{% endifequal %} value="08" >Grade 08</option>
                 <option {% ifequal grade_num 09 %}selected{% endifequal %} value="09" >Grade 09</option>
                 <option {% ifequal grade_num 10 %}selected{% endifequal %} value="10" >Grade 10</option>
@@ -30,7 +30,7 @@
 
             <label>Year: <select name="year" id="year"></select></label>
 
-            <label>Type:<select name="type">
+            <label>Type: <select name="type">
                 <option value="" >Select</option>
                 <option {% ifequal award_type "SE" %}selected{% endifequal %} value="SE"> Service</option>
                 <option {% ifequal award_type "AT" %}selected{% endifequal %} value="AT">Athletics</option>

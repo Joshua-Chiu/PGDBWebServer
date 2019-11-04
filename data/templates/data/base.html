@@ -93,7 +93,7 @@
         var title = {% if type %}'{{ type }}'{% else %}document.title{% endif %};
 
         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-        mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}</style>');
+        mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}</style>');
         mywindow.document.write('</head><body>');
         mywindow.document.write('<h3>' + title  + '</h3>');
         mywindow.document.write(document.getElementById(elem).innerHTML);
