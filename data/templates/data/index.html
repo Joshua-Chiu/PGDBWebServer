@@ -23,7 +23,7 @@
         {% for log in recent %}
             <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>{{ log.amount }} Points for {{ log.type.description }} in Grade {{ log.Grade.grade }}&emsp14; </td><td>{% if log.entered_by.username %}{{ log.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
         {% endfor %}
-            <tr><td colspan="3"><a href="#">Show All</a></td></tr>
+            <tr><td colspan="3"><a href="javascript:showData();">Show All</a></td></tr>
         </table>
     </div>
     <div style="float: left; overflow: auto; height: 260px;">
@@ -47,7 +47,7 @@
     </div>
     <div style="clear: both;">
         <hr>
-        <ul>
+        <ul id="list">
             <li><button class="btn" >Database Integrity Check</button></li>
             <li>Student Statistics</li>
         </ul>
@@ -69,11 +69,38 @@
 
 {% block javascript %}
     <script>
-    function myAlertBottom(){
-      $("alert").show();
-      setTimeout(function(){
-        $("alert").hide();
-      }, 2000);
+    function showData() {
+        const mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.documentElement.innerHTML = '';
+        var title = 'View all entries';
+
+        mywindow.document.write('<html><head><title>' + 'View all entries' + '</title>');
+        mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}</style>');
+        mywindow.document.write('</head><body>');
+        mywindow.document.write('<h3>' + 'Recent Actions | Point Grey Awards Database' + '</h3>');
+        mywindow.document.write('<ul id="list"><li>Loading...</li></ul>');
+
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+    }
+    </script>
+    <script>
+    function showAllData() {
+        $.ajax({
+        url: '{% url "data:ajax_all_points" %}',
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+            for(let i = 0; i < data.length; i++) {
+                var node = document.createElement("LI");
+                var point = data[i];
+                var textnode = document.createTextNode(point.student + ":\t " + point.point + " Points for " + point.description + " in Grade " + point.grade + " entered by " + point.enteredby);
+                node.appendChild(textnode);
+                document.getElementById("list").appendChild(node);
+            }
+        }})
     }
     </script>
 {% endblock %}

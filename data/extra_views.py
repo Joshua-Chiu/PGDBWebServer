@@ -4,7 +4,7 @@ import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string
 
-from .models import Student, PointCodes, PlistCutoff
+from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
 import xml.etree.ElementTree as ET
@@ -275,6 +275,23 @@ def ajax_import_status(request):
     }
 
     return JsonResponse(data)
+
+
+def ajax_all_points(request):
+    data = []
+    for point in Points.objects.all():
+        try:
+            entered_by = f"{point.entered_by.first} {point.entered_by.last}"
+        except:
+            entered_by = "Importer"
+        data.append({
+            'student': f"{point.Grade.Student.first} {point.Grade.Student.last}",
+            'point': point.amount,
+            'description': point.type.description,
+            'grade': point.Grade.grade,
+            'enteredby': entered_by,
+        })
+    return JsonResponse(data, safe=False)
 
 
 def reset_users(request):
