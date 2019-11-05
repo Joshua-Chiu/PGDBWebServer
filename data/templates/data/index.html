@@ -67,7 +67,7 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascript %}{% comment %}
     <script>
     function showData() {
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
@@ -108,5 +108,5 @@
             }
         }})
     }
-    </script>
+    </script>{% endcomment %}
 {% endblock %}
