@@ -48,7 +48,7 @@
     <div style="clear: both;">
         <hr>
         <ul id="list">
-            <li><button class="btn" >Database Integrity Check</button></li>
+            <li><button class="btn" onclick="alert('A check is being executed in the background.')">Database Integrity Check</button></li>
             <li>Student Statistics</li>
         </ul>
     </div>
@@ -76,23 +76,29 @@
 
         mywindow.document.write('<html><head><title>' + 'View all entries' + '</title>');
         mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}</style>');
-        mywindow.document.write('</head><body>');
+        mywindow.document.write('</head><body onload="injectThis()">');
         mywindow.document.write('<h3>' + 'Recent Actions | Point Grey Awards Database' + '</h3>');
         mywindow.document.write('<ul id="list"><li>Loading...</li></ul>');
 
-        mywindow.document.write('</body></html>');
+
+        var script = injectThis.toString();
+        mywindow.document.write('<script>' + script);
+
+        //mywindow.document.write('</body></html>');
 
         mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
     }
-    </script>
-    <script>
-    function showAllData() {
+    function injectThis() {
         $.ajax({
         url: '{% url "data:ajax_all_points" %}',
         data: {},
         dataType: 'json',
         success: function (data) {
+            var list = document.getElementById("list");
+            var listItems = list.getElementsByTagName("li");
+            var last = list.getElementsByTagName("li")[listItems.length-1];
+            list.removeChild(last);
             for(let i = 0; i < data.length; i++) {
                 var node = document.createElement("LI");
                 var point = data[i];
