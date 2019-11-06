@@ -3,7 +3,7 @@
 {% load mathfilters %}
 {% load staticfiles %}
 
-{% block title %}Graduation Candidates{% endblock %}
+{% block title %}{% if type %}{{ type }}{% else %}Trophy Candidates{% endif %}{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}

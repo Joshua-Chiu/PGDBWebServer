@@ -100,23 +100,35 @@ def print_annual(request):
 
 def print_grad(request):
     template = get_template('export/print-grad.html')
-
+    students, query = "", ""
     year = request.GET.get("year")
     award = request.GET.get("grad-awards")
 
-    query = f"grade_12_year:{year}"
-    students = parseQuery(query)
+    if request.GET:
+        query = f"grade_12_year:{year}"
+        students = parseQuery(query)
 
-    if not award == "ME":
-        students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
-    else:
-        students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:30]
+        if not award == "ME":
+            students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
+        else:
+            students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:30]
+
+        awards_dict = {
+            "SE": "SERVICE",
+            "AT": "ATHLETICS",
+            "SC": "SCHOLARSHIP",
+            "FA": "FINE ARTS",
+            "ME": "MERIT",
+        }
+
+        query = f"{year} - {int(year) + 1} {awards_dict[award]} GRADUATION CANDIDATES"
 
     context = {
         'student_list': students,
         'point_type': award,
         'year': year,
         'award': award,
+        'type': query,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

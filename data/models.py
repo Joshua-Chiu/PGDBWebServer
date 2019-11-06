@@ -63,10 +63,11 @@ class Student(models.Model):
         for i in range(8, grade + 1):
             try:
                 self.grade_set.get(grade=i)
-                self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
+                # self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
             except Grade.DoesNotExist:
                 self.grade_set.create(grade=i, start_year=self.grad_year - (13 - i))
                 self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
+                self.grade_set.get(grade=i).certificates_set.create()
 
         return super(Student, self).save(*args, **kwargs)
 
@@ -242,13 +243,14 @@ class Grade(models.Model):
     @property
     def SC_total(self):
 
-        def toPoints(avg):
-            if avg >= 79.50:
+        def toPoints(avg, null):
+            if avg >= 79.50 and null:
                 return math.sqrt(-(79 - avg)) + 1.4
             else:
                 return 0
 
-        return toPoints(self.scholar_set.all()[0].term1) + toPoints(self.scholar_set.all()[0].term2)
+        return toPoints(self.scholar_set.all()[0].term1, self.certificates_set.first().t1) + \
+               toPoints(self.scholar_set.all()[0].term2, self.certificates_set.first().t2)
 
     @property
     def honourroll(self):
@@ -317,8 +319,9 @@ class Awards(models.Model):
 
 class Certificates(models.Model):
     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    service = models.BooleanField()
-    athletics = models.BooleanField()
-    honour = models.BooleanField()
-    p_list = models.BooleanField()
-    fine_arts = models.BooleanField()
+    service = models.BooleanField(default=True)
+    athletics = models.BooleanField(default=True)
+    honour = models.BooleanField(default=True)
+    fine_arts = models.BooleanField(default=True)
+    t1 = models.BooleanField(default=True)
+    t2 = models.BooleanField(default=True)

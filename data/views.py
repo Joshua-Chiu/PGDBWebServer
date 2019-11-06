@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes, PlistCutoff, Grade, Points
+from .models import Student, PointCodes, PlistCutoff, Grade, Points, Certificates
 from configuration.models import Configuration
 from users.models import CustomUser
 from django.template.loader import get_template
 from itertools import zip_longest
-import datetime
 import io
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
@@ -14,7 +13,7 @@ from util.converter import wdb_convert
 from threading import Thread
 
 from axes.utils import reset
-from .ajax_views import *
+from .extra_views import *
 
 logs = []
 
@@ -65,13 +64,14 @@ def student_submit(request, num):
     items = list(request.POST.items())
     anecdotes = [item for item in items if "anecdote" in item[0] != -1]
     points_list = [item for item in items if item[0].find("points") != -1 or item[0].find("code") != -1]
-    scholar_fields = [item for item in items if item[0].find("SC") != -1]
+    scholar_fields = [item for item in items if item[0].find(" SC ") != -1]
     points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
+    nullification = dict(item for item in items if item[0].find("nullify") != -1)
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
-        print(anecdote[1], n)
+        # print(anecdote[1], n)
         grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
@@ -143,6 +143,17 @@ def student_submit(request, num):
 
                 grade = student.grade_set.get(grade=grade_num)
                 grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
+
+    for grade_num in range(8, int(student.homeroom[:2]) + 1):
+        grade = student.grade_set.get(grade=grade_num)
+        cert = grade.certificates_set.all().first()
+        cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
+        cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
+        cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
+        cert.save()
 
     return HttpResponseRedirect(f"/data/student/{num}")
 

@@ -42,3 +42,10 @@
     </body>
 {% endblock %}
 
+{% block javascript %}
+    <script>
+    $(document).ready(function(){
+        alert("Do not re-upload or refresh this page as this will duplicate all successful entries into the database.")
+    });
+    </script>
+{% endblock %}

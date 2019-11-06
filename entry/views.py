@@ -177,25 +177,25 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 # if it's the start line skip it
-                if line.decode("utf-8") == "Student Number,Last Name,Minutes of Service,Code\n":
+                if "Student Number,Last Name,Minutes of Service,Code" in line.decode("utf-8"):
                     if point_catagory == "SE":
                         continue
                     else:
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
-                if line.decode("utf-8") == "Student Number,Last Name,Athletic Points,Code\n":
+                if "Student Number,Last Name,Athletic Points,Code" in line.decode("utf-8"):
                     if point_catagory == "AT":
                         continue
                     else:
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
-                if line.decode("utf-8") == "Student Number,Last Name,Fine Art Points,Code\n":
+                if "Student Number,Last Name,Fine Art Points,Code" in line.decode("utf-8"):
                     if point_catagory == "FA":
                         continue
                     else:
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
-                if line.decode("utf-8") == "Student Number,Last Name,Average T1,Average T2\n":
+                if "Student Number,Last Name,Average T1,Average T2" in line.decode("utf-8"):
                     if point_catagory == "FA":
                         continue
                     else:
@@ -206,49 +206,47 @@ def upload_file(request, point_catagory):
                     continue
 
                 # print(line.decode("utf-8").strip())
-                print(line.decode("utf-8").strip().split(","))
+                # print(line.decode("utf-8").strip().split(","))
                 snum, last_name, minutes, code = line.decode("utf-8").strip().split(",")[:4]
 
                 points = float(minutes)
+                if int(snum) == 1234567:  # skip aardvark
+                    continue
                 if point_catagory == "SE":  # divide by 300 only if it's SE
                     points = '%.3f' % (int(minutes) / 300)
-                if point_catagory == "AT" and points > 6:  # check less than 6 for AT
-                    error_msgs.append(
-                        f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
-                        "POINTS EXCEEDED MAXIMUM VALUE")
-                    continue
-                if point_catagory == "FA" and points > 10:  # check less than 10 for FA
-                    error_msgs.append(
-                        f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
-                        "POINTS EXCEEDED MAXIMUM VALUE")
-                    continue
 
                 if Student.objects.filter(student_num__iexact=snum).exists():
                     student = Student.objects.get(student_num=int(snum))
                 else:
-                    error_msgs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
-                                "STUDENT NUMBER NOT FOUND")
+                    error_msgs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: STUDENT NUMBER NOT FOUND")
                     continue
 
-                if not student.last.lower() == last_name.lower():
-                    error_msgs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
-                                "LAST NAME MISMATCH")
-                    continue
-
-                grade = student.grade_set.get(grade=int(student.homeroom[:2]))
-
-                # create point type if missing
                 if PointCodes.objects.filter(catagory=point_catagory).filter(code=code).exists():
                     point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
                 else:
-                    error_msgs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: "
-                                "CODE UNDEFINED")
+                    error_msgs.append(f"Error: {points} point(s) of Code Type {point_catagory}{code} for {student.first} {student.last} ({student.student_num}) was not entered: CODE UNDEFINED")
                     continue
 
+                if not student.last.lower() == last_name.lower():
+                    error_msgs.append(
+                        f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was not entered: LAST NAME MISMATCH")
+                    continue
+
+                if point_catagory == "AT" and points > 6:  # check less than 6 for AT
+                    error_msgs.append(
+                        f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} "
+                        f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 6")
+                    continue
+                if point_catagory == "FA" and points > 10:  # check less than 10 for FA
+                    error_msgs.append(
+                        f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} "
+                        f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
+                    continue
+
+                grade = student.grade_set.get(grade=int(student.homeroom[:2]))
                 grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
                 error_msgs.append(
-                    f"Success: {points} point(s) of {point_type.description} for {student.first} {student.last} was "
-                    "entered.")
+                    f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
 
     template = get_template('entry/submission-summary.html')
     context = {
