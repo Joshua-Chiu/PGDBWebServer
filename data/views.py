@@ -124,7 +124,7 @@ def student_submit(request, num):
                 scholar = grade.scholar_set.all()[0]
                 scholar.term1 = t1
                 scholar.term2 = t2
-                if request.user.has_perm('data.change_scholar'):
+                if request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100):
                     scholar.save()
             else:
                 if point_field[1] == '' or code_field[1] == '':
@@ -132,6 +132,12 @@ def student_submit(request, num):
 
                 amount = float(point_field[1])
                 code = int(code_field[1])
+
+                # skip over invalid entries
+                if type == "AT" and amount > 6:
+                    continue
+                if type == "FA" and amount > 10:
+                    continue
 
                 # find the point class with the same code and category
                 try:
