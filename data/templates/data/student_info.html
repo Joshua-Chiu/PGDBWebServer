@@ -99,6 +99,14 @@ $(document).ready(function () {
         }
     });
   });
+{% comment %}
+$(document).ready(function () {
+   if('False' === {{ success }}) {
+       alert("Error");
+   }
+});
+{% endcomment %}
+
 // only jump to next key when value is valid
 $(".inputs").keyup(function () {
     if (this.value.length === this.maxLength && parseFloat(this.value) <= this.max) {

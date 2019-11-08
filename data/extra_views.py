@@ -3,7 +3,6 @@ import os
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string
-
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections

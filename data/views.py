@@ -16,6 +16,7 @@ from axes.utils import reset
 from .extra_views import *
 
 logs = []
+success = True
 
 
 @login_required
@@ -43,6 +44,7 @@ def search(request):
 
 
 def student_info(request, num):
+    global success
     template = get_template('data/student_info.html')
     student = Student.objects.get(id=num)
     context = {
@@ -50,6 +52,7 @@ def student_info(request, num):
         'plists': PlistCutoff.objects.all(),
         'config': Configuration.objects.get(),
         'current_grade': ''.join([n for n in student.homeroom if n.isdigit()]),
+        'success': success,
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -68,6 +71,8 @@ def student_submit(request, num):
     points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
     nullification = dict(item for item in items if item[0].find("nullify") != -1)
+    global success
+    success = True
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
@@ -124,8 +129,10 @@ def student_submit(request, num):
                 scholar = grade.scholar_set.all()[0]
                 scholar.term1 = t1
                 scholar.term2 = t2
-                if request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100):
-                    scholar.save()
+                success = True if (
+                            request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100)) else False
+                if success: scholar.save()
+
             else:
                 if point_field[1] == '' or code_field[1] == '':
                     continue
@@ -134,10 +141,8 @@ def student_submit(request, num):
                 code = int(code_field[1])
 
                 # skip over invalid entries
-                if type == "AT" and amount > 6:
-                    continue
-                if type == "FA" and amount > 10:
-                    continue
+                success = True if (type == "AT" and amount <= 6) or (type == "FA" and amount > 10) else False
+                if not success: continue
 
                 # find the point class with the same code and category
                 try:
