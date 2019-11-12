@@ -3,7 +3,6 @@ import os
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string
-
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
@@ -246,7 +245,7 @@ def import_pgdb_file(tree):
                         type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
                     g_obj.points_set.create(type=type, amount=float(p[2].text), )
-            logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
+            # logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
