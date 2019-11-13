@@ -160,7 +160,7 @@ AXES_ONLY_USER_FAILURES = True
 
 # Email Settings
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
-'''
+
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'Petheriotis'
@@ -175,7 +175,7 @@ EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
+'''
 DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.ca>"
 
 # Heroku Deployment Configurations
