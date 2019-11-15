@@ -20,9 +20,9 @@
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label>
             <a id="name" class="name">Student not found</a> |
-            <labeL>Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px"></labeL> =
+            <labeL>Minutes: <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px"></labeL> =
             <a id="hours" class="hours">NONE</a> |
-            <labeL>Code: <input class="code" type="number" name="code" value="" style="width: 40px"></labeL>
+            <labeL>Code: <input class="code" required="required" type="number" name="code" value="" style="width: 40px"></labeL>
             <a id="code" class="code">Code not found</a>
             <button value="submit">Submit</button>
             {% csrf_token %}
