@@ -24,6 +24,7 @@ urlpatterns = [
     path('personalisation', views.personalisation, name='personalisation'),
     path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
+    path('show-all', views.show_all, name='show-all'),
 
     path('ajax/import_status/', views.ajax_import_status, name='ajax_import_status'),
     path('ajax/student_cumulative_data/', views.ajax_student_cumulative_data, name='ajax_student_cumulative_data'),

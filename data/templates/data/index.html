@@ -67,9 +67,11 @@
     </div>
 {% endblock %}
 
-{% block javascript %}{% comment %}
+{% block javascript %}
     <script>
     function showData() {
+        window.open('{% url 'data:show-all' %}', 'SHOW-ALL', 'height=400,width=600')
+        /*
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
         mywindow.document.documentElement.innerHTML = '';
         var title = 'View all entries';
@@ -89,6 +91,9 @@
         mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
     }
+    </script>
+{% comment %}
+    <script>
     function injectThis() {
         $.ajax({
         url: '{% url "data:ajax_all_points" %}',

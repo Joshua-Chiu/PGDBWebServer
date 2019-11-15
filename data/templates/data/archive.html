@@ -15,7 +15,7 @@
     <h4>Import .pgdb Archive File</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">
         <!--<input type="submit" value="Upload .pgdb Archive" name="submit">-->
-        <input type="file" name="file" id="file" onchange="form.submit()" >
+        <input type="file" name="file" id="file" onchange="form.submit()" accept=".pgdb">
         {% csrf_token %}
     </form>
     <hr>
@@ -31,7 +31,7 @@
         </select>
         of
         <select name="start-year" id="year"></select>
-        <input type="file" name="file" id="file" onchange="form.submit()" >
+        <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
         {% csrf_token %}
     </form>
     <hr>
@@ -45,7 +45,7 @@
                 <option value="11" >Grade 11</option>
                 <option value="12" >Grade 12</option>
         </select></label>
-        <input type="file" name="file" id="file" onchange="form.submit()" >
+        <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
         {% csrf_token %}
         <label>Inadmissible course codes (YCPM, YBMO,...) <input style="width: 500px;" type="text" value="YCPM, YBMO, YIPS, MCE8, MCE9"></label>
     </form>

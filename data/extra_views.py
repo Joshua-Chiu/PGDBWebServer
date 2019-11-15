@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonRespons
 import os
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
@@ -235,7 +235,7 @@ def import_pgdb_file(tree):
 
                 g_obj.save()
 
-                for p in g[5]:  # fix so that the codes are the last 2 digits instead of last 4
+                for p in g[5]:  # TODO fix so that the codes are the last 2 digits instead of last 4
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
                             code=int(p[1].text))) == 0):
                         type = PointCodes(catagory=p[0].text, code=int(p[1].text),
@@ -276,9 +276,16 @@ def ajax_import_status(request):
     return JsonResponse(data)
 
 
+def show_all(request):
+    template = get_template('data/all-points.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+
 def ajax_all_points(request):
     data = []
-    for point in Points.objects.all():
+    for point in Points.objects.all().order_by('-id'):
         try:
             entered_by = f"{point.entered_by.first} {point.entered_by.last}"
         except:

@@ -29,7 +29,7 @@
         <h4>Form entry</h4>
             <p>Visit the home/help page to access import template files</p>
             <form action="{% url 'entry:scholar_upload_file' %}" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" id="file" onchange="form.submit();">
+                <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
                 {% csrf_token %}
             </form>
     </body>

@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'PGDBWebServer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-## old mysqlite database
+# old mysqlite database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -101,6 +101,18 @@ DATABASES = {
         'PORT': ''
     }
 }
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'YFY58iec5X',
+        'USER': 'YFY58iec5X',
+        'PASSWORD': 'nVJ49D7S2T',
+        'HOST': 'remotemysql.com',
+        'PORT': '3306'
+    }
+}
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
