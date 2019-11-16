@@ -48,6 +48,7 @@
                        document.getElementById('name').innerHTML=data.student_name;
                        $('input[name=t1]').val(data.t1);
                        $('input[name=t2]').val(data.t2);
+                       if(data.student_name !== "Student not found") document.getElementsByName('t1')[0].focus();
                }
            });
         });

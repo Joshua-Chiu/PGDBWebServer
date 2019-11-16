@@ -72,6 +72,7 @@
                dataType: 'json',
                success: function (data) {
                        document.getElementById('name').innerHTML=data.student_name;
+                       if(data.student_name !== "Student not found") document.getElementsByName('minutes')[0].focus();
                }
            });
         });

@@ -15,13 +15,13 @@ class CustomUser(AbstractUser):
     page_colour = models.CharField(max_length=7, default='#ADD8E6')
 
     # Permission Booleans
-    can_view = models.BooleanField(default=False, verbose_name='Can view student page',
-                                   help_text="Designates whether the user can see the student view. Note: If a user is a superuser, this is disregarded.")
+    can_view = models.BooleanField(default=False, verbose_name='Can view student page with all information',
+                                   help_text="Designates whether the user can see the student view with all the data. Note: If a user is a superuser, this is disregarded.")
 
-    no_entry = models.BooleanField(default=True, verbose_name='No entry at student page',
+    no_entry = models.BooleanField(default=True, verbose_name='Disable entry at student page',
                                    help_text="Designates whether the user can enter data at the student view. Note: If a user is a superuser, this is disregarded.")
 
-    can_upload = models.BooleanField(default=False, verbose_name='Upload at Direct',
+    can_upload = models.BooleanField(default=False, verbose_name='Bulk upload at Direct Entry',
                                      help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
 
     @register.filter(name='has_group')
