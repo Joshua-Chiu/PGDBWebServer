@@ -141,7 +141,7 @@ def student_submit(request, num):
                 code = int(code_field[1])
 
                 # skip over invalid entries
-                success = True if (type == "AT" and amount <= 6) or (type == "FA" and amount > 10) else False
+                success = True if type == "SE" or (type == "AT" and amount <= 6) or (type == "FA" and amount <= 10) else False
                 if not success: continue
 
                 # find the point class with the same code and category
