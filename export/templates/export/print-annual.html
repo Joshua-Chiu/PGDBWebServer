@@ -2,7 +2,6 @@
 
 {% load mathfilters %}
 {% load staticfiles %}
-{% load async_include %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Annual Awards{% endif %}{% endblock %}
 
@@ -76,9 +75,9 @@
 
     {% if student_list %}
         {% if award == "big-block" %}
-            {% async_include 'export/award_templates/student_list.html' with student_list=student_list %}
+            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
         {% else %}
-            {% async_include 'export/award_templates/student_list.html' with student_list=student_list %}
+            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
         {% endif %}
     {% endif %}
 
