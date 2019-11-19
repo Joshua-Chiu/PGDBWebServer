@@ -2,6 +2,7 @@
 
 {% load mathfilters %}
 {% load staticfiles %}
+{% load async_include %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Trophy Candidates{% endif %}{% endblock %}
 
@@ -47,19 +48,19 @@
     </div>
     <div id="GradList">
         {% ifequal award "SE" %}
-            {% include 'export/award_templates/annual_award_se.html' with student_list=student_list grade=grade %}
+            {% async_include 'export/award_templates/annual_award_se.html' with student_list=student_list grade=grade %}
         {% endifequal %}
 
         {% ifequal award "AT" %}
-            {% include 'export/award_templates/annual_award_at.html' with student_list=student_list grade=grade %}
+            {% async_include 'export/award_templates/annual_award_at.html' with student_list=student_list grade=grade %}
         {% endifequal %}
 
         {% ifequal award "SC" %}
-            {% include 'export/award_templates/annual_award_sc.html' with student_list=student_list grade=grade %}
+            {% async_include 'export/award_templates/annual_award_sc.html' with student_list=student_list grade=grade %}
         {% endifequal %}
 
         {% ifequal award "FA" %}
-            {% include 'export/award_templates/annual_award_fa.html' with student_list=student_list grade=grade %}
+            {% async_include 'export/award_templates/annual_award_fa.html' with student_list=student_list grade=grade %}
         {% endifequal %}
     </div>
 

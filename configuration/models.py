@@ -6,7 +6,8 @@ from django.conf import settings
 
 class Configuration(models.Model):
     principal_signature = models.ImageField(upload_to='export/uploads', default='export/uploads/signbox.png',
-                                            help_text="Please upload a PNG file with dimensions 250x100")
+                                            help_text="Please upload a PNG file with dimensions 250x100\n"
+                                                      "A blank signature requires the upload of a white .png")
     login_failure_limit = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=3)
 
     se_help_text = models.CharField(max_length=50, verbose_name='Service Help Text', default='Service')
