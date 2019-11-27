@@ -36,10 +36,7 @@ def parseQuery(query):
                 else:
                     # pretend there is a grade attribute
                     if k == 'grade':
-                        if len(v) == 1:
-                            v = '0' + v
-                        # print('homeroom__contains', v)
-                        students = students.filter(**{'homeroom__contains': v})
+                        students = students.filter(cur_grade=int(v))
 
                     # grade_00_year
                     elif k[:6] == "grade_" and k[8:] == "_year":
