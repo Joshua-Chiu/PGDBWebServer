@@ -117,7 +117,7 @@ class Student(models.Model):
                                               help_text="This number must be unique as it is used to identify students")
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     cur_grade_num = models.IntegerField(verbose_name="current grade")
-    homeroom_char = models.CharField(max_length=1, verbose_name="Homeroom letter")
+    homeroom_char = models.CharField(max_length=1, verbose_name="Homeroom letter", default="#")
     last_modified = models.DateField(auto_now=True)
 
     grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
