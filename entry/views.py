@@ -261,17 +261,17 @@ def validate_student_name(request):
     student = Student.objects.filter(student_num__iexact=student_id)
     if student.exists():
         student = student[0]
-        grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+        # grade = student.grade_set.get(grade=int(student.homeroom[:2]))
         data = {
             'student_name': student.first + " " + student.last,
-            't1': round(grade.scholar_set.all()[0].term1, 3),
-            't2': round(grade.scholar_set.all()[0].term2, 3),
+            # 't1': round(grade.scholar_set.all()[0].term1, 3),
+            # 't2': round(grade.scholar_set.all()[0].term2, 3),
         }
     else:
         data = {
             'student_name': "Student not found",
-            't1': '0',
-            't2': '0',
+            # 't1': '0',
+            # 't2': '0',
         }
     return JsonResponse(data)
 
