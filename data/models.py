@@ -99,12 +99,15 @@ for i in range(8, 12+1):
 
 
 class Student(models.Model):
-    def __init__(self, *args, **kwargs):
-        if Grade_8 == None:
+    def save(self, *args, **kwargs):
+        if self.grade_8 == None:
             for i in range(8, 12+1):
-                setattr(self, f"Grade_{i}", globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i))
-                getattr(self, f"Grade_{i}").save()
-        super().__init__(*args, **kwargs)
+                setattr(self, f"grade_{i}", globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i))
+                getattr(self, f"grade_{i}").save()
+                print(getattr(self, f"grade_{i}"))
+                print(self.grade_8)
+        super(Student, self).save(*args, **kwargs)
+        print(self.grade_8)
 
     first = models.CharField(max_length=30, verbose_name='First Name')
     last = models.CharField(max_length=30, verbose_name='Last Name')
@@ -113,19 +116,22 @@ class Student(models.Model):
     student_num = models.PositiveIntegerField(verbose_name='Student Number', unique=True,
                                               help_text="This number must be unique as it is used to identify students")
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
-    cur_grade = models.IntegerField(verbose_name="current grade")
-    homeroom_char = models.CharField(max_length=1, verbose_name="Homeroom")
+    cur_grade_num = models.IntegerField(verbose_name="current grade")
+    homeroom_char = models.CharField(max_length=1, verbose_name="Homeroom letter")
     last_modified = models.DateField(auto_now=True)
 
-    Grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
-    Grade_11 = models.OneToOneField(Grade_11, on_delete=models.CASCADE, blank=True, null=True)
-    Grade_10 = models.OneToOneField(Grade_10, on_delete=models.CASCADE, blank=True, null=True)
-    Grade_9 = models.OneToOneField(Grade_9, on_delete=models.CASCADE, blank=True, null=True)
-    Grade_8 = models.OneToOneField(Grade_8, on_delete=models.CASCADE, blank=True, null=True)
+    grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
+    grade_11 = models.OneToOneField(Grade_11, on_delete=models.CASCADE, blank=True, null=True)
+    grade_10 = models.OneToOneField(Grade_10, on_delete=models.CASCADE, blank=True, null=True)
+    grade_9 = models.OneToOneField(Grade_9, on_delete=models.CASCADE, blank=True, null=True)
+    grade_8 = models.OneToOneField(Grade_8, on_delete=models.CASCADE, blank=True, null=True)
 
-    @property
-    def grade_set(self):
-        return [self.Grade_12, self.Grade_11, self.Grade_10, self.Grade_9, self.Grade_8]
+    def all_grades(self):
+        return [self.grade_12, self.grade_11, self.grade_10, self.grade_9, self.grade_8]
+    def get_grade(self, num):
+        return getattr(self, f"grade_{num}")
+    def cur_grade(self):
+        return getattr(self, f"grade_{self.cur_grade_num}")
 
     # awards
     silver_pin = models.BooleanField(default=False)
@@ -136,7 +142,7 @@ class Student(models.Model):
 
     @property
     def homeroom(self):
-        return f"{self.cur_grade}{self.homeroom_char}"
+        return f"{self.cur_grade_num}{self.homeroom_char}"
 
     @property
     def gold_pin(self):

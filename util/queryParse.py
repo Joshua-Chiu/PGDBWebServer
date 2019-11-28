@@ -36,7 +36,7 @@ def parseQuery(query):
                 else:
                     # pretend there is a grade attribute
                     if k == 'grade':
-                        students = students.filter(cur_grade=int(v))
+                        students = students.filter(cur_grade_num=int(v))
 
                     # grade_00_year
                     elif k[:6] == "grade_" and k[8:] == "_year":
