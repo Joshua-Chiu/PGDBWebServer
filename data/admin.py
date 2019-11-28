@@ -84,6 +84,18 @@ class StudentAdmin(admin.ModelAdmin):
     list_display_links = ('last', 'first')
     actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive]
     search_fields = ('first', 'last', 'student_num',)
+    fieldsets = (
+        ('Personal Information', {'fields': (
+            'first',
+            'last',
+            'legal',
+            'sex',
+            'student_num',)}),
+        ('Grade', {'fields': (
+            'grad_year',
+            'cur_grade_num',
+            'homeroom_char')}),
+    )
 
     def import_as_csv(self, request):
         if "file" in request.FILES:

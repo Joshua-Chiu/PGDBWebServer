@@ -29,7 +29,7 @@
     {% else %}
         <div style="clear: both;"><h3>My Entries</h3></div>
         {% if request.user|has_group:"Service" %}
-            {% include 'entry/overview.html' with type='SE' grade=student.grade_set.all.0 %}
+            {% include 'entry/overview.html' with type='SE' grade=student.cur_grade %}
         {% endif %}
         {% if request.user|has_group:"Athletics" %}
             {% include 'entry/overview.html' with type='AT' grade=student.grade_set.all.0 %}
