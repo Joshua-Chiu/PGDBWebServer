@@ -73,17 +73,18 @@ class Grade(models.Model):
 
     def add_point(self, point):
         """adds point recalculate awards and sums"""
-        self.point_set.add(point)
+        self.points_set.add(point, bulk=False)
+        point.save()
         self.calc_points_total(point.type.catagory)
 
-    def calc_points_total(catagory):
+    def calc_points_total(self, catagory):
         """update sums for a particialar catagory of point"""
         total = 0
-        for p in self.point_set.filter(type__catagory="SE"):
+        for p in self.points_set.filter(type__catagory="SE"):
             total += p.amount
         setattr(self, f"{catagory}_total", total)
 
-    def calc_SC_total():
+    def calc_SC_total(self):
         """calculate points earned from scholar. must me on honor role (>79.5) to earn points"""
         def toPoints(avg):
             if avg >= 79.50:
@@ -115,7 +116,7 @@ class Student(models.Model):
                                               help_text="This number must be unique as it is used to identify students")
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     cur_grade_num = models.IntegerField(verbose_name="current grade")
-    homeroom_char = models.CharField(max_length=1, verbose_name="Homeroom letter", default="#")
+    homeroom_str = models.CharField(max_length=15, verbose_name="Homeroom letter", default="#")
     last_modified = models.DateField(auto_now=True)
 
     grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
@@ -124,10 +125,12 @@ class Student(models.Model):
     grade_9 = models.OneToOneField(Grade_9, on_delete=models.CASCADE, blank=True, null=True)
     grade_8 = models.OneToOneField(Grade_8, on_delete=models.CASCADE, blank=True, null=True)
 
+    @property
     def all_grades(self):
         return [self.grade_12, self.grade_11, self.grade_10, self.grade_9, self.grade_8]
     def get_grade(self, num):
         return getattr(self, f"grade_{num}")
+    @property
     def cur_grade(self):
         return getattr(self, f"grade_{self.cur_grade_num}")
 
@@ -140,7 +143,7 @@ class Student(models.Model):
 
     @property
     def homeroom(self):
-        return f"{self.cur_grade_num}{self.homeroom_char}"
+        return f"{self.cur_grade_num}{self.homeroom_str}"
 
     @property
     def gold_pin(self):

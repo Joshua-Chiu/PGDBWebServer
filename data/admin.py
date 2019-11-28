@@ -94,7 +94,7 @@ class StudentAdmin(admin.ModelAdmin):
         ('Grade', {'fields': (
             'grad_year',
             'cur_grade_num',
-            'homeroom_char')}),
+            'homeroom_str')}),
     )
 
     def import_as_csv(self, request):

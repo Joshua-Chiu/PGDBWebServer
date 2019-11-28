@@ -213,8 +213,8 @@ def import_pgdb_file(tree):
 
             s_obj = Student(
                 student_num=int(s[0].text),
-                cur_grade=int(s[1].text),
-                homeroom_char=f"{s[2].text}",
+                cur_grade_num=int(s[1].text),
+                homeroom_str=f"{s[2].text}",
                 first=s[3].text,
                 last=s[4].text,
                 legal=s[5].text,
@@ -225,16 +225,11 @@ def import_pgdb_file(tree):
 
             for g in s[8]:
 
-                g_obj = s_obj.grade_set.get(grade=int(g[0].text))
+                g_obj = s_obj.get_grade(int(g[0].text))
                 g_obj.anecdote = g[2].text or ""
 
-                scholar = g_obj.scholar_set.all().first()
-
-                scholar.term1 = float(g[3].text)
-                scholar.term2 = float(g[4].text)
-                scholar.save()
-
-                g_obj.save()
+                g_obj.term1_avg = float(g[3].text)
+                g_obj.term2_avg = float(g[4].text)
 
                 for p in g[5]:  # TODO fix so that the codes are the last 2 digits instead of last 4
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -248,7 +243,7 @@ def import_pgdb_file(tree):
                     g_obj.add_point(Points(type=type, amount=float(p[2].text)))
             # logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
-            print(e)
+            raise e
             return
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
