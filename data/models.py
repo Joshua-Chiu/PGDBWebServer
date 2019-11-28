@@ -102,12 +102,10 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         if self.grade_8 == None:
             for i in range(8, 12+1):
-                setattr(self, f"grade_{i}", globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i))
-                getattr(self, f"grade_{i}").save()
-                print(getattr(self, f"grade_{i}"))
-                print(self.grade_8)
+                g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
+                g.save()
+                setattr(self, f"grade_{i}", g)
         super(Student, self).save(*args, **kwargs)
-        print(self.grade_8)
 
     first = models.CharField(max_length=30, verbose_name='First Name')
     last = models.CharField(max_length=30, verbose_name='Last Name')
