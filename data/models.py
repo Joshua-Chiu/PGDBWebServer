@@ -81,7 +81,7 @@ class Grade(models.Model):
     def calc_points_total(self, catagory):
         """update sums for a particialar catagory of point"""
         total = 0
-        for p in self.points_set.filter(type__catagory="SE"):
+        for p in self.points_set.filter(type__catagory=catagory):
             total += p.amount
         setattr(self, f"{catagory}_total", total)
 

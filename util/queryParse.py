@@ -53,6 +53,7 @@ def parseQuery(query):
                         if "_" in k:
                             grade = int(k.split("_")[1])
                             grades = [grade]
+                            print(grade)
                         else:
                             grades = [8, 9, 10, 11, 12]
                             grade = 0
