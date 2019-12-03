@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 import math
 import datetime
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 import re
 
 
@@ -91,7 +92,7 @@ class Grade(models.Model):
                 return math.sqrt(-(79 - avg)) + 1.4
             else:
                 return 0
-            self.SC_total = toPoints(self.term1_avg) + toPoints(self.term2_avg)
+        self.SC_total = Decimal(toPoints(self.term1_avg) + toPoints(self.term2_avg))
 
 
 # this is mildly stupid

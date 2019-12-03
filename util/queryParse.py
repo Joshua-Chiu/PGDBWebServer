@@ -49,6 +49,7 @@ def parseQuery(query):
 
                     # award: or award_12:
                     elif "award" in k:
+                        # set the allowed grade for an award to be won in to a specific grade or default to all
                         if "_" in k:
                             grade = int(k.split("_")[1])
                             grades = [grade]
@@ -56,6 +57,7 @@ def parseQuery(query):
                             grades = [8, 9, 10, 11, 12]
                             grade = 0
 
+                        # go through each student and see if the grade they won the award in is correct
                         new_students = students
                         if v == "silver":
                             for s in students:
@@ -111,7 +113,7 @@ def parseQuery(query):
 
         return students
     except Exception as e:
-        print(f"oh no failed to parse query: {query}")
+        print(f"oh no! failed to parse query: {query}")
         print(e)
         raise e
         return Student.objects.none()
