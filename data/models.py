@@ -179,6 +179,7 @@ class Student(models.Model):
                     return i
         return None
 
+    @property
     def gold_pin(self):
         for i in range(8, 12 + 1):
             if self.cumulative_SE(i) > 29.45:
@@ -187,12 +188,14 @@ class Student(models.Model):
                     return i
         return None
 
+    @property
     def goldPlus_pin(self):
         if self.gold_pin:
             if self.cumulative_SE(10) > 29.5 and self.grade_11.SE_total > 19.5:  # ser grade 11 > 19.5
                 return 11
         return None
 
+    @property
     def platinum_pin(self):
         if self.gold_pin:
             if (self.cumulative_SE(12) + self.cumulative_AT(12) + self.cumulative_FA(
@@ -201,6 +204,7 @@ class Student(models.Model):
                 return 12
         return None
 
+    @property
     def bigblock_award(self):
         for i in range(8, 12 + 1):
             if self.cumulative_AT(i) > 59.45:
