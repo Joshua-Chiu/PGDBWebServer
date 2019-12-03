@@ -127,7 +127,7 @@ class Student(models.Model):
 
     @property
     def all_grades(self):
-        return [self.grade_12, self.grade_11, self.grade_10, self.grade_9, self.grade_8]
+        return [self.grade_8, self.grade_9, self.grade_10, self.grade_11, self.grade_12]
     def get_grade(self, num):
         return getattr(self, f"grade_{num}")
     @property
@@ -135,45 +135,74 @@ class Student(models.Model):
         return getattr(self, f"grade_{self.cur_grade_num}")
 
     # awards
-    silver_pin = models.BooleanField(default=False)
-    gold_pin = models.BooleanField(default=False)
-    goldplus_pin = models.BooleanField(default=False)
-    platinum_pin = models.BooleanField(default=False)
-    bigblock_award = models.BooleanField(default=False)
+    # silver_pin = models.BooleanField(default=False)
+    # gold_pin = models.BooleanField(default=False)
+    # goldplus_pin = models.BooleanField(default=False)
+    # platinum_pin = models.BooleanField(default=False)
+    # bigblock_award = models.BooleanField(default=False)
 
     @property
     def homeroom(self):
         return f"{self.cur_grade_num}{self.homeroom_str}"
 
+    def cumulative_SE(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.SE_total
+        return total
+
+    def cumulative_AT(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.AT_total
+        return total
+
+    def cumulative_FA(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.FA_total
+        return total
+
+    def cumulative_SC(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.SC_total
+        return total
+
     @property
-    def gold_pin(self):
+    def silver_pin(self):
         for i in range(8, 12 + 1):
-            if self.get_cumulative_SE(i) > 29.45:
-                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(
-                        i) + self.get_cumulative_SC(i) > 89.45:
+            if self.cumulative_SE(i) > 9.45:
+                if self.cumulative_SE(i) + self.cumulative_AT(i) + self.cumulative_FA(
+                        i) + self.cumulative_SC(i) > 49.45:
                     return i
         return None
 
-    @property
+    def gold_pin(self):
+        for i in range(8, 12 + 1):
+            if self.cumulative_SE(i) > 29.45:
+                if self.cumulative_SE(i) + self.cumulative_AT(i) + self.cumulative_FA(
+                        i) + self.cumulative_SC(i) > 89.45:
+                    return i
+        return None
+
     def goldPlus_pin(self):
         if self.gold_pin:
-            if self.get_cumulative_SE(10) > 29.5 and self.SE_11_total > 19.5:  # ser grade 11 > 19.5
+            if self.cumulative_SE(10) > 29.5 and self.grade_11.SE_total > 19.5:  # ser grade 11 > 19.5
                 return 11
         return None
 
-    @property
     def platinum_pin(self):
         if self.gold_pin:
-            if (self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(
-                    12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5) and (
-                    self.SE_11_total > 19.5 and self.SE_12_total > 19.5):  # ser 11 for
+            if (self.cumulative_SE(12) + self.cumulative_AT(12) + self.cumulative_FA(
+                    12) + self.cumulative_SC(12) > 129.5 and self.cumulative_SE(12) > 79.5) and (
+                    self.grade_11.SE_total > 19.5 and self.grade_12.SE_total > 19.5):  # ser 11 for
                 return 12
         return None
 
-    @property
     def bigblock_award(self):
         for i in range(8, 12 + 1):
-            if self.get_cumulative_AT(i) > 59.45:
+            if self.cumulative_AT(i) > 59.45:
                 return i
         return None
 

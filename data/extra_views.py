@@ -241,6 +241,12 @@ def import_pgdb_file(tree):
                         type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
                     g_obj.add_point(Points(type=type, amount=float(p[2].text)))
+
+                g_obj.calc_points_total("SE")
+                g_obj.calc_points_total("AT")
+                g_obj.calc_points_total("FA")
+                g_obj.save()
+
             # logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
             raise e
