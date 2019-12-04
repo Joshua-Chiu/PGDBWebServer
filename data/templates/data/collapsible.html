@@ -2,19 +2,20 @@
 {% load mathfilters %}
 
 <div class="wrap-collapsible">
-    <!--Comment out the following line to remove the disable NOT AT PG-->
-  <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
+  <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" checked>
 
   <label for="{{ grade }}" class="lbl-toggle">
+  Grade {{ grade.grade }}
+  {% comment %}
       {% ifequal grade current_grade %}<strong>{% endifequal %}
       Grade {{ grade }}
       {% ifequal grade current_grade %}</strong>
         ({{ grade_object.start_year }} - {{ grade_object.start_year|add:1 }})
     {% endifequal %}
+  {% endcomment %}
   </label>
 
   <div class="collapsible-content">
-
 
     <div class="content-inner">
       <table class="main-table" style="width: 100%; border: 1px solid black">

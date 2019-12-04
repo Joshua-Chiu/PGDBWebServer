@@ -16,7 +16,6 @@ from axes.utils import reset
 from .extra_views import *
 
 logs = []
-success = True
 
 
 @login_required
@@ -44,15 +43,13 @@ def search(request):
 
 
 def student_info(request, num):
-    global success
     template = get_template('data/student_info.html')
     student = Student.objects.get(id=num)
     context = {
         'student': student,
         'plists': PlistCutoff.objects.all(),
         'config': Configuration.objects.get(),
-        'current_grade': ''.join([n for n in student.homeroom if n.isdigit()]),
-        'success': success,
+        'grade_8': student.get_grade(12),
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -71,8 +68,6 @@ def student_submit(request, num):
     points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
     nullification = dict(item for item in items if item[0].find("nullify") != -1)
-    global success
-    success = True
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):

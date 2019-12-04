@@ -17,6 +17,7 @@
     <hr>
     {% if user.is_superuser or user.can_view %}
         <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
+        {% comment %}
         {% for i in i|rjust:5 %}
             {% for grade in student.grade_set.all %}
                 {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
@@ -24,7 +25,9 @@
                 {% endifequal %}
             {% endfor %}
         {% endfor %}
-        {%csrf_token%}
+        {% endcomment %}
+            {% include 'data/collapsible.html' with student=student grade=grade_12 %}
+            {%csrf_token%}
         </form>
     {% else %}
         <div style="clear: both;"><h3>My Entries</h3></div>

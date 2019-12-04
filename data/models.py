@@ -112,7 +112,7 @@ class Grade(models.Model):
 
 
 
-# this is mildly stupid
+# TODO this is mildly stupid
 for i in range(8, 12+1):
     exec(f"class Grade_{i}(Grade): pass")
 
