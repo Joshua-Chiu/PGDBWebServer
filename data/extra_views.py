@@ -65,16 +65,16 @@ def ajax_student_points_data(request):
 def ajax_student_cumulative_data(request):
     snum = request.GET.get('student_num', None)
     student = Student.objects.get(student_num=snum)
-    grade = int("".join(filter(str.isdigit, student.homeroom)))
+    grade = student.cur_grade_num
     data = {
         'silver': student.silver_pin,
         'gold': student.gold_pin,
         'goldplus': None,
         'platinum': None,
         'bigblock': student.bigblock_award,
-        'TOTAL08': round(sum([student.cumulative_SE(8), student.cumulative_AT(8),
+        'TOTAL8': round(sum([student.cumulative_SE(8), student.cumulative_AT(8),
                               student.cumulative_SC(8), student.cumulative_FA(8)]), 2),
-        'TOTAL09': round(sum([student.cumulative_SE(9), student.cumulative_AT(9),
+        'TOTAL9': round(sum([student.cumulative_SE(9), student.cumulative_AT(9),
                               student.cumulative_SC(9), student.cumulative_FA(9)]), 2),
         'TOTAL10': round(sum([student.cumulative_SE(10), student.cumulative_AT(10),
                               student.cumulative_SC(10), student.cumulative_FA(10)]), 2),
@@ -82,23 +82,23 @@ def ajax_student_cumulative_data(request):
                               student.cumulative_SC(11), student.cumulative_FA(11)]), 2),
         'TOTAL12': round(sum([student.cumulative_SE(12), student.cumulative_AT(12),
                               student.cumulative_SC(12), student.cumulative_FA(12)]), 2),
-        'SE08': round(student.cumulative_SE(8), 2),
-        'SE09': round(student.cumulative_SE(9), 2),
+        'SE8': round(student.cumulative_SE(8), 2),
+        'SE9': round(student.cumulative_SE(9), 2),
         'SE10': round(student.cumulative_SE(10), 2),
         'SE11': round(student.cumulative_SE(11), 2),
         'SE12': round(student.cumulative_SE(12), 2),
-        'AT08': round(student.cumulative_AT(8), 2),
-        'AT09': round(student.cumulative_AT(9), 2),
+        'AT8': round(student.cumulative_AT(8), 2),
+        'AT9': round(student.cumulative_AT(9), 2),
         'AT10': round(student.cumulative_AT(10), 2),
         'AT11': round(student.cumulative_AT(11), 2),
         'AT12': round(student.cumulative_AT(12), 2),
-        'SC08': round(student.cumulative_SC(8), 2),
-        'SC09': round(student.cumulative_SC(9), 2),
+        'SC8': round(student.cumulative_SC(8), 2),
+        'SC9': round(student.cumulative_SC(9), 2),
         'SC10': round(student.cumulative_SC(10), 2),
         'SC11': round(student.cumulative_SC(11), 2),
         'SC12': round(student.cumulative_SC(12), 2),
-        'FA08': round(student.cumulative_FA(8), 2),
-        'FA09': round(student.cumulative_FA(9), 2),
+        'FA8': round(student.cumulative_FA(8), 2),
+        'FA9': round(student.cumulative_FA(9), 2),
         'FA10': round(student.cumulative_FA(10), 2),
         'FA11': round(student.cumulative_FA(11), 2),
         'FA12': round(student.cumulative_FA(12), 2),
@@ -123,17 +123,17 @@ def ajax_student_cumulative_data(request):
     # add annual certificates to data dict
     for g in range(8, grade + 1):
         grade_object = student.get_grade(g)
-        data['annual SE ' + str(g).zfill(2)] = grade_object.SE_total
-        data['annual AT ' + str(g).zfill(2)] = grade_object.AT_total
-        data['annual FA ' + str(g).zfill(2)] = grade_object.FA_total
-        data['annual SC ' + str(g).zfill(2)] = grade_object.SC_total
+        data['annual SE ' + str(g)] = grade_object.SE_total
+        data['annual AT ' + str(g)] = grade_object.AT_total
+        data['annual FA ' + str(g)] = grade_object.FA_total
+        data['annual SC ' + str(g)] = grade_object.SC_total
 
-        data['annual HR ' + str(g).zfill(2)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
+        data['annual HR ' + str(g)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
         try:
-            data['annual PL ' + str(g).zfill(2)] = grade_object.term1_avg >= grade_object.plist_T1 and \
+            data['annual PL ' + str(g)] = grade_object.term1_avg >= grade_object.plist_T1 and \
                                               grade_object.term2_avg >= grade_object.plist_T2
         except PlistCutoff.DoesNotExist:
-            data['annual PL ' + str(g).zfill(2)] = False
+            data['annual PL ' + str(g)] = False
 
     return JsonResponse(data)
 

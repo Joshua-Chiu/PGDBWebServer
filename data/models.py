@@ -49,6 +49,7 @@ class Grade(models.Model):
     _term1_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     _term2_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
+    # nullification
     isnull_term1 = models.BooleanField(default=False)
     isnull_term2 = models.BooleanField(default=False)
     isnull_SE = models.BooleanField(default=False)
@@ -58,7 +59,7 @@ class Grade(models.Model):
 
     @property
     def term1_avg(self):
-        return int(self._term1_avg)
+        return float(self._term1_avg)
 
     @term1_avg.setter
     def term1_avg(self, avg):
@@ -67,7 +68,7 @@ class Grade(models.Model):
 
     @property
     def term2_avg(self):
-        return int(self._term2_avg)
+        return float(self._term2_avg)
 
     @term2_avg.setter
     def term2_avg(self, avg):
@@ -110,8 +111,6 @@ class Grade(models.Model):
         return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
 
-
-
 # TODO this is mildly stupid
 for i in range(8, 12+1):
     exec(f"class Grade_{i}(Grade): pass")
@@ -119,7 +118,7 @@ for i in range(8, 12+1):
 
 class Student(models.Model):
     def save(self, *args, **kwargs):
-        if self.grade_8 == None:
+        if self.grade_8 is None:
             for i in range(8, 12+1):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
                 g.save()
@@ -146,8 +145,10 @@ class Student(models.Model):
     @property
     def all_grades(self):
         return [self.grade_8, self.grade_9, self.grade_10, self.grade_11, self.grade_12]
+
     def get_grade(self, num):
         return getattr(self, f"grade_{num}")
+
     @property
     def cur_grade(self):
         return getattr(self, f"grade_{self.cur_grade_num}")
