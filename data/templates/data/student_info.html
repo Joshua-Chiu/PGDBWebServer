@@ -17,16 +17,13 @@
     <hr>
     {% if user.is_superuser or user.can_view %}
         <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
-        {% comment %}
-        {% for i in i|rjust:5 %}
-            {% for grade in student.grade_set.all %}
-                {% ifequal 12|sub:forloop.parentloop.counter0 grade.grade|stringformat:"02d"|add:"0" %}
-                    {% include 'data/collapsible.html' with student=student grade=grade.grade|stringformat:"02d" grade_object=grade current_grade=current_grade scholar=grade.scholar_set.all.0 certificates=grade.certificates_set.all.0 %}
-                {% endifequal %}
-            {% endfor %}
-        {% endfor %}
-        {% endcomment %}
-            {% include 'data/collapsible.html' with student=student grade=grade_12 %}
+
+            {% if student.cur_grade_num >= 12 %}{% include 'data/collapsible.html' with student=student grade=grade_12 %}{% endif %}
+            {% if student.cur_grade_num >= 11 %}{% include 'data/collapsible.html' with student=student grade=grade_11 %}{% endif %}
+            {% if student.cur_grade_num >= 10 %}{% include 'data/collapsible.html' with student=student grade=grade_10 %}{% endif %}
+            {% if student.cur_grade_num >= 09 %}{% include 'data/collapsible.html' with student=student grade=grade_09 %}{% endif %}
+            {% if student.cur_grade_num >= 08 %}{% include 'data/collapsible.html' with student=student grade=grade_08 %}{% endif %}
+
             {%csrf_token%}
         </form>
     {% else %}

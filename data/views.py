@@ -49,7 +49,12 @@ def student_info(request, num):
         'student': student,
         'plists': PlistCutoff.objects.all(),
         'config': Configuration.objects.get(),
-        'grade_8': student.get_grade(12),
+        'grade_12': student.get_grade(12),
+        'grade_11': student.get_grade(11),
+        'grade_10': student.get_grade(10),
+        'grade_09': student.get_grade(9),
+        'grade_08': student.get_grade(8),
+
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))

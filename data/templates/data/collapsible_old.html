@@ -1,23 +1,27 @@
 {% load staticfiles %}
 {% load mathfilters %}
 
-<div class="wrap-collabsible">
-    <input id="collapsible-{{ grade.grade }}" class="toggle" type="checkbox" style="display: none;"
-    {% if student.cur_grade_num == grade.grade %}
-        checked><!--open collapsible for current year-->
-        <label for="collapsible-{{ grade.grade }}" class="lbl-toggle"><strong>
-            Grade {{ grade.grade }} ({{ grade.start_year }} - {{ grade.start_year|add:1 }})
-        </strong></label>
-    {% else %}
-        >
-        <label for="collapsible-{{ grade.grade }}" class="lbl-toggle">Grade {{ grade.grade }}</label>
-    {% endif %}
+<div class="wrap-collapsible">
+  <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" checked>
+
+  <label for="{{ grade }}" class="lbl-toggle">
+  Grade {{ grade.grade }}
+  {% comment %}
+      {% ifequal grade current_grade %}<strong>{% endifequal %}
+      Grade {{ grade }}
+      {% ifequal grade current_grade %}</strong>
+        ({{ grade_object.start_year }} - {{ grade_object.start_year|add:1 }})
+    {% endifequal %}
+  {% endcomment %}
+  </label>
 
   <div class="collapsible-content">
+
+    <div class="content-inner">
       <table class="main-table" style="width: 100%; border: 1px solid black">
         <tr>
             <!-- Totals and Table headers-->
-            <td>Grade: {{ grade.grade }}</td>
+            <td>Grade: {{ grade }}</td>
             <td class="entry-table-heading"><strong>Service</strong> <span id="annual SE{{ grade }} total">...</span> Points</td>
             <td class="entry-table-heading"><strong>Athletics</strong> <span id="annual AT{{ grade }} total">...</span> Points</td>
             <td class="entry-table-heading"><strong>Fine Arts</strong> <span id="annual FA{{ grade }} total">...</span> Points</td>
@@ -27,8 +31,8 @@
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {{ grade.start_year|add:1 }}<br>
-                {{ grade.start_year }}
+                {{ grade_object.start_year|add:1 }}<br>
+                {{ grade_object.start_year }}
                 <br>
                     <!--Table left content-->
                 <hr>
@@ -171,8 +175,9 @@
         </td>
     </tr>
     </table>
-      <!-- Cumulative Awards Datatable-->
-      <table style="border:1px solid black;" class="cumulative-table">
+
+<!-- Cumulative Awards Datatable-->
+    <table style="border:1px solid black;" class="cumulative-table">
         <tr>
             <th colspan="4"><strong>Cumulative Totals</strong></th>
         </tr>
@@ -188,8 +193,8 @@
             <td>Fine Arts Points: </td><td><span id="FA{{ grade }}"></span></td>
         </tr>
     </table>
-      <!-- Grad Calculations Table-->
-      {% ifequal grade.grade 12 %}
+<!-- Grad Calculations Table-->
+    {% ifequal grade "12" %}
         <table class="grad-calc-table">
             <tr>
                 <td colspan="2">
@@ -217,7 +222,8 @@
             </tr>
         </table>
     {% endifequal %}
-
+    </div>
   </div>
-
 </div>
+
+
