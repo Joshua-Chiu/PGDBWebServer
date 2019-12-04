@@ -49,22 +49,29 @@ class Grade(models.Model):
     _term1_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     _term2_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
+    isnull_term1 = models.BooleanField(default=False)
+    isnull_term2 = models.BooleanField(default=False)
+    isnull_SE = models.BooleanField(default=False)
+    isnull_AT = models.BooleanField(default=False)
+    isnull_FA = models.BooleanField(default=False)
+    isnull_SC = models.BooleanField(default=False)
+
     @property
     def term1_avg(self):
-        return self._term1_avg
+        return int(self._term1_avg)
 
     @term1_avg.setter
     def term1_avg(self, avg):
-        self._term1_avg = avg
+        self._term1_avg = Decimal(avg)
         self.calc_SC_total()
 
     @property
     def term2_avg(self):
-        return self._term2_avg
+        return int(self._term2_avg)
 
     @term2_avg.setter
     def term2_avg(self, avg):
-        self._term2_avg = avg
+        self._term2_avg = Decimal(avg)
         self.calc_SC_total()
 
     SE_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
@@ -93,6 +100,16 @@ class Grade(models.Model):
             else:
                 return 0
         self.SC_total = Decimal(toPoints(self.term1_avg) + toPoints(self.term2_avg))
+
+    @property
+    def plist_T1(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 1)
+
+    @property
+    def plist_T2(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
+
+
 
 
 # this is mildly stupid
@@ -236,23 +253,6 @@ class Points(models.Model):
 
     def __str__(self):
         return f"{self.type} {self.amount}"
-
-
-# class Scholar(models.Model):
-#     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-#     term1 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
-#     term2 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
-
-#     def __str__(self):
-#         return f"T1 {self.term1} T2 {self.term2}"
-
-
-# class Awards(models.Model):
-#     Student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     silver_pin = models.DateField()
-#     gold_pin = models.DateField()
-#     gold_plus = models.DateField()
-#     platinum_pin = models.DateField()
 
 
 # class Certificates(models.Model):

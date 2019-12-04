@@ -125,13 +125,12 @@ def student_submit(request, num):
                     t2 = float(code_field[1])
 
                 # set the scholar average
-                grade = student.grade_set.get(grade=grade_num)
-                scholar = grade.scholar_set.all()[0]
-                scholar.term1 = t1
-                scholar.term2 = t2
+                grade = student.get_grade(grade_num)
+                grade.term1_avg = t1
+                grade.term2_avg = t2
                 success = True if (
                             request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100)) else False
-                if success: scholar.save()
+                if success: grade.save()
 
             else:
                 if point_field[1] == '' or code_field[1] == '':
@@ -152,8 +151,8 @@ def student_submit(request, num):
                     if request.user.has_perm('data.add_PointCodes'):
                         typeClass.save()
 
-                grade = student.grade_set.get(grade=grade_num)
-                grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
+                grade = student.get_grade(grade_num)
+                grade.add_point(Point(type=typeClass, amount=amount, entered_by=entered_by))
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
         grade = student.grade_set.get(grade=grade_num)

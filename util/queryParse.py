@@ -82,7 +82,7 @@ def parseQuery(query):
                                     new_students = new_students.exclude(id=s.id)
                         elif v == "honourroll":
                             for s in students:
-                                if not s.grade_set.get(grade=(grade or int(s.cur_grade_num))).honourroll:
+                                if not s.get_grade(grade or int(s.cur_grade_num)).honourroll:
                                     new_students = new_students.exclude(id=s.id)
 
                         students = new_students
@@ -94,20 +94,20 @@ def parseQuery(query):
                         for s in students:
                             grade = s.get_grade(int(grade_num))
                             if type == "SE":
-                                if not (grade.SE_total > 9.5 and grade_set.certificates_set.first().service):
+                                if not (grade.SE_total > 9.5 and grade.certificates_set.first().service):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "AT":
-                                if not (grade.AT_total > 9.5 and grade_set.certificates_set.first().athletics):
+                                if not (grade.AT_total > 9.5 and grade.certificates_set.first().athletics):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "FA":
-                                if not (grade.FA_total > 9.5 and grade_set.certificates_set.first().fine_arts):
+                                if not (grade.FA_total > 9.5 and grade.certificates_set.first().fine_arts):
                                     new_students = new_students.exclude(id=s.id)
 
                             elif type == "honourroll":
-                                if not (grade.honourroll and grade_set.certificates_set.first().honour):
+                                if not (grade.honourroll and grade.certificates_set.first().honour):
                                     new_students = new_students.exclude(id=s.id)
                             elif type == "principalslist":
-                                if not (grade.principalslist and grade_set.certificates_set.first().honour):
+                                if not (grade.principalslist and grade.certificates_set.first().honour):
                                     new_students = new_students.exclude(id=s.id)
 
                         students = new_students
@@ -116,5 +116,5 @@ def parseQuery(query):
     except Exception as e:
         print(f"oh no! failed to parse query: {query}")
         print(e)
-        raise e
+        raise e # TODO remove
         return Student.objects.none()

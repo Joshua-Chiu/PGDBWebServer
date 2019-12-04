@@ -122,16 +122,16 @@ def ajax_student_cumulative_data(request):
 
     # add annual certificates to data dict
     for g in range(8, grade + 1):
-        grade_object = student.grade_set.get(grade=g)
+        grade_object = student.get_grade(g)
         data['annual SE ' + str(g).zfill(2)] = grade_object.SE_total
         data['annual AT ' + str(g).zfill(2)] = grade_object.AT_total
         data['annual FA ' + str(g).zfill(2)] = grade_object.FA_total
         data['annual SC ' + str(g).zfill(2)] = grade_object.SC_total
 
-        data['annual HR ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= 79.45 and grade_object.scholar_set.get().term2 >= 79.45
+        data['annual HR ' + str(g).zfill(2)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
         try:
-            data['annual PL ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= grade_object.plist_T1 and \
-                                              grade_object.scholar_set.get().term2 >= grade_object.plist_T2
+            data['annual PL ' + str(g).zfill(2)] = grade_object.term1_avg >= grade_object.plist_T1 and \
+                                              grade_object.term2_avg >= grade_object.plist_T2
         except PlistCutoff.DoesNotExist:
             data['annual PL ' + str(g).zfill(2)] = False
 
@@ -154,15 +154,15 @@ def export_pgdb_archive(student_list, relevent_plists):
         ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
 
         grades = ET.SubElement(student_tag, 'grades')
-        for grade in student.grade_set.all():
+        for grade in student.all_grades():
             grade_tag = ET.SubElement(grades, 'grade')
 
             ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
             ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
             ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
 
-            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.scholar_set.all()[0].term2)
-            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.scholar_set.all()[0].term1)
+            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.term2_avg)
+            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.term1_avg)
 
             points_tag = ET.SubElement(grade_tag, 'points')
             for point in grade.points_set.all():
