@@ -51,20 +51,20 @@ class Grade(models.Model):
 
     @property
     def term1_avg(self):
-        return self._term1_avg
+        return int(self._term1_avg)
 
     @term1_avg.setter
     def term1_avg(self, avg):
-        self._term1_avg = avg
+        self._term1_avg = Decimal(avg)
         self.calc_SC_total()
 
     @property
     def term2_avg(self):
-        return self._term2_avg
+        return int(self._term2_avg)
 
     @term2_avg.setter
     def term2_avg(self, avg):
-        self._term2_avg = avg
+        self._term2_avg = Decimal(avg)
         self.calc_SC_total()
 
     SE_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
@@ -93,6 +93,16 @@ class Grade(models.Model):
             else:
                 return 0
         self.SC_total = Decimal(toPoints(self.term1_avg) + toPoints(self.term2_avg))
+
+    @property
+    def plist_T1(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 1)
+
+    @property
+    def plist_T2(self):
+        return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
+
+
 
 
 # this is mildly stupid
