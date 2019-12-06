@@ -92,6 +92,7 @@ class Grade(models.Model):
         for p in self.points_set.filter(type__catagory=catagory):
             total += p.amount
         setattr(self, f"{catagory}_total", total)
+        self.save()
 
     def calc_SC_total(self):
         """calculate points earned from scholar. must me on honor role (>79.5) to earn points"""

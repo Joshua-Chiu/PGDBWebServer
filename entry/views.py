@@ -75,7 +75,7 @@ def scholar_submit(request):
             term2 = float(request.POST["t2"])
 
             student = Student.objects.get(student_num=snum)
-            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+            grade = student.get_grade(student.cur_grade_num)
 
             scholar = grade.scholar_set.all()[0]
             scholar.term1 = term1
@@ -115,7 +115,7 @@ def scholar_upload_file(request):
                     error_msgs.append(f"Error: LAST NAME MISMATCH")
                     continue
 
-                grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+                grade = student.get_grade(studnt.cur_grade_num)
 
                 grade.scholar_set.objects.all()[0].term1 = term1
                 grade.scholar_set.objects.all()[0].term2 = term2
@@ -156,12 +156,12 @@ def point_submit(request, point_catagory):
                 points /= 300
 
             student = Student.objects.get(student_num=snum)
-            grade = student.grade_set.get(grade=int(student.homeroom[:2]))
-            grade.points_set.create(
+            grade = student.get_grade(student.cur_grade_num)
+            grade.add_point(Points(
                 type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
                 amount=points,
                 entered_by=request.user,
-            )
+            ))
         except Exception as e:
             print(e)
             print("failed to submit")
