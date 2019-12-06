@@ -77,7 +77,7 @@ def student_submit(request, num):
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
         # print(anecdote[1], n)
-        grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
+        grade = student.get_grade(student.cur_grade_num - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
             grade.save()
@@ -87,12 +87,10 @@ def student_submit(request, num):
         # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
         grade, catagory, code = button[0].strip().split(' ')[1:]
         point = \
-            student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[
-                0]
+            student.get_grade(grade).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
         if request.user.has_perm('data.change_points') or point.entered_by == request.user:
             point.delete()
-        # print(point)
-        # print("button: ", grade, type, code)
+            student.get_grade(grade).calc_points_total(catagory)
 
     # points and codes
     if request.method == 'POST':
@@ -152,18 +150,19 @@ def student_submit(request, num):
                         typeClass.save()
 
                 grade = student.get_grade(grade_num)
-                grade.add_point(Point(type=typeClass, amount=amount, entered_by=entered_by))
+                grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by))
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
-        grade = student.grade_set.get(grade=grade_num)
-        cert = grade.certificates_set.all().first()
-        cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
-        cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
-        cert.save()
+        grade = student.get_grade(grade_num)
+        # TODO certs nullify
+        # cert = grade.certificates_set.all().first()
+        # cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
+        # cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
+        # cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
+        # cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
+        # cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
+        # cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
+        # cert.save()
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
