@@ -124,7 +124,16 @@ class Student(models.Model):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
                 g.save()
                 setattr(self, f"grade_{i}", g)
-        super(Student, self).save(*args, **kwargs)
+        return super(Student, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        print("delete")
+        self.grade_8.delete()
+        self.grade_9.delete()
+        self.grade_10.delete()
+        self.grade_11.delete()
+        self.grade_12.delete()
+        return super(Student, self).delete(*args, **kwargs)
 
     first = models.CharField(max_length=30, verbose_name='First Name')
     last = models.CharField(max_length=30, verbose_name='Last Name')
@@ -188,6 +197,24 @@ class Student(models.Model):
         for g in self.all_grades[:i-7]:
             total += g.SC_total
         return total
+
+    @property
+    def SE_11_12_total(self):
+        return self.grade_11.SE_total + self.grade_12.SE_total
+    @property
+    def AT_11_12_total(self):
+        return self.grade_11.AT_total + self.grade_12.AT_total
+    @property
+    def FA_11_12_total(self):
+        return self.grade_11.FA_total + self.grade_12.FA_total
+    @property
+    def SC_11_12_total(self):
+        return self.grade_11.SC_total + self.grade_12.SC_total
+
+    @property
+    def all_11_12_total(self):
+        # TODO
+        raise NotImplementedError
 
     @property
     def silver_pin(self):
