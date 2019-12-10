@@ -154,15 +154,14 @@ def student_submit(request, num):
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
         grade = student.get_grade(grade_num)
-        # TODO certs nullify
-        # cert = grade.certificates_set.all().first()
-        # cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
-        # cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
-        # cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
-        # cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
-        # cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
-        # cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
-        # cert.save()
+        print(nullification)
+        grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
+        grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
+        grade.isnull_SC = f"SC{grade_num} nullify" not in nullification
+        grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
+        grade.isnull_term1 = f"SC{grade_num}T1 nullify" not in nullification
+        grade.isnull_term2 = f"SC{grade_num}T2 nullify" not in nullification
+        grade.save()
 
     return HttpResponseRedirect(f"/data/student/{num}")
 

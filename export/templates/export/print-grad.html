@@ -42,8 +42,6 @@
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
-    <p>Please wait while we query the results for you.</p>
-
     {% if student_list  %}
         {% ifequal award "SE" %}
             {% async_include 'export/award_templates/grad_award_se.html' with student_list=student_list %}
