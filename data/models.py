@@ -112,7 +112,8 @@ class Grade(models.Model):
         return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
 
-# TODO this is mildly stupid
+# declare Grade_8 through to 12 which inherit from Grade
+# this is done so that Student can have 5 oneToOnes of the 'same' type
 for i in range(8, 12+1):
     exec(f"class Grade_{i}(Grade): pass")
 
@@ -173,6 +174,8 @@ class Student(models.Model):
     @property
     def homeroom(self):
         return f"{self.cur_grade_num}{self.homeroom_str}"
+
+    # Cumulative is all points up to a certain grade
 
     def cumulative_SE(self, i):
         total = 0
