@@ -298,6 +298,9 @@ class Points(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=3)
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
 
+    def get_student(self):
+        return getattr(self.Grade, f"grade_{self.Grade.grade}").student  # TODO fix the student thing
+
     def __str__(self):
         return f"{self.type} {self.amount}"
 
