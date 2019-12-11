@@ -147,7 +147,7 @@ def print_trophies(request):
         query = f"grade_{grade}_year:{year}"
         students = parseQuery(query)
 
-        students = sorted(students, key=lambda student: getattr(student.grade_set.get(grade=grade), f"{award}_total"), reverse=True)[:30]
+        students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:30]
     else:
         students = Student.objects.none()
 
@@ -187,7 +187,7 @@ def print_xcheck(request):
     # filter out students with no points of the right type
     new_students = students
     for s in students:
-        if len(s.grade_set.get(grade=grade).points_set.filter(type__catagory=award_type)) == 0:
+        if len(s.get_grade(grade).points_set.filter(type__catagory=award_type)) == 0:
             new_students = new_students.exclude(id=s.id)
     students = new_students
 
