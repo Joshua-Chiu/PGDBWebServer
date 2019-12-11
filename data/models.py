@@ -175,7 +175,7 @@ class Student(models.Model):
     def homeroom(self):
         return f"{self.cur_grade_num}{self.homeroom_str}"
 
-    # Cumulative is all points up to a certain grade
+    # Cumulative returns all points up to a certain grade
 
     def cumulative_SE(self, i):
         total = 0
@@ -202,6 +202,22 @@ class Student(models.Model):
         return total
 
     @property
+    def SE_total(self):
+        return self.cumulative_SE(12)
+
+    @property
+    def AT_total(self):
+        return self.cumulative_AT(12)
+
+    @property
+    def FA_total(self):
+        return self.cumulative_FA(12)
+
+    @property
+    def SC_total(self):
+        return self.cumulative_SC(12)
+
+    @property
     def SE_11_12_total(self):
         return self.grade_11.SE_total + self.grade_12.SE_total
     @property
@@ -216,8 +232,7 @@ class Student(models.Model):
 
     @property
     def all_11_12_total(self):
-        # TODO
-        raise NotImplementedError
+        return self.SE_11_12_total + self.AT_11_12_total + self.FA_11_12_total + self.SC_11_12_total
 
     @property
     def silver_pin(self):
