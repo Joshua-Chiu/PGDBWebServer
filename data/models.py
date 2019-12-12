@@ -254,7 +254,7 @@ class Student(models.Model):
 
     @property
     def goldPlus_pin(self):
-        if self.gold_pin:
+        if self.gold_pin and self.gold_pin < 11:
             if self.cumulative_SE(10) > 29.5 and self.grade_11.SE_total > 19.5:  # ser grade 11 > 19.5
                 return 11
         return None
