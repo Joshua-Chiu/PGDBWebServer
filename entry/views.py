@@ -115,7 +115,7 @@ def scholar_upload_file(request):
                     error_msgs.append(f"Error: LAST NAME MISMATCH")
                     continue
 
-                grade = student.get_grade(studnt.cur_grade_num)
+                grade = student.get_grade(student.cur_grade_num)
 
                 grade.scholar_set.objects.all()[0].term1 = term1
                 grade.scholar_set.objects.all()[0].term2 = term2
@@ -261,11 +261,11 @@ def validate_student_name(request):
     student = Student.objects.filter(student_num__iexact=student_id)
     if student.exists():
         student = student[0]
-        # grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+        grade = student.cur_grade
         data = {
             'student_name': student.first + " " + student.last,
-            # 't1': round(grade.scholar_set.all()[0].term1, 3),
-            # 't2': round(grade.scholar_set.all()[0].term2, 3),
+            't1': round(grade.term1_avg, 3),
+            't2': round(grade.term2_avg, 3),
         }
     else:
         data = {

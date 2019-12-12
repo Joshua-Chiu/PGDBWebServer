@@ -18,16 +18,12 @@
 
             </tr>
             {% endfor %}
-            <tr><td>TOTAL:</td><td>11-12: {{ student.SE_11_12_total|floatformat:"2" }}</td>
-                <td>08-12: {{ student.grade_12.cumulative_SE }}
+            <tr><td>TOTAL:</td><td colspan="3">11-12: {{ student.SE_11_12_total|floatformat:"2" }}  |  08-12: {{ student.grade_12.cumulative_SE }}
                 </td>
             </tr>
             <tr>
                 <td>PINS:</td>
-                <td>Silver: {{ student.silver_pin }}</td>
-                <td>Gold: {{ student.gold_pin }}</td>
-                <td>Gold+: {{ student.goldPlus_pin }}</td>
-                <td>Platinum: {{ student.platinum_pin }}</td>
+                <td colspan="3">Silver: {{ student.silver_pin }} | Gold: {{ student.gold_pin }} | Gold+: {{ student.goldPlus_pin }} | Platinum: {{ student.platinum_pin }}</td>
             </tr>
         </table>
         <hr>

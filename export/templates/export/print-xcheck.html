@@ -64,8 +64,19 @@
                 <td>{{ student.last }}</td>
                 <td>{{ student.student_num }}</td>
                 <td>{{ student.homeroom }}</td>
+            {% if award_type == "SC" %}
                 <td>
-                    {% for grade in student.grade_set.all %}
+                    {% for grade in student.all_grades %}
+                        {% ifequal grade_num grade.grade|stringformat:"02d"|add:"0" %}
+                            <span class="point">{{ grade.term1_avg }}</span>
+                            <span class="point">{{ grade.term2_avg }}</span>
+
+                        {% endifequal %}
+                    {% endfor %}
+                </td>
+            {% else %}
+                <td>
+                    {% for grade in student.all_grades %}
                         {% ifequal grade_num grade.grade|stringformat:"02d"|add:"0" %}
                             {% for point in grade.points_set.all %}
                                 {% ifequal award_type point.type.catagory %}
@@ -77,6 +88,7 @@
                         {% endifequal %}
                     {% endfor %}
                 </td>
+            {% endif %}
             </tr>
         {% endfor %}
         </table>
