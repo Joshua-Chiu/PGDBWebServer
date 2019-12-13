@@ -333,7 +333,10 @@ def codes_submit(request):
 
 
 def index(request):
-    maintenance, notice = google_calendar()
+    maintenance, notice, offline = google_calendar()
+    if offline:
+        context = {'maintenance': maintenance[0]}
+        return HttpResponse(get_template('data/offline.html').render(context, request))
     template = get_template('data/index.html')
     context = {
         'maintenance': maintenance,
