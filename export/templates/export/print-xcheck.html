@@ -46,7 +46,7 @@
         <button class="btn default" onclick="PrintElem('XCheckList')">Print Student List</button>
     </div>
 
-    <h2>{{ award_type_display }} Crosscheck</h2>
+    <h2>{{ award_type_display }} Crosscheck</h2> {{ student_list|length }}
     {% if student_list %}
     <div id="XCheckList">
         <table class="sortable">
