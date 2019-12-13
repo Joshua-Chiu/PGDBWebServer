@@ -46,7 +46,7 @@
         <button class="btn default" onclick="PrintElem('XCheckList')">Print Student List</button>
     </div>
 
-    <h2>{{ award_type_display }} Crosscheck</h2> {{ student_list|length }}
+    <h2>{{ award_type_display }} Crosscheck</h2>
     {% if student_list %}
     <div id="XCheckList">
         <table class="sortable">
@@ -56,7 +56,7 @@
                 <th>Last Name</th>
                 <th>Student Number</th>
                 <th>Homeroom</th>
-                <th>Data</th>
+                {% if award_type == "SC" %}<th>Term 1 Avg (%)</th><th>Term 2 Avg (%)</th>{% else %}<th>Data</th>{% endif %}
             </tr></thead>
         {% for student in student_list %}
             <tr>
@@ -65,19 +65,17 @@
                 <td>{{ student.student_num }}</td>
                 <td>{{ student.homeroom }}</td>
             {% if award_type == "SC" %}
-                <td>
                     {% for grade in student.all_grades %}
-                        {% ifequal grade_num grade.grade|stringformat:"02d"|add:"0" %}
-                            <span class="point">{{ grade.term1_avg }}</span>
-                            <span class="point">{{ grade.term2_avg }}</span>
+                        {% ifequal grade_num grade.grade %}
+                            <td><span class="point">{{ grade.term1_avg }}</span></td>
+                            <td><span class="point">{{ grade.term2_avg }}</span></td>
 
                         {% endifequal %}
                     {% endfor %}
-                </td>
             {% else %}
                 <td>
                     {% for grade in student.all_grades %}
-                        {% ifequal grade_num grade.grade|stringformat:"02d"|add:"0" %}
+                        {% ifequal grade_num grade.grade %}
                             {% for point in grade.points_set.all %}
                                 {% ifequal award_type point.type.catagory %}
                                     <span class="point">{{ point.amount }}</span>

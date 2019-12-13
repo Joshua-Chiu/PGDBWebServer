@@ -125,6 +125,21 @@ class Grade(models.Model):
             return True
         return False
 
+    @property
+    def cumulative_SE(self):
+        return self.student.cumulative_SE(self.grade)
+
+    @property
+    def cumulative_AT(self):
+        return self.student.cumulative_AT(self.grade)
+
+    @property
+    def cumulative_FA(self):
+        return self.student.cumulative_FA(self.grade)
+
+    def cumulative_SC(self):
+        return self.student.cumulative_SC(self.grade)
+
 
 # declare Grade_8 through to 12 which inherit from Grade
 # this is done so that Student can have 5 oneToOnes of the 'same' type

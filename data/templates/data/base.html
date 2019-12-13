@@ -26,7 +26,7 @@
     </div>
         <div style="clear: both;">
         {% if user.is_authenticated %}
-            Hi {% if user.first_name|length > 0 %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
+            Hi {% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}!<br>
             <a href="{% url 'logout' %}">Logout</a>
         {% endif %}
             <div id="clockbox" class="date">{% now "l, F j, Y g:i:s A" %}</div>

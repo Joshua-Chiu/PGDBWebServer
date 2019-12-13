@@ -7,10 +7,10 @@
                 <td>CANDIDATE: </td>
                 <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
 
-                {% for gr in student.grade_set.all %}
+                {% for gr in student.all_grades %}
                     <tr>
-                    <td>GR {{ gr.grade|stringformat:"02d"|add:"0" }}:</td>
-                        {% for point in gr.points_set.all %}
+                    {% if gr.grade <= student.cur_grade_num %}
+                        <td>GR {{ gr.grade }}:</td>{% for point in gr.points_set.all %}
                             {% ifequal "SE" point.type.catagory %}
                                 <td>
                                     <span class="point">{{ point.amount }}</span>
@@ -18,21 +18,15 @@
                                     <span>&emsp;</span>
                                 </td>
                             {% endifequal %}
-                        {% endfor %}
-                    </tr>
+                        {% endfor %}</tr>
+                    {% endif %}
                 {% endfor %}
             <tr>
-                {% for gr in student.grade_set.all %}
+                {% for gr in student.all_grades %}
                     {% ifequal gr.grade grade %}
                         <td>TOTAL:</td>
                         <td>Current Year: {{ gr.SE_total|floatformat:"2" }}</td>
-                        <td>
-                            Cumulative:
-
-                                {% ifequal grade gr.grade|stringformat:"02d"|add:"0" %}
-                                        {{ gr.cumulative_SE|floatformat:"2" }}
-                                {% endifequal %}
-                        </td>
+                        <td>Cumulative: {{ gr.cumulative_SE }}</td> <!--TODO get cumulative totals-->
                     {% endifequal %}
                 {% endfor %}
             </tr>

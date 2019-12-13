@@ -106,7 +106,7 @@ def ajax_student_cumulative_data(request):
     if grade >= 12:
         grad = {
             'platinum': student.platinum_pin,
-            'gradAVG': float(round(student.average_11_12, 2)),
+            'gradAVG': float(round((student.grade_12.term1_avg + student.grade_12.term2_avg + student.grade_11.term1_avg + student.grade_11.term2_avg)/4, 2)),
             'gradSE': round(student.grade_12.SE_total + student.grade_11.SE_total, 2),
             'gradAT': round(student.grade_12.AT_total + student.grade_11.AT_total, 2),
             'gradSC': round(student.grade_12.SC_total + student.grade_11.SC_total, 2),

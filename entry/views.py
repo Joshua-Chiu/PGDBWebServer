@@ -29,7 +29,7 @@ def service(request):
     if request.user.is_authenticated and checkUser(request.user, "Service"):
         template = get_template('entry/service.html')
         context = {
-            'points': Points.objects.filter(entered_by=request.user, type__catagory='SE').order_by('-id')
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='SE').order_by('-id')[:75]
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -40,7 +40,7 @@ def athletics(request):
     if request.user.is_authenticated and checkUser(request.user, "Athletics"):
         template = get_template('entry/athletics.html')
         context = {
-            'points': Points.objects.filter(entered_by=request.user, type__catagory='AT').order_by('-id')
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='AT').order_by('-id')[:75]
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -51,7 +51,7 @@ def fine_arts(request):
     if request.user.is_authenticated and checkUser(request.user, "Fine Arts"):
         template = get_template('entry/fine-arts.html')
         context = {
-            'points': Points.objects.filter(entered_by=request.user, type__catagory='FA').order_by('-id')
+            'points': Points.objects.filter(entered_by=request.user, type__catagory='FA').order_by('-id')[:75]
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -77,10 +77,9 @@ def scholar_submit(request):
             student = Student.objects.get(student_num=snum)
             grade = student.get_grade(student.cur_grade_num)
 
-            scholar = grade.scholar_set.all()[0]
-            scholar.term1 = term1
-            scholar.term2 = term2
-            scholar.save()
+            grade.term1_avg(term1)
+            grade.term2_avg(term2)
+            grade.save()
         except Exception as e:
             print(e)
             print("failed to submit scholar")
@@ -117,8 +116,9 @@ def scholar_upload_file(request):
 
                 grade = student.get_grade(student.cur_grade_num)
 
-                grade.scholar_set.objects.all()[0].term1 = term1
-                grade.scholar_set.objects.all()[0].term2 = term2
+                grade.term1_avg(term1)
+                grade.term2_avg(term2)
+                grade.save()
 
                 error_msgs.append(
                     f"Success: added term 1 and 2 averages for {student.first} {student.last} was "
@@ -243,7 +243,7 @@ def upload_file(request, point_catagory):
                         f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
                     continue
 
-                grade = student.grade_set.get(grade=int(student.homeroom[:2]))
+                grade = student.get_grade(student.cur_grade_num)
                 grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
                 error_msgs.append(
                     f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")

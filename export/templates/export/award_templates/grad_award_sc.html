@@ -7,14 +7,9 @@
                 <td>CANDIDATE: </td>
                 <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
             </tr>
-                {% for grade in student.grade_set.all %}
-                    {% ifequal 11 grade.grade|stringformat:"02d"|add:"0" %}
-                        <tr><td>Grade 11 T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }}</td><td>Grade 11 T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }}</td></tr>
-                    {% endifequal %}
-                    {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
-                        <tr><td>Grade 12 T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }}</td><td>Grade 12 T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }}</td></tr>
-                    {% endifequal %}
-                {% endfor %}
+            <tr><td>Grade 11 T1: {{ student.grade_11.term1_avg|floatformat:"3" }}</td><td>Grade 11 T2: {{ student.grade_11.term2_avg|floatformat:"3" }}</td></tr>
+            <tr><td>Grade 12 T1: {{ student.grade_12.term1_avg|floatformat:"3" }}</td><td>Grade 12 T2: {{ student.grade_12.term2_avg|floatformat:"3" }}</td></tr>
+
         </table>
         <hr>
     {% endfor %}

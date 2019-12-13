@@ -78,7 +78,7 @@ def parseQuery(query):
                                 new_students = new_students.exclude(id=s.id)
                     elif v == "honourroll":
                         for s in students:
-                            grade_object = s.get_grade(grade or int(s.cur_grade_num))
+                            grade_object = s.get_grade(grade)
                             if not grade_object.honourroll and not grade_object.isnull_SC:
                                 new_students = new_students.exclude(id=s.id)
 
