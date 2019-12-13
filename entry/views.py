@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
+from django.urls import reverse
+
 from data.models import Student, PointCodes, Points
 from django.http import JsonResponse
 from data.views import google_calendar
@@ -12,7 +14,9 @@ def checkUser(user, category):
 
 
 def index(request):
-    maintenance, notice = google_calendar()
+    maintenance, notice, offline = google_calendar()
+    if offline:
+        return HttpResponseRedirect(reverse('data:index'))
     template = get_template('entry/index.html')
     context = {
         'maintenance': maintenance,
@@ -151,7 +155,7 @@ def point_submit(request, point_catagory):
         try:
             snum = int(request.POST["student-number"])
             code = int(request.POST["code"])
-            points = int(request.POST["minutes"])
+            points = float(request.POST["minutes"])
             if point_catagory == "SE":
                 points /= 300
 
