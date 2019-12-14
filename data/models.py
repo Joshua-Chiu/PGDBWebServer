@@ -88,7 +88,7 @@ class Grade(models.Model):
 
     def calc_points_total(self, catagory):
         """update sums for a particialar catagory of point"""
-        total = 0
+        total = Decimal("0.000")
         for p in self.points_set.filter(type__catagory=catagory):
             total += p.amount
         setattr(self, f"{catagory}_total", total)
@@ -102,6 +102,7 @@ class Grade(models.Model):
             else:
                 return 0
         self.SC_total = Decimal(toPoints(self.term1_avg) + toPoints(self.term2_avg))
+        self.save()
 
     @property
     def plist_T1(self):

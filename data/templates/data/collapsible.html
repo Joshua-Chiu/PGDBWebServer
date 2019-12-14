@@ -110,7 +110,7 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade.grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
@@ -126,7 +126,7 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade.grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{  point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
@@ -142,7 +142,7 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade.grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{  point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
