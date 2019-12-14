@@ -26,7 +26,7 @@
                     {% ifequal gr.grade grade %}
                         <td>TOTAL:</td>
                         <td>Current Year: {{ gr.AT_total|floatformat:"2" }}</td>
-                        <td>Cumulative: {{ gr.cumulative_AT|floatformat:"2" }}</td> <!--TODO get cumulative totals-->
+                        <td>Cumulative: {{ gr.cumulative_AT }}</td> <!--TODO get cumulative totals-->
                     {% endifequal %}
                 {% endfor %}
             </tr>

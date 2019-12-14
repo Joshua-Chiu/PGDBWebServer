@@ -101,7 +101,9 @@ class Grade(models.Model):
                 return math.sqrt(-(79 - avg)) + 1.4
             else:
                 return 0
-        self.SC_total = Decimal(toPoints(self.term1_avg) + toPoints(self.term2_avg))
+        self.SC_total = 0
+        self.SC_total += Decimal(toPoints(self.term1_avg)) if not self.isnull_term1 else 0
+        self.SC_total += Decimal(toPoints(self.term2_avg)) if not self.isnull_term2 else 0
         self.save()
 
     @property
@@ -111,6 +113,33 @@ class Grade(models.Model):
     @property
     def plist_T2(self):
         return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
+
+    @property
+    def honourroll(self):
+        if (79.45 < self.term1_avg and 79.45 < self.term2_avg) and (self.term1_avg < self.plist_T1 or self.term2_avg < self.plist_T2):
+            return True
+        return False
+
+    @property
+    def principalslist(self):
+        if self.plist_T1 <= self.term1_avg and self.plist_T2 < self.term2_avg:
+            return True
+        return False
+
+    @property
+    def cumulative_SE(self):
+        return self.student.cumulative_SE(self.grade)
+
+    @property
+    def cumulative_AT(self):
+        return self.student.cumulative_AT(self.grade)
+
+    @property
+    def cumulative_FA(self):
+        return self.student.cumulative_FA(self.grade)
+
+    def cumulative_SC(self):
+        return self.student.cumulative_SC(self.grade)
 
 
 # declare Grade_8 through to 12 which inherit from Grade
@@ -164,13 +193,6 @@ class Student(models.Model):
     @property
     def cur_grade(self):
         return getattr(self, f"grade_{self.cur_grade_num}")
-
-    # awards
-    # silver_pin = models.BooleanField(default=False)
-    # gold_pin = models.BooleanField(default=False)
-    # goldplus_pin = models.BooleanField(default=False)
-    # platinum_pin = models.BooleanField(default=False)
-    # bigblock_award = models.BooleanField(default=False)
 
     @property
     def homeroom(self):
@@ -255,7 +277,7 @@ class Student(models.Model):
 
     @property
     def goldPlus_pin(self):
-        if self.gold_pin:
+        if self.gold_pin and self.gold_pin < 11:
             if self.cumulative_SE(10) > 29.5 and self.grade_11.SE_total > 19.5:  # ser grade 11 > 19.5
                 return 11
         return None

@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
-import os
+import os, pytz
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
@@ -24,14 +24,18 @@ def google_calendar():
     now = datetime.datetime.utcnow().isoformat() + 'Z'
     SCOPES = 'https://www.googleapis.com/auth/calendar'
 
+    offline = False
     secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
     credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
     http = credentials.authorize(httplib2.Http())
+    service_now = [pytz.utc.localize(datetime.datetime(1970, 1, 1)).astimezone(pytz.timezone('America/Vancouver')),
+                   pytz.utc.localize(datetime.datetime(1970, 1, 1)).astimezone(pytz.timezone('America/Vancouver'))]
     try:
         service = build('calendar', 'v3', http=http)
         events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
                                        orderBy='startTime').execute()
         events = events.get('items', [])
+        now = pytz.utc.localize(datetime.datetime.utcnow()).astimezone(pytz.timezone('America/Vancouver'))
 
         for event in events:
             if "MAINTENANCE:" in event.get("summary"):
@@ -41,6 +45,10 @@ def google_calendar():
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
+                service_now[0] = dateutil.parser.parse(event["start"]["dateTime"])
+                service_now[1] = dateutil.parser.parse(event["end"]["dateTime"])
+                if service_now[0] < now < service_now[1]:
+                    offline = True
             else:
                 notice.append({
                     'title': event['summary'].replace("NOTICE: ", ""),
@@ -49,10 +57,12 @@ def google_calendar():
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
     # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
-    except:
+    except Exception as e:
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
-    return maintenance, notice
+    # Current date in UTC
+
+    return maintenance, notice, offline
 
 
 def ajax_student_points_data(request):
@@ -106,7 +116,7 @@ def ajax_student_cumulative_data(request):
     if grade >= 12:
         grad = {
             'platinum': student.platinum_pin,
-            'gradAVG': float(round(student.average_11_12, 2)),
+            'gradAVG': float(round((student.grade_12.term1_avg + student.grade_12.term2_avg + student.grade_11.term1_avg + student.grade_11.term2_avg)/4, 2)),
             'gradSE': round(student.grade_12.SE_total + student.grade_11.SE_total, 2),
             'gradAT': round(student.grade_12.AT_total + student.grade_11.AT_total, 2),
             'gradSC': round(student.grade_12.SC_total + student.grade_11.SC_total, 2),

@@ -124,9 +124,7 @@ def student_submit(request, num):
                 grade = student.get_grade(grade_num)
                 grade.term1_avg = t1
                 grade.term2_avg = t2
-                success = True if (
-                            request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100)) else False
-                if success: grade.save()
+                if request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100): grade.save()
 
             else:
                 if point_field[1] == '' or code_field[1] == '':
@@ -158,6 +156,11 @@ def student_submit(request, num):
         grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
         grade.isnull_term1 = f"SC{grade_num}T1 nullify" not in nullification
         grade.isnull_term2 = f"SC{grade_num}T2 nullify" not in nullification
+        grade.calc_points_total("SE")
+        grade.calc_points_total("AT")
+        grade.calc_points_total("FA")
+        grade.calc_SC_total()
+
         grade.save()
 
 
@@ -328,7 +331,10 @@ def codes_submit(request):
 
 
 def index(request):
-    maintenance, notice = google_calendar()
+    maintenance, notice, offline = google_calendar()
+    if offline:
+        context = {'maintenance': maintenance[0]}
+        return HttpResponse(get_template('data/offline.html').render(context, request))
     template = get_template('data/index.html')
     context = {
         'maintenance': maintenance,
