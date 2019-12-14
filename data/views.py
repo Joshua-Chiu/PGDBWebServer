@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .models import Student, PointCodes, PlistCutoff, Grade, Points, Certificates
+from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from configuration.models import Configuration
 from users.models import CustomUser
 from django.template.loader import get_template
@@ -16,7 +16,6 @@ from axes.utils import reset
 from .extra_views import *
 
 logs = []
-success = True
 
 
 @login_required
@@ -44,15 +43,18 @@ def search(request):
 
 
 def student_info(request, num):
-    global success
     template = get_template('data/student_info.html')
     student = Student.objects.get(id=num)
     context = {
         'student': student,
         'plists': PlistCutoff.objects.all(),
         'config': Configuration.objects.get(),
-        'current_grade': ''.join([n for n in student.homeroom if n.isdigit()]),
-        'success': success,
+        'grade_12': student.get_grade(12),
+        'grade_11': student.get_grade(11),
+        'grade_10': student.get_grade(10),
+        'grade_09': student.get_grade(9),
+        'grade_08': student.get_grade(8),
+
     }
     if request.user.is_authenticated:
         return HttpResponse(template.render(context, request))
@@ -71,13 +73,10 @@ def student_submit(request, num):
     points_list = points_list + scholar_fields
     code_delete_buttons = [item for item in items if item[0].find("deletePoint") != -1]
     nullification = dict(item for item in items if item[0].find("nullify") != -1)
-    global success
-    success = True
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
-        # print(anecdote[1], n)
-        grade = student.grade_set.get(grade=int(student.homeroom[:2]) - n)
+        grade = student.get_grade(student.cur_grade_num - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
             grade.save()
@@ -85,14 +84,11 @@ def student_submit(request, num):
     # delete codes buttons
     for button in code_delete_buttons:
         # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
-        grade, catagory, code = button[0].strip().split(' ')[1:]
-        point = \
-            student.grade_set.get(grade=int(grade)).points_set.filter(type__catagory=catagory).filter(type__code=code)[
-                0]
+        id = int(button[0].strip().split(' ')[1])
+        point = Points.objects.get(id=id)
         if request.user.has_perm('data.change_points') or point.entered_by == request.user:
             point.delete()
-        # print(point)
-        # print("button: ", grade, type, code)
+            point.Grade.calc_points_total(point.type.catagory)
 
     # points and codes
     if request.method == 'POST':
@@ -125,13 +121,10 @@ def student_submit(request, num):
                     t2 = float(code_field[1])
 
                 # set the scholar average
-                grade = student.grade_set.get(grade=grade_num)
-                scholar = grade.scholar_set.all()[0]
-                scholar.term1 = t1
-                scholar.term2 = t2
-                success = True if (
-                            request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100)) else False
-                if success: scholar.save()
+                grade = student.get_grade(grade_num)
+                grade.term1_avg = t1
+                grade.term2_avg = t2
+                if request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100): grade.save()
 
             else:
                 if point_field[1] == '' or code_field[1] == '':
@@ -152,19 +145,24 @@ def student_submit(request, num):
                     if request.user.has_perm('data.add_PointCodes'):
                         typeClass.save()
 
-                grade = student.grade_set.get(grade=grade_num)
-                grade.points_set.create(type=typeClass, amount=amount, entered_by=entered_by)
+                grade = student.get_grade(grade_num)
+                grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by))
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
-        grade = student.grade_set.get(grade=grade_num)
-        cert = grade.certificates_set.all().first()
-        cert.service = ('SE' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.athletics = ('AT' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.honour = ('SC' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.fine_arts = ('FA' + str(grade_num).zfill(2) + ' nullify') in nullification
-        cert.t1 = ('SC' + str(grade_num).zfill(2) + 'T1 nullify') in nullification
-        cert.t2 = ('SC' + str(grade_num).zfill(2) + 'T2 nullify') in nullification
-        cert.save()
+        grade = student.get_grade(grade_num)
+        grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
+        grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
+        grade.isnull_SC = f"SC{grade_num} nullify" not in nullification
+        grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
+        grade.isnull_term1 = f"SC{grade_num}T1 nullify" not in nullification
+        grade.isnull_term2 = f"SC{grade_num}T2 nullify" not in nullification
+        grade.calc_points_total("SE")
+        grade.calc_points_total("AT")
+        grade.calc_points_total("FA")
+        grade.calc_SC_total()
+
+        grade.save()
+
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
@@ -333,7 +331,10 @@ def codes_submit(request):
 
 
 def index(request):
-    maintenance, notice = google_calendar()
+    maintenance, notice, offline = google_calendar()
+    if offline:
+        context = {'maintenance': maintenance[0]}
+        return HttpResponse(get_template('data/offline.html').render(context, request))
     template = get_template('data/index.html')
     context = {
         'maintenance': maintenance,

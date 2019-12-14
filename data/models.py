@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 import math
 import datetime
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 import re
 
 
@@ -40,231 +41,70 @@ class PlistCutoff(models.Model):
         verbose_name_plural = 'Principal List Cutoffs'
 
 
-class Student(models.Model):
-    first = models.CharField(max_length=30, verbose_name='First Name')
-    last = models.CharField(max_length=30, verbose_name='Last Name')
-    legal = models.CharField(max_length=30, verbose_name='Legal Name')
-    student_num = models.PositiveIntegerField(verbose_name='Student Number', unique=True,
-                                              help_text="This number must be unique as it is used to identify students")
-    homeroom = models.CharField(max_length=15, verbose_name='Homeroom',
-                                help_text="Use the dropdown actions at the Student list to move student down a grade")
-    sex = models.CharField(max_length=1, verbose_name='Sex', help_text="This field accepts any letter of the alphabet")
-    # date_added = models.DateField(verbose_name='Date of entry into Point Grey', blank=True, null=True)
-    grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
-    last_modified = models.DateField(auto_now=True)
-
-    def save(self, *args, **kwargs):
-        if not self.pk and Student.objects.filter(student_num=self.student_num).exists():
-            # if you'll not check for self.pk then error will also raised in update of exists model
-            raise ValidationError(f'There can be only one student with student_num {self.student_num}')
-        grade = int(re.findall('\d+', self.homeroom)[0])
-        if self.id is None:
-            super(Student, self).save(*args, **kwargs)  # Save self if new student
-        for i in range(8, grade + 1):
-            try:
-                self.grade_set.get(grade=i)
-                # self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
-            except Grade.DoesNotExist:
-                self.grade_set.create(grade=i, start_year=self.grad_year - (13 - i))
-                self.grade_set.get(grade=i).scholar_set.create(term1=0, term2=0)
-                self.grade_set.get(grade=i).certificates_set.create()
-
-        return super(Student, self).save(*args, **kwargs)
-
-    # please help me there are far too many functions and i just keep adding more
-
-    def get_cumulative_SE(self, current_grade):
-        total = 0
-        for grade in self.grade_set.all():
-            if grade.grade <= current_grade:
-                total += grade.SE_total
-        return total
-
-    def get_cumulative_AT(self, current_grade):
-        total = 0
-        for grade in self.grade_set.all():
-            if grade.grade <= current_grade:
-                total += grade.AT_total
-        return total
-
-    def get_cumulative_FA(self, current_grade):
-        total = 0
-        for grade in self.grade_set.all():
-            if grade.grade <= current_grade:
-                total += grade.FA_total
-        return total
-
-    def get_cumulative_SC(self, current_grade):
-        total = 0
-        for grade in self.grade_set.all():
-            if grade.grade <= current_grade:
-                total += grade.SC_total
-        return total
-
-    @property
-    def SE_11_total(self):
-        total = self.grade_set.get(grade=11).SE_total
-        return total
-
-    @property
-    def SE_12_total(self):
-        total = self.grade_set.get(grade=12).SE_total
-        return total
-
-    @property
-    def all_11_12_total(self):
-        total = self.SE_11_12_total
-        total += self.AT_11_12_total
-        total += self.FA_11_12_total
-        total += self.SC_11_12_total
-        return total
-
-    @property
-    def SE_11_12_total(self):
-        total = self.grade_set.get(grade=11).SE_total + self.grade_set.get(grade=12).SE_total
-        return total
-
-    @property
-    def AT_11_12_total(self):
-        total = self.grade_set.get(grade=11).AT_total + self.grade_set.get(grade=12).AT_total
-        return total
-
-    @property
-    def FA_11_12_total(self):
-        total = self.grade_set.get(grade=11).FA_total + self.grade_set.get(grade=12).FA_total
-        return total
-
-    @property
-    def SC_11_12_total(self):
-        total = self.grade_set.get(grade=11).SC_total + self.grade_set.get(grade=12).SC_total
-        return total
-
-    @property
-    def average_11_12(self):
-        return (self.grade_set.get(grade=11).scholar_set.all()[0].term1 +
-                self.grade_set.get(grade=11).scholar_set.all()[0].term2 +
-                self.grade_set.get(grade=12).scholar_set.all()[0].term1 +
-                self.grade_set.get(grade=12).scholar_set.all()[0].term2) / 4
-
-    @property
-    def silver_pin(self):
-        for i in range(8, 12 + 1):
-            if self.get_cumulative_SE(i) > 9.45:
-                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(
-                        i) + self.get_cumulative_SC(i) > 49.45:
-                    return i
-        return None
-
-    @property
-    def gold_pin(self):
-        for i in range(8, 12 + 1):
-            if self.get_cumulative_SE(i) > 29.45:
-                if self.get_cumulative_SE(i) + self.get_cumulative_AT(i) + self.get_cumulative_FA(
-                        i) + self.get_cumulative_SC(i) > 89.45:
-                    return i
-        return None
-
-    @property
-    def goldPlus_pin(self):
-        if self.gold_pin:
-            if self.get_cumulative_SE(10) > 29.5 and self.SE_11_total > 19.5:  # ser grade 11 > 19.5
-                return 11
-        return None
-
-    @property
-    def platinum_pin(self):
-        if self.gold_pin:
-            if (self.get_cumulative_SE(12) + self.get_cumulative_AT(12) + self.get_cumulative_FA(
-                    12) + self.get_cumulative_SC(12) > 129.5 and self.get_cumulative_SE(12) > 79.5) and (
-                    self.SE_11_total > 19.5 and self.SE_12_total > 19.5):  # ser 11 for
-                return 12
-        return None
-
-    @property
-    def bigblock_award(self):
-        for i in range(8, 12 + 1):
-            if self.get_cumulative_AT(i) > 59.45:
-                return i
-        return None
-
-    def __str__(self):
-        return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
-
-    list_max_show_all = 1000
-    list_per_page = 200
-
-    class Meta:
-        ordering = ['last', 'first']
-
-
 class Grade(models.Model):
-    Student = models.ForeignKey(Student, on_delete=models.CASCADE)
     grade = models.SmallIntegerField()
     start_year = models.SmallIntegerField()
     anecdote = models.CharField(max_length=300, blank=True)
 
-    @property
-    def cumulative_SE(self):
-        return self.Student.get_cumulative_SE(self.grade)
+    _term1_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
+    _term2_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
+
+    # nullification
+    isnull_term1 = models.BooleanField(default=False)
+    isnull_term2 = models.BooleanField(default=False)
+    isnull_SE = models.BooleanField(default=False)
+    isnull_AT = models.BooleanField(default=False)
+    isnull_FA = models.BooleanField(default=False)
+    isnull_SC = models.BooleanField(default=False)
 
     @property
-    def cumulative_AT(self):
-        return self.Student.get_cumulative_AT(self.grade)
+    def term1_avg(self):
+        return float(self._term1_avg)
+
+    @term1_avg.setter
+    def term1_avg(self, avg):
+        self._term1_avg = Decimal(avg)
+        self.calc_SC_total()
 
     @property
-    def cumulative_FA(self):
-        return self.Student.get_cumulative_FA(self.grade)
+    def term2_avg(self):
+        return float(self._term2_avg)
 
-    @property
-    def cumulative_SC(self):
-        return self.Student.get_cumulative_SC(self.grade)
+    @term2_avg.setter
+    def term2_avg(self, avg):
+        self._term2_avg = Decimal(avg)
+        self.calc_SC_total()
 
-    @property
-    def SE_total(self):
-        total = 0
-        for point in self.points_set.filter(type__catagory="SE"):
-            total += point.amount
-        return float(total)
+    SE_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
+    AT_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
+    FA_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
+    SC_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
-    @property
-    def AT_total(self):
-        total = 0
-        for point in self.points_set.filter(type__catagory="AT"):
-            total += point.amount
-        return float(total)
+    def add_point(self, point):
+        """adds point recalculate awards and sums"""
+        self.points_set.add(point, bulk=False)
+        point.save()
+        self.calc_points_total(point.type.catagory)
 
-    @property
-    def FA_total(self):
-        total = 0
-        for point in self.points_set.filter(type__catagory="FA"):
-            total += point.amount
-        return float(total)
+    def calc_points_total(self, catagory):
+        """update sums for a particialar catagory of point"""
+        total = Decimal("0.000")
+        for p in self.points_set.filter(type__catagory=catagory):
+            total += p.amount
+        setattr(self, f"{catagory}_total", total)
+        self.save()
 
-    @property
-    def SC_total(self):
-
-        def toPoints(avg, null):
-            if avg >= 79.50 and null:
+    def calc_SC_total(self):
+        """calculate points earned from scholar. must me on honor role (>79.5) to earn points"""
+        def toPoints(avg):
+            if avg >= 79.50:
                 return math.sqrt(-(79 - avg)) + 1.4
             else:
                 return 0
-
-        return toPoints(self.scholar_set.all()[0].term1, self.certificates_set.first().t1) + \
-               toPoints(self.scholar_set.all()[0].term2, self.certificates_set.first().t2)
-
-    @property
-    def honourroll(self):
-        return (self.scholar_set.all()[0].term1 > 79.5 and self.scholar_set.all()[
-            0].term2 > 79.45) and not self.principalslist
-
-    @property
-    def principalslist(self):
-        return self.scholar_set.all()[0].term1 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade,
-                                                                                                         1) and \
-               self.scholar_set.all()[0].term2 > PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
-
-    def __str__(self):
-        return f"{self.grade} {self.start_year}"
+        self.SC_total = 0
+        self.SC_total += Decimal(toPoints(self.term1_avg)) if not self.isnull_term1 else 0
+        self.SC_total += Decimal(toPoints(self.term2_avg)) if not self.isnull_term2 else 0
+        self.save()
 
     @property
     def plist_T1(self):
@@ -274,11 +114,196 @@ class Grade(models.Model):
     def plist_T2(self):
         return PlistCutoff.objects.get(year=self.start_year).getCutoff(self.grade, 2)
 
-    class Meta:
-        ordering = ['-grade']
+    @property
+    def honourroll(self):
+        if (79.45 < self.term1_avg and 79.45 < self.term2_avg) and (self.term1_avg < self.plist_T1 or self.term2_avg < self.plist_T2):
+            return True
+        return False
+
+    @property
+    def principalslist(self):
+        if self.plist_T1 <= self.term1_avg and self.plist_T2 < self.term2_avg:
+            return True
+        return False
+
+    @property
+    def cumulative_SE(self):
+        return self.student.cumulative_SE(self.grade)
+
+    @property
+    def cumulative_AT(self):
+        return self.student.cumulative_AT(self.grade)
+
+    @property
+    def cumulative_FA(self):
+        return self.student.cumulative_FA(self.grade)
+
+    def cumulative_SC(self):
+        return self.student.cumulative_SC(self.grade)
+
+
+# declare Grade_8 through to 12 which inherit from Grade
+# this is done so that Student can have 5 oneToOnes of the 'same' type
+for i in range(8, 12+1):
+    exec(f"class Grade_{i}(Grade): pass")
+
+
+class Student(models.Model):
+    def save(self, *args, **kwargs):
+        if self.grade_8 is None:
+            for i in range(8, 12+1):
+                g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
+                g.save()
+                setattr(self, f"grade_{i}", g)
+        return super(Student, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        print("delete")
+        self.grade_8.delete()
+        self.grade_9.delete()
+        self.grade_10.delete()
+        self.grade_11.delete()
+        self.grade_12.delete()
+        return super(Student, self).delete(*args, **kwargs)
+
+    first = models.CharField(max_length=30, verbose_name='First Name')
+    last = models.CharField(max_length=30, verbose_name='Last Name')
+    legal = models.CharField(max_length=30, verbose_name='Legal Name')
+    sex = models.CharField(max_length=1, verbose_name="Sex", help_text="This field accepts any letter of the alphabet")
+    student_num = models.PositiveIntegerField(verbose_name='Student Number', unique=True,
+                                              help_text="This number must be unique as it is used to identify students")
+    grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
+    cur_grade_num = models.IntegerField(verbose_name="current grade")
+    homeroom_str = models.CharField(max_length=15, verbose_name="Homeroom letter", default="#")
+    last_modified = models.DateField(auto_now=True)
+
+    grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
+    grade_11 = models.OneToOneField(Grade_11, on_delete=models.CASCADE, blank=True, null=True)
+    grade_10 = models.OneToOneField(Grade_10, on_delete=models.CASCADE, blank=True, null=True)
+    grade_9 = models.OneToOneField(Grade_9, on_delete=models.CASCADE, blank=True, null=True)
+    grade_8 = models.OneToOneField(Grade_8, on_delete=models.CASCADE, blank=True, null=True)
+
+    @property
+    def all_grades(self):
+        return [self.grade_8, self.grade_9, self.grade_10, self.grade_11, self.grade_12]
+
+    def get_grade(self, num):
+        return getattr(self, f"grade_{num}")
+
+    @property
+    def cur_grade(self):
+        return getattr(self, f"grade_{self.cur_grade_num}")
+
+    @property
+    def homeroom(self):
+        return f"{self.cur_grade_num}{self.homeroom_str}"
+
+    # Cumulative returns all points up to a certain grade
+
+    def cumulative_SE(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.SE_total
+        return total
+
+    def cumulative_AT(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.AT_total
+        return total
+
+    def cumulative_FA(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.FA_total
+        return total
+
+    def cumulative_SC(self, i):
+        total = 0
+        for g in self.all_grades[:i-7]:
+            total += g.SC_total
+        return total
+
+    @property
+    def SE_total(self):
+        return self.cumulative_SE(12)
+
+    @property
+    def AT_total(self):
+        return self.cumulative_AT(12)
+
+    @property
+    def FA_total(self):
+        return self.cumulative_FA(12)
+
+    @property
+    def SC_total(self):
+        return self.cumulative_SC(12)
+
+    @property
+    def SE_11_12_total(self):
+        return self.grade_11.SE_total + self.grade_12.SE_total
+    @property
+    def AT_11_12_total(self):
+        return self.grade_11.AT_total + self.grade_12.AT_total
+    @property
+    def FA_11_12_total(self):
+        return self.grade_11.FA_total + self.grade_12.FA_total
+    @property
+    def SC_11_12_total(self):
+        return self.grade_11.SC_total + self.grade_12.SC_total
+
+    @property
+    def all_11_12_total(self):
+        return self.SE_11_12_total + self.AT_11_12_total + self.FA_11_12_total + self.SC_11_12_total
+
+    @property
+    def silver_pin(self):
+        for i in range(8, 12 + 1):
+            if self.cumulative_SE(i) > 9.45:
+                if self.cumulative_SE(i) + self.cumulative_AT(i) + self.cumulative_FA(
+                        i) + self.cumulative_SC(i) > 49.45:
+                    return i
+        return None
+
+    @property
+    def gold_pin(self):
+        for i in range(8, 12 + 1):
+            if self.cumulative_SE(i) > 29.45:
+                if self.cumulative_SE(i) + self.cumulative_AT(i) + self.cumulative_FA(
+                        i) + self.cumulative_SC(i) > 89.45:
+                    return i
+        return None
+
+    @property
+    def goldPlus_pin(self):
+        if self.gold_pin and self.gold_pin < 11:
+            if self.cumulative_SE(10) > 29.5 and self.grade_11.SE_total > 19.5:  # ser grade 11 > 19.5
+                return 11
+        return None
+
+    @property
+    def platinum_pin(self):
+        if self.gold_pin:
+            if (self.cumulative_SE(12) + self.cumulative_AT(12) + self.cumulative_FA(
+                    12) + self.cumulative_SC(12) > 129.5 and self.cumulative_SE(12) > 79.5) and (
+                    self.grade_11.SE_total > 19.5 and self.grade_12.SE_total > 19.5):  # ser 11 for
+                return 12
+        return None
+
+    @property
+    def bigblock_award(self):
+        for i in range(8, 12 + 1):
+            if self.cumulative_AT(i) > 59.45:
+                return i
+        return None
+
+    def __str__(self):
+        return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
 
 class PointCodes(models.Model):
+    """each object is a posible unique type of point a student can have"""
     catagory = models.CharField(max_length=2)
     code = models.SmallIntegerField()
     description = models.CharField(max_length=30)
@@ -296,32 +321,18 @@ class Points(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=3)
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
 
+    def get_student(self):
+        return getattr(self.Grade, f"grade_{self.Grade.grade}").student  # TODO fix the student thing
+
     def __str__(self):
         return f"{self.type} {self.amount}"
 
 
-class Scholar(models.Model):
-    Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    term1 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
-    term2 = models.DecimalField(max_digits=8, decimal_places=5, null=False, default=0)
-
-    def __str__(self):
-        return f"T1 {self.term1} T2 {self.term2}"
-
-
-class Awards(models.Model):
-    Student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    silver_pin = models.DateField()
-    gold_pin = models.DateField()
-    gold_plus = models.DateField()
-    platinum_pin = models.DateField()
-
-
-class Certificates(models.Model):
-    Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    service = models.BooleanField(default=True)
-    athletics = models.BooleanField(default=True)
-    honour = models.BooleanField(default=True)
-    fine_arts = models.BooleanField(default=True)
-    t1 = models.BooleanField(default=True)
-    t2 = models.BooleanField(default=True)
+# class Certificates(models.Model):
+#     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+#     service = models.BooleanField(default=True)
+#     athletics = models.BooleanField(default=True)
+#     honour = models.BooleanField(default=True)
+#     fine_arts = models.BooleanField(default=True)
+#     t1 = models.BooleanField(default=True)
+#     t2 = models.BooleanField(default=True)

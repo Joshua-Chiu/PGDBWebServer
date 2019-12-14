@@ -28,9 +28,9 @@
         <thead>
         <tr><th>&emsp14;Student&emsp14;</th><th>Point</th></tr>
         </thead>
-    {% for log in recent %}
-        <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>: {{ log.amount }} Points for {{ log.type.description }}</td></tr>
-    {% endfor %}
+    {% for point in recent %}
+            <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+        {% endfor %}
     </table>
     <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>

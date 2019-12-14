@@ -1,7 +1,6 @@
 {% extends 'data/base.html' %}
 
 {% load staticfiles %}
-{% load async_include %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Graduation{% endif %} Candidates{% endblock %}
 
@@ -42,27 +41,25 @@
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
 
-    <p>Please wait while we query the results for you.</p>
-
     {% if student_list  %}
         {% ifequal award "SE" %}
-            {% async_include 'export/award_templates/grad_award_se.html' with student_list=student_list %}
+            {% include 'export/award_templates/grad_award_se.html' with student_list=student_list %}
         {% endifequal %}
 
         {% ifequal award "AT" %}
-            {% async_include 'export/award_templates/grad_award_at.html' with student_list=student_list %}
+            {% include 'export/award_templates/grad_award_at.html' with student_list=student_list %}
         {% endifequal %}
 
         {% ifequal award "SC" %}
-            {% async_include 'export/award_templates/grad_award_sc.html' with student_list=student_list %}
+            {% include 'export/award_templates/grad_award_sc.html' with student_list=student_list %}
         {% endifequal %}
 
         {% ifequal award "FA" %}
-            {% async_include 'export/award_templates/grad_award_fa.html' with student_list=student_list %}
+            {% include 'export/award_templates/grad_award_fa.html' with student_list=student_list %}
         {% endifequal %}
 
         {% ifequal award "ME" %}
-            {% async_include 'export/award_templates/grad_award_me.html' with student_list=student_list %}
+            {% include 'export/award_templates/grad_award_me.html' with student_list=student_list %}
         {% endifequal %}
     {% endif %}
 {% endblock %}

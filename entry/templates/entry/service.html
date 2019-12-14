@@ -39,7 +39,7 @@
     <h4>My recent actions</h4>
     <table>
         {% for point in points %}
-            <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+            <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
         {% endfor %}
     </table>
     </body>

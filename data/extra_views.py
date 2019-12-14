@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
-import os
+import os, pytz
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
@@ -24,14 +24,18 @@ def google_calendar():
     now = datetime.datetime.utcnow().isoformat() + 'Z'
     SCOPES = 'https://www.googleapis.com/auth/calendar'
 
+    offline = False
     secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
     credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
     http = credentials.authorize(httplib2.Http())
+    service_now = [pytz.utc.localize(datetime.datetime(1970, 1, 1)).astimezone(pytz.timezone('America/Vancouver')),
+                   pytz.utc.localize(datetime.datetime(1970, 1, 1)).astimezone(pytz.timezone('America/Vancouver'))]
     try:
         service = build('calendar', 'v3', http=http)
         events = service.events().list(calendarId='pointgreydb@gmail.com', maxResults=10, timeMin=now, singleEvents=True,
                                        orderBy='startTime').execute()
         events = events.get('items', [])
+        now = pytz.utc.localize(datetime.datetime.utcnow()).astimezone(pytz.timezone('America/Vancouver'))
 
         for event in events:
             if "MAINTENANCE:" in event.get("summary"):
@@ -41,6 +45,10 @@ def google_calendar():
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
+                service_now[0] = dateutil.parser.parse(event["start"]["dateTime"])
+                service_now[1] = dateutil.parser.parse(event["end"]["dateTime"])
+                if service_now[0] < now < service_now[1]:
+                    offline = True
             else:
                 notice.append({
                     'title': event['summary'].replace("NOTICE: ", ""),
@@ -49,10 +57,12 @@ def google_calendar():
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
     # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
-    except:
+    except Exception as e:
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
-    return maintenance, notice
+    # Current date in UTC
+
+    return maintenance, notice, offline
 
 
 def ajax_student_points_data(request):
@@ -65,54 +75,54 @@ def ajax_student_points_data(request):
 def ajax_student_cumulative_data(request):
     snum = request.GET.get('student_num', None)
     student = Student.objects.get(student_num=snum)
-    grade = int("".join(filter(str.isdigit, student.homeroom)))
+    grade = student.cur_grade_num
     data = {
         'silver': student.silver_pin,
         'gold': student.gold_pin,
         'goldplus': None,
         'platinum': None,
         'bigblock': student.bigblock_award,
-        'TOTAL08': round(sum([student.get_cumulative_SE(8), student.get_cumulative_AT(8),
-                              student.get_cumulative_SC(8), student.get_cumulative_FA(8)]), 2),
-        'TOTAL09': round(sum([student.get_cumulative_SE(9), student.get_cumulative_AT(9),
-                              student.get_cumulative_SC(9), student.get_cumulative_FA(9)]), 2),
-        'TOTAL10': round(sum([student.get_cumulative_SE(10), student.get_cumulative_AT(10),
-                              student.get_cumulative_SC(10), student.get_cumulative_FA(10)]), 2),
-        'TOTAL11': round(sum([student.get_cumulative_SE(11), student.get_cumulative_AT(11),
-                              student.get_cumulative_SC(11), student.get_cumulative_FA(11)]), 2),
-        'TOTAL12': round(sum([student.get_cumulative_SE(12), student.get_cumulative_AT(12),
-                              student.get_cumulative_SC(12), student.get_cumulative_FA(12)]), 2),
-        'SE08': round(student.get_cumulative_SE(8), 2),
-        'SE09': round(student.get_cumulative_SE(9), 2),
-        'SE10': round(student.get_cumulative_SE(10), 2),
-        'SE11': round(student.get_cumulative_SE(11), 2),
-        'SE12': round(student.get_cumulative_SE(12), 2),
-        'AT08': round(student.get_cumulative_AT(8), 2),
-        'AT09': round(student.get_cumulative_AT(9), 2),
-        'AT10': round(student.get_cumulative_AT(10), 2),
-        'AT11': round(student.get_cumulative_AT(11), 2),
-        'AT12': round(student.get_cumulative_AT(12), 2),
-        'SC08': round(student.get_cumulative_SC(8), 2),
-        'SC09': round(student.get_cumulative_SC(9), 2),
-        'SC10': round(student.get_cumulative_SC(10), 2),
-        'SC11': round(student.get_cumulative_SC(11), 2),
-        'SC12': round(student.get_cumulative_SC(12), 2),
-        'FA08': round(student.get_cumulative_FA(8), 2),
-        'FA09': round(student.get_cumulative_FA(9), 2),
-        'FA10': round(student.get_cumulative_FA(10), 2),
-        'FA11': round(student.get_cumulative_FA(11), 2),
-        'FA12': round(student.get_cumulative_FA(12), 2),
+        'TOTAL8': round(sum([student.cumulative_SE(8), student.cumulative_AT(8),
+                              student.cumulative_SC(8), student.cumulative_FA(8)]), 2),
+        'TOTAL9': round(sum([student.cumulative_SE(9), student.cumulative_AT(9),
+                              student.cumulative_SC(9), student.cumulative_FA(9)]), 2),
+        'TOTAL10': round(sum([student.cumulative_SE(10), student.cumulative_AT(10),
+                              student.cumulative_SC(10), student.cumulative_FA(10)]), 2),
+        'TOTAL11': round(sum([student.cumulative_SE(11), student.cumulative_AT(11),
+                              student.cumulative_SC(11), student.cumulative_FA(11)]), 2),
+        'TOTAL12': round(sum([student.cumulative_SE(12), student.cumulative_AT(12),
+                              student.cumulative_SC(12), student.cumulative_FA(12)]), 2),
+        'SE8': round(student.cumulative_SE(8), 2),
+        'SE9': round(student.cumulative_SE(9), 2),
+        'SE10': round(student.cumulative_SE(10), 2),
+        'SE11': round(student.cumulative_SE(11), 2),
+        'SE12': round(student.cumulative_SE(12), 2),
+        'AT8': round(student.cumulative_AT(8), 2),
+        'AT9': round(student.cumulative_AT(9), 2),
+        'AT10': round(student.cumulative_AT(10), 2),
+        'AT11': round(student.cumulative_AT(11), 2),
+        'AT12': round(student.cumulative_AT(12), 2),
+        'SC8': round(student.cumulative_SC(8), 2),
+        'SC9': round(student.cumulative_SC(9), 2),
+        'SC10': round(student.cumulative_SC(10), 2),
+        'SC11': round(student.cumulative_SC(11), 2),
+        'SC12': round(student.cumulative_SC(12), 2),
+        'FA8': round(student.cumulative_FA(8), 2),
+        'FA9': round(student.cumulative_FA(9), 2),
+        'FA10': round(student.cumulative_FA(10), 2),
+        'FA11': round(student.cumulative_FA(11), 2),
+        'FA12': round(student.cumulative_FA(12), 2),
     }
     if grade >= 12:
         grad = {
             'platinum': student.platinum_pin,
-            'gradAVG': float(round(student.average_11_12, 2)),
-            'gradSE': round(student.SE_11_12_total, 2),
-            'gradAT': round(student.AT_11_12_total, 2),
-            'gradSC': round(student.SC_11_12_total, 2),
-            'gradFA': round(student.FA_11_12_total, 2),
+            'gradAVG': float(round((student.grade_12.term1_avg + student.grade_12.term2_avg + student.grade_11.term1_avg + student.grade_11.term2_avg)/4, 2)),
+            'gradSE': round(student.grade_12.SE_total + student.grade_11.SE_total, 2),
+            'gradAT': round(student.grade_12.AT_total + student.grade_11.AT_total, 2),
+            'gradSC': round(student.grade_12.SC_total + student.grade_11.SC_total, 2),
+            'gradFA': round(student.grade_12.FA_total + student.grade_11.FA_total, 2),
             'gradTOTAL': round(
-                sum([student.SE_11_12_total, student.AT_11_12_total, student.SC_11_12_total, student.FA_11_12_total]),
+                sum([student.grade_12.SE_total + student.grade_11.SE_total, student.grade_12.AT_total + student.grade_11.AT_total, student.grade_12.SC_total + student.grade_11.SC_total, student.grade_12.FA_total + student.grade_11.FA_total]),
                 2),
         }
         data.update(grad)
@@ -122,18 +132,18 @@ def ajax_student_cumulative_data(request):
 
     # add annual certificates to data dict
     for g in range(8, grade + 1):
-        grade_object = student.grade_set.get(grade=g)
-        data['annual SE ' + str(g).zfill(2)] = grade_object.SE_total
-        data['annual AT ' + str(g).zfill(2)] = grade_object.AT_total
-        data['annual FA ' + str(g).zfill(2)] = grade_object.FA_total
-        data['annual SC ' + str(g).zfill(2)] = grade_object.SC_total
+        grade_object = student.get_grade(g)
+        data['annual SE ' + str(g)] = grade_object.SE_total
+        data['annual AT ' + str(g)] = grade_object.AT_total
+        data['annual FA ' + str(g)] = grade_object.FA_total
+        data['annual SC ' + str(g)] = grade_object.SC_total
 
-        data['annual HR ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= 79.45 and grade_object.scholar_set.get().term2 >= 79.45
+        data['annual HR ' + str(g)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
         try:
-            data['annual PL ' + str(g).zfill(2)] = grade_object.scholar_set.get().term1 >= grade_object.plist_T1 and \
-                                              grade_object.scholar_set.get().term2 >= grade_object.plist_T2
+            data['annual PL ' + str(g)] = grade_object.term1_avg >= grade_object.plist_T1 and \
+                                              grade_object.term2_avg >= grade_object.plist_T2
         except PlistCutoff.DoesNotExist:
-            data['annual PL ' + str(g).zfill(2)] = False
+            data['annual PL ' + str(g)] = False
 
     return JsonResponse(data)
 
@@ -154,15 +164,15 @@ def export_pgdb_archive(student_list, relevent_plists):
         ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
 
         grades = ET.SubElement(student_tag, 'grades')
-        for grade in student.grade_set.all():
+        for grade in student.all_grades():
             grade_tag = ET.SubElement(grades, 'grade')
 
             ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
             ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
             ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
 
-            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.scholar_set.all()[0].term2)
-            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.scholar_set.all()[0].term1)
+            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.term2_avg)
+            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.term1_avg)
 
             points_tag = ET.SubElement(grade_tag, 'points')
             for point in grade.points_set.all():
@@ -213,7 +223,8 @@ def import_pgdb_file(tree):
 
             s_obj = Student(
                 student_num=int(s[0].text),
-                homeroom=f"{s[1].text.zfill(2)}{s[2].text}",
+                cur_grade_num=int(s[1].text),
+                homeroom_str=f"{s[2].text}",
                 first=s[3].text,
                 last=s[4].text,
                 legal=s[5].text,
@@ -224,16 +235,11 @@ def import_pgdb_file(tree):
 
             for g in s[8]:
 
-                g_obj = s_obj.grade_set.get(grade=int(g[0].text))
+                g_obj = s_obj.get_grade(int(g[0].text))
                 g_obj.anecdote = g[2].text or ""
 
-                scholar = g_obj.scholar_set.all().first()
-
-                scholar.term1 = float(g[3].text)
-                scholar.term2 = float(g[4].text)
-                scholar.save()
-
-                g_obj.save()
+                g_obj.term1_avg = float(g[3].text)
+                g_obj.term2_avg = float(g[4].text)
 
                 for p in g[5]:  # TODO fix so that the codes are the last 2 digits instead of last 4
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -244,9 +250,17 @@ def import_pgdb_file(tree):
                     else:
                         type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
-                    g_obj.points_set.create(type=type, amount=float(p[2].text), )
+                    g_obj.add_point(Points(type=type, amount=float(p[2].text)))
+
+                g_obj.calc_points_total("SE")
+                g_obj.calc_points_total("AT")
+                g_obj.calc_points_total("FA")
+                g_obj.save()
+
             # logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
+            raise e
+            return
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
             logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text})")
