@@ -78,7 +78,6 @@ def student_submit(request, num):
 
     # anecdotes
     for n, anecdote in enumerate(anecdotes):
-        # print(anecdote[1], n)
         grade = student.get_grade(student.cur_grade_num - n)
         grade.anecdote = anecdote[1]
         if request.user.has_perm('data.change_points'):
@@ -87,12 +86,11 @@ def student_submit(request, num):
     # delete codes buttons
     for button in code_delete_buttons:
         # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
-        grade, catagory, code = button[0].strip().split(' ')[1:]
-        point = \
-            student.get_grade(grade).points_set.filter(type__catagory=catagory).filter(type__code=code)[0]
+        id = int(button[0].strip().split(' ')[1])
+        point = Points.objects.get(id=id)
         if request.user.has_perm('data.change_points') or point.entered_by == request.user:
             point.delete()
-            student.get_grade(grade).calc_points_total(catagory)
+            point.Grade.calc_points_total(point.type.catagory)
 
     # points and codes
     if request.method == 'POST':
@@ -154,7 +152,6 @@ def student_submit(request, num):
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
         grade = student.get_grade(grade_num)
-
         grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
         grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
         grade.isnull_SC = f"SC{grade_num} nullify" not in nullification
@@ -167,6 +164,7 @@ def student_submit(request, num):
         grade.calc_SC_total()
 
         grade.save()
+
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
