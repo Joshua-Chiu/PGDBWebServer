@@ -1,16 +1,18 @@
+{% load mathfilters %}
 <h2>Scholar Candidates</h2>
 
 <div id="GradList">
     {% for student in student_list %}
-        <table>
-            <tr>
-                <td>CANDIDATE: </td>
-                <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
-            </tr>
-            <tr><td>Grade 11 T1: {{ student.grade_11.term1_avg|floatformat:"3" }}</td><td>Grade 11 T2: {{ student.grade_11.term2_avg|floatformat:"3" }}</td></tr>
-            <tr><td>Grade 12 T1: {{ student.grade_12.term1_avg|floatformat:"3" }}</td><td>Grade 12 T2: {{ student.grade_12.term2_avg|floatformat:"3" }}</td></tr>
+            <table style="page-break-inside: avoid;">
+                <tr>
+                    <td>CANDIDATE: </td>
+                    <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
+                </tr>
+                <tr><td>Grade 11 T1: {{ student.grade_11.term1_avg|floatformat:"3" }} %&emsp;</td><td>Grade 11 T2: {{ student.grade_11.term2_avg|floatformat:"3" }} %&emsp;</td></tr>
+                <tr><td>Grade 12 T1: {{ student.grade_12.term1_avg|floatformat:"3" }} %&emsp;</td><td>Grade 12 T2: {{ student.grade_12.term2_avg|floatformat:"3" }} %&emsp;</td></tr>
+                <tr><td>ALL 11/12: {{ student.grade_11.term1_avg|add:student.grade_11.term2_avg|add:student.grade_12.term1_avg|add:student.grade_12.term2_avg|div:4|floatformat:"3" }}  %&emsp;</td></tr>
 
-        </table>
+            </table>
         <hr>
     {% endfor %}
 </div>

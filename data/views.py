@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.urls import reverse
+
 from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from configuration.models import Configuration
 from users.models import CustomUser
@@ -269,7 +271,7 @@ def plist(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('accounts:login'))
 
 
 def plist_submit(request):
@@ -294,7 +296,7 @@ def plist_submit(request):
 
         year.save()
 
-    return HttpResponseRedirect("/data/settings/plist")
+    return HttpResponseRedirect(reverse('data:plist'))
 
 
 def autofocus_submit(request, num):
@@ -329,7 +331,7 @@ def codes_submit(request):
         entry.description = code[2][1]
         entry.save()
 
-    return HttpResponseRedirect("/data/settings/codes")
+    return HttpResponseRedirect(reverse('data:codes'))
 
 
 def index(request):

@@ -94,7 +94,10 @@
         var title = {% if type %}'{{ type }}'{% else %}document.title{% endif %};
 
         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-        mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}</style>');
+        mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}table { page-break-inside:avoid; page-break-after:auto; }' +
+            'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
+            'td{ page-break-inside:avoid; page-break-after:avoid; }' +
+            '</style>');
         mywindow.document.write('</head><body>');
         mywindow.document.write('<h3>' + title  + '</h3>');
         mywindow.document.write(document.getElementById(elem).innerHTML);

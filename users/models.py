@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
                                              (5, 'Scholar T2')])
     header_colour = models.CharField(max_length=7, default='#ADD8E6')
     page_colour = models.CharField(max_length=7, default='#ADD8E6')
+    page_colour = models.CharField(max_length=7, default='#ADD8E6')
 
     # Permission Booleans
     can_view = models.BooleanField(default=False, verbose_name='Can view student page with all information',
