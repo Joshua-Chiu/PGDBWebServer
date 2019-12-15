@@ -39,7 +39,7 @@
 
     <div>
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
-    </div> <!--TODO prevent table break -->
+    </div>
 
     {% if student_list  %}
         {% ifequal award "SE" %}
@@ -52,7 +52,7 @@
 
         {% ifequal award "SC" %}
             {% include 'export/award_templates/grad_award_sc.html' with student_list=student_list %}
-        {% endifequal %}<!--TODO 4 terms avg -->
+        {% endifequal %}
 
         {% ifequal award "FA" %}
             {% include 'export/award_templates/grad_award_fa.html' with student_list=student_list %}
@@ -60,7 +60,7 @@
 
         {% ifequal award "ME" %}
             {% include 'export/award_templates/grad_award_me.html' with student_list=student_list %}
-        {% endifequal %}<!--TODO add pins -->
+        {% endifequal %}
     {% endif %}
 {% endblock %}
 

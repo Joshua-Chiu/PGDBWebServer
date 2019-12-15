@@ -41,7 +41,7 @@ POINTTYPES = [
     ['SE', 3, 'Library Club'],
     ['SE', 4, 'Grad Service'],
     ['SE', 5, 'Scorer/Timer/Referee'],
-    ['SE', 6, 'Team Manage'],
+    ['SE', 6, 'Team Manager'],
     ['SE', 7, 'Lost and Found'],
     ['SE', 8, 'Annual/Yearbook'],
     ['SE', 9, 'Service to Counselling Dep\'t'],
@@ -157,7 +157,7 @@ POINTTYPES = [
     ['FA', 14, 'Vocal Jazz'],  # codes 1 and 14 are the same
     ['FA', 15, 'Pit Orchestra'],
     ['FA', 16, 'Acting Performance'],
-    ['FA', 17, 'Imporv Team/Games'],
+    ['FA', 17, 'Improv Team/Games'],
     ['FA', 18, 'Directing Performances'],
     ['FA', 19, 'Theatre Sports'],
     ['FA', 21, 'One Act Plays'],

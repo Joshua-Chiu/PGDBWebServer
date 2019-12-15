@@ -101,10 +101,10 @@ def parseQuery(query):
                                 new_students = new_students.exclude(id=s.id)
 
                         elif type == "honourroll":
-                            if not grade.honourroll:
+                            if not grade.honourroll or grade.isnull_SC:
                                 new_students = new_students.exclude(id=s.id)
                         elif type == "principalslist":
-                            if not grade.principalslist:
+                            if not grade.principalslist or grade.isnull_SC:
                                 new_students = new_students.exclude(id=s.id)
 
                     students = new_students

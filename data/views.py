@@ -334,9 +334,6 @@ def codes_submit(request):
 
 def index(request):
     maintenance, notice, offline = google_calendar()
-    if offline:
-        context = {'maintenance': maintenance[0]}
-        return HttpResponse(get_template('data/offline.html').render(context, request))
     template = get_template('data/index.html')
     context = {
         'maintenance': maintenance,
@@ -346,7 +343,8 @@ def index(request):
     }
     if request.user.is_authenticated:
         reset(username=request.user.username)
-
+    if offline and request.user.first_visit:
+        return HttpResponseRedirect(reverse("data:offline"))
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     elif request.user.is_authenticated:

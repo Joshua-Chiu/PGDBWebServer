@@ -7,13 +7,15 @@ def index(request):
     return HttpResponseRedirect('/')
 
 
-def login(request):
+def login(request):  # TODO this view is not being used
     if request.method == 'POST':
         username = request.POST['username']  # get username
         password = request.POST['txtPwd']  # and password
         user = authenticate(request=request, username=username, password=password)  # checking username and pwd
         if user is not None:
             if user.is_active:
+                user.first_visit = True
+                user.save()
                 login(request, user)
 
 

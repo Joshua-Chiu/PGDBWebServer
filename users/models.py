@@ -11,9 +11,11 @@ class CustomUser(AbstractUser):
     autofocus = models.IntegerField(default=1,
                                     choices=[(1, 'Service'), (2, 'Athletics'), (3, 'Fine Arts'), (4, 'Scholar T1'),
                                              (5, 'Scholar T2')])
+    first_visit = models.BooleanField(default=True)
+
     header_colour = models.CharField(max_length=7, default='#ADD8E6')
     page_colour = models.CharField(max_length=7, default='#ADD8E6')
-    page_colour = models.CharField(max_length=7, default='#ADD8E6')
+    alternate_row_colour = models.CharField(max_length=7, default='#ADD8E6')
 
     # Permission Booleans
     can_view = models.BooleanField(default=False, verbose_name='Can view student page with all information',
