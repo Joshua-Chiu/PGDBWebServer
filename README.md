@@ -29,7 +29,7 @@ GRANT ALL PRIVILEGES ON PGDB.* TO 'pgadmin'@'localhost';
 
 Install all python dependencies
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 Migrate columns to your SQL database
@@ -47,7 +47,7 @@ The output should be
     System check identified no issues (0 silenced).
     December 14, 2019 - 16:12:27
     Django version 2.2.7, using settings 'PGDBWebServer.settings'
-    Starting development server at http://0.0.0.0:80/
+    Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
 ```
 

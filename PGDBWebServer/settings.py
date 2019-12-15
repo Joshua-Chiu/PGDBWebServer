@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'PGDBWebServer.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -105,14 +105,14 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'YFY58iec5X',
-        'USER': 'YFY58iec5X',
-        'PASSWORD': 'nVJ49D7S2T',
+        'NAME': 'GP4bMlj7Hq',
+        'USER': 'GP4bMlj7Hq',
+        'PASSWORD': 'heRs4BsddP',
         'HOST': 'remotemysql.com',
         'PORT': '3306'
     }
 }
-'''
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -148,7 +148,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/PGDBWebServer/static/'
 
 LOGIN_REDIRECT_URL = '/data/welcome'
 LOGOUT_REDIRECT_URL = '/'
@@ -193,13 +193,13 @@ DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
 
 SECURE_SSL_REDIRECT = ('True' == os.environ.get('DEBUG', 'False'))
 
 # Extra lookup directories for collectstatic to find static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'static'),
 )
 
 #  Add configuration for static files storage using whitenoise
