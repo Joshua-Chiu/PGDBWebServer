@@ -333,24 +333,27 @@ def codes_submit(request):
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+
     maintenance, notice, offline = google_calendar()
-    template = get_template('data/index.html')
-    context = {
-        'maintenance': maintenance,
-        'notice': notice,
-        'student_list': Student.objects.all(),
-        'recent': Points.objects.all().order_by('-id')[:100],
-    }
-    if request.user.is_authenticated:
-        reset(username=request.user.username)
     if offline and request.user.first_visit:
         return HttpResponseRedirect(reverse("data:offline"))
+
+    reset(username=request.user.username)
+
     if request.user.is_superuser:
+        template = get_template('data/index.html')
+        context = {
+            'maintenance': maintenance,
+            'notice': notice,
+            'student_list': Student.objects.all(),
+            'recent': Points.objects.all().order_by('-id')[:100],
+        }
         return HttpResponse(template.render(context, request))
-    elif request.user.is_authenticated:
-        return HttpResponseRedirect('/entry')
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/entry')
+
 
 
 @login_required

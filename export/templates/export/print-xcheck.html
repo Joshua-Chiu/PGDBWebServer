@@ -1,7 +1,7 @@
 {% extends 'data/base.html' %}
 
 {% load mathfilters %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}{% if award_type_display %}Grade {{ grade_num }} {{ year }}-{{ year|add:1 }} {{ award_type_display }}{% else %}Data{% endif %} Crosscheck{% endblock %}
 

@@ -127,7 +127,7 @@ further defined and clarified by project maintainers.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/Joshua-Chiu/PGDBWebServer/tags). 
 
 ## Authors
 

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 import os, pytz
 import datetime
-from django.contrib.staticfiles.templatetags.staticfiles import static
+# from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
 
