@@ -11,7 +11,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
-from data.models import PointCodes
+from data.models import PointCodes, PlistCutoff
 from configuration.models import Configuration
 
 User = get_user_model()
@@ -30,6 +30,14 @@ USERS = [
     ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
 ]
 
+PLIST = [
+    [2019, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2018, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2017, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2016, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2015, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2014, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+]
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
 PERMISSIONS = ['change', ]  # For now only view permission by default for all, others include add, delete, change
@@ -216,19 +224,33 @@ class Command(BaseCommand):
 
         for u in POINTTYPES:
             category, code, description = u
-            if len(description) >= 30:
-                print(f'Error creating Code {code} due to description length')
+            if len(description) > 30:
+                logging.warning(f'Error creating Code {code} due to description length')
             try:
                 point = PointCodes.objects.get(catagory=category, code=code)
                 point.description = description
                 point.save()
+                print(f'Updated Code {code} of type {category} with description: {description}')
             except PointCodes.DoesNotExist:
                 point = PointCodes.objects.create(catagory=category, code=code, description=description)
+                print(f'Created Code {code} of type {category} with description: {description}')
+
+        for plist in PLIST:
+            try:
+                PlistCutoff.objects.create(year=plist[0],
+                                           grade_8_T1=plist[1], grade_8_T2=plist[2],
+                                           grade_9_T1=plist[3], grade_9_T2=plist[4],
+                                           grade_10_T1=plist[5], grade_10_T2=plist[6],
+                                           grade_11_T1=plist[7], grade_11_T2=plist[8],
+                                           grade_12_T1=plist[9], grade_12_T2=plist[10])
+            except:
+                logging.warning(f"Error creating Plist with year '{plist[0]}'.")
 
         try:
             config = Configuration.objects.get()
         except Configuration.DoesNotExist:
             config = Configuration.objects.create()
+            print(f'Created default configurations')
         config.save()
 
         print("Created default definitions, user and groups.")

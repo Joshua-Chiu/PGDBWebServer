@@ -141,6 +141,15 @@ class Grade(models.Model):
     def cumulative_SC(self):
         return self.student.cumulative_SC(self.grade)
 
+    ''' Make cached booleans for reports
+    class Awards:
+        annual_se = True
+        annual_at = True
+        annual_sc_hr = True
+        annual_sc_pl = True
+        annual_fa = True
+    '''
+
 
 # declare Grade_8 through to 12 which inherit from Grade
 # this is done so that Student can have 5 oneToOnes of the 'same' type
@@ -301,9 +310,20 @@ class Student(models.Model):
     def __str__(self):
         return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
 
+    ''' Make cached booleans for reports
+        class Awards:
+            grad_se = True # check in top 30, then only sort the top 30
+            grad_at = True
+            grad_sc = True
+            grad_fa = True
+            grad_me = True
+    '''
+    class Meta:
+        ordering = ['last', 'first']
+
 
 class PointCodes(models.Model):
-    """each object is a posible unique type of point a student can have"""
+    """each object is a possible unique type of point a student can have"""
     catagory = models.CharField(max_length=2)
     code = models.SmallIntegerField()
     description = models.CharField(max_length=30)
