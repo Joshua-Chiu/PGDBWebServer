@@ -175,8 +175,8 @@
         for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
             const student = elem.children[i];
             const first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
-            const last_name = student.children[1].innerHTML;
-            const identifier = student.children[2].innerHTML + " - " + student.children[3].innerHTML; // get student number and homeroom
+            const last_name = student.children[2].innerHTML;
+            const identifier = student.children[3].innerHTML + " - " + student.children[4].innerHTML; // get student number and homeroom
             //console.log(first_name + " " + last_name + " " + identifier);
 
             studentList.push([first_name, last_name, identifier]);
