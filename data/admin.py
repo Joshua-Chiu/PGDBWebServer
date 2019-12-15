@@ -20,12 +20,10 @@ admin.site.register(PlistCutoff)
 
 def increase_grade(modeladmin, request, queryset):
     for student in queryset:
-        new_grade = int(re.findall('\d+', student.homeroom)[0]) + 1
-        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
-
-        if new_grade > 12:
+        if student.cur_grade_num > 12:
             pass  # mark inactive
         else:
+            student.cur_grade_num += 1
             student.save()
 
 

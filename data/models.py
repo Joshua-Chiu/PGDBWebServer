@@ -12,7 +12,7 @@ import re
 
 class PlistCutoff(models.Model):
     YEAR_CHOICES = [(r, f"{r} → {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
-    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year, unique=True)
 
     grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
     grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3)
@@ -322,7 +322,7 @@ class Points(models.Model):
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
 
     def get_student(self):
-        return getattr(self.Grade, f"grade_{self.Grade.grade}").student  # TODO fix the student thing
+        return getattr(self.Grade, f"grade_{self.Grade.grade}").student
 
     def __str__(self):
         return f"{self.type} {self.amount}"

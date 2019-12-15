@@ -3,6 +3,8 @@ import os, pytz
 import datetime
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
+from django.urls import reverse
+
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
@@ -241,7 +243,7 @@ def import_pgdb_file(tree):
                 g_obj.term1_avg = float(g[3].text)
                 g_obj.term2_avg = float(g[4].text)
 
-                for p in g[5]:  # TODO fix so that the codes are the last 2 digits instead of last 4
+                for p in g[5]:
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
                             code=int(p[1].text))) == 0):
                         type = PointCodes(catagory=p[0].text, code=int(p[1].text),
@@ -305,7 +307,7 @@ def ajax_all_points(request):
         except:
             entered_by = "Importer"
         data.append({
-            'student': f"{point.Grade.Student.first} {point.Grade.Student.last}",
+            'student': f"{point.get_student().first} {point.get_student().last}",
             'point': point.amount,
             'description': point.type.description,
             'grade': point.Grade.grade,
@@ -318,3 +320,20 @@ def reset_users(request):
     reset(request.GET['username'])
     return HttpResponseRedirect(request.path)
 
+
+def welcome(request):
+    request.user.first_visit = True
+    request.user.save()
+    return HttpResponseRedirect(reverse('data:index'))
+
+
+def offline(request):
+    maintenance, notice, status = google_calendar()
+    if status:
+        request.user.first_visit = False
+        request.user.save()
+        context = {
+            'maintenance': maintenance[0],
+        }
+        return HttpResponse(get_template('data/offline.html').render(context, request))
+    return HttpResponseRedirect(reverse('data:index'))

@@ -16,6 +16,7 @@
     <table>
         <tr><td><label for="first">First Name:</label></td><td><input id="first" type="text" value="{{ user.first_name }}" disabled></td></tr>
         <tr><td><label for="last">Last Name:</label></td><td><input id="last" type="text" value="{{ user.last_name }}" disabled></td></tr>
+        <tr><td><label for="email">Email:</label></td><td><input id="email" type="text" value="{{ user.email }}" disabled></td></tr>
         <tr><td><label for="top">Top bar colour:</label></td><td><input type="color" name="top" id="top" value="{{ user.header_colour }}"></td></tr>
         <tr><td><label for="page">Page colour:</label></td><td><input type="color" name="page" id="page" value="{{ user.page_colour }}"></td></tr>
     </table>{% csrf_token %}
