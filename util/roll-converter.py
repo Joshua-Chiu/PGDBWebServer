@@ -15,7 +15,7 @@ class Student:
 
 
 def write_students(students):
-    csvfile = io.StringIO
+    csvfile = io.StringIO()
     writer = csv.writer(csvfile)
 
     for s in students:
@@ -29,6 +29,8 @@ def write_students(students):
             str(s.average),
         )
         writer.writerow(row)
+
+    return csvfile
 
 
 def roll_convert(csvfile, excluded_classes):
@@ -64,6 +66,8 @@ def roll_convert(csvfile, excluded_classes):
         if any(c["Mark"] in ["I", ""] or int(c["Mark"]) < 59.5 for c in student.courses):
             continue
 
+        if any([])
+
         # loop through courses and calculate average
         average = 0
         GE = True
@@ -88,7 +92,7 @@ def roll_convert(csvfile, excluded_classes):
     honour_file = write_students(honour_roll)
     plist_file = write_students(top)
 
-    return {"GE Roll": GE_file, "Honour Roll": honour_file, "Plist Roll": plist_file}
+    return {"GE Roll.csv": GE_file, "Honour Roll.csv": honour_file, "Plist Roll.csv": plist_file}
 
 
 if __name__ == "__main__":
@@ -97,7 +101,7 @@ if __name__ == "__main__":
 
     filename = sys.argv[1]
     with open(filename) as file:
-        files = roll_convert(file, [])
+        files = roll_convert(file, ["YBMO", "YCMP", "YIPS"])
 
         for name, buf in files.items():
             with open(name, 'w') as f:
