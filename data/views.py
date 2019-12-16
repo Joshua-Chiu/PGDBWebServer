@@ -10,17 +10,15 @@ from itertools import zip_longest
 import io
 import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from util.converter import wdb_convert
 from threading import Thread
 
-from axes.utils import reset
 from .extra_views import *
 
 logs = []
 
 
-@login_required
 def search(request):
     template = get_template('data/search.html')
 
@@ -38,10 +36,7 @@ def search(request):
         'student_list': students,
         'query': request.GET['query']
     }
-    if request.user.is_authenticated:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/')
+    return HttpResponse(template.render(context, request))
 
 
 def student_info(request, num):
@@ -58,13 +53,9 @@ def student_info(request, num):
         'grade_08': student.get_grade(8),
 
     }
-    if request.user.is_authenticated:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/')
+    return HttpResponse(template.render(context, request))
 
 
-@login_required
 def student_submit(request, num):
     entered_by = request.user
     student = Student.objects.get(id=num)
@@ -175,7 +166,7 @@ def archive(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def archive_submit(request):
@@ -197,7 +188,7 @@ def archive_submit(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def archive_wdb_submit(request):
@@ -245,7 +236,7 @@ def settings(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def codes(request):
@@ -256,7 +247,7 @@ def codes(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def plist(request):
@@ -269,7 +260,7 @@ def plist(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect(reverse('accounts:login'))
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def plist_submit(request):
@@ -333,15 +324,9 @@ def codes_submit(request):
 
 
 def index(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/')
-
     maintenance, notice, offline = google_calendar()
     if offline and request.user.first_visit:
         return HttpResponseRedirect(reverse("data:offline"))
-
-    reset(username=request.user.username)
-
     if request.user.is_superuser:
         template = get_template('data/index.html')
         context = {
@@ -352,11 +337,9 @@ def index(request):
         }
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/entry')
+        return HttpResponseRedirect(reverse('entry:index'))
 
 
-
-@login_required
 def personalisation(request):
     template = get_template('data/personalisation.html')
     context = {
@@ -365,7 +348,6 @@ def personalisation(request):
     return HttpResponse(template.render(context, request))
 
 
-@login_required
 def personalisation_submit(request):
     user = request.user
     items = request.POST
@@ -383,4 +365,4 @@ def help(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))

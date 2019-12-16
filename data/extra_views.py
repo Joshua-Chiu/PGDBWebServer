@@ -4,7 +4,7 @@ import datetime
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
-
+from axes.utils import reset
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
@@ -324,6 +324,7 @@ def reset_users(request):
 def welcome(request):
     request.user.first_visit = True
     request.user.save()
+    reset(username=request.user.username)
     return HttpResponseRedirect(reverse('data:index'))
 
 

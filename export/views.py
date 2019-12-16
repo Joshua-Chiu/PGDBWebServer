@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
+from django.urls import reverse
+
 from data.models import Student
 from util.queryParse import parseQuery
 from configuration.models import Configuration
@@ -19,7 +21,7 @@ def index(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_annual(request):
@@ -95,7 +97,7 @@ def print_annual(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_grad(request):
@@ -133,7 +135,7 @@ def print_grad(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_trophies(request):
@@ -161,7 +163,7 @@ def print_trophies(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_xcheck(request):
@@ -216,7 +218,7 @@ def print_xcheck(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def export_files(request):

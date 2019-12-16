@@ -8,15 +8,19 @@ from data.models import Student, PointCodes, Points
 from django.http import JsonResponse
 from data.views import google_calendar
 
+offline = False
+
 
 def checkUser(user, category):
-    return user.groups.filter(name=category).exists() or user.is_superuser
+    global offline
+    return (user.groups.filter(name=category).exists() and not offline) or user.is_superuser
 
 
 def index(request):
+    global offline
     maintenance, notice, offline = google_calendar()
-    if offline:
-        return HttpResponseRedirect(reverse('data:index'))
+    if offline and not request.user.is_superuser:
+        return HttpResponseRedirect(reverse('data:offline'))
     template = get_template('entry/index.html')
     context = {
         'maintenance': maintenance,
@@ -30,7 +34,7 @@ def index(request):
 
 
 def service(request):
-    if request.user.is_authenticated and checkUser(request.user, "Service"):
+    if checkUser(request.user, "Service"):
         template = get_template('entry/service.html')
         context = {
             'points': Points.objects.filter(entered_by=request.user, type__catagory='SE').order_by('-id')[:75]
@@ -41,7 +45,7 @@ def service(request):
 
 
 def athletics(request):
-    if request.user.is_authenticated and checkUser(request.user, "Athletics"):
+    if checkUser(request.user, "Athletics"):
         template = get_template('entry/athletics.html')
         context = {
             'points': Points.objects.filter(entered_by=request.user, type__catagory='AT').order_by('-id')[:75]
@@ -52,7 +56,7 @@ def athletics(request):
 
 
 def fine_arts(request):
-    if request.user.is_authenticated and checkUser(request.user, "Fine Arts"):
+    if checkUser(request.user, "Fine Arts"):
         template = get_template('entry/fine-arts.html')
         context = {
             'points': Points.objects.filter(entered_by=request.user, type__catagory='FA').order_by('-id')[:75]
@@ -63,7 +67,7 @@ def fine_arts(request):
 
 
 def scholar(request):
-    if request.user.is_authenticated and checkUser(request.user, "Scholar"):
+    if checkUser(request.user, "Scholar"):
         template = get_template('entry/scholar.html')
         context = {}
         return HttpResponse(template.render(context, request))
@@ -135,13 +139,9 @@ def scholar_upload_file(request):
 def error(request):
     template = get_template('entry/error.html')
     context = {}
-    if request.user.is_authenticated:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/data')
+    return HttpResponse(template.render(context, request))
 
 
-@login_required
 def dictionary(request, point_catagory):
     template = get_template('entry/dictionary.html')
     context = {
@@ -173,7 +173,6 @@ def point_submit(request, point_catagory):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-@login_required
 def upload_file(request, point_catagory):
     error_msgs = []
     entered_by = request.user
