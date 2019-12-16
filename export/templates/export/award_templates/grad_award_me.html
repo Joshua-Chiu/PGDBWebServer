@@ -1,4 +1,4 @@
-<h2>Athletic Candidates</h2>
+<h2>Merit Candidates</h2>
 
 <div id="GradList">
     {% for student in student_list %}
@@ -7,25 +7,13 @@
             <td>CANDIDATE: </td>
             <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ student.homeroom }})</td>
         </tr>
-        {% for grade in student.grade_set.all %}
-            {% ifequal 12 grade.grade|stringformat:"02d"|add:"0" %}
-                <tr><td>Service: </td><td>{{ student.SE_11_12_total|floatformat:"2" }}</td></tr>
-                <tr><td>Athletic: </td><td>{{ student.AT_11_12_total|floatformat:"2" }}</td></tr>
-                <tr><td>Scholar: </td><td>GR11T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }} GR11T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }} GR12T1: {{ grade.scholar_set.all.0.term1|floatformat:"3" }} GR12T2: {{ grade.scholar_set.all.0.term2|floatformat:"3" }}</td></tr> <!--TODO put grade 11/12 grades on the same line -->
-                <tr><td>Fine Arts: </td><td>{{ student.FA_11_12_total|floatformat:"2" }}</td></tr>
-                <tr><td>Total 11-12: </td><td>{{ student.all_11_12_total|floatformat:"2" }}</td></tr>
-                <tr><td>Total 08-12: </td><td>{{ grade.cumulative_SE|add:grade.cumulative_AT|add:grade.cumulative_SC|add:grade.cumulative_FA|floatformat:"2" }}</td></tr>
-            {% endifequal %}
-        {% endfor %}
-        {% comment %}
-        <tr>
-            <td>PINS:</td>
-            <td>Silver: {{ student.silver_pin }}</td>
-            <td>Gold: {{ student.gold_pin }}</td>
-            <td>Gold+: {{ student.goldPlus_pin }}</td>
-            <td>Platinum: {{ student.platinum_pin }}</td>
-        </tr>
-        {% endcomment %}
+            <tr><td>Service: </td><td>{{ student.SE_11_12_total|floatformat:"3" }} Points</td></tr>
+            <tr><td>Athletic: </td><td>{{ student.AT_11_12_total|floatformat:"3" }} Points</td></tr>
+            <tr><td>Scholar: </td><td>GR11T1: {{ student.grade_11.term1_avg|floatformat:"3" }} % &emsp;|&emsp; GR11T2: {{ student.grade_11.term2_avg|floatformat:"3" }} % &emsp;|&emsp; GR12T1: {{ student.grade_12.term1_avg|floatformat:"3" }} % &emsp;|&emsp; GR12T2: {{ student.grade_12.term2_avg|floatformat:"3" }} %</td></tr>
+            <tr><td>Fine Arts: </td><td>{{ student.FA_11_12_total|floatformat:"3" }} Points</td></tr>
+            <tr><td>Total 11-12: </td><td>{{ student.all_11_12_total|floatformat:"3" }} Points</td></tr>
+            <tr><td>Total 08-12: </td><td>{{ student.SE_total|add:student.AT_total|add:student.SC_total|add:student.FA_total|floatformat:"3" }}</td></tr>
+            <tr><td>PINS:</td><td colspan="3">Silver: Grade {{ student.silver_pin }} &emsp; | &emsp; Gold: Grade {{ student.gold_pin }} &emsp; | &emsp; Gold+: Grade {{ student.goldPlus_pin }} &emsp; | &emsp; Platinum: Grade {{ student.platinum_pin }}</td></tr>
         </table>
         <hr>
     {% endfor %}

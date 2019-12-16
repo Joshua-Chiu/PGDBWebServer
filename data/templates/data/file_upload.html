@@ -1,5 +1,5 @@
 {% extends 'data/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}Processing...{% endblock %}
 
@@ -17,7 +17,9 @@
 
 {% block javascript %}
     <script>
+
     function status (){
+        var i = 0;
         $.ajax({
             url: '{% url "data:ajax_import_status" %}',
             data: {},
@@ -30,14 +32,15 @@
                         console.log(logs[i]);
                         $("ol").append("<li>" + logs[i] + "</li>");
                     }
-                    document.getElementById('Progress').innerHTML = "We processed your file - please see belows for errors";
+                    document.getElementById('Progress').innerHTML = "We processed your file - please see errors below";
                     if(logs.length === 0){
                         document.getElementById('Progress').innerHTML = "We processed your file - no errors";
                     }
                     document.title = "Done"
                 } else {
                     document.getElementById('Progress').innerHTML = "We are now processing your file in the background";
-                    document.title = "Processing..."
+                    document.title = "Processing...";
+                    i++;
                 }
             }
         });

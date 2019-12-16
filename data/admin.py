@@ -20,12 +20,10 @@ admin.site.register(PlistCutoff)
 
 def increase_grade(modeladmin, request, queryset):
     for student in queryset:
-        new_grade = int(re.findall('\d+', student.homeroom)[0]) + 1
-        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
-
-        if new_grade > 12:
+        if student.cur_grade_num > 12:
             pass  # mark inactive
         else:
+            student.cur_grade_num += 1
             student.save()
 
 
@@ -82,8 +80,30 @@ class StudentAdmin(admin.ModelAdmin):
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
     list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
     list_display_links = ('last', 'first')
-    actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive]
     search_fields = ('first', 'last', 'student_num',)
+    fieldsets = (
+        ('Personal Information', {'fields': (
+            'first',
+            'last',
+            'legal',
+            'sex',
+            'student_num',)}),
+        ('Grade', {'fields': (
+            'grad_year',
+            'cur_grade_num',
+            'homeroom_str')}),
+    )
+
+    def get_actions(self, request):
+        actions = super(StudentAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
+    def really_delete_selected(self, request, queryset):
+        for s in queryset:
+            s.delete()
+
+    really_delete_selected.short_description = "Delete selected entries"
 
     def import_as_csv(self, request):
         if "file" in request.FILES:
@@ -117,6 +137,8 @@ class StudentAdmin(admin.ModelAdmin):
             url(r"^import/$", self.import_as_csv)
         ]
         return my_urls + urls
+
+    actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive, really_delete_selected]
 
 
 admin.site.register(Student, StudentAdmin)

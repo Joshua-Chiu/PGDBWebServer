@@ -1,7 +1,7 @@
 {% extends 'data/base.html' %}
 
 {% load mathfilters %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Annual Awards{% endif %}{% endblock %}
 
@@ -56,7 +56,7 @@
             <label>Athletic Awards:
             <select name="athletic">
                 <option value="" >Select</option>
-                <option {% ifequal award "big-block" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>
+                <option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>
                 <option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
                 <option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>
                 <option {% ifequal award "5ST" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>
@@ -149,7 +149,7 @@
             doc.text(220, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
 
-            doc.addImage(imgData, 'JPEG', 184, 172, 40, 15);
+            doc.addImage(imgData, 'JPEG', 184, 172, 40, 23);
 
             doc.addPage();
 
@@ -175,8 +175,8 @@
         for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
             const student = elem.children[i];
             const first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
-            const last_name = student.children[1].innerHTML;
-            const identifier = student.children[2].innerHTML + " - " + student.children[3].innerHTML; // get student number and homeroom
+            const last_name = student.children[2].innerHTML;
+            const identifier = student.children[3].innerHTML + " - " + student.children[4].innerHTML; // get student number and homeroom
             //console.log(first_name + " " + last_name + " " + identifier);
 
             studentList.push([first_name, last_name, identifier]);

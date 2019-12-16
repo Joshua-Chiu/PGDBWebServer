@@ -4,7 +4,10 @@ from . import views
 app_name = 'data'
 
 urlpatterns = [
+    path('welcome', views.welcome, name='welcome'),
+    path('offline', views.offline, name='offline'),
     path('', views.index, name="index"),
+
     path('search', views.search, name="search"),
     path('student/<int:num>', views.student_info, name="student_info"),
     path('student/<int:num>/submit', views.student_submit, name="student_submit"),
@@ -24,6 +27,7 @@ urlpatterns = [
     path('personalisation', views.personalisation, name='personalisation'),
     path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
     path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
+    path('show-all', views.show_all, name='show-all'),
 
     path('ajax/import_status/', views.ajax_import_status, name='ajax_import_status'),
     path('ajax/student_cumulative_data/', views.ajax_student_cumulative_data, name='ajax_student_cumulative_data'),

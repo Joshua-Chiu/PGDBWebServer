@@ -1,5 +1,5 @@
 {% extends 'data/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}Service (Direct){% endblock %}
 
@@ -20,9 +20,9 @@
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label>
             <a id="name" class="name">Student not found</a> |
-            <labeL>Minutes: <input class="min" type='number' name="minutes" value="" style="width: 40px"></labeL> =
+            <labeL>Minutes: <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px"></labeL> =
             <a id="hours" class="hours">NONE</a> |
-            <labeL>Code: <input class="code" type="number" name="code" value="" style="width: 40px"></labeL>
+            <labeL>Code: <input class="code" required="required" type="number" name="code" value="" style="width: 40px"></labeL>
             <a id="code" class="code">Code not found</a>
             <button value="submit">Submit</button>
             {% csrf_token %}
@@ -32,14 +32,14 @@
     <h4>Form entry</h4>
     <p>Visit the home/help page to access import template files</p>
     <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="file" onchange="form.submit();">
+        <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
         {% csrf_token %}
     </form>
     {% endif %}
     <h4>My recent actions</h4>
     <table>
         {% for point in points %}
-            <tr><td>{{ point.Grade.Student.first }} {{ point.Grade.Student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
+            <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
         {% endfor %}
     </table>
     </body>
@@ -80,6 +80,7 @@
                dataType: 'json',
                success: function (data) {
                        document.getElementById('name').innerHTML=data.student_name;
+                       if(data.student_name !== "Student not found") document.getElementsByName('minutes')[0].focus();
                }
            });
         });

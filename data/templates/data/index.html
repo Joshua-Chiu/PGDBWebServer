@@ -1,5 +1,5 @@
 {% extends 'data/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -20,8 +20,8 @@
             <thead>
             <tr><th>Student</th><th>Point</th><th>User</th></tr>
             </thead>
-        {% for log in recent %}
-            <tr><td>{{ log.Grade.Student.first }} {{ log.Grade.Student.last }} &emsp14; </td><td>{{ log.amount }} Points for {{ log.type.description }} in Grade {{ log.Grade.grade }}&emsp14; </td><td>{% if log.entered_by.username %}{{ log.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
+        {% for entry in recent %}
+            <tr><td>{{ entry.get_student.first }} {{ entry.get_student.last }} &emsp14; </td><td>{{ entry.amount }} Points for {{ entry.type.description }} in Grade {{ entry.Grade.grade }}&emsp14; </td><td>{% if entry.entered_by.username %}{{ entry.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
         {% endfor %}
             <tr><td colspan="3"><a href="javascript:showData();">Show All</a></td></tr>
         </table>
@@ -48,7 +48,7 @@
     <div style="clear: both;">
         <hr>
         <ul id="list">
-            <li><button class="btn" onclick="alert('A check is being executed in the background.')">Database Integrity Check</button></li>
+            <li><button class="btn" onclick="alert('A check is being executed in the background. TODO compile sums and make report booleans. Make reports even faster')">Database Integrity Check</button></li>
             <li>Student Statistics</li>
         </ul>
     </div>
@@ -67,9 +67,11 @@
     </div>
 {% endblock %}
 
-{% block javascript %}{% comment %}
+{% block javascript %}
     <script>
     function showData() {
+        window.open('{% url 'data:show-all' %}', 'SHOW-ALL', 'height=400,width=600')
+        /*
         const mywindow = window.open('', 'PRINT', 'height=400,width=600');
         mywindow.document.documentElement.innerHTML = '';
         var title = 'View all entries';
@@ -89,6 +91,9 @@
         mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
     }
+    </script>
+{% comment %}
+    <script>
     function injectThis() {
         $.ajax({
         url: '{% url "data:ajax_all_points" %}',

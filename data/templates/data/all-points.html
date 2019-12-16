@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'data/base.html' %}
+{% load static %}
+
+{% block title %}Show All{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+        <ul id="list" style="font-size: 8px;">
+            <li>Loading...</li>
+        </ul>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    $(document).ready(function(){
+    $.ajax({
+        url: '{% url "data:ajax_all_points" %}',
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+            var list = document.getElementById("list");
+            var listItems = list.getElementsByTagName("li");
+            var last = list.getElementsByTagName("li")[listItems.length-1];
+            list.removeChild(last);
+            for(let i = 0; i < data.length; i++) {
+                var node = document.createElement("LI");
+                var point = data[i];
+                var textnode = document.createTextNode(point.student + ":\t " + point.point + " Points for " + point.description + " in Grade " + point.grade + " entered by " + point.enteredby);
+                node.appendChild(textnode);
+                document.getElementById("list").appendChild(node);
+            }
+        }});
+    });
+    </script>
+{% endblock %}

@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'PGDBWebServer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-## old mysqlite database
+# old mysqlite database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -101,6 +101,18 @@ DATABASES = {
         'PORT': ''
     }
 }
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'GP4bMlj7Hq',
+        'USER': 'GP4bMlj7Hq',
+        'PASSWORD': 'heRs4BsddP',
+        'HOST': 'remotemysql.com',
+        'PORT': '3306'
+    }
+}
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -136,9 +148,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/PGDBWebServer/static/'
 
-LOGIN_REDIRECT_URL = '/data/'
+LOGIN_REDIRECT_URL = '/data/welcome'
 LOGOUT_REDIRECT_URL = '/'
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 25000
@@ -160,7 +172,7 @@ AXES_ONLY_USER_FAILURES = True
 
 # Email Settings
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
-'''
+
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'Petheriotis'
@@ -175,19 +187,19 @@ EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
+'''
 DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.ca>"
 
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
 
 SECURE_SSL_REDIRECT = ('True' == os.environ.get('DEBUG', 'False'))
 
 # Extra lookup directories for collectstatic to find static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'static'),
 )
 
 #  Add configuration for static files storage using whitenoise

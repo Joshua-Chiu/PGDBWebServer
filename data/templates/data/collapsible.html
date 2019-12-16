@@ -1,43 +1,40 @@
-{% load staticfiles %}
+{% load static %}
 {% load mathfilters %}
 
-<div class="wrap-collapsible">
-    <!--Comment out the following line to remove the disable NOT AT PG-->
-  <input style="display:none" id="{{ grade }}" class="toggle" type="checkbox" {% ifequal grade current_grade %} checked {% endifequal %}>
-
-  <label for="{{ grade }}" class="lbl-toggle">
-      {% ifequal grade current_grade %}<strong>{% endifequal %}
-      Grade {{ grade }}
-      {% ifequal grade current_grade %}</strong>
-        ({{ grade_object.start_year }} - {{ grade_object.start_year|add:1 }})
-    {% endifequal %}
-  </label>
+<div class="wrap-collabsible">
+    <input id="collapsible-{{ grade.grade }}" class="toggle" type="checkbox" style="display: none;"
+    {% if student.cur_grade_num == grade.grade %}
+        checked><!--open collapsible for current year-->
+        <label for="collapsible-{{ grade.grade }}" class="lbl-toggle"><strong>
+            Grade {{ grade.grade }} ({{ grade.start_year }} - {{ grade.start_year|add:1 }})
+        </strong></label>
+    {% else %}
+        >
+        <label for="collapsible-{{ grade.grade }}" class="lbl-toggle">Grade {{ grade.grade }}</label>
+    {% endif %}
 
   <div class="collapsible-content">
-
-
-    <div class="content-inner">
       <table class="main-table" style="width: 100%; border: 1px solid black">
         <tr>
             <!-- Totals and Table headers-->
-            <td>Grade: {{ grade }}</td>
-            <td class="entry-table-heading"><strong>Service</strong> <span id="annual SE{{ grade }} total">...</span> Points</td>
-            <td class="entry-table-heading"><strong>Athletics</strong> <span id="annual AT{{ grade }} total">...</span> Points</td>
-            <td class="entry-table-heading"><strong>Fine Arts</strong> <span id="annual FA{{ grade }} total">...</span> Points</td>
-            <td><strong>Scholar</strong> <span id="annual SC{{ grade }} total">...</span> Points</td>
+            <td>Grade: {{ grade.grade }}</td>
+            <td class="entry-table-heading"><strong>Service</strong> <span id="annual SE{{ grade.grade }} total">...</span> Points</td>
+            <td class="entry-table-heading"><strong>Athletics</strong> <span id="annual AT{{ grade.grade }} total">...</span> Points</td>
+            <td class="entry-table-heading"><strong>Fine Arts</strong> <span id="annual FA{{ grade.grade }} total">...</span> Points</td>
+            <td><strong>Scholar</strong> <span id="annual SC{{ grade.grade }} total">...</span> Points</td>
             <td><strong>Annual Awards</strong></td>
         </tr>
         <tr>
             <td rowspan="4">
                 <!-- get current year-->
-                {{ grade_object.start_year|add:1 }}<br>
-                {{ grade_object.start_year }}
+                {{ grade.start_year|add:1 }}<br>
+                {{ grade.start_year }}
                 <br>
                     <!--Table left content-->
                 <hr>
                 {{ student.currentyear|slice:"5:8" }}
                 <p>Comments</p>
-                <textarea title="anecdote" name="anecdote{{ grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade_object.anecdote }}</textarea><hr>
+                <textarea title="anecdote" name="anecdote{{ grade.grade }}" class="text" rows="5" cols="25" form="form0" {% if user.no_entry %}disabled{% endif %}>{{ grade.anecdote }}</textarea><hr>
                 <button style="clear: both;" onclick="submitForms();" class="btn {% if user.no_entry %}disabled{% endif %}">SAVE COMMENT</button>
             </td>
 
@@ -45,46 +42,46 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" max="1000" id="service" type="number" name="{{grade}} SE points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="service" type="number" name="{{grade}} SE code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="1000" id="service" type="number" name="{{ grade.grade }} SE points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="service" type="number" name="{{ grade.grade }} SE code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input class="inputs" max="6" id="athletics" type="number" name="{{grade}} AT points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="athletics" type="number" name="{{grade}} AT code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="6" id="athletics" type="number" name="{{ grade.grade }} AT points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="athletics" type="number" name="{{ grade.grade }} AT code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" max="10" id="fine_arts" type="number" name="{{grade}} FA points" maxlength="4" {% ifequal grade current_grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="fine_arts" type="number" name="{{grade}} FA code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="10" id="fine_arts" type="number" name="{{ grade.grade }} FA points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="fine_arts" type="number" name="{{ grade.grade }} FA code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td rowspan="2">
                     <label for="scholar">T1 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T1" value="{{ scholar.term1|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
-                    <label><input class="scholar" name="SC{{grade}}T1 nullify" type="checkbox" onclick="validate('T1');" {% if certificates.t1 %} checked{% endif %}></label><!--nullify average; don't assign points-->
+                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{ grade.grade }} SC T1" value="{{ grade.term1_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
+                    <label><input class="scholar" name="SC{{ grade.grade }}T1 nullify" type="checkbox" onclick="validate('T1');" {% if not grade.isnull_term1 %} checked{% endif %}></label><!--nullify average; don't assign points-->
                 <br>
 
                     <label for="scholar">T2 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{grade}} SC T2" value="{{ scholar.term2|floatformat:"3" }}" {% ifequal grade current_grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
-                    <label><input class="scholar" name="SC{{grade}}T2 nullify" type="checkbox" onclick="validate('T2');" {% if certificates.t2 %} checked{% endif %}></label><!--nullify average; don't assign points-->
+                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{ grade.grade }} SC T2" value="{{ grade.term2_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
+                    <label><input class="scholar" name="SC{{ grade.grade }}T2 nullify" type="checkbox" onclick="validate('T2');" {% if not grade.isnull_term2 %} checked{% endif %}></label><!--nullify average; don't assign points-->
                 <br>
 
                     <label for="scholar">T1 Plist:
-                        {% if grade_object.plist_T1 %}{{ grade_object.plist_T1 }}{% else %}<a href="{% url "admin:data_plistcutoff_add" %}">Create</a>{% endif %}
+                        {% if grade.plist_T1 %}{{ grade.plist_T1 }}{% else %}<a href="{% url "admin:data_plistcutoff_add" %}">Create</a>{% endif %}
                     </label><br>
                     <label for="scholar">T2 Plist:
-                        {{ grade_object.plist_T2 }}
+                        {{ grade.plist_T2 }}
                     </label>
             </td>
             <!-- Annual awards -->
             <td rowspan="2">
-                <label><input name="SE{{ grade }} nullify" type="checkbox" onclick="validate('SE');"{% if certificates.service %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual SE {{ grade }}">Calculating...</span><br>
-                <label><input name="AT{{ grade }} nullify" type="checkbox" onclick="validate('AT');"{% if certificates.athletics %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual AT {{ grade }}"></span><br>
-                <label><input name="FA{{ grade }} nullify" type="checkbox" onclick="validate('FA');"{% if certificates.fine_arts %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual FA {{ grade }}"></span><br>
-                <label><input name="SC{{ grade }} nullify" type="checkbox" onclick="validate('SC');"{% if certificates.honour %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual SC {{ grade }}"></span> <span id="annual PL {{ grade }}"></span>
+                <label><input name="SE{{ grade.grade }} nullify" type="checkbox" onclick="validate('SE');"{% if not grade.isnull_SE %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual SE {{ grade.grade }}">Calculating...</span><br>
+                <label><input name="AT{{ grade.grade }} nullify" type="checkbox" onclick="validate('AT');"{% if not grade.isnull_AT %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual AT {{ grade.grade }}"></span><br>
+                <label><input name="FA{{ grade.grade }} nullify" type="checkbox" onclick="validate('FA');"{% if not grade.isnull_FA %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual FA {{ grade.grade }}"></span><br>
+                <label><input name="SC{{ grade.grade }} nullify" type="checkbox" onclick="validate('SC');"{% if not grade.isnull_SC %} checked{% endif %}></label><!--nullify certificate; do assign points--><span id="annual SC {{ grade.grade }}"></span> <span id="annual PL {{ grade.grade }}"></span>
 
 <br>
             </td>
@@ -104,7 +101,7 @@
         </tr>
     <tr>
         <td height="10" rowspan="2"><table style="border-collapse: collapse;">
-                {% for point in grade_object.points_set.all %}
+                {% for point in grade.points_set.all %}
                     {% ifequal "SE" point.type.catagory %}
                         <tr>
                             <td style="border: none;"><div class="tooltip">
@@ -113,14 +110,14 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
                 {% endfor %}
         </table></td>
         <td height="10" rowspan="2"><table style="border-collapse: collapse;">
-                {% for point in grade_object.points_set.all %}
+                {% for point in grade.points_set.all %}
                     {% ifequal "AT" point.type.catagory %}
                         <tr>
                             <td style="border: none;"><div class="tooltip">
@@ -129,14 +126,14 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{  point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
                 {% endfor %}
         </table></td>
         <td height="10" rowspan="2"><table style="border-collapse: collapse;">
-                {% for point in grade_object.points_set.all %}
+                {% for point in grade.points_set.all %}
                     {% ifequal "FA" point.type.catagory %}
                         <tr>
                             <td style="border: none;"><div class="tooltip">
@@ -145,7 +142,7 @@
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}; <br> Code ID {{ point.type.code }}</span>
                             </div></td><td style="border: none;">
-                                <input type="submit" style="vertical-align: middle;" name="deletePoint {{ grade }} {{ point.type }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
+                              <input type="submit" style="vertical-align: middle;" name="deletePoint {{  point.id }}" value="X" {% if user.no_entry %}disabled{% endif %}/>
                             </td>
                         </tr>
                     {% endifequal %}
@@ -166,34 +163,33 @@
             Big Block<br>
         </td>
         <td>
-            <span id="silver {{ grade }}">Calculating...</span><br>
-            <span id="gold {{ grade }}"></span><br>
-            <span id="gold+ {{ grade }}"></span><br>
-            <span id="platinum {{ grade }}"></span><br>
-            <span id="bigblock {{ grade }}"></span><br>
+            <span id="silver {{ grade.grade }}">Calculating...</span><br>
+            <span id="gold {{ grade.grade }}"></span><br>
+            <span id="gold+ {{ grade.grade }}"></span><br>
+            <span id="platinum {{ grade.grade }}"></span><br>
+            <span id="bigblock {{ grade.grade }}"></span><br>
         </td>
     </tr>
     </table>
-
-<!-- Cumulative Awards Datatable-->
-    <table style="border:1px solid black;" class="cumulative-table">
+      <!-- Cumulative Awards Datatable-->
+      <table style="border:1px solid black;" class="cumulative-table">
         <tr>
             <th colspan="4"><strong>Cumulative Totals</strong></th>
         </tr>
         <tr>
-            <td>Total Points:</td><td><span id="TOTAL{{ grade }}">Calculating...</span></td>
+            <td>Total Points:</td><td><span id="TOTAL{{ grade.grade }}">Calculating...</span></td>
         </tr><tr>
-            <td>Service Points: </td><td><span id="SE{{ grade }}"></span></td>
+            <td>Service Points: </td><td><span id="SE{{ grade.grade }}"></span></td>
         </tr><tr>
-            <td>Athletics Points: </td><td><span id="AT{{ grade }}"></span></td>
+            <td>Athletics Points: </td><td><span id="AT{{ grade.grade }}"></span></td>
         </tr><tr>
-            <td>Scholar Points: </td><td><span id="SC{{ grade }}"></span></td>
+            <td>Scholar Points: </td><td><span id="SC{{ grade.grade }}"></span></td>
         </tr><tr>
-            <td>Fine Arts Points: </td><td><span id="FA{{ grade }}"></span></td>
+            <td>Fine Arts Points: </td><td><span id="FA{{ grade.grade }}"></span></td>
         </tr>
     </table>
-<!-- Grad Calculations Table-->
-    {% ifequal grade "12" %}
+      <!-- Grad Calculations Table-->
+      {% ifequal grade.grade 12 %}
         <table class="grad-calc-table">
             <tr>
                 <td colspan="2">
@@ -221,8 +217,7 @@
             </tr>
         </table>
     {% endifequal %}
-    </div>
+
   </div>
+
 </div>
-
-

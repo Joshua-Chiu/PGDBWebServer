@@ -1,5 +1,5 @@
 {% extends 'data/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}Scholar (Direct){% endblock %}
 
@@ -29,7 +29,7 @@
         <h4>Form entry</h4>
             <p>Visit the home/help page to access import template files</p>
             <form action="{% url 'entry:scholar_upload_file' %}" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" id="file" onchange="form.submit();">
+                <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
                 {% csrf_token %}
             </form>
     </body>
@@ -48,6 +48,7 @@
                        document.getElementById('name').innerHTML=data.student_name;
                        $('input[name=t1]').val(data.t1);
                        $('input[name=t2]').val(data.t2);
+                       if(data.student_name !== "Student not found") document.getElementsByName('t1')[0].focus();
                }
            });
         });
