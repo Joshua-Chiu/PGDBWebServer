@@ -12,6 +12,7 @@ import xml.dom.minidom as minidom
 from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 from util.converter import wdb_convert
+from util.roll_converter import roll_convert
 from threading import Thread
 
 from axes.utils import reset
@@ -236,6 +237,12 @@ def archive_file(request):
     response['Content-Disposition'] = 'attachment; filename=students.pgdb'
 
     return response
+
+
+def roll_importer(request):
+   if request.method == "POST":
+        if "file" in request.FILES:
+                files, plist_cutoff = roll_convert(request.FILES["file"], ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9"])
 
 
 def settings(request):

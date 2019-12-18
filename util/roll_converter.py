@@ -21,7 +21,7 @@ class Student:
         return self.courses[0][item]
 
 
-def write_students(students, add_average=True):
+def _write_students(students, add_average=True):
     csvfile = io.StringIO()
     writer = csv.writer(csvfile)
 
@@ -102,11 +102,11 @@ def roll_convert(csvfile, excluded_courses):
     # print([s.courses[0]["Student Legal First Name"] for s in top])
     # print([s["Student Legal First Name"] for s in GE_roll])
 
-    GE_file = write_students(GE_roll, False)
-    honour_file = write_students(honour_roll)
-    plist_file = write_students(plist)
+    GE_file = _write_students(GE_roll, False)
+    honour_file = _write_students(honour_roll)
+    plist_file = _write_students(plist)
 
-    return {"GE Roll.csv": GE_file, "Honour Roll.csv": honour_file, "Plist Roll.csv": plist_file}
+    return {"GE Roll.csv": GE_file, "Honour Roll.csv": honour_file, "Plist Roll.csv": plist_file}, lowest_highest_avg
 
 
 if __name__ == "__main__":
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     filename = sys.argv[1]
     with open(filename) as file:
-        files = roll_convert(file, ["YBMO", "YCPM", "YIPS"])
+        files, plist_cutoff = roll_convert(file, ["YBMO", "YCPM", "YIPS"])
 
         for name, buf in files.items():
             with open(name, 'w') as f:
