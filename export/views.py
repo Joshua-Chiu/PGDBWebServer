@@ -166,6 +166,17 @@ def print_trophies(request):
         return HttpResponseRedirect(reverse('entry:error'))
 
 
+def print_term(request):
+    template = get_template('export/print-term.html')
+    context = {
+
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect(reverse('entry:error'))
+
+
 def print_xcheck(request):
     template = get_template('export/print-xcheck.html')
 

@@ -43,6 +43,7 @@
                 <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
+                    <a href="{% url 'export:print-term' %}">Term Awards</a>
                     <a href="{% url 'export:print-annual' %}">Annual Awards</a>
                     <a href="{% url 'export:print-trophies' %}">Annual Trophies</a>
                     <a href="{% url 'export:print-grad' %}">Graduation</a>
