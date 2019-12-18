@@ -9,7 +9,7 @@
 
                 {% for gr in student.all_grades %}
                     <tr>
-                    {% if gr.grade <= student.cur_grade_num %}
+                    {% if gr.grade <= grade %}
                         <td>GR {{ gr.grade }}:</td>{% for point in gr.points_set.all %}
                             {% ifequal "FA" point.type.catagory %}
                                 <td>
