@@ -30,7 +30,7 @@
                 <option value="12" >Grade 12</option>
         </select>
         of
-        <select name="start-year" id="year"></select>
+        <select name="start-year" id="year-hr"></select>
         <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
         {% csrf_token %}
     </form>
@@ -39,14 +39,14 @@
     <h4>Create Honour Roll, Principal's List and GE Rolls Recipients</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
         <label><select name="term">
-            <option value="2" >term 2</option>
-            <option value="1" >term 1</option>
+            <option value="1" >Term 1</option>
+            <option value="2" >Term 2</option>
         </select></label>
         of
         <select name="start-year" id="year"></select>
         <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
         {% csrf_token %}
-        <label>Inadmissible course codes (YCPM, YBMO,...) <input style="width: 500px;" type="text" value="YCPM, YBMO, YIPS, MCE8, MCE9"></label>
+        <label>Inadmissible course codes (YCPM, YBMO,...) <input style="width: 500px;" type="text" value="YCPM, YBMO, YIPS, MCE8, MCE9, MCLC"></label>
     </form>
 
     <hr>
@@ -70,6 +70,7 @@
           options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
         }
         document.getElementById("year").innerHTML = options;
+        document.getElementById("year-hr").innerHTML = options;
     </script>
 {% endblock %}
 
