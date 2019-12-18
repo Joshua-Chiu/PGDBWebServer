@@ -43,6 +43,13 @@ def parseQuery(query):
                         if not s in students_with_grade:
                             students = students.exclude(id=s.id)
 
+                elif k[:5] == "grade" and k[7:12] == "_term" and k[13:] == "_GE":
+                    grade = int(k[5:7])
+                    term = int(k[12:13])
+
+                    students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
+                    print(f"grade_{grade}__term{term}_GE")
+
                 # award: or award_12:
                 elif "award" in k:
                     # set the allowed grade for an award to be won in to a specific grade or default to all

@@ -49,6 +49,9 @@ class Grade(models.Model):
     _term1_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     _term2_avg = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
+    term1_GE = models.BooleanField(default=False)
+    term2_GE = models.BooleanField(default=False)
+
     # nullification
     isnull_term1 = models.BooleanField(default=False)
     isnull_term2 = models.BooleanField(default=False)

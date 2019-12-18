@@ -23,6 +23,7 @@ urlpatterns = [
     path('archive_file', views.archive_file, name='archive_file'),
     path('archive_submit', views.archive_submit, name='archive_submit'),
     path('archive_wdb_submit', views.archive_wdb_submit, name='archive_wdb_submit'),
+    path('roll_importer', views.roll_importer, name="roll_importer"),
 
     path('personalisation', views.personalisation, name='personalisation'),
     path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
