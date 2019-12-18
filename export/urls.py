@@ -5,6 +5,7 @@ app_name = 'export'
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('print-term', views.print_term, name="print-term"),
     path('print-annual', views.print_annual, name="print-annual"),
     path('print-trophies', views.print_trophies, name="print-trophies"),
     path('print-grad', views.print_grad, name="print-grad"),

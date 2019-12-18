@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
+from django.urls import reverse
+
 from data.models import Student
 from util.queryParse import parseQuery
 from configuration.models import Configuration
@@ -19,7 +21,7 @@ def index(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_annual(request):
@@ -95,7 +97,7 @@ def print_annual(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_grad(request):
@@ -133,7 +135,7 @@ def print_grad(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_trophies(request):
@@ -144,7 +146,7 @@ def print_trophies(request):
     award = request.GET.get("trophy-awards")
 
     if "grade" in request.GET and "year" in request.GET:
-        query = f"grade_{grade}_year:{year}"
+        query = f"grade_{grade.zfill(2)}_year:{year}"
         students = parseQuery(query)
 
         students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:30]
@@ -161,7 +163,18 @@ def print_trophies(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
+
+
+def print_term(request):
+    template = get_template('export/print-term.html')
+    context = {
+
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def print_xcheck(request):
@@ -216,7 +229,7 @@ def print_xcheck(request):
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('entry:error'))
 
 
 def export_files(request):

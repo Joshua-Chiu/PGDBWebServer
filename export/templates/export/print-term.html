@@ -1,0 +1,78 @@
+{% extends 'data/base.html' %}
+
+{% load static %}
+
+{% block title %}{% if type %}{{ type }}{% else %}Term Lists{% endif %}{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
+{% endblock %}
+
+{% block content%}
+    <div>
+        <h2 class="heading">Printing Reports</h2>
+    </div>
+    <form method="get" class="search_bar">
+        <fieldset style="border: 0">
+            <labeL>Grade: <select name="grade">
+                <option value="" >Select</option>
+                <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
+                <option {% ifequal grade 09 %}selected {% endifequal %}value="09" >Grade 09</option>
+                <option {% ifequal grade 10 %}selected {% endifequal %}value="10" >Grade 10</option>
+                <option {% ifequal grade 11 %}selected {% endifequal %}value="11" >Grade 11</option>
+                <option {% ifequal grade 12 %}selected {% endifequal %}value="12" >Grade 12</option>
+            </select></labeL>
+
+            <labeL>Year: <select name="year" id="year"></select></labeL>
+
+            <labeL>Term: <select name="term" id="term">
+                <option value="1" >Term 1</option>
+                <option value="2" >Term 2</option>
+            </select></labeL>
+
+            <label>Term Roll:
+            <select name="annual">
+                <option value="" >Select</option>
+                <option {% ifequal award "honourroll" %}selected {% endifequal %}value="honourroll" >Honour Roll</option>
+                <option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Principal's List</option>
+                <option {% ifequal award "GE" %}selected {% endifequal %}value="GE" >GE Roll</option>
+            </select>
+            </label>
+
+            <input type="submit" value="Go" onclick="form.action='print-grad';">
+        </fieldset>
+    </form>
+
+    {% if student_list %}
+        {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+    {% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option ";
+          {% if year %}
+          if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% else %}
+          if(year === start - 1){
+              options += "selected ";
+          }
+          {% endif %}
+          options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
+        }
+        document.getElementById("year").innerHTML = options;
+    </script>
+{% endblock %}

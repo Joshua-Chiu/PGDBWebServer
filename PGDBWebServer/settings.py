@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'login_required',
     'mathfilters',
     'import_export',
     'session_security',
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'session_security.middleware.SessionSecurityMiddleware',
+    'login_required.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'axes.middleware.AxesMiddleware',
@@ -158,6 +160,16 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 25000
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SECURITY_WARN_AFTER = os.environ.get('SESSION_SECURITY_WARN_AFTER', 540)
 SESSION_SECURITY_EXPIRE_AFTER = os.environ.get('SESSION_SECURITY_EXPIRE_AFTER', 600)
+
+LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
+    'logout',
+    'password_change',
+    'password_change_done',
+    'password_reset',
+    'password_reset_done',
+    'password_reset_confirm',
+    'password_reset_complete',
+]
 
 # Authentication
 AUTH_USER_MODEL = 'users.CustomUser'
