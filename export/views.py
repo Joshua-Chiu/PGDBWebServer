@@ -146,7 +146,7 @@ def print_trophies(request):
     award = request.GET.get("trophy-awards")
 
     if "grade" in request.GET and "year" in request.GET:
-        query = f"grade_{grade}_year:{year}"
+        query = f"grade_{grade.zfill(2)}_year:{year}"
         students = parseQuery(query)
 
         students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:30]
