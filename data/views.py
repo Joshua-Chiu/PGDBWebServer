@@ -234,15 +234,21 @@ def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
             plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9"])
-            year = request.POST["start-year"]
+            year = int(request.POST["start-year"])
 
-            for avg, grade in plist_cutoffs:
-                pass
+            for grade, cutoff in plist_cutoffs:
+                term = request.POST["term"]
+                print(term)
+
+                plist = PlistCutoff.objects.get(year=year)
+                for g in range(8, 13):
+                    setattr(plist, f"grade_{g}_T{term}", cutoff)
+                plist.save()
 
             for s in students:
                 try:
                     grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
-                    if request.POST["term"] == "1":
+                    if term == "1":
                         grade.term1_avg = s.average
                         grade.term1_GE = s.GE
                     else:

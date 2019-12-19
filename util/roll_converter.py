@@ -65,7 +65,7 @@ def roll_convert(csvfile, excluded_courses):
 
     plists = []
     for g in range(8, 13):
-        top = [s for s in students if s.grade == g]
+        top = [s for s in students if int(s.grade) == g]
         if not top:
             continue
         top = sorted(top, key=lambda s: s.average)  # sort by average
