@@ -50,7 +50,7 @@ def roll_convert(csvfile, excluded_courses):
     # go through all students for honour and plist
     for student in students:
         # exclude students with <59.5 for everything
-        if any(c["Mark"] in ["I", ""] or int(c["Mark"]) < 59.5 for c in student.courses):
+        if any(not c["Mark"].isnumeric() or int(c["Mark"]) < 59.5 for c in student.courses):
             continue
 
         if len(student.courses) < 6:

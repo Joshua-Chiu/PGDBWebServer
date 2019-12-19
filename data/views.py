@@ -234,7 +234,7 @@ def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
             plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9"])
-            year = request.POST["year"]
+            year = request.POST["start-year"]
 
             for avg, grade in plist_cutoffs:
                 pass
