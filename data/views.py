@@ -235,7 +235,7 @@ def roll_importer(request):
         if "file" in request.FILES:
             year = request.POST["start-year"]
             term = request.POST["term"]
-            plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9"])
+            plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
 
             plist = PlistCutoff.objects.get(year=year)
             for grade, cutoff in plist_cutoffs:

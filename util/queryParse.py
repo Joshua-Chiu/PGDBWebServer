@@ -47,11 +47,11 @@ def parseQuery(query):
                 elif k[:5] == "grade" and k[7:12] == "_term":
                     grade = int(k[5:7])
                     term = int(k[12:13])
-                    if k[13:] == "_GE":
+                    if v == "GE":
                         students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
-                    elif k[13:] == "_honour":
-                        students = students.filter(**{f"grade_{grade}___term{term}_avg__gte=79.5": True})
-                    elif k[13:] == "_principalslist":
+                    elif v == "honour":
+                        students = students.filter(**{f"grade_{grade}___term{term}_avg__gte": 79.5})
+                    elif v == "principalslist":
                         new_students = students
                         for s in students:
                             grade_obj = s.get_grade(grade)
