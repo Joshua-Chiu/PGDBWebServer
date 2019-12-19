@@ -95,8 +95,10 @@
 
         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
         mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}table { page-break-inside:avoid; page-break-after:auto; }' +
+            {% block print-styles %}
             'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
             'td{ page-break-inside:avoid; page-break-after:avoid; }' +
+            {% endblock %}
             '</style>');
         mywindow.document.write('</head><body>');
         mywindow.document.write('<h3>' + title  + '</h3>');

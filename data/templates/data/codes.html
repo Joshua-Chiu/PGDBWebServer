@@ -14,7 +14,7 @@
 
 {% block content%}
     <h2>Codes</h2>
-    <p>Note: The student view can only display approximately 15 characters per line.</p>
+    <p>Note: The student view can display approximately 15 characters before line-breaking.</p>
     <form action="{% url "data:codes_submit" %}" method="post">
     {% csrf_token %}
     {% for code in codes %}

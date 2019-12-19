@@ -168,8 +168,22 @@ def print_trophies(request):
 
 def print_term(request):
     template = get_template('export/print-term.html')
-    context = {
+    students, query, grade, year, term, roll = "", "", "", "", "", ""
+    if request.GET:
+        year = request.GET.get("year")
+        grade = int(request.GET.get("grade"))
+        term = int(request.GET.get("term"))
+        roll = request.GET.get("roll")
 
+        query = f"grade{grade}_term{term}_{roll}:True"
+        students = parseQuery(query)
+
+    context = {
+        'grade': grade,
+        'year': year,
+        'term': term,
+        'roll': roll,
+        'student_list': students,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
