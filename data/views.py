@@ -233,16 +233,14 @@ def archive_file(request):
 def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
+            year = request.POST["start-year"]
+            term = request.POST["term"]
             plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9"])
-            year = int(request.POST["start-year"])
 
+            plist = PlistCutoff.objects.get(year=year)
             for grade, cutoff in plist_cutoffs:
-                term = request.POST["term"]
-                print(term)
-
-                plist = PlistCutoff.objects.get(year=year)
-                for g in range(8, 13):
-                    setattr(plist, f"grade_{g}_T{term}", cutoff)
+                print(plist, f"grade_{grade}_T{term}")
+                setattr(plist, f"grade_{grade}_T{term}", cutoff)
                 plist.save()
 
             for s in students:
@@ -251,12 +249,13 @@ def roll_importer(request):
                     if term == "1":
                         grade.term1_avg = s.average
                         grade.term1_GE = s.GE
+
                     else:
                         grade.term2_avg = s.average
                         grade.term2_GE = s.GE
                     grade.save()
                 except:
-                    print(f"failed to add average and GE status to student: {s.number}")
+                    pass
     return HttpResponseRedirect("/data/archive")
 
 

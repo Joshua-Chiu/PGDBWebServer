@@ -43,6 +43,7 @@ def parseQuery(query):
                         if not s in students_with_grade:
                             students = students.exclude(id=s.id)
 
+                # grade00_term0_GE
                 elif k[:5] == "grade" and k[7:12] == "_term" and k[13:] == "_GE":
                     grade = int(k[5:7])
                     term = int(k[12:13])
@@ -125,5 +126,5 @@ def parseQuery(query):
     except Exception as e:
         print(f"oh no! failed to parse query: {query}")
         print(e)
-        raise e # TODO remove
+        raise e
         return Student.objects.none()

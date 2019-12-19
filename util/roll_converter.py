@@ -37,39 +37,32 @@ def roll_convert(csvfile, excluded_courses):
 
         student.GE = student.GE and row["Study Habit"] in ["G", "E", ""]
 
-        if row["Mark"] == "NM":
-            continue
-
         # don't include course if it's in the excluded list
         if any([exclude in row["Course Code"] for exclude in excluded_courses]):
             continue
 
+        if not row["Mark"].isnumeric():
+            continue
         # create a student object with a list of all courses of that student
         student.courses.append(row)
 
     # go through all students for honour and plist
     for student in students:
-        # exclude students with <59.5 for everything
-        if any(not c["Mark"].isnumeric() or int(c["Mark"]) < 59.5 for c in student.courses):
-            continue
-
-        if len(student.courses) < 6:
-            continue
-
         # loop through courses and calculate average
         average = 0
         for course in student.courses:
             average += int(course["Mark"])
-        average /= len(student.courses)
+
+        if student.courses:
+            average /= len(student.courses)
         student.average = average
 
     plists = []
     for g in range(8, 13):
         top = [s for s in students if int(s.grade) == g]
-        if not top:
-            continue
-        top = sorted(top, key=lambda s: s.average)  # sort by average
-        top = list(reversed(top))[:ceil(len(students) / 10)]  # take the top ten percent
+
+        top.sort(key=lambda s: s.average)  # sort by average
+        top = list(reversed(top))[:ceil(len(top) / 10)]  # take the top ten percent
         cutoff = top[-1].average
         plists.append((g, cutoff))
 

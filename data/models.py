@@ -119,15 +119,11 @@ class Grade(models.Model):
 
     @property
     def honourroll(self):
-        if (79.45 < self.term1_avg and 79.45 < self.term2_avg) and (self.term1_avg < self.plist_T1 or self.term2_avg < self.plist_T2):
-            return True
-        return False
+        return (79.45 < self.term1_avg and 79.45 < self.term2_avg) and (self.term1_avg < self.plist_T1 or self.term2_avg < self.plist_T2)
 
     @property
     def principalslist(self):
-        if self.plist_T1 <= self.term1_avg and self.plist_T2 < self.term2_avg:
-            return True
-        return False
+        return self.plist_T1 <= self.term1_avg and self.plist_T2 <= self.term2_avg
 
     @property
     def cumulative_SE(self):
