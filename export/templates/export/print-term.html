@@ -36,8 +36,8 @@
                 <option value="2" >Term 2</option>
             </select></labeL>
 
-            <label>Term Roll:
-            <select name="annual">
+            <label>Roll:
+            <select name="roll">
                 <option value="" >Select</option>
                 <option {% ifequal award "honourroll" %}selected {% endifequal %}value="honourroll" >Honour Roll</option>
                 <option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Principal's List</option>
@@ -45,7 +45,7 @@
             </select>
             </label>
 
-            <input type="submit" value="Go" onclick="form.action='print-grad';">
+            <input type="submit" value="Go" onclick="form.action='print-term';">
         </fieldset>
     </form>
 
