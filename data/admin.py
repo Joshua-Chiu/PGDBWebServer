@@ -14,17 +14,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls import url, include
 from django.template.loader import get_template
 import re
+import threading
 
 admin.site.register(PlistCutoff)
 
 
 def increase_grade(modeladmin, request, queryset):
-    for student in queryset:
-        if student.cur_grade_num > 12:
-            pass  # mark inactive
-        else:
-            student.cur_grade_num += 1
-            student.save()
+    def increase(set):
+        for student in set:
+            if student.cur_grade_num > 12:
+                pass  # mark inactive
+            else:
+                student.cur_grade_num += 1
+                student.save()
+
+    thread = threading.Thread(target=increase, args=(queryset, ))
+    thread.start()
 
 
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
