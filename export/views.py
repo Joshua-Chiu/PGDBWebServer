@@ -171,8 +171,8 @@ def print_term(request):
     students, query, grade, year, term, roll = "", "", "", "", "", ""
     if request.GET:
         year = request.GET.get("year")
-        grade = int(request.GET.get("grade").zfill(2))
-        term = request.GET.get("term")
+        grade = int(request.GET.get("grade"))
+        term = int(request.GET.get("term"))
         roll = request.GET.get("roll")
 
         query = f"grade{grade}_term{term}_{roll}:True"
@@ -183,6 +183,7 @@ def print_term(request):
         'year': year,
         'term': term,
         'roll': roll,
+        'student_list': students,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
