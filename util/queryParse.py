@@ -43,13 +43,22 @@ def parseQuery(query):
                         if not s in students_with_grade:
                             students = students.exclude(id=s.id)
 
-                # grade00_term0_GE
-                elif k[:5] == "grade" and k[7:12] == "_term" and k[13:] == "_GE":
+                # grade00_term0
+                elif k[:5] == "grade" and k[7:12] == "_term":
                     grade = int(k[5:7])
                     term = int(k[12:13])
-
-                    students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
-                    print(f"grade_{grade}__term{term}_GE")
+                    if k[13:] == "_GE":
+                        students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
+                    elif k[13:] == "_honour":
+                        students = students.filter(**{f"grade_{grade}___term{term}_avg__gte=79.5": True})
+                    elif k[13:] == "_principalslist":
+                        new_students = students
+                        for s in students:
+                            grade_obj = s.get_grade(grade)
+                            if not getattr(grade_obj, f"term{term}_avg") >= getattr(grade_obj, f"plist_T{term}") and \
+                                    not grade_obj.isnull_SC:
+                                new_students = new_students.exclude(id=s.id)
+                        students = new_students
 
                 # award: or award_12:
                 elif "award" in k:
