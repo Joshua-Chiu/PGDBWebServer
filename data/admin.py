@@ -20,15 +20,17 @@ admin.site.register(PlistCutoff)
 
 
 def increase_grade(modeladmin, request, queryset):
-    def increase(set):
-        for student in set:
-            if student.cur_grade_num > 12:
-                pass  # mark inactive
+    def increase():
+        for student in queryset:
+            if student.cur_grade_num >= 12:
+                student.active = False
+                student.save()
             else:
+                student.active = True
                 student.cur_grade_num += 1
                 student.save()
 
-    thread = threading.Thread(target=increase, args=(queryset, ))
+    thread = threading.Thread(target=increase)
     thread.start()
 
 
@@ -36,18 +38,21 @@ increase_grade.short_description = 'Update Grade and Homerooms to New School Yea
 
 
 def decrease_grade(modeladmin, request, queryset):
-    for student in queryset:
-        new_grade = int(re.findall('\d+', student.homeroom)[0]) - 1
-        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
+    def decrease():
+        for student in queryset:
+            if student.cur_grade_num <= 8:
+                student.active = False
+                student.save()
+            else:
+                student.active = True
+                student.cur_grade_num -= 1
+                student.save()
 
-        if new_grade < 8:
-            pass  # mark inactive
-        else:
-            student.grade_set.get(grade=new_grade + 1).delete()
-            student.save()  # also delete oldest grade set
+    thread = threading.Thread(target=decrease)
+    thread.start()
 
 
-decrease_grade.short_description = 'Decrease Grade DATA LOSS POSSIBLE FOR THE HIGHEST GRADE'
+decrease_grade.short_description = 'Decrease Grade'
 
 
 def mark_inactive(modeladmin, request, queryset):
@@ -97,6 +102,7 @@ class StudentAdmin(admin.ModelAdmin):
             'grad_year',
             'cur_grade_num',
             'homeroom_str')}),
+        ('Status', {'fields': ('active',)}),
     )
 
     def get_actions(self, request):

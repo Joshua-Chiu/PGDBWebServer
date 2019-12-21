@@ -3,6 +3,7 @@ from itertools import zip_longest
 
 
 def parseQuery(query):
+    print(query)
     try:
         students = Student.objects.all()
 

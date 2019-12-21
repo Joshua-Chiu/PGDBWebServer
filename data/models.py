@@ -166,7 +166,7 @@ class Student(models.Model):
         return super(Student, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        print("delete")
+        # print("delete")
         self.grade_8.delete()
         self.grade_9.delete()
         self.grade_10.delete()
@@ -183,6 +183,7 @@ class Student(models.Model):
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     cur_grade_num = models.IntegerField(verbose_name="current grade")
     homeroom_str = models.CharField(max_length=15, verbose_name="Homeroom letter", default="#")
+    active = models.BooleanField(default=True, verbose_name="Active")
     last_modified = models.DateField(auto_now=True)
 
     grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
