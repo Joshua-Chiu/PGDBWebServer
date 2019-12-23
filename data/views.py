@@ -384,6 +384,8 @@ def personalisation_submit(request):
 
     user.header_colour = items['top']
     user.page_colour = items['page']
+    user.alternate_row_colour = items['alt']
+    user.text_colour = items['text']
     user.save()
 
     return HttpResponseRedirect('/data/personalisation')

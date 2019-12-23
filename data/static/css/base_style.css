@@ -131,14 +131,11 @@ h1 {
 .date {
     text-align: right;
 }
-
-a {
+/*
+a, a:visited {
     color: #000000;
 }
-a:visited {
-    color: #000000;
-}
-
+*/
 /* button stuff */
 .btn {
     border: 1px solid inherit;

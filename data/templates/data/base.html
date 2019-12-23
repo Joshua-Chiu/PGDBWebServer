@@ -14,6 +14,11 @@
     <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script>
     {% include 'session_security/all.html' %}
     {% block stylesheet %}{% endblock %}
+    <style>
+        *{
+            color: {{ user.text_colour }};
+        }
+    </style>
 </head>
 <body style="background-color: {{ user.page_colour }};">
 <div class="top" style="background-color: {{ user.header_colour }};">
