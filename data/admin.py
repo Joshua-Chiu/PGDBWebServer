@@ -16,8 +16,6 @@ from django.template.loader import get_template
 import re
 import threading
 
-admin.site.register(PlistCutoff)
-
 
 def increase_grade(modeladmin, request, queryset):
     def increase():
@@ -34,9 +32,6 @@ def increase_grade(modeladmin, request, queryset):
     thread.start()
 
 
-increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
-
-
 def decrease_grade(modeladmin, request, queryset):
     def decrease():
         for student in queryset:
@@ -50,9 +45,6 @@ def decrease_grade(modeladmin, request, queryset):
 
     thread = threading.Thread(target=decrease)
     thread.start()
-
-
-decrease_grade.short_description = 'Decrease Grade'
 
 
 def mark_inactive(modeladmin, request, queryset):
@@ -72,9 +64,6 @@ def export_as_csv(modeladmin, request, queryset):
         row = writer.writerow([getattr(obj, field) for field in field_names])
 
     return response
-
-
-export_as_csv.short_description = "Export Selected as CSV"
 
 
 class StudentResource(resources.ModelResource):
@@ -152,9 +141,6 @@ class StudentAdmin(admin.ModelAdmin):
     actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive, really_delete_selected]
 
 
-admin.site.register(Student, StudentAdmin)
-
-
 @receiver(post_import)
 def _post_import(model, **kwargs):
     pass
@@ -170,3 +156,10 @@ class DataAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         print(obj)
         super().save_model(request, obj, form, change)
+
+
+admin.site.register(PlistCutoff)
+increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+decrease_grade.short_description = 'Decrease Grade'
+export_as_csv.short_description = "Export Selected as CSV"
+admin.site.register(Student, StudentAdmin)

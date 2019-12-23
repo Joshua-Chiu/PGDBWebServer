@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
 
     header_colour = models.CharField(max_length=7, default='#ADD8E6')
     page_colour = models.CharField(max_length=7, default='#ADD8E6')
-    alternate_row_colour = models.CharField(max_length=7, default='#ADD8E6')
+    alternate_row_colour = models.CharField(max_length=7, default='#7AD7F0')
     text_colour = models.CharField(max_length=7, default='#000000')
 
     # Permission Booleans

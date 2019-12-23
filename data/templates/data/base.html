@@ -14,7 +14,7 @@
     {% include 'session_security/all.html' %}
     {% block stylesheet %}{% endblock %}
     <style>
-        *{color: {{ user.text_colour }};}
+        *{color: {{ user.text_colour }};background-color: inherit;}
         {% block user_custom %}{% endblock %}
     </style>
 </head>
@@ -25,7 +25,7 @@
     </div>
 
     <div>
-        <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none;">Point Grey Awards Database</a></h1>
+        <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none; color: {% if user.text_colour %}{{ user.textcolour }}{% else %}black{% endif %}">Point Grey Awards Database</a></h1>
     </div>
         <div style="clear: both;">
         {% if user.is_authenticated %}
