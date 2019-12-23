@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
 {% endblock %}
 
+{% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
+
 {% block content%}
     <div>
     <h2 class="heading">Printing Reports</h2>

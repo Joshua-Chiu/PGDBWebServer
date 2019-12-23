@@ -5,7 +5,12 @@ from itertools import zip_longest
 def parseQuery(query):
     print(query)
     try:
-        students = Student.objects.all()
+        if "inactive" in query:
+            students = Student.objects.filter(active=False)
+        elif "active" in query:
+            students = Student.objects.filter(active=True)
+        else:
+            students = Student.objects.all()
 
         # check if there are attribute specifics e.g. first: bob
         if query.count(":") == 0:

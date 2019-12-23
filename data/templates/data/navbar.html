@@ -16,12 +16,12 @@
                 <button class="dropbtn"><a href="{% url 'data:index' %}">Dashboard</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'data:search' %}?query=grade%3A08">Grade 08</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A09">Grade 09</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A10">Grade 10</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A11">Grade 11</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A12+grade_12_year%3A2019">Grade 12</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A12+grade_12_year%3A2018">Graduated</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A08+active">Grade 08</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A09+active">Grade 09</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A10+active">Grade 10</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A11+active">Grade 11</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A12+active">Grade 12</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A12+inactive">Graduated</a>
                 </div>
             </div>
         </li>

@@ -19,24 +19,6 @@ table {
     overflow-y: auto;
 }
 
-.sortable th{
-    text-align: left;
-}
-
-table.sortable tbody tr:nth-child(2n) td {
-  background: inherit;
-}
-table.sortable tbody tr:nth-child(2n+1) td {
-  background: #ccffff;
-}
-
-table.sortable th::after, th.sorttable_sorted::after, th.sorttable_sorted_reverse::after {
-  content: " ";
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-}
-
 /* The alert message box */
 .alert{
     position: fixed;

@@ -22,6 +22,6 @@
         <tr><td><label for="alt">Alternate row colour:</label></td><td><input type="color" name="alt" id="alt" value="{{ user.alternate_row_colour }}"></td></tr>
         <tr><td><label for="text">Text colour:</label></td><td><input type="color" name="text" id="text" value="{{ user.text_colour }}"></td></tr>
     </table>{% csrf_token %}
-        <input type="submit" value="Save">
+        <input class="btn default" type="submit" value="Save">
     </form>
 {% endblock %}
