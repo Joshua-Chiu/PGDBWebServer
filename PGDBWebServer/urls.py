@@ -25,9 +25,11 @@ urlpatterns = [
     path('entry/', include('entry.urls')),
     path('data/', include('data.urls')),
     path('export/', include('export.urls')),
+
     path('users/', include('users.urls')),
-    path('admin/', admin.site.urls),
+    path('configuration/', include('configuration.urls')),
     path('accounts/', include('accounts.urls')),
+    path('admin/', admin.site.urls),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/icon.png')),
     url(r'session_security/', include('session_security.urls')),
 ]

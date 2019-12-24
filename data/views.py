@@ -2,10 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 
+from configuration.views import google_calendar
 from .models import Student, PointCodes, PlistCutoff, Grade, Points
 from configuration.models import Configuration
-from users.models import CustomUser
-from django.template.loader import get_template
 from itertools import zip_longest
 import io
 import xml.dom.minidom as minidom
@@ -156,7 +155,6 @@ def student_submit(request, num):
         grade.calc_SC_total()
 
         grade.save()
-
 
     return HttpResponseRedirect(f"/data/student/{num}")
 
@@ -318,13 +316,6 @@ def plist_submit(request):
     return HttpResponseRedirect(reverse('data:plist'))
 
 
-def autofocus_submit(request, num):
-    user = CustomUser.objects.get(username=request.user.username)
-    user.autofocus = num
-    user.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
 def codes_submit(request):
     # sort the codes into a list where each code is an item
     items = list(request.POST.items())[1:]
@@ -356,7 +347,7 @@ def codes_submit(request):
 def index(request):
     maintenance, notice, offline = google_calendar()
     if offline and request.user.first_visit:
-        return HttpResponseRedirect(reverse("data:offline"))
+        return HttpResponseRedirect(reverse("configuration:offline"))
     if request.user.is_superuser:
         template = get_template('data/index.html')
         context = {
@@ -368,33 +359,3 @@ def index(request):
         return HttpResponse(template.render(context, request))
     else:
         return HttpResponseRedirect(reverse('entry:index'))
-
-
-def personalisation(request):
-    template = get_template('data/personalisation.html')
-    context = {
-        'user': request.user
-    }
-    return HttpResponse(template.render(context, request))
-
-
-def personalisation_submit(request):
-    user = request.user
-    items = request.POST
-
-    user.header_colour = items['top']
-    user.page_colour = items['page']
-    user.alternate_row_colour = items['alt']
-    user.text_colour = items['text']
-    user.save()
-
-    return HttpResponseRedirect('/data/personalisation')
-
-
-def help(request):
-    template = get_template('data/help.html')
-    context = {}
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))

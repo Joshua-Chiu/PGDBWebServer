@@ -5,7 +5,6 @@ app_name = 'data'
 
 urlpatterns = [
     path('welcome', views.welcome, name='welcome'),
-    path('offline', views.offline, name='offline'),
     path('', views.index, name="index"),
 
     path('search', views.search, name="search"),
@@ -17,17 +16,12 @@ urlpatterns = [
     path('settings/codes/submit', views.codes_submit, name='codes_submit'),
     path('settings/plist_submit', views.plist_submit, name='plist_submit'),
 
-    path('help', views.help, name='help'),
-
     path('archive', views.archive, name='archive'),
     path('archive_file', views.archive_file, name='archive_file'),
     path('archive_submit', views.archive_submit, name='archive_submit'),
     path('archive_wdb_submit', views.archive_wdb_submit, name='archive_wdb_submit'),
     path('roll_importer', views.roll_importer, name="roll_importer"),
 
-    path('personalisation', views.personalisation, name='personalisation'),
-    path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
-    path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
     path('show-all', views.show_all, name='show-all'),
 
     path('ajax/import_status/', views.ajax_import_status, name='ajax_import_status'),
