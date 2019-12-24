@@ -1,0 +1,145 @@
+{% extends 'data/base.html' %}
+{% load static %}
+
+{% block title %}Help{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
+{% endblock %}
+
+{% block user_custom %}
+    .lbl-toggle {
+        background: {{ user.collapsible_bar_colour }};
+    }
+{% endblock %}
+
+{% block content%}
+    <h2>Help</h2>
+
+    <div class="wrap-collabsible"><input id="collapsible-quickstart" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-quickstart" class="lbl-toggle"><strong>Quick Start Guide</strong></label>
+        <div class="collapsible-content">
+            <h3>Logging in</h3>
+            <p>Use your credentials given to you by your system administrator to login in to the site.</p>
+            <h3>Finding a student</h3>
+            <p>Use the search box on the navigation menu to search for a student by student number, first or last name.</p>
+
+        </div>
+
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-page" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page" class="lbl-toggle"><strong>Page Tutorials</strong></label>
+        <div class="collapsible-content">
+
+            <div class="wrap-collabsible"><input id="collapsible-page-adm" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-adm" class="lbl-toggle"> &emsp; Administration</label>
+                <div class="collapsible-content">
+                    <h3>Administration Pages</h3>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-de" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-de" class="lbl-toggle"> &emsp; Direct Entry</label>
+                <div class="collapsible-content">
+                    <h3>Direct Entry Pages</h3>
+                    <p>These pages allow teachers with restricted access to enter the points.&nbsp;</p>
+                    <p>Only a super user has access to the [&lt;&lt; Back to Default View]</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-re" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-re" class="lbl-toggle"> &emsp; Reports</label>
+                <div class="collapsible-content">
+                    <h3>Reports</h3>
+                    <p>These pages allow teachers with restricted access to enter the points.&nbsp;</p>
+                    <p>Only a super user has access to the [&lt;&lt; Back to Default View]</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-set" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-set" class="lbl-toggle"> &emsp; Settings</label>
+                <div class="collapsible-content">
+                    <h3>Settings</h3>
+                    <h4>Adding or editing codes</h4>
+                    <h4>Principal's list thresholds</h4>
+                    <h4>Keyboard Controls</h4>
+                        <ul>
+                            <li>[*] - autofocus to search. Type in student number to go directly to that student.</li>
+                            <li>[enter] - submit code</li>
+                        </ul>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-dash" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-dash" class="lbl-toggle"> &emsp; Dashboard</label>
+                <div class="collapsible-content">
+                    <h3>Dashboard</h3>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-import" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-import" class="lbl-toggle"><strong>Notes on Importing Files</strong></label>
+        <div class="collapsible-content">
+            <ul style="list-style-type:none;">
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">Direct Entry Import (Fill in - Athletics)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">Direct Entry Import (Fill in - Scholarship)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
+                <li><a href="{% static "help_files/Import New Grade 8.csv" %}">Import New Grade 8 List</a></li>
+                <li><a href="{% static "help_files/Empty Student Table for Import.csv" %}">WDB Style Empty Student Table for Import</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-bkup" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-bkup" class="lbl-toggle"><strong>Backing up the system</strong></label>
+        <div class="collapsible-content">
+            <ul style="list-style-type:none;">
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">Direct Entry Import (Fill in - Athletics)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">Direct Entry Import (Fill in - Scholarship)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
+                <li><a href="{% static "help_files/Import New Grade 8.csv" %}">Import New Grade 8 List</a></li>
+                <li><a href="{% static "help_files/Empty Student Table for Import.csv" %}">WDB Style Empty Student Table for Import</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-misc" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-misc" class="lbl-toggle"><strong>Miscellaneous Notes</strong></label>
+        <div class="collapsible-content">
+            <p>You can make changes for previous years. Note that if they receive a pin or a certificate in a previous year, the student will be put on the award list for the previous year.</p>
+        </div>
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-quickref" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-quickref" class="lbl-toggle"><strong>External Links</strong></label>
+        <div class="collapsible-content">
+            <ol>
+                <li><a href="https://res.cloudinary.com/teepublic/image/private/s--PswrAoO---/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1563218372/production/designs/5322768_1.jpg">Before Support Checklist</a></li>
+                <li><a href="https://github.com/Joshua-Chiu/PGDBWebServer/wiki">System Configuration Help</a></li>
+                <li><a href="https://github.com/Joshua-Chiu/PGDBWebServer/issues">Raise an Issue</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="wrap-collabsible"><input id="collapsible-creds" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-creds" class="lbl-toggle"><strong>Credits</strong></label>
+        <div class="collapsible-content">
+            <h3>Creators</h3>
+            <ul style="list-style-type:none;">
+                <li>Developer: A̶̲͋̽͑n̷̞̯̱̄̅͊͌͌͒d̴͇̠̜̟͚̮̊͜e̸̱̻̦̗̝͖̗̔̍̎͐̓̿̑͝ř̶̡̺̣̼̲̥̒̓̊̚s̶̰̮̍̅̊o̵͕̘̺͖͎̤̣̫̥̺͆̏̔̅̊͆͒n̶͖͕̱̥̬̈̽̅̅͝, M̶̧̜̱͙̽̑̈́̾̀̀͝͠a̸͉̙̲̜͎̯̲̺͒̈́̒͑͗͊͘͝s̴͕̀́͘o̸̤͌̃̊̿͑̚n̶̢̨̡͙͉͕̭̰͚͇̽̊̇̄̊<br><br><br></li>
+                <li>Developer: Chiu, Joshua</li>
+                <li>Developer: Blanchard, Jackson</li>
+            </ul>
+            <h3>Investors</h3>
+            <ul style="list-style-type:none;">
+                <li>Investor: Petheriotis, N.</li>
+                <li>Investor: Chan, J.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

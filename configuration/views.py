@@ -12,7 +12,7 @@ offline_status = False
 
 
 def help(request):
-    template = get_template('data/help.html')
+    template = get_template('configuration/help.html')
     context = {}
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
@@ -77,5 +77,5 @@ def offline(request):
         context = {
             'maintenance': maintenance[0],
         }
-        return HttpResponse(get_template('data/offline.html').render(context, request))
+        return HttpResponse(get_template('configuration/offline.html').render(context, request))
     return HttpResponseRedirect(reverse('data:index'))
