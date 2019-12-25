@@ -5,6 +5,8 @@ import datetime
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
 from axes.utils import reset
+
+from accounts.views import daniel_lai
 from .models import Student, PointCodes, PlistCutoff, Points
 
 from django.db import close_old_connections
@@ -275,6 +277,7 @@ def reset_users(request):
 
 def welcome(request):
     request.user.first_visit = True
+    daniel_lai(request)
     request.user.save()
     reset(username=request.user.username)
     return HttpResponseRedirect(reverse('data:index'))

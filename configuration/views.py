@@ -66,7 +66,7 @@ def google_calendar():
 
     # Current date in UTC
 
-    return maintenance, notice, offline
+    return maintenance, notice, offline_status
 
 
 def offline(request):

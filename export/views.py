@@ -176,7 +176,7 @@ def print_term(request):
         term = int(request.GET.get("term"))
         roll = request.GET.get("roll")
 
-        query = f"grade_{str(grade).zfill(2)}_year:{year} grade:{grade} grade{grade}_term{term}:{roll}"
+        query = f"grade_{str(grade).zfill(2)}_year:{year} grade{grade}_term{term}:{roll}"
         students = parseQuery(query)
 
     context = {
