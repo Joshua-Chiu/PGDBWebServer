@@ -20,7 +20,7 @@
 {% block content%}
     <h2>Help</h2>
 
-    <div id="wrap-quickstart" class="wrap-collabsible"><input id="collapsible-quickstart" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-quickstart" class="lbl-toggle"><strong>Quick Start Guide</strong></label>
+    <div id="wrap-quickstart" class="wrap-collabsible"><input id="collapsible-quickstart" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-quickstart" class="lbl-toggle"><strong>Quick Start Guide</strong></label>
         <div class="collapsible-content">
             <h3>User Authentication</h3>
             <p>URL: <a href="{{ request.scheme }}://{{ request.get_host }}{% url 'login' %}">{{ request.scheme }}://{{ request.get_host }}{% url 'login' %}</a> <br>
@@ -39,9 +39,24 @@
     <div id="wrap-page" class="wrap-collabsible"><input id="collapsible-page" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-page" class="lbl-toggle"><strong>Page Tutorials</strong></label>
         <div class="collapsible-content">
 
-            <div class="wrap-collabsible"><input id="collapsible-page-adm" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-adm" class="lbl-toggle"> &emsp; Administration</label>
+            <div class="wrap-collabsible"><input id="collapsible-page-adm" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-page-adm" class="lbl-toggle"> &emsp; Administration</label>
                 <div class="collapsible-content">
-                    <h3>Administration Pages</h3>
+                    <h3>Administration Pages - Database Management Portal</h3>
+                    <h4>Passwords</h4>
+                    <p>You can change your password using the link at the top right of the page. With great power comes great responsibility. The weakest link in the security chain is the human element; please choose a strong password.</p>
+                    <ol>
+                        <li>Your password can't be too similar to your other personal information.</li>
+                        <li>Your password must contain at least 8 characters.</li>
+                        <li>Your password can't be a commonly used password.</li>
+                        <li>Your password can't be entirely numeric.</li>
+                    </ol>
+                    <h4>Access Module</h4>
+                    <p>Database access records</p>
+                    <h4>Configuration Module</h4>
+                    <h4>Data Module</h4>
+                    <h4>Users Module</h4>
+                    <h4>Exiting the Portal</h4>
+                    <p>You can use the VIEW SITE link at the top right of the page.</p>
 
                 </div>
             </div>
@@ -49,6 +64,7 @@
             <div class="wrap-collabsible"><input id="collapsible-page-dash" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-dash" class="lbl-toggle"> &emsp; Dashboard</label>
                 <div class="collapsible-content">
                     <h3>Dashboard</h3>
+                    <p>Welcome home</p>
 
                 </div>
             </div>

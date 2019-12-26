@@ -34,6 +34,11 @@ urlpatterns = [
     url(r'session_security/', include('session_security.urls')),
 ]
 
+handler400 = 'configuration.views.handle_exception_40X'
+handler403 = 'configuration.views.handle_exception_40X'
+handler404 = 'configuration.views.handle_exception_40X'
+handler500 = 'configuration.views.handle_exception_50X'
+
 admin.site.site_header = "Point Grey Database Management"
 admin.site.site_title = "Admin Portal"
 admin.site.index_title = "Welcome to Database Management Portal"

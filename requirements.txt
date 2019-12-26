@@ -15,7 +15,7 @@ psycopg2==2.8.4 # For heroku only
 django-import-export==2.0
 django-session-security==2.6.5
 google-api-python-client==1.7.11
-django-axes==5.0.20z
+django-axes==5.0.20
 django-smtp-ssl==1.0
 django-login-required-middleware==0.4
-sendgrid-django==4.2.0
+django-sendgrid-v5==0.8.1

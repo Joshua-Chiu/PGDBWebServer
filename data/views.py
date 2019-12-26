@@ -347,7 +347,6 @@ def codes_submit(request):
 def index(request):
     maintenance, notice, offline = google_calendar()
     if offline and request.user.first_visit:
-        print(offline)
         return HttpResponseRedirect(reverse("configuration:offline"))
     if request.user.is_superuser:
         template = get_template('data/index.html')

@@ -59,12 +59,12 @@ def google_calendar():
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
                 })
-                offline_status = False
     # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
     except Exception as e:
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     # Current date in UTC
+    print(offline_status)
 
     return maintenance, notice, offline_status
 
@@ -79,3 +79,21 @@ def offline(request):
         }
         return HttpResponse(get_template('configuration/offline.html').render(context, request))
     return HttpResponseRedirect(reverse('data:index'))
+
+
+def handle_exception_40X(request, exception):
+    context = {
+        'exception': exception,
+    }
+    return HttpResponse(get_template('configuration/offline.html').render(context, request))
+
+
+def handle_exception_50X(request):
+    context = {
+
+    }
+    return HttpResponse(get_template('configuration/offline.html').render(context, request))
+
+
+def csrf_failure(request, reason=""):
+    return HttpResponseRedirect('/')
