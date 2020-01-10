@@ -214,11 +214,13 @@ PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
 
 # Deployment Configurations
-SECURE_SSL_REDIRECT = ('True' == os.environ.get('DEBUG', 'False'))
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+
+# SECURE_SSL_REDIRECT = True # uncomment for SSL deployment
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+
 X_FRAME_OPTIONS = 'DENY'
 
 

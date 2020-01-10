@@ -6,22 +6,45 @@
         background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("https://miro.medium.com/max/3840/1*U18aWqq2322t8Z26zZ0SIg.jpeg") no-repeat fixed center;
         background-size: cover; margin: 0;
         text-align: center; padding-top: 5%; font: 20px Helvetica, sans-serif; color: white;
-}
-  h1 { font-size: 50px; }
-  article { display: block; text-align: left; width: 650px; margin: 0 auto; }
-  a { color: #dc8100; text-decoration: none; }
-  a:hover { color: white; text-decoration: none; } /*was #333*/
+    }
+    h1 { font-size: 50px; }
+    article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+    a.link { color: #dc8100; text-decoration: none; }
+    a.link:hover { color: white; text-decoration: none; } /*was #333*/
 </style>
+<body onLoad="initClock()">
 <article>
     <h1>We&rsquo;ll be back soon!</h1>
     <div>
-        <h5>The current server time is {% now 'l F jS, Y G:i:s.u T' %}</h5>
+        <h5>The current server time is <a id="mon">January</a> <a id="d">1</a>, <a id="y">0</a> <a id="h">12</a>:<a id="m">00</a>:<a id="s">00</a>:<a id="mi">000</a></h5>
+
         <p>Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment from {{ maintenance.start }} until {{ maintenance.end }}.
-            If you need to you can always <a href="mailto:pointgreydb@gmail.com">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
+            If you need to you can always <a class="link" href="mailto:pointgreydb@gmail.com">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
         <p>&mdash; The Point Grey Database Service Team</p>
 
-        {% if user.is_superuser %}<a href="{% url 'data:index' %}">I know what I am doing; continue to site >></a>{% endif %}
+        {% if user.is_superuser %}<a class="link" href="{% url 'data:index' %}">Administrator: I know what I am doing; continue to site >></a>{% endif %}
 
-        <h6><a href="{% url 'logout' %}">Note: {{ maintenance.action }} ({{ maintenance.note }})</a></h6>
+        <h6><a class="link" href="{% url 'logout' %}">Note: {{ maintenance.action }} ({{ maintenance.note }})</a></h6>
     </div>
 </article>
+</body>
+<script>
+    // START CLOCK SCRIPT
+
+Number.prototype.pad = function(n) {
+  for (var r = this.toString(); r.length < n; r = 0 + r);
+  return r;
+};
+
+function updateClock() {
+  var now = new Date();
+  var milli = now.getMilliseconds(), sec = now.getSeconds(), min = now.getMinutes(), hou = now.getHours(), mo = now.getMonth(), dy = now.getDate(), yr = now.getFullYear();
+  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var tags = ["mon", "d", "y", "h", "m", "s", "mi"],
+    corr = [months[mo], dy, yr, hou.pad(2), min.pad(2), sec.pad(2), milli.pad(3)];
+  for (var i = 0; i < tags.length; i++)
+    document.getElementById(tags[i]).firstChild.nodeValue = corr[i];
+}
+
+function initClock() {window.setInterval("updateClock()", 1);}
+</script>

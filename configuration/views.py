@@ -1,6 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
-import os, pytz
-import datetime
+import os, pytz, datetime
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
 import dateutil.parser
