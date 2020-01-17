@@ -3,15 +3,7 @@ from itertools import zip_longest
 
 
 def parseQuery(query):
-    print(query)
     try:
-        if "inactive" in query:
-            students = Student.objects.filter(active=False)
-        elif "active" in query:
-            students = Student.objects.filter(active=True)
-        else:
-            students = Student.objects.all()
-
         # check if there are attribute specifics e.g. first: bob
         if query.count(":") == 0:
             # search first and last if it's letters
@@ -32,6 +24,18 @@ def parseQuery(query):
                 if len(term) != 2:
                     continue
                 items[term[0]] = term[1]
+            
+            students = Student.objects.all()
+
+            # filter by active student and assume only active if not specified
+            if not "active" in items or items["active"] == "yes":
+                students = students.filter(active=True)
+            elif items["active"] == "no":
+                print("a")
+                students = students.filter(active=False)
+
+            if "active" in items:
+                del items["active"]
 
             # iterate through every parameter pair and check if it exists or is a student attr
             for k, v in items.items():
