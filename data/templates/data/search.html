@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="{% static 'css/search_style.css' %}">
 {% endblock %}
 
+{% block user_custom %}
+    table.sortable tbody tr:nth-child(odd) td {
+    background: {{ user.alternate_row_colour }};
+}
+{% endblock %}
+
 {% block content%}
     <form method="get" class="search_bar">
         <label for="query">Search</label>

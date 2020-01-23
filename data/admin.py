@@ -14,35 +14,37 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls import url, include
 from django.template.loader import get_template
 import re
-
-admin.site.register(PlistCutoff)
+import threading
 
 
 def increase_grade(modeladmin, request, queryset):
-    for student in queryset:
-        if student.cur_grade_num > 12:
-            pass  # mark inactive
-        else:
-            student.cur_grade_num += 1
-            student.save()
+    def increase():
+        for student in queryset:
+            if student.cur_grade_num >= 12:
+                student.active = False
+                student.save()
+            else:
+                student.active = True
+                student.cur_grade_num += 1
+                student.save()
 
-
-increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+    thread = threading.Thread(target=increase)
+    thread.start()
 
 
 def decrease_grade(modeladmin, request, queryset):
-    for student in queryset:
-        new_grade = int(re.findall('\d+', student.homeroom)[0]) - 1
-        student.homeroom = str(new_grade).zfill(2) + re.sub("\d+", "", student.homeroom)
+    def decrease():
+        for student in queryset:
+            if student.cur_grade_num <= 8:
+                student.active = False
+                student.save()
+            else:
+                student.active = True
+                student.cur_grade_num -= 1
+                student.save()
 
-        if new_grade < 8:
-            pass  # mark inactive
-        else:
-            student.grade_set.get(grade=new_grade + 1).delete()
-            student.save()  # also delete oldest grade set
-
-
-decrease_grade.short_description = 'Decrease Grade DATA LOSS POSSIBLE FOR THE HIGHEST GRADE'
+    thread = threading.Thread(target=decrease)
+    thread.start()
 
 
 def mark_inactive(modeladmin, request, queryset):
@@ -62,9 +64,6 @@ def export_as_csv(modeladmin, request, queryset):
         row = writer.writerow([getattr(obj, field) for field in field_names])
 
     return response
-
-
-export_as_csv.short_description = "Export Selected as CSV"
 
 
 class StudentResource(resources.ModelResource):
@@ -92,6 +91,7 @@ class StudentAdmin(admin.ModelAdmin):
             'grad_year',
             'cur_grade_num',
             'homeroom_str')}),
+        ('Status', {'fields': ('active',)}),
     )
 
     def get_actions(self, request):
@@ -141,9 +141,6 @@ class StudentAdmin(admin.ModelAdmin):
     actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive, really_delete_selected]
 
 
-admin.site.register(Student, StudentAdmin)
-
-
 @receiver(post_import)
 def _post_import(model, **kwargs):
     pass
@@ -159,3 +156,10 @@ class DataAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         print(obj)
         super().save_model(request, obj, form, change)
+
+
+admin.site.register(PlistCutoff)
+increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
+decrease_grade.short_description = 'Decrease Grade'
+export_as_csv.short_description = "Export Selected as CSV"
+admin.site.register(Student, StudentAdmin)

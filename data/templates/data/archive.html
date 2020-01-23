@@ -7,10 +7,6 @@
     {% include 'data/navbar.html' %}
 {% endblock %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/studentlist_style.css' %}">
-{% endblock %}
-
 {% block content%}
     <h4>Import .pgdb Archive File</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_submit'%}">

@@ -1,0 +1,185 @@
+{% extends 'data/base.html' %}
+{% load static %}
+
+{% block title %}Help{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
+{% endblock %}
+
+{% block user_custom %}
+    .lbl-toggle {
+        background: {{ user.collapsible_bar_colour }};
+    }
+{% endblock %}
+
+{% block content%}
+    <h2>Help</h2>
+
+    <div id="wrap-quickstart" class="wrap-collabsible"><input id="collapsible-quickstart" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-quickstart" class="lbl-toggle"><strong>Quick Start Guide</strong></label>
+        <div class="collapsible-content">
+            <h3>User Authentication</h3>
+            <p>URL: <a href="{{ request.scheme }}://{{ request.get_host }}{% url 'login' %}">{{ request.scheme }}://{{ request.get_host }}{% url 'login' %}</a> <br>
+                Use your credentials given to you by your system administrator to login in to the site.</p>
+
+            <h3>Finding a student</h3>
+            <p>Use the search box on the navigation menu to search for a student by student number, first or last name.</p>
+
+            <h3>Creating an entry</h3>
+            <p>Fill out the corresponding fields for the amount and type you wish to allocate. See <a href="#wrap-page">Direct Entry</a> or <a href="#wrap-page">Student Info</a> for more details.</p>
+
+        </div>
+
+    </div>
+
+    <div id="wrap-page" class="wrap-collabsible"><input id="collapsible-page" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-page" class="lbl-toggle"><strong>Page Tutorials</strong></label>
+        <div class="collapsible-content">
+
+            <div class="wrap-collabsible"><input id="collapsible-page-adm" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-page-adm" class="lbl-toggle"> &emsp; Administration</label>
+                <div class="collapsible-content">
+                    <h3>Administration Pages - Database Management Portal</h3>
+                    <h4>Passwords</h4>
+                    <p>You can change your password using the link at the top right of the page. With great power comes great responsibility. The weakest link in the security chain is the human element; please choose a strong password.</p>
+                    <ol>
+                        <li>Your password can't be too similar to your other personal information.</li>
+                        <li>Your password must contain at least 8 characters.</li>
+                        <li>Your password can't be a commonly used password.</li>
+                        <li>Your password can't be entirely numeric.</li>
+                    </ol>
+                    <h4>Access Module</h4>
+                    <p>Database access records</p>
+                    <h4>Configuration Module</h4>
+                    <h4>Data Module</h4>
+                    <h4>Users Module</h4>
+                    <h4>Exiting the Portal</h4>
+                    <p>You can use the VIEW SITE link at the top right of the page.</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-dash" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-dash" class="lbl-toggle"> &emsp; Dashboard</label>
+                <div class="collapsible-content">
+                    <h3>Dashboard</h3>
+                    <p>Welcome home</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-de" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-de" class="lbl-toggle"> &emsp; Direct Entry</label>
+                <div class="collapsible-content">
+                    <h3>Direct Entry Pages</h3>
+                    <p>These pages allow teachers with restricted access to enter the points.&nbsp;</p>
+                    <p>Only a super user has access to the [&lt;&lt; Back to Default View]</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-studentinf" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-studentinf" class="lbl-toggle"> &emsp; Student Info</label>
+                <div class="collapsible-content">
+                    <h3>Dashboard</h3>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-re" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-re" class="lbl-toggle"> &emsp; Reports</label>
+                <div class="collapsible-content">
+                    <h3>Reports</h3>
+                    <p>These pages allow teachers with restricted access to enter the points.&nbsp;</p>
+                    <p>Only a super user has access to the [&lt;&lt; Back to Default View]</p>
+
+                </div>
+            </div>
+
+            <div class="wrap-collabsible"><input id="collapsible-page-set" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-page-set" class="lbl-toggle"> &emsp; Settings</label>
+                <div class="collapsible-content">
+                    <h3>Settings</h3>
+                    <h4>Adding or editing codes</h4>
+                    <h4>Principal's list thresholds</h4>
+                    <h4>Keyboard Controls</h4>
+                        <ul>
+                            <li>[*] - autofocus to search. Type in student number to go directly to that student.</li>
+                            <li>[enter] - submit code</li>
+                        </ul>
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <div id="wrap-import" class="wrap-collabsible"><input id="collapsible-import" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-import" class="lbl-toggle"><strong>Notes on Importing Files</strong></label>
+        <div class="collapsible-content">
+            <h4>About CSV files</h4>
+            <p>A CSV file is a text file that is formatted as a table. Each line has data that is separated from each other by commas. Because a CSV file is only text, it can be used with any text editor on any operating system. To open a CSV file, you can use a spreadsheet program such as Microsoft Excel or LibreOffice.</p>
+
+            <h4>Best practices if your CSV files are raising an error</h4>
+            <p>Download the template files from the links below or your dashboard and open the file in Microsoft Excel. If Excel warns you about potential data loss from the comma delimiter, please ignore the prompt. If you have the data for import already formatted in another Excel document, open it and copy the contents into the CSV. Ensure that the column label corresponds to the correct column of data. Save the file (Be careful not to save it as a .xls or .xlsx file) and upload it to the database. If an the same error is continually raised, please see the reporting an error section of this page.</p>
+
+            <h4>Template Files</h4>
+
+            <ul style="list-style-type:none;">
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">Direct Entry Import (Fill in - Athletics)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">Direct Entry Import (Fill in - Scholarship)</a></li>
+                <li><a href="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">Direct Entry Import (Fill in - Fine Arts)</a></li>
+                <li><a href="{% static "help_files/Import New Grade 8.csv" %}">Import New Grade 8 List</a></li>
+                <li><a href="{% static "help_files/Empty Student Table for Import.csv" %}">WDB Style Empty Student Table for Import</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="wrap-bkup" class="wrap-collabsible"><input id="collapsible-bkup" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-bkup" class="lbl-toggle"><strong>Backing up the system</strong></label>
+        <div class="collapsible-content">
+            <h4>PGDB Files</h4>
+            <p>This database uses the XML UTF-8 format for exporting data into a .pgdb file.</p>
+        </div>
+    </div>
+
+    <div id="wrap-misc" class="wrap-collabsible"><input id="collapsible-misc" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-misc" class="lbl-toggle"><strong>Miscellaneous Notes</strong></label>
+        <div class="collapsible-content">
+            <h4>Personalisations</h4>
+            <p>You can make changes for previous years. Note that if they receive a pin or a certificate in a previous year, the student will be put on the award list for the previous year.</p>
+
+            <h4>If your name is Daniel Lai</h4>
+            <p>We currently offer no support for this user. We apologize for this inconvenience. We can not fix your changing colour themes, your excels that export as a picture of a pdf nor the sudden disablement of your account.</p>
+        </div>
+    </div>
+
+    <div id="wrap-quickref" class="wrap-collabsible"><input id="collapsible-quickref" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-quickref" class="lbl-toggle"><strong>External Links</strong></label>
+        <div class="collapsible-content">
+            <h4>Links</h4>
+            <ol>
+                <li><a href="https://res.cloudinary.com/teepublic/image/private/s--PswrAoO---/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1563218372/production/designs/5322768_1.jpg">Before Support Checklist</a></li>
+                <li><a href="https://github.com/Joshua-Chiu/PGDBWebServer/wiki">System Configuration Help</a></li>
+                <li><a href="https://github.com/Joshua-Chiu/PGDBWebServer/issues">Raise an Issue</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="wrap-creds" class="wrap-collabsible"><input id="collapsible-creds" class="toggle" type="checkbox" style="display: none;" checked><label for="collapsible-creds" class="lbl-toggle"><strong>Credits</strong></label>
+        <div class="collapsible-content">
+            <h3>Creators</h3>
+            <ul style="list-style-type:none;">
+                <li>Developer: A̶̲͋̽͑n̷̞̯̱̄̅͊͌͌͒d̴͇̠̜̟͚̮̊͜e̸̱̻̦̗̝͖̗̔̍̎͐̓̿̑͝ř̶̡̺̣̼̲̥̒̓̊̚s̶̰̮̍̅̊o̵͕̘̺͖͎̤̣̫̥̺͆̏̔̅̊͆͒n̶͖͕̱̥̬̈̽̅̅͝, M̶̧̜̱͙̽̑̈́̾̀̀͝͠a̸͉̙̲̜͎̯̲̺͒̈́̒͑͗͊͘͝s̴͕̀́͘o̸̤͌̃̊̿͑̚n̶̢̨̡͙͉͕̭̰͚͇̽̊̇̄̊<br><br><br></li>
+                <li>Developer: Chiu, Joshua</li>
+            </ul>
+            <h3>Investors</h3>
+            <ul style="list-style-type:none;">
+                <li>Diamond Investor: Petheriotis, N.</li>
+                <li>Gold Investor: Chan, J.</li>
+                <li>Silver Investor: Jones, G.</li>
+                <li>Cardboard Investor: Lai, D.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

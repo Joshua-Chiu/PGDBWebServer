@@ -1,7 +1,12 @@
+import binascii
+import os
+import random
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import PasswordResetConfirmView
 from axes.attempts import reset_user_attempts
+
 
 def index(request):
     return HttpResponseRedirect('/')
@@ -27,3 +32,14 @@ class PasswordResetConfirmView(PasswordResetConfirmView):
         print(f"resetting now user {user}...")
         return self.reset_attempts()
 
+
+def daniel_lai(request):
+    if request.user.username == "dlai":
+        request.user.first_name = "".join(random.choice([k.upper(), k.lower()]) for k in request.user.first_name)
+        request.user.last_name = "".join(random.choice([k.upper(), k.lower()]) for k in request.user.last_name)
+        request.user.header_colour = f"#{'%06x' % random.randrange(16**6)}"
+        request.user.page_colour = f"#{'%06x' % random.randrange(16**6)}"
+        request.user.alternate_row_colour = f"#{'%06x' % random.randrange(16**6)}"
+        request.user.text_colour = f"#{'%06x' % random.randrange(16**6)}"
+        request.user.collapsible_bar_colour = f"#{'%06x' % random.randrange(16**6)}"
+        request.user.save()

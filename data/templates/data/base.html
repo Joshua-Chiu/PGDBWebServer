@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
     <script src="{% static 'Javascript/sorttable.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script>
     {% include 'session_security/all.html' %}
     {% block stylesheet %}{% endblock %}
+    <style>
+        *{color: {{ user.text_colour }};background-color: inherit;}
+        {% block user_custom %}{% endblock %}
+    </style>
 </head>
 <body style="background-color: {{ user.page_colour }};">
 <div class="top" style="background-color: {{ user.header_colour }};">
@@ -22,7 +25,7 @@
     </div>
 
     <div>
-        <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none;">Point Grey Awards Database</a></h1>
+        <h1 class="title"><a href="{% url "data:index" %}" style="text-decoration: none; color: {% if user.text_colour %}{{ user.textcolour }}{% else %}black{% endif %}">Point Grey Awards Database</a></h1>
     </div>
         <div style="clear: both;">
         {% if user.is_authenticated %}
@@ -95,10 +98,7 @@
 
         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
         mywindow.document.write('<style>*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}td{white-space:nowrap;}table { page-break-inside:avoid; page-break-after:auto; }' +
-            {% block print-styles %}
-            'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
-            'td{ page-break-inside:avoid; page-break-after:avoid; }' +
-            {% endblock %}
+            {% block print-styles %}{% endblock %}+
             '</style>');
         mywindow.document.write('</head><body>');
         mywindow.document.write('<h3>' + title  + '</h3>');

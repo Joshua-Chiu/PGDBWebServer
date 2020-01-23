@@ -20,7 +20,7 @@ def index(request):
     global offline
     maintenance, notice, offline = google_calendar()
     if offline and not request.user.is_superuser:
-        return HttpResponseRedirect(reverse('data:offline'))
+        return HttpResponseRedirect(reverse('configuration:offline'))
     template = get_template('entry/index.html')
     context = {
         'maintenance': maintenance,

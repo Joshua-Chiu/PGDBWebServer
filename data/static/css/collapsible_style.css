@@ -1,7 +1,7 @@
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
-  color: #444;
+  /*color: #444;*/
   cursor: pointer;
   padding: 10px;
   width: 100%;
@@ -37,8 +37,8 @@ textarea {
 
     padding: 1rem;
 
-    color: #444;
-    background:#eee;
+    /*color: #444;*/
+    /*background:#eee;*/
 
     cursor: pointer;
 

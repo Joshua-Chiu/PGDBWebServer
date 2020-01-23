@@ -7,6 +7,3 @@ def data(request):
 
 def accounts(request):
     return HttpResponseRedirect('/accounts/login')
-
-
-

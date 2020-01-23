@@ -25,12 +25,19 @@ urlpatterns = [
     path('entry/', include('entry.urls')),
     path('data/', include('data.urls')),
     path('export/', include('export.urls')),
+
     path('users/', include('users.urls')),
-    path('admin/', admin.site.urls),
+    path('configuration/', include('configuration.urls')),
     path('accounts/', include('accounts.urls')),
+    path('admin/', admin.site.urls),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/icon.png')),
     url(r'session_security/', include('session_security.urls')),
 ]
+
+handler400 = 'configuration.views.handle_exception_40X'
+handler403 = 'configuration.views.handle_exception_40X'
+handler404 = 'configuration.views.handle_exception_40X'
+handler500 = 'configuration.views.handle_exception_50X'
 
 admin.site.site_header = "Point Grey Database Management"
 admin.site.site_title = "Admin Portal"

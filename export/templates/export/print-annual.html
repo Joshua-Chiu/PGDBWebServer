@@ -9,6 +9,8 @@
     {% include 'data/navbar.html' %}
 {% endblock %}
 
+{% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
+
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
@@ -85,6 +87,7 @@
 
 {% block javascript %}
     <script>
+        {% now "n" as current_month %}
         const start = new Date().getFullYear() + 1;
         const end = 1970;
         let options = "";
@@ -94,14 +97,18 @@
           if(year === {{ year }}){
               options += "selected ";
           }
+          {% elif current_month|add:"0" <= 7 %}
+          if(year === start - 2){
+              options += "selected ";
+          }
           {% else %}
           if(year === start - 1){
               options += "selected ";
           }
           {% endif %}
-          options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
-        }
-        document.getElementById("year").innerHTML = options;
+              options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
+          }
+          document.getElementById("year").innerHTML = options;
     </script>
     <script>
         (function(API){API.myText = function(txt, options, x, y) {

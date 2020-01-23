@@ -82,6 +82,7 @@ def print_annual(request):
             query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} PIN RECIPIENTS"
     config = Configuration.objects.get()
 
+
     with open(config.principal_signature.path, 'rb') as img:
         p_sig_string = str(base64.b64encode(img.read()))[2:-1]
 
@@ -175,7 +176,7 @@ def print_term(request):
         term = int(request.GET.get("term"))
         roll = request.GET.get("roll")
 
-        query = f"grade:{grade} grade{grade}_term{term}:{roll}"
+        query = f"grade_{str(grade).zfill(2)}_year:{year} grade{grade}_term{term}:{roll}"
         students = parseQuery(query)
 
     context = {

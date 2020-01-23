@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
 {% endblock %}
 
+{% block user_custom %}
+    .lbl-toggle {
+        background: {{ user.collapsible_bar_colour }};
+    }
+{% endblock %}
+
 {% block content%}
     <!--Student Info-->
     <h2><strong><a>{{ student.last }}, {{ student.first }} ({{ student.legal }})</a></strong></h2>

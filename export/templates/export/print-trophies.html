@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
 {% endblock %}
 
+{% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
+
 {% block content%}
     <div>
     <h2 class="heading">Printing Reports</h2>
@@ -66,6 +68,7 @@
 {% endblock %}
 {% block javascript %}
     <script>
+        {% now "n" as current_month %}
         const start = new Date().getFullYear() + 1;
         const end = 1970;
         let options = "";
@@ -75,18 +78,22 @@
           if(year === {{ year }}){
               options += "selected ";
           }
+          {% elif current_month|add:"0" <= 7 %}
+          if(year === start - 2){
+              options += "selected ";
+          }
           {% else %}
           if(year === start - 1){
               options += "selected ";
           }
           {% endif %}
-          options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
-        }
+              options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
+          }
         document.getElementById("year").innerHTML = options;
     </script>
 {% endblock %}
 
 {% block print-styles %}
     'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
-    'td{ page-break-inside:avoid; page-break-after:avoid; }' +
+    'td{ page-break-inside:avoid; page-break-after:avoid; }'
 {% endblock %}

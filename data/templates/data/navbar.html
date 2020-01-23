@@ -5,22 +5,23 @@
 
         <li>
             <form action="{% url 'data:search' %}">
-                <label for="query"><input type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()"></label>
+                <label for="query"><input style="background-color: white; color: black;" type="text" placeholder="Search.." name="query" accesskey="a" id="query" onsubmit="submitForms()"></label>
             </form>
         </li>
         {% if user.is_superuser %}
-        <li><a href="{% url 'data:help' %}">Help</a></li>
+        <li><a href="{% url 'configuration:help' %}">Help</a></li>
 
         <li>
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'data:index' %}">Dashboard</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'data:search' %}?query=grade%3A08">Grade 08</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A09">Grade 09</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A10">Grade 10</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A11">Grade 11</a>
-                    <a href="{% url 'data:search' %}?query=grade%3A12">Grade 12</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A08+active">Grade 08</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A09+active">Grade 09</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A10+active">Grade 10</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A11+active">Grade 11</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A12+active">Grade 12</a>
+                    <a href="{% url 'data:search' %}?query=grade%3A12+inactive">Graduated</a>
                 </div>
             </div>
         </li>
@@ -33,7 +34,7 @@
                     <a href="{% url 'data:codes' %}">Codes</a>
                     <a href="{% url 'data:plist' %}">Modify Plist</a>
                     <a href="{% url 'data:archive' %}">Converters</a>
-                    <a href="{% url 'data:personalisation' %}">Personalize Site</a>
+                    <a href="{% url 'users:personalisation' %}">Personalize Site</a>
                 </div>
             </div>
         </li>
@@ -57,17 +58,17 @@
                 <button class="dropbtn"><a>Cursor Default</a></button>
                     <i class="fa fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="{% url 'data:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
-                    <a type="submit" href="{% url 'data:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'data:autofocus' 3 %}">Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'data:autofocus' 4 %}">Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
-                    <a type="submit" href="{% url 'data:autofocus' 5 %}">Scholar Term 2 {% ifequal user.autofocus 5 %}✔{% endifequal %}</a>
+                    <a href="{% url 'users:autofocus' 1 %}">Service {% ifequal user.autofocus 1 %}✔{% endifequal %}</a> <!--pass number back to view-->
+                    <a href="{% url 'users:autofocus' 2 %}">Athletics {% ifequal user.autofocus 2 %}✔{% endifequal %}</a>
+                    <a href="{% url 'users:autofocus' 3 %}">Fine Arts {% ifequal user.autofocus 3 %}✔{% endifequal %}</a>
+                    <a href="{% url 'users:autofocus' 4 %}">Scholar Term 1 {% ifequal user.autofocus 4 %}✔{% endifequal %}</a>
+                    <a href="{% url 'users:autofocus' 5 %}">Scholar Term 2 {% ifequal user.autofocus 5 %}✔{% endifequal %}</a>
                 </div>
             </div>
         </li>
         {% else %}
             <li>
-            <a href="{% url 'data:personalisation' %}">Personalize Site</a>
+            <a href="{% url 'users:personalisation' %}">Personalize Site</a>
             </li>
         {% endif %}
         <li style="border-left: 1px solid #bbb">

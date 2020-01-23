@@ -43,9 +43,6 @@
     border-collapse: collapse;
 }
 
-tr:nth-child(even) {background: #CCC}
-tr:nth-child(odd) {background: inherit}
-
 td {
     white-space: nowrap;
 }

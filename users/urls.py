@@ -4,5 +4,7 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    path('custom_css', views.custom_css, name='custom_css'),
+    path('personalisation', views.personalisation, name='personalisation'),
+    path('personalisation/submit', views.personalisation_submit, name='personalisation_submit'),
+    path('autofocus/<int:num>', views.autofocus_submit, name='autofocus'),
 ]
