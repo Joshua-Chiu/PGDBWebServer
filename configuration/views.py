@@ -63,7 +63,7 @@ def google_calendar():
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     # Current date in UTC
-    print(offline_status)
+    # print(offline_status)
 
     return maintenance, notice, offline_status
 
