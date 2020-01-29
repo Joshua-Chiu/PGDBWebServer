@@ -134,6 +134,14 @@ def parseQuery(query):
                     elif type == "principalslist":
                         if not grade.principalslist or grade.isnull_SC:
                             new_students = new_students.exclude(id=s.id)
+                    elif "ST" in type:
+                        points_num = int(type[0])
+                        if not points_num == 5:
+                            if not len(grade.points_set.filter(type__catagory="AT")) == points_num:
+                                new_students = new_students.exclude(id=s.id)
+                        else:
+                            if not len(grade.points_set.filter(type__catagory="AT")) >= 5:
+                                new_students = new_students.exclude(id=s.id)
 
                 students = new_students
 
