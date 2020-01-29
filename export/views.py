@@ -55,7 +55,10 @@ def print_annual(request):
         else:
             query += "award" + ":" + request.GET["athletic"] + " "
 
-    students = parseQuery(query)
+    if query:
+        students = parseQuery(query + " active:both")
+    else:
+        students = parseQuery(query)
 
     awards_dict = {
         "SE": "Service",
@@ -108,7 +111,7 @@ def print_grad(request):
     award = request.GET.get("grad-awards")
 
     if request.GET:
-        query = f"grade_12_year:{year}"
+        query = f"grade_12_year:{year} active:both"
         students = parseQuery(query)
 
         if not award == "ME":
@@ -147,7 +150,7 @@ def print_trophies(request):
     award = request.GET.get("trophy-awards")
 
     if "grade" in request.GET and "year" in request.GET:
-        query = f"grade_{grade.zfill(2)}_year:{year}"
+        query = f"grade_{grade.zfill(2)}_year:{year} active:both"
         students = parseQuery(query)
 
         students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:30]
@@ -176,7 +179,7 @@ def print_term(request):
         term = int(request.GET.get("term"))
         roll = request.GET.get("roll")
 
-        query = f"grade_{str(grade).zfill(2)}_year:{year} grade{grade}_term{term}:{roll}"
+        query = f"grade_{str(grade).zfill(2)}_year:{year} grade{grade}_term{term}:{roll} active:both"
         students = parseQuery(query)
 
     context = {
@@ -208,7 +211,10 @@ def print_xcheck(request):
     else:
         query += "grade:" + str(grade) + " "
 
-    students = parseQuery(query)
+    if query:
+        students = parseQuery(query + " active:both")
+    else:
+        students = parseQuery(query)
 
     # print(students[:10])
 

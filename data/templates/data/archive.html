@@ -16,6 +16,14 @@
     </form>
     <hr>
 
+    <h4>Export .pgdb Archive File</h4>
+    <form method="post" action="{% url 'data:archive_file'%}">
+        <input type="submit" value="Export .pgdb Archive" name="submit">
+        <label><input type="hidden" name="query" id="query" value=""></label>
+        {% csrf_token %}
+    </form>
+    <hr>
+
     <h4>Migrate from DOS Database</h4>
     <form method="post" enctype="multipart/form-data" action="{% url 'data:archive_wdb_submit'%}">
         <select name="grade">
@@ -26,25 +34,10 @@
                 <option value="12" >Grade 12</option>
         </select>
         of
-        <select name="start-year" id="year-hr"></select>
-        <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
-        {% csrf_token %}
-    </form>
-    <hr>
-
-    <h4>Create Honour Roll, Principal's List and GE Rolls Recipients</h4>
-    <form method="post" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
-        <label><select name="term">
-            <option value="1" >Term 1</option>
-            <option value="2" >Term 2</option>
-        </select></label>
-        of
         <select name="start-year" id="year"></select>
         <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
         {% csrf_token %}
-        <label>Inadmissible course codes (YCPM, YBMO,...) <input style="width: 500px;" type="text" value="YCPM, YBMO, YIPS, MCE8, MCE9, MCLC"></label>
     </form>
-
     <hr>
     <h4>Stuff</h4>
     <form method="post" action="{% url 'data:archive_file'%}">
@@ -59,14 +52,28 @@
 
 {% block javascript %}
     <script>
-        var start = new Date().getFullYear() + 1;
-        var end = 1970;
-        var options = "";
-        for(var year = start ; year >=end; year--){
-          options += "<option value=\""+ year + "\">" + year + " → " + (year + 1) +"</option>";
-        }
-        document.getElementById("year").innerHTML = options;
-        document.getElementById("year-hr").innerHTML = options;
+        {% now "n" as current_month %}
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option ";
+          {% if year %}
+          if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% elif current_month|add:"0" <= 7 %}
+          if(year === start - 2){
+              options += "selected ";
+          }
+          {% else %}
+          if(year === start - 1){
+              options += "selected ";
+          }
+          {% endif %}
+              options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
+          }
+          document.getElementById("year").innerHTML = options;
     </script>
 {% endblock %}
 
