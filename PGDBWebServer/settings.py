@@ -214,6 +214,8 @@ PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
 
 # Deployment Configurations
+BUILD_NUMBER = 1.1
+
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 

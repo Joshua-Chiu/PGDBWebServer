@@ -6,14 +6,14 @@ import dateutil.parser
 import httplib2
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
-
+from PGDBWebServer.settings import BUILD_NUMBER
 offline_status = False
 
 
 def help(request):
     template = get_template('configuration/help.html')
     context = {
-        'build': '1.12',
+        'build': BUILD_NUMBER,
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
