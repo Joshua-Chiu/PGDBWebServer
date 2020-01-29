@@ -49,9 +49,13 @@ def print_annual(request):
         query += "annual_cert:" + request.GET["annual"] + "_" + request.GET["grade"] + " "
         award = request.GET["annual"]
     if "athletic" in request.GET and request.GET["athletic"]:
+        print(request.GET)
         if "year" in request.GET and request.GET["year"]:
-            query += "award_" + request.GET["grade"] + ":" + request.GET["athletic"] + " "
-            award = request.GET["athletic"]
+            if "ST" in request.GET["athletic"]:
+                query += f"annual_cert:{request.GET['athletic']}_{request.GET['grade']}"
+            else:
+                query += "award_" + request.GET["grade"] + ":" + request.GET["athletic"] + " "
+                award = request.GET["athletic"]
         else:
             query += "award" + ":" + request.GET["athletic"] + " "
 

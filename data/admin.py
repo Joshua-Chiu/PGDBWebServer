@@ -48,7 +48,13 @@ def decrease_grade(modeladmin, request, queryset):
 
 
 def mark_inactive(modeladmin, request, queryset):
-    pass
+    def inactive():
+        for student in queryset:
+            student.active = False
+            student.save()
+
+    thread = threading.Thread(target=inactive)
+    thread.start()
 
 
 def export_as_csv(modeladmin, request, queryset):
@@ -77,7 +83,7 @@ class StudentResource(resources.ModelResource):
 class StudentAdmin(admin.ModelAdmin):
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
-    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom']
+    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom', 'active']
     list_display_links = ('last', 'first')
     search_fields = ('first', 'last', 'student_num',)
     fieldsets = (
