@@ -85,8 +85,8 @@ def scholar_submit(request):
             student = Student.objects.get(student_num=snum)
             grade = student.get_grade(student.cur_grade_num)
 
-            grade.term1_avg(term1)
-            grade.term2_avg(term2)
+            grade.term1_avg=term1
+            grade.term2_avg=term2
             grade.save()
         except Exception as e:
             print(e)

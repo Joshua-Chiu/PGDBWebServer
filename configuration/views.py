@@ -6,13 +6,15 @@ import dateutil.parser
 import httplib2
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
-
+from PGDBWebServer.settings import BUILD_NUMBER
 offline_status = False
 
 
 def help(request):
     template = get_template('configuration/help.html')
-    context = {}
+    context = {
+        'build': BUILD_NUMBER,
+    }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
@@ -63,7 +65,7 @@ def google_calendar():
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     # Current date in UTC
-    print(offline_status)
+    # print(offline_status)
 
     return maintenance, notice, offline_status
 

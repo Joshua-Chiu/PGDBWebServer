@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block content%}
-    <h2>Help</h2>
+    <h2>Help (Version {{ build }})</h2>
 
     <div id="wrap-quickstart" class="wrap-collabsible"><input id="collapsible-quickstart" class="toggle" type="checkbox" style="display: none;"><label for="collapsible-quickstart" class="lbl-toggle"><strong>Quick Start Guide</strong></label>
         <div class="collapsible-content">
@@ -51,8 +51,14 @@
                         <li>Your password can't be entirely numeric.</li>
                     </ol>
                     <h4>Access Module</h4>
-                    <p>Database access records</p>
+                    <p>We keep track of your failed login attempts for your login until your next successful login. </p>
                     <h4>Configuration Module</h4>
+                    <p>Principal signature: Please upload a PNG file with dimensions 250x150 A blank signature requires the upload of a white .png
+                       Login failure limit:
+                        Service Help Text:
+                        Athletics Help Text:
+                        Fine Arts Help Text
+                    </p>
                     <h4>Data Module</h4>
                     <h4>Users Module</h4>
                     <h4>Exiting the Portal</h4>
@@ -90,6 +96,7 @@
                     <h3>Reports</h3>
                     <p>These pages allow teachers with restricted access to enter the points.&nbsp;</p>
                     <p>Only a super user has access to the [&lt;&lt; Back to Default View]</p>
+                    <p>Sample template file for Principal's signature <a href="{% static 'signbox.png' %}">Click here</a></p>
 
                 </div>
             </div>
@@ -107,10 +114,6 @@
 
                 </div>
             </div>
-
-
-
-
 
         </div>
 
@@ -151,6 +154,9 @@
 
             <h4>If your name is Daniel Lai</h4>
             <p>We currently offer no support for this user. We apologize for this inconvenience. We can not fix your changing colour themes, your excels that export as a picture of a pdf nor the sudden disablement of your account.</p>
+
+            <h4>Build Version</h4>
+            <p>Build Number: {{ build }}</p>
         </div>
     </div>
 
@@ -169,7 +175,7 @@
         <div class="collapsible-content">
             <h3>Creators</h3>
             <ul style="list-style-type:none;">
-                <li>Developer: A̶̲͋̽͑n̷̞̯̱̄̅͊͌͌͒d̴͇̠̜̟͚̮̊͜e̸̱̻̦̗̝͖̗̔̍̎͐̓̿̑͝ř̶̡̺̣̼̲̥̒̓̊̚s̶̰̮̍̅̊o̵͕̘̺͖͎̤̣̫̥̺͆̏̔̅̊͆͒n̶͖͕̱̥̬̈̽̅̅͝, M̶̧̜̱͙̽̑̈́̾̀̀͝͠a̸͉̙̲̜͎̯̲̺͒̈́̒͑͗͊͘͝s̴͕̀́͘o̸̤͌̃̊̿͑̚n̶̢̨̡͙͉͕̭̰͚͇̽̊̇̄̊<br><br><br></li>
+                <li>Developer: Anderson, Mason<br><br><br></li>
                 <li>Developer: Chiu, Joshua</li>
             </ul>
             <h3>Investors</h3>

@@ -12,7 +12,16 @@ PGDBWebServer/__pycache__
 data/__pycache__
 .idea
 .tags
-.DS_Store
 uploads/
 staticfiles/
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 

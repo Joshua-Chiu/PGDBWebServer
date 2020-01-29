@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import math
 import datetime
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 import re
@@ -182,8 +183,8 @@ class Student(models.Model):
                                               help_text="This number must be unique as it is used to identify students")
     grad_year = models.IntegerField(verbose_name='Grad Year', help_text="Year of Graduation")
     cur_grade_num = models.IntegerField(verbose_name="current grade")
-    homeroom_str = models.CharField(max_length=15, verbose_name="Homeroom letter", default="#")
-    active = models.BooleanField(default=True, verbose_name="Active")
+    homeroom_str = models.CharField(max_length=15, verbose_name="Homeroom", default="#")
+    active = models.BooleanField(default=True, verbose_name="Active", help_text="Designates whether this student should be treated as active. Unselect this instead of deleting students.")
     last_modified = models.DateField(auto_now=True)
 
     grade_12 = models.OneToOneField(Grade_12, on_delete=models.CASCADE, blank=True, null=True)
@@ -340,6 +341,13 @@ class Points(models.Model):
     type = models.ForeignKey(PointCodes, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6, decimal_places=3)
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    created = models.DateTimeField(editable=False)
+
+    def save(self, *args, **kwargs):
+        # On save, update timestamps
+        if not self.id:
+            self.created = timezone.now()
+        return super(Points, self).save(*args, **kwargs)
 
     def get_student(self):
         return getattr(self.Grade, f"grade_{self.Grade.grade}").student
