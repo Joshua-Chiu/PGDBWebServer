@@ -111,16 +111,17 @@ def export_pgdb_archive(student_list, relevent_plists):
     for student in student_list:
         student_tag = ET.SubElement(students, 'student')
         ET.SubElement(student_tag, 'number').text = str(student.student_num)
-        ET.SubElement(student_tag, 'current_grade').text = str(student.homeroom[:-1])
-        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom[-1:])
+        ET.SubElement(student_tag, 'current_grade').text = str(student.cur_grade_num)
+        ET.SubElement(student_tag, 'homeroom').text = str(student.homeroom_str)
         ET.SubElement(student_tag, 'first').text = student.first
         ET.SubElement(student_tag, 'last').text = student.last
         ET.SubElement(student_tag, 'legal_name').text = student.legal
         ET.SubElement(student_tag, 'sex').text = student.sex
         ET.SubElement(student_tag, 'grad_year').text = str(student.grad_year)
+        ET.SubElement(student_tag, 'active').text = "yes" if student.active else "no"
 
         grades = ET.SubElement(student_tag, 'grades')
-        for grade in student.all_grades():
+        for grade in student.all_grades:
             grade_tag = ET.SubElement(grades, 'grade')
 
             ET.SubElement(grade_tag, 'grade_num').text = str(grade.grade)
@@ -185,11 +186,12 @@ def import_pgdb_file(tree):
                 last=s[4].text,
                 legal=s[5].text,
                 sex=s[6].text,
-                grad_year=int(s[7].text)
+                grad_year=int(s[7].text),
+                active=(True if s[8].text == "yes" else False),
             )
             s_obj.save()
 
-            for g in s[8]:
+            for g in s[9]:
 
                 g_obj = s_obj.get_grade(int(g[0].text))
                 g_obj.anecdote = g[2].text or ""
