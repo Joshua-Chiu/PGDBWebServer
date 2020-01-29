@@ -12,7 +12,9 @@ offline_status = False
 
 def help(request):
     template = get_template('configuration/help.html')
-    context = {}
+    context = {
+        'build': '1.12',
+    }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
     else:
