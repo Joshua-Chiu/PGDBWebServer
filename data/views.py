@@ -23,7 +23,7 @@ def search(request):
     template = get_template('data/search.html')
 
     # if no query exists make an empty list
-    if request.GET['query']:
+    if "query" in request.GET and request.GET['query']:
         query = request.GET['query']
     else:
         return HttpResponse(template.render(None, request))

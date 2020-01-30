@@ -88,6 +88,7 @@ def wdb_convert(csvfile, grade_num, start_year):
         ET.SubElement(student, "legal_name").text = get_if_exists(info["legal_name"], row)
         ET.SubElement(student, "sex").text = get_if_exists(info["gender"], row)
         ET.SubElement(student, "grad_year").text = str(start_year + 13 - grade_num)
+        ET.SubElement(student, "active").text = "yes" if active else "no"
 
         grades = ET.SubElement(student, "grades")
         for g in range(8, grade_num + 1):
