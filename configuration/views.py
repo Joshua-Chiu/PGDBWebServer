@@ -57,8 +57,8 @@ def google_calendar():
                 notice.append({
                     'title': event['summary'].replace("NOTICE: ", ""),
                     'note': event['description'],
-                    'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
-                    'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M%p"),
+                    'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %I:%M%p"),
+                    'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %I:%M%p"),
                 })
     # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
     except Exception as e:

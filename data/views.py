@@ -202,7 +202,7 @@ def archive_wdb_submit(request):
 
             return response
 
-    return HttpResponseRedirect("/data/archive")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def archive_file(request):
@@ -231,6 +231,10 @@ def archive_file(request):
 def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
+
+            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"]))
+            roll_conv_thread.start()
+            '''
             year = request.POST["start-year"]
             term = request.POST["term"]
             plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
@@ -254,7 +258,12 @@ def roll_importer(request):
                     grade.save()
                 except:
                     pass
-    return HttpResponseRedirect("/data/archive")
+            '''
+    template = get_template('data/file_upload.html')
+    context = {
+        "logs": logs,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def settings(request):
