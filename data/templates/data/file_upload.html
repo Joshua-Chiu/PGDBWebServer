@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content%}
-    <h2 id="Progress"></h2>
+    <h2 id="Progress">We are now processing your file in the background</h2>
     <a href="./">You may safely leave this page</a>
     <hr>
     <ol id="logs"></ol>
@@ -45,6 +45,6 @@
             }
         });
     }
-    const status_update = setInterval(status, 100);
+    const status_update = setInterval(status, 2500);
     </script>
 {% endblock %}

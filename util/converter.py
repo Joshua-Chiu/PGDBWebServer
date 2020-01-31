@@ -1,6 +1,6 @@
 #!/bin/env python
 import csv
-import sys
+import sys, datetime
 import xml.etree.ElementTree as ET
 import math
 
@@ -64,6 +64,14 @@ def get_if_exists(index, row):
 
 def wdb_convert(csvfile, grade_num, start_year):
     reader = csv.reader(csvfile, delimiter=",", quotechar="\"")
+
+    # logic for active
+    active = True
+    if datetime.datetime.now().month < 7:
+        active = datetime.datetime.now().year <= int(start_year + 13 - grade_num)
+    else:
+        active = datetime.datetime.now().year < int(start_year + 13 - grade_num)
+
 
     root = ET.Element("PGDB")
     students = ET.SubElement(root, "students")

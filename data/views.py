@@ -198,7 +198,7 @@ def archive_wdb_submit(request):
             pgdb_file = wdb_convert((l.decode() for l in request.FILES["file"]), grade, start_year)
 
             response = HttpResponse(pgdb_file, content_type='application/xml')
-            response['Content-Disposition'] = 'attachment; filename=students.pgdb'
+            response['Content-Disposition'] = f'attachment; filename={request.FILES["file"].name.split(".", 1)[0]}.pgdb'
 
             return response
 
@@ -223,7 +223,7 @@ def archive_file(request):
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')
-    response['Content-Disposition'] = 'attachment; filename=students.pgdb'
+    response['Content-Disposition'] = f'attachment; filename={query or "students"}.pgdb'
 
     return response
 

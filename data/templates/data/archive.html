@@ -39,10 +39,10 @@
         {% csrf_token %}
     </form>
     <hr>
-    <h4>Stuff</h4>
+    <h4>Command Line Interface</h4>
     <form method="post" action="{% url 'data:archive_file'%}">
+        <label>CLI: <input type="text" name="query" id="query"></label>
         <input type="submit" value="Execute" name="submit">
-        <label><input type="text" name="query" id="query"></label>
         {% csrf_token %}
     </form>
     <hr>
