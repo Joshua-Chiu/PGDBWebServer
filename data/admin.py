@@ -9,7 +9,7 @@ from django.utils import timezone
 from import_export.forms import ImportForm, ConfirmImportForm
 import datetime
 from django import forms
-import csv
+import csv, re
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls import url, include
 from django.template.loader import get_template
@@ -113,7 +113,6 @@ class StudentAdmin(admin.ModelAdmin):
 
     def import_as_csv(self, request):
         if "file" in request.FILES:
-            print("asdf")
             for line in request.FILES['file']:
                 # if it's the start line skip it
                 if line.decode("utf-8") == \
@@ -127,7 +126,7 @@ class StudentAdmin(admin.ModelAdmin):
                     print(f"student {student_num} already exists")
                     # continue
 
-                student = Student(first=first, last=last, legal=legal, student_num=int(student_num), homeroom=homeroom, sex=sex, grad_year=int(grad_year))
+                student = Student(first=first, last=last, legal=legal, student_num=int(student_num), cur_grade_num=int(re.sub('\D', '', homeroom)), homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))
                 student.save()
 
         template = get_template('admin/data/student/import.html')
