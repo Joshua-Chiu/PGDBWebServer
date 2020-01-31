@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
-    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     # TODO reset login attempts on successful password reset
     url('^', include('django.contrib.auth.urls')),
 ]
