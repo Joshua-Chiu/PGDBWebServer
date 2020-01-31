@@ -120,6 +120,7 @@ def get_version(pep440=False):
     git_version = format_git_describe(call_git_describe(), pep440=pep440)
     if git_version is None:  # not a git repository
         return read_release_version()
+    print(git_version)
     return git_version
 
 
