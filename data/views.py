@@ -16,6 +16,7 @@ from threading import Thread
 
 from .extra_views import *
 
+export_file_thread = 0
 logs = []
 
 
@@ -206,6 +207,7 @@ def archive_wdb_submit(request):
 
 
 def archive_file(request):
+    global export_file_thread
     if "query" not in request.POST:
         raise Http404
     query = request.POST['query']
@@ -217,9 +219,9 @@ def archive_file(request):
     # plists from years that students being exported are in
     relevent_plists = []
 
-    root = export_pgdb_archive(student_list, relevent_plists)
+    export_file_thread = export_pgdb_archive(student_list, relevent_plists)
 
-    xml_str = minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
+    xml_str = minidom.parseString(ET.tostring(export_file_thread.result())).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')

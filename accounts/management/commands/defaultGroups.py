@@ -28,7 +28,7 @@ USERS = [
     ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
     ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
     ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
-    ['jnbaker', 'Jean', 'Baker', '', 'IFbSfr7OCN', '', False, False, True, False, []],
+    ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
 ]
 
 PLIST = [
