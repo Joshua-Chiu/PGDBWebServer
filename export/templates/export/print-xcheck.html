@@ -33,7 +33,6 @@
             <label>Year: <select name="year" id="year"></select></label>
 
             <label>Type: <select name="type">
-                <option value="" >Select</option>
                 <option {% ifequal award_type "SE" %}selected{% endifequal %} value="SE"> Service</option>
                 <option {% ifequal award_type "AT" %}selected{% endifequal %} value="AT">Athletics</option>
                 <option {% ifequal award_type "SC" %}selected{% endifequal %} value="SC">Scholar</option>

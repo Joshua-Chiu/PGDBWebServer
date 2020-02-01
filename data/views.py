@@ -221,7 +221,7 @@ def archive_file(request):
 
     export_file_thread = export_pgdb_archive(student_list, relevent_plists)
 
-    xml_str = minidom.parseString(ET.tostring(export_file_thread.result())).toprettyxml(indent="  ")
+    xml_str = minidom.parseString(ET.tostring(export_file_thread)).toprettyxml(indent="  ")
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')

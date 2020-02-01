@@ -16,16 +16,17 @@
         <h2>Direct Entry (Scholar)</h2>
         <h4>Single entry</h4>
         <form action="{% url 'entry:scholar_submit' %}" method="post">
-                    <fieldset>
-                        <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label> Name: <a id="name" class="name">Student not found</a>
-                        . . . . .
-                        <label>Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px" step="0.001"></label>
-                        <label>Term 2 Percentage: <input class="t2" type="number" id="t2" name="t2" value="" style="width: 40px" step="0.001"></label>
-                        <button value="submit">Submit</button>
-                        {% csrf_token %}
-                    </fieldset>
-            </form>
+            <fieldset>
+                <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label> Name: <a id="name" class="name">Student not found</a>
+                . . . . .
+                <label>Term 1 Percentage: <input class="t1" type='number' id="t1" name="t1" value="" style="width: 40px" step="0.001"></label>
+                <label>Term 2 Percentage: <input class="t2" type="number" id="t2" name="t2" value="" style="width: 40px" step="0.001"></label>
+                <button value="submit">Submit</button>
+                {% csrf_token %}
+            </fieldset>
+        </form>
         <hr>
+        {% if user.can_upload or user.is_superuser%}
         <h4>Create Honour Roll, Principal's List and GE Rolls Recipients</h4>
             <form method="post" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
                 <label><select name="term">
@@ -45,6 +46,7 @@
                 <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
                 {% csrf_token %}
             </form>
+        {% endif %}
     </body>
 {% endblock %}
 {% block javascript %}

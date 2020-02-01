@@ -275,6 +275,8 @@ def ajax_all_points(request):
 
 
 def convert_roll(year, term, file):
+    global done
+    done = False
 
     plist_cutoffs, students = roll_convert((l.decode() for l in file), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
 
@@ -297,6 +299,8 @@ def convert_roll(year, term, file):
             grade.save()
         except:
             pass
+
+    done = True
 
 
 def reset_users(request):
