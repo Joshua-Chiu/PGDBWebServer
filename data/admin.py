@@ -111,23 +111,36 @@ class StudentAdmin(admin.ModelAdmin):
 
     really_delete_selected.short_description = "Delete selected entries"
 
+
+    def import_csv_file(self, file):
+        for line in file:
+            # if it's the start line skip it
+            if line.decode("utf-8") == \
+                    "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
+                continue
+
+            print(line.decode("utf-8").strip().split("\t"))
+            student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
+            # skip if student exists
+            if Student.objects.filter(student_num=int(student_num)):
+                print(f"student {student_num} already exists")
+                continue
+
+            try:
+                student = Student(first=first, last=last, legal=legal, student_num=int(student_num),
+                                  cur_grade_num=int(re.sub('\D', '', homeroom)),
+                                  homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))
+                student.save()
+            except Exception as e:
+                print(e)
+
     def import_as_csv(self, request):
         if "file" in request.FILES:
-            for line in request.FILES['file']:
-                # if it's the start line skip it
-                if line.decode("utf-8") == \
-                        "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
-                    continue
-
-                print(line.decode("utf-8").strip().split("\t"))
-                student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
-                # skip if student exists
-                if Student.objects.filter(student_num=int(student_num)):
-                    print(f"student {student_num} already exists")
-                    # continue
-
-                student = Student(first=first, last=last, legal=legal, student_num=int(student_num), cur_grade_num=int(re.sub('\D', '', homeroom)), homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))
-                student.save()
+            thread = threading.Thread(target=self.import_csv_file, args=(request.FILES['file'], ))
+            thread.start()
+            template = get_template('data/file_upload.html')
+            context = {}
+            return HttpResponse(template.render(context, request))
 
         template = get_template('admin/data/student/import.html')
         context = {
