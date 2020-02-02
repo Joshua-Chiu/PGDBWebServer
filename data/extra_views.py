@@ -129,8 +129,8 @@ def export_pgdb_archive(student_list, relevent_plists):
             ET.SubElement(grade_tag, 'start_year').text = str(grade.start_year)
             ET.SubElement(grade_tag, 'anecdote').text = str(grade.anecdote)
 
-            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.term2_avg)
-            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.term1_avg)
+            ET.SubElement(grade_tag, 'AverageT1').text = str(grade.term1_avg)
+            ET.SubElement(grade_tag, 'AverageT2').text = str(grade.term2_avg)
 
             points_tag = ET.SubElement(grade_tag, 'points')
             for point in grade.points_set.all():
