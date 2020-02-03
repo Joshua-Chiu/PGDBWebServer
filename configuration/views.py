@@ -45,27 +45,25 @@ def google_calendar():
         for event in events:
             if "MAINTENANCE:" in event.get("summary"):
                 maintenance.append({
-                    'action': event['summary'].replace("MAINTENANCE: ", ""),
-                    'note': event['description'],
+                    'action': event['summary'].replace("MAINTENANCE: ", "") if 'title' in event else "",
+                    'note': event['description'] if 'description' in event else "",
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                 })
                 service_now[0] = dateutil.parser.parse(event["start"]["dateTime"])
                 service_now[1] = dateutil.parser.parse(event["end"]["dateTime"])
                 if service_now[0] < now < service_now[1]:
-                    #print(service_now[0])
-                    #print(now)
-                    #print(service_now[1])
                     offline_status = True
             else:
                 notice.append({
-                    'title': event['summary'].replace("NOTICE: ", ""),
-                    'note': event['description'],
+                    'title': event['summary'].replace("NOTICE: ", "") if 'title' in event else "",
+                    'note':  event['description'] if 'description' in event else "",
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                 })
-    # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
+                # except httplib2.ServerNotFoundError or httplib2.HttpLib2Error:
     except Exception as e:
+        print(e)
         notice = [{'title': "ERR", 'note': "Please check your internet connection", 'start': "--:--", 'end': "-", }]
 
     # Current date in UTC
