@@ -142,20 +142,20 @@
         for(let i = 0; i < studentList.length; i++){
             doc.setFont('vivaldin', 'italic');// set font parameters to vivaldin
             doc.setFontSize(48);
-            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,94); //first + last
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"}, 0, 94); //first + last
 
             doc.setFontSize(40);
-            doc.myText(type ,{align: "center"},0,131);
+            doc.myText(type ,{align: "center"}, 0, 131);
 
             doc.setFontSize(32);
-            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 153);
+            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 150);
 
             doc.setFontSize(7);
             doc.setFont('Arial', 'normal');
-            doc.text(220, 210, studentList[i][2]);
+            doc.text(255, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
 
-            doc.addImage(imgData, 'JPEG', 184, 172, 40, 23);
+            doc.addImage(imgData, 'JPEG', 172, 166, 60, 30);
 
             doc.addPage();
 
