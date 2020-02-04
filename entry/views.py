@@ -157,7 +157,7 @@ def point_submit(request, point_catagory):
             code = int(request.POST["code"])
             points = float(request.POST["minutes"])
             if point_catagory == "SE":
-                points /= 300
+                points /= 5
 
             student = Student.objects.get(student_num=snum)
             grade = student.get_grade(student.cur_grade_num)
