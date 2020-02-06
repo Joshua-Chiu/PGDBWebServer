@@ -45,7 +45,7 @@ def google_calendar():
         for event in events:
             if "MAINTENANCE:" in event.get("summary"):
                 maintenance.append({
-                    'action': event['summary'].replace("MAINTENANCE: ", "") if 'title' in event else "",
+                    'action': event['summary'].replace("MAINTENANCE: ", "") if 'summary' in event else "",
                     'note': event['description'] if 'description' in event else "",
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
@@ -56,7 +56,7 @@ def google_calendar():
                     offline_status = True
             else:
                 notice.append({
-                    'title': event['summary'].replace("NOTICE: ", "") if 'title' in event else "",
+                    'title': event['summary'].replace("NOTICE: ", "") if 'summary' in event else "",
                     'note':  event['description'] if 'description' in event else "",
                     'start': dateutil.parser.parse(event["start"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
                     'end': dateutil.parser.parse(event["end"]["dateTime"]).strftime("%d %b, %Y %H:%M"),
