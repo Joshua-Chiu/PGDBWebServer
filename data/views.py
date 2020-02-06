@@ -58,6 +58,7 @@ def student_info(request, num):
 
 
 def student_submit(request, num):
+    if request.user.no_entry: return HttpResponseRedirect(f"/data/student/{num}")
     entered_by = request.user
     student = Student.objects.get(id=num)
     items = list(request.POST.items())
@@ -72,17 +73,15 @@ def student_submit(request, num):
     for n, anecdote in enumerate(anecdotes):
         grade = student.get_grade(student.cur_grade_num - n)
         grade.anecdote = anecdote[1]
-        if request.user.has_perm('data.change_points'):
-            grade.save()
+        grade.save()
 
     # delete codes buttons
     for button in code_delete_buttons:
         # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
         id = int(button[0].strip().split(' ')[1])
         point = Points.objects.get(id=id)
-        if request.user.has_perm('data.change_points') or point.entered_by == request.user:
-            point.delete()
-            point.Grade.calc_points_total(point.type.catagory)
+        point.delete()
+        point.Grade.calc_points_total(point.type.catagory)
 
     # points and codes
     if request.method == 'POST':
@@ -118,7 +117,7 @@ def student_submit(request, num):
                 grade = student.get_grade(grade_num)
                 grade.term1_avg = t1
                 grade.term2_avg = t2
-                if request.user.has_perm('data.change_scholar') and (t1 <= 100 and t2 <= 100): grade.save()
+                if t1 <= 100 and t2 <= 100: grade.save()
 
             else:
                 if point_field[1] == '' or code_field[1] == '':
@@ -136,8 +135,7 @@ def student_submit(request, num):
                     typeClass = PointCodes.objects.filter(catagory=type).get(code=code)
                 except PointCodes.DoesNotExist as e:
                     typeClass = PointCodes(catagory=type, code=code, description=str(type) + str(code))
-                    if request.user.has_perm('data.add_PointCodes'):
-                        typeClass.save()
+                    typeClass.save()
 
                 grade = student.get_grade(grade_num)
                 grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by))

@@ -164,6 +164,13 @@ class Student(models.Model):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
                 g.save()
                 setattr(self, f"grade_{i}", g)
+        else:
+            for i in range(8, 12+1):
+                print("setattr(getattr(self, f""), "", self.grad_year)" + str(i))
+                g = getattr(self, f"grade_{i}")
+                g.start_year = (self.grad_year - (12 - i)) - 1
+                g.save()
+
         return super(Student, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -320,7 +327,7 @@ class Student(models.Model):
             grad_me = True
     '''
     class Meta:
-        ordering = ['last', 'first']
+        ordering = ['active', 'last', 'first']
 
 
 class PointCodes(models.Model):

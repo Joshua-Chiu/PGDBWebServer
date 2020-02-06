@@ -7,7 +7,7 @@
     {% for point in grade.points_set.all %}
         {% ifequal type point.type.catagory %}
             {% ifequal point.entered_by user %}
-                <tr><td>{{ point.amount }}&emsp;</td><td>{{ point.type.description }}&emsp;<input type="submit" name="deletePoint {{ grade.grade }} {{ point.type }}" value="X"/></td></tr>
+                <tr><td>{{ point.amount }}&emsp;</td><td>{{ point.type.description }}&emsp;<input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X" />
             {% endifequal %}
         {% endifequal %}
     {% endfor %}
