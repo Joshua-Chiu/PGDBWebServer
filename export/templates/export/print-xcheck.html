@@ -79,7 +79,7 @@
                         {% ifequal grade_num grade.grade %}
                             {% for point in grade.points_set.all %}
                                 {% ifequal award_type point.type.catagory %}
-                                    <span class="point">{{ point.amount }}</span>
+                                    <span class="point">{{ point.amount|floatformat:2 }}</span>
                                     <span class="code description">{{ point.type.description }}</span>
                                     <span style="display: inline-block; width: 2ch;">&#9;</span>
                                 {% endifequal %}
