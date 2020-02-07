@@ -155,6 +155,8 @@ class Grade(models.Model):
 for i in range(8, 12+1):
     exec(f"class Grade_{i}(Grade): pass")
 
+
+class Student(models.Model):
     def save(self, user=None, *args, **kwargs):
         # log creation
         log = LoggedAction(user=user, message=f"student {self.student_num} created")
