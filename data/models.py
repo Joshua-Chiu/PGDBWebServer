@@ -158,7 +158,12 @@ for i in range(8, 12+1):
 
 
 class Student(models.Model):
-    def save(self, *args, **kwargs):
+    def save(self, user=None, *args, **kwargs):
+        # log creation
+        log = LoggedAction(user=user, message=f"student {self.student_num} created")
+        log.save()
+
+        # add grades if missing
         if self.grade_8 is None:
             for i in range(8, 12+1):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
@@ -173,7 +178,11 @@ class Student(models.Model):
 
         return super(Student, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
+    def delete(self, user=None, *args, **kwargs):
+        # log deletion
+        log = LoggedAction(user=user, message=f"student {self.student_num} deleted")
+        log.save()
+
         # print("delete")
         self.grade_8.delete()
         self.grade_9.delete()
@@ -316,7 +325,7 @@ class Student(models.Model):
         return None
 
     def __str__(self):
-        return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
+        return f"{self.last}, {self.first} #{self.student_num} {self.homeroom}"
 
     ''' Make cached booleans for reports
         class Awards:
@@ -350,11 +359,23 @@ class Points(models.Model):
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(editable=False)
 
-    def save(self, *args, **kwargs):
+    def save(self, user=None, *args, **kwargs):
+        # log creation
+        log = LoggedAction(user=user, message=f"point {self} created")
+        log.save()
+
         # On save, update timestamps
         if not self.id:
             self.created = timezone.now()
         return super(Points, self).save(*args, **kwargs)
+
+    def delete(self, user=None, *args, **kwargs):
+        # log deletion
+        log = LoggedAction(user=user, message=f"point {self} deleted")
+        log.save()
+
+        return super().delete(*args, **kwargs)
+
 
     def get_student(self):
         return getattr(self.Grade, f"grade_{self.Grade.grade}").student
@@ -363,11 +384,12 @@ class Points(models.Model):
         return f"{self.type} {self.amount}"
 
 
-# class Certificates(models.Model):
-#     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-#     service = models.BooleanField(default=True)
-#     athletics = models.BooleanField(default=True)
-#     honour = models.BooleanField(default=True)
-#     fine_arts = models.BooleanField(default=True)
-#     t1 = models.BooleanField(default=True)
-#     t2 = models.BooleanField(default=True)
+class LoggedAction(models.Model):
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    time = models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user}: {self.message}"
+
+
