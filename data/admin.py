@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import resources
-from .models import Student, PlistCutoff, Grade
+from .models import Student, PlistCutoff, Grade, LoggedAction
 from import_export.admin import ImportExportModelAdmin, ImportMixin
 from django.dispatch import receiver
 from import_export.signals import post_import, post_export
@@ -177,6 +177,7 @@ class DataAdmin(admin.ModelAdmin):
 
 
 admin.site.register(PlistCutoff)
+admin.site.register(LoggedAction)
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
 decrease_grade.short_description = 'Decrease Grade'
 export_as_csv.short_description = "Export Selected as CSV"

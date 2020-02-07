@@ -80,7 +80,7 @@ def student_submit(request, num):
         # buttons are ['deletepoint <grade> <catagory> <code> ', 'X']
         id = int(button[0].strip().split(' ')[1])
         point = Points.objects.get(id=id)
-        point.delete()
+        point.delete(request.user)
         point.Grade.calc_points_total(point.type.catagory)
 
     # points and codes
@@ -348,7 +348,7 @@ def codes_submit(request):
         entry.code = code[1][1]
         entry.catagory = code[0][1].upper()
         entry.description = code[2][1]
-        entry.save()
+        entry.save(request.user)
 
     return HttpResponseRedirect(reverse('data:codes'))
 
