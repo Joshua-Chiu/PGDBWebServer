@@ -20,7 +20,7 @@
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label>
             <a id="name" class="name">Student not found</a> |
-            <labeL>Hour(s): <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px"></labeL> =
+            <labeL>Hour(s): <input class="min" required="required" type='number' name="minutes" value="" style="width: 40px" step="0.01"></labeL> =
             <a id="hours" class="hours">NONE</a> |
             <labeL>Code: <input class="code" required="required" type="number" name="code" value="" style="width: 40px"></labeL>
             <a id="code" class="code">Code not found</a>
@@ -48,7 +48,7 @@
     <script>
         $(".min").keyup(function () {
             if (this.value.length > 0) {
-                document.getElementById('hours').innerHTML="" + Math.floor(parseInt(this.value)) + ":" + ('0'+(Math.floor((parseFloat(this.value) % 1)*60))).slice(-2);
+                document.getElementById('hours').innerHTML="" + Math.floor(parseInt(this.value)) + "h " + ('0'+(Math.floor((parseFloat(this.value) % 1)*60))).slice(-2) + "m = " + parseFloat(this.value)/5 + " Points";
             } else {
                 document.getElementById('hours').innerHTML="NONE";
             }

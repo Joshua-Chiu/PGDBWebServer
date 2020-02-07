@@ -75,10 +75,12 @@
     </div>
 
     {% if student_list %}
-        {% if award == "big-block" %}
-            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+        {% if award == "bigblock" %}
+            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %} <p>big block template</p>
+        {% elif "ST" in award %}
+            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %} <p>st template</p>
         {% else %}
-            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list grade=grade %}
         {% endif %}
     {% endif %}
 

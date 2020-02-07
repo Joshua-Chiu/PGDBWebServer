@@ -49,13 +49,13 @@ def print_annual(request):
         query += "annual_cert:" + request.GET["annual"] + "_" + request.GET["grade"] + " "
         award = request.GET["annual"]
     if "athletic" in request.GET and request.GET["athletic"]:
-        print(request.GET)
+        # print(request.GET)
         if "year" in request.GET and request.GET["year"]:
+            award = request.GET["athletic"]
             if "ST" in request.GET["athletic"]:
                 query += f"annual_cert:{request.GET['athletic']}_{request.GET['grade']}"
             else:
                 query += "award_" + request.GET["grade"] + ":" + request.GET["athletic"] + " "
-                award = request.GET["athletic"]
         else:
             query += "award" + ":" + request.GET["athletic"] + " "
 
@@ -74,32 +74,43 @@ def print_annual(request):
         "gold": "Gold Greyhound",
         "goldplus": "Gold Plus",
         "platinum": "Platinum",
-
+        "bigblock": "big block",
+        "3ST": "3-Sport",
+        "4ST": "4-Sport",
+        "5ST": "5+-Sport",
     }
     award_formatted = award
     if query:
         for key, value in awards_dict.items():
             award_formatted = award_formatted.replace(key, value)
 
-        if any(award in s for s in ["SE", "AT", "FA", ]):
-            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} CERTIFICATE RECIPIENTS"
-        elif any(award in s for s in ["honourroll", "principalslist", ]):
-            query = f"GRADE{grade} {year}-{int(year) + 1} {award.upper()} CERTIFICATE RECIPIENTS"
-        else:
-            query = f"GRADE{grade} {year}-{int(year) + 1} {award_formatted.upper()} PIN RECIPIENTS"
-    config = Configuration.objects.get()
+        query = f"GRADE{grade} {year}-{int(year) + 1} "
 
+        if any(award in s for s in ["SE", "AT", "FA", ]):
+            print(award)
+            query += f"{award_formatted.upper()} CERTIFICATE RECIPIENTS"
+        elif any(award in s for s in ["honourroll"]):
+            query += f"HONOUR ROLL CERTIFICATE RECIPIENTS"
+        elif any(award in s for s in ["principalslist"]):
+            query += f"PRINCIPAL'S LIST CERTIFICATE RECIPIENTS"
+        elif any(award in s for s in ["silver", "gold", "platinum"]):
+            query += f"{award_formatted.upper()} PIN RECIPIENTS"
+        elif any(award in s for s in ["goldplus"]):
+            query += f"{'GOLD PLUS'} BAR RECIPIENTS"
+        else:
+            query += f"{award_formatted.upper()} RECIPIENTS"
+    config = Configuration.objects.get()
 
     with open(config.principal_signature.path, 'rb') as img:
         p_sig_string = str(base64.b64encode(img.read()))[2:-1]
 
     context = {
         'student_list': students,
-        'type': query,
+        'type': query,  # title
         'year': year,
         'award': award,
         "grade": int(grade),
-        'award_formatted': award_formatted,
+        'award_formatted': award_formatted,  # Certificate
         "principals_signature": p_sig_string,
     }
     if request.user.is_superuser:

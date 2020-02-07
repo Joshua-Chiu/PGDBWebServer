@@ -150,7 +150,6 @@ class Grade(models.Model):
         annual_fa = True
     '''
 
-
 # declare Grade_8 through to 12 which inherit from Grade
 # this is done so that Student can have 5 oneToOnes of the 'same' type
 for i in range(8, 12+1):
@@ -159,6 +158,11 @@ for i in range(8, 12+1):
 
 class Student(models.Model):
     def save(self, *args, **kwargs):
+        self.first = self.first.strip()
+        self.last = self.last.strip()
+        self.legal = self.legal.strip()
+        self.sex = self.sex.strip()
+
         if self.grade_8 is None:
             for i in range(8, 12+1):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
