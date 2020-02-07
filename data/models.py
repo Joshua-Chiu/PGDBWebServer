@@ -15,20 +15,20 @@ class PlistCutoff(models.Model):
     YEAR_CHOICES = [(r, f"{r} → {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year, unique=True)
 
-    grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_9_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_9_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_9_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_9_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_10_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_10_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_10_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_10_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_11_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_11_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_11_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_11_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
     def getCutoff(self, grade, term):
         return getattr(self, f"grade_{grade}_T{term}")
