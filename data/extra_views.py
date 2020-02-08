@@ -8,7 +8,7 @@ from axes.utils import reset
 
 from accounts.views import daniel_lai
 from util.roll_converter import roll_convert
-from .models import Student, PointCodes, PlistCutoff, Points
+from .models import Student, PointCodes, PlistCutoff, Points, LoggedAction
 
 from django.db import close_old_connections
 import xml.etree.ElementTree as ET
@@ -40,9 +40,9 @@ def ajax_student_cumulative_data(request):
         'platinum': None,
         'bigblock': student.bigblock_award,
         'TOTAL8': round(sum([student.cumulative_SE(8), student.cumulative_AT(8),
-                              student.cumulative_SC(8), student.cumulative_FA(8)]), 2),
+                             student.cumulative_SC(8), student.cumulative_FA(8)]), 2),
         'TOTAL9': round(sum([student.cumulative_SE(9), student.cumulative_AT(9),
-                              student.cumulative_SC(9), student.cumulative_FA(9)]), 2),
+                             student.cumulative_SC(9), student.cumulative_FA(9)]), 2),
         'TOTAL10': round(sum([student.cumulative_SE(10), student.cumulative_AT(10),
                               student.cumulative_SC(10), student.cumulative_FA(10)]), 2),
         'TOTAL11': round(sum([student.cumulative_SE(11), student.cumulative_AT(11),
@@ -73,13 +73,18 @@ def ajax_student_cumulative_data(request):
     if grade >= 12:
         grad = {
             'platinum': student.platinum_pin,
-            'gradAVG': float(round((student.grade_12.term1_avg + student.grade_12.term2_avg + student.grade_11.term1_avg + student.grade_11.term2_avg)/4, 2)),
+            'gradAVG': float(round((
+                                               student.grade_12.term1_avg + student.grade_12.term2_avg + student.grade_11.term1_avg + student.grade_11.term2_avg) / 4,
+                                   2)),
             'gradSE': round(student.grade_12.SE_total + student.grade_11.SE_total, 2),
             'gradAT': round(student.grade_12.AT_total + student.grade_11.AT_total, 2),
             'gradSC': round(student.grade_12.SC_total + student.grade_11.SC_total, 2),
             'gradFA': round(student.grade_12.FA_total + student.grade_11.FA_total, 2),
             'gradTOTAL': round(
-                sum([student.grade_12.SE_total + student.grade_11.SE_total, student.grade_12.AT_total + student.grade_11.AT_total, student.grade_12.SC_total + student.grade_11.SC_total, student.grade_12.FA_total + student.grade_11.FA_total]),
+                sum([student.grade_12.SE_total + student.grade_11.SE_total,
+                     student.grade_12.AT_total + student.grade_11.AT_total,
+                     student.grade_12.SC_total + student.grade_11.SC_total,
+                     student.grade_12.FA_total + student.grade_11.FA_total]),
                 2),
         }
         data.update(grad)
@@ -98,7 +103,7 @@ def ajax_student_cumulative_data(request):
         data['annual HR ' + str(g)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
         try:
             data['annual PL ' + str(g)] = grade_object.term1_avg >= grade_object.plist_T1 and \
-                                              grade_object.term2_avg >= grade_object.plist_T2
+                                          grade_object.term2_avg >= grade_object.plist_T2
         except PlistCutoff.DoesNotExist:
             data['annual PL ' + str(g)] = False
 
@@ -166,7 +171,7 @@ def export_pgdb_archive(student_list, relevent_plists):
     return root
 
 
-def import_pgdb_file(tree):
+def import_pgdb_file(tree, user):
     global logs
     global done
     logs = []
@@ -184,14 +189,14 @@ def import_pgdb_file(tree):
                 student_num=int(s[0].text),
                 cur_grade_num=int(s[1].text),
                 homeroom_str=f"{s[2].text}",
-                first=s[3].text,
-                last=s[4].text,
-                legal=s[5].text,
-                sex=s[6].text,
+                first=s[3].text.strip(),
+                last=s[4].text.strip(),
+                legal=s[5].text.strip(),
+                sex=s[6].text.strip(),
                 grad_year=int(s[7].text),
                 active=(True if s[8].text == "yes" else False),
             )
-            s_obj.save()
+            s_obj.save(user)
 
             for g in s[9]:
 
@@ -210,7 +215,7 @@ def import_pgdb_file(tree):
                     else:
                         type = PointCodes.objects.filter(catagory=p[0].text).get(code=int(p[1].text))
 
-                    g_obj.add_point(Points(type=type, amount=float(p[2].text)))
+                    g_obj.add_point(Points(type=type, amount=float(p[2].text)), user)
 
                 g_obj.calc_points_total("SE")
                 g_obj.calc_points_total("AT")
@@ -227,12 +232,32 @@ def import_pgdb_file(tree):
             # delete the partially formed student
             if len(Student.objects.filter(student_num=student_num)) != 0:
                 Student.objects.get(student_num=student_num).delete()
-
-    for plist in root[1]:
-        print(plist)
-
+    try:
+        for plist in root[1]:
+            if PlistCutoff.objects.filter(year=int(plist[0].text)).exists():
+                p = PlistCutoff.objects.get(year=int(plist[0].text))
+                p.grade_8_T1 = float(plist[1].text)
+                p.grade_8_T2 = float(plist[2].text)
+                p.grade_9_T1 = float(plist[3].text)
+                p.grade_9_T2 = float(plist[4].text)
+                p.grade_10_T1 = float(plist[5].text)
+                p.grade_10_T2 = float(plist[6].text)
+                p.grade_11_T1 = float(plist[7].text)
+                p.grade_11_T2 = float(plist[8].text)
+                p.grade_12_T1 = float(plist[9].text)
+                p.grade_12_T2 = float(plist[10].text)
+                p.save()
+            else:
+                PlistCutoff.objects.get(year=int(plist[0].text),
+                                        grade_8_T1=float(plist[1].text), grade_8_T2=float(plist[2].text),
+                                        grade_9_T1=float(plist[3].text), grade_9_T2=float(plist[4].text),
+                                        grade_10_T1=float(plist[5].text), grade_10_T2=float(plist[6].text),
+                                        grade_11_T1=float(plist[7].text), grade_11_T2=float(plist[8].text),
+                                        grade_12_T1=float(plist[9].text), grade_12_T2=float(plist[10].text),
+                                        ).save()
+    except:
+        logs.append(f"Failed to add plist cutoffs for {plist[0].text} {int(plist[0].text) + 1}")
     done = True
-    print(done)
     close_old_connections()
 
 
@@ -258,17 +283,15 @@ def show_all(request):
 
 def ajax_all_points(request):
     data = []
-    for point in Points.objects.all().order_by('-id'):
+    for action in LoggedAction.objects.all().order_by('-id'):
         try:
-            entered_by = f"{point.entered_by.first} {point.entered_by.last}"
+            entered_by = f"{action.user.first} {action.user.last}"
         except:
-            entered_by = "Importer"
+            entered_by = "None"
         data.append({
-            'student': f"{point.get_student().first} {point.get_student().last}",
-            'point': point.amount,
-            'description': point.type.description,
-            'grade': point.Grade.grade,
-            'enteredby': entered_by,
+            'user': entered_by,
+            'time': action.time,
+            'message': action.message,
         })
     return JsonResponse(data, safe=False)
 

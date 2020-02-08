@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 
 from configuration.views import google_calendar
-from .models import Student, PointCodes, PlistCutoff, Grade, Points
+from .models import Student, PointCodes, PlistCutoff, Grade, Points, LoggedAction
 from configuration.models import Configuration
 from itertools import zip_longest
 import io
@@ -174,7 +174,7 @@ def archive_submit(request):
         if request.user.has_perm('data.add_student'):
             if "file" in request.FILES:
                 file = ET.parse(request.FILES["file"])
-                import_thread = Thread(target=import_pgdb_file, args=(file,))
+                import_thread = Thread(target=import_pgdb_file, args=(file, request.user, ))
                 import_thread.start()
                 logs.append("We will now import the file in the background")
         else:
@@ -364,6 +364,7 @@ def index(request):
             'notice': notice,
             'student_list': Student.objects.all(),
             'recent': Points.objects.all().order_by('-id')[:100],
+            'logs': LoggedAction.objects.all().order_by('-id')[:100],
         }
         return HttpResponse(template.render(context, request))
     else:

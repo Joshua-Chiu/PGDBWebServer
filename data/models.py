@@ -84,10 +84,10 @@ class Grade(models.Model):
     FA_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     SC_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
-    def add_point(self, point):
+    def add_point(self, point, user):
         """adds point recalculate awards and sums"""
         self.points_set.add(point, bulk=False)
-        point.save()
+        point.save(user)
         self.calc_points_total(point.type.catagory)
 
     def calc_points_total(self, catagory):
@@ -159,7 +159,7 @@ for i in range(8, 12+1):
 class Student(models.Model):
     def save(self, user=None, *args, **kwargs):
         # log creation
-        log = LoggedAction(user=user, message=f"student {self.student_num} created")
+        log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) created")
         log.save()
 
         self.first = self.first.strip()
@@ -184,7 +184,7 @@ class Student(models.Model):
 
     def delete(self, user=None, *args, **kwargs):
         # log deletion
-        log = LoggedAction(user=user, message=f"student {self.student_num} deleted")
+        log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) deleted")
         log.save()
 
         # print("delete")
@@ -350,7 +350,7 @@ class PointCodes(models.Model):
     description = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.catagory} {self.code}"
+        return f"{self.description} ({self.catagory}{self.code})"
 
     class Meta:
         ordering = ['catagory', 'code']
@@ -364,18 +364,18 @@ class Points(models.Model):
     created = models.DateTimeField(editable=False)
 
     def save(self, user=None, *args, **kwargs):
-        # log creation
-        log = LoggedAction(user=user, message=f"point {self} created")
-        log.save()
-
         # On save, update timestamps
         if not self.id:
             self.created = timezone.now()
+        else:  # it works but i have no idea why
+            # log creation
+            log = LoggedAction(user=user or self.entered_by, message=f"Point: {self} added to {self.get_student().first} {self.get_student().last}")
+            log.save()
         return super(Points, self).save(*args, **kwargs)
 
     def delete(self, user=None, *args, **kwargs):
         # log deletion
-        log = LoggedAction(user=user, message=f"point {self} deleted")
+        log = LoggedAction(user=user, message=f"Point: {self} deleted from {self.get_student().first} {self.get_student().last}")
         log.save()
 
         return super().delete(*args, **kwargs)

@@ -37,11 +37,14 @@
         </form>
         {% endif %}
         <h4>My recent actions</h4>
-        <table>
-            {% for point in points %}
-                <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
-            {% endfor %}
-        </table>
+        <form action="{% url "entry:point_submit" "SE" %}" name="single" method="post">
+        {% csrf_token %}
+            <table>
+                {% for point in points %}
+                    <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }} </td><td><input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X"></td></tr>
+                {% endfor %}
+            </table>
+        </form>
     </body>
 {% endblock %}
 {% block javascript %}

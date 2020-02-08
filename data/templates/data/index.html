@@ -18,11 +18,16 @@
         <table style="float: left; padding-right: 2em" class="index">
             <caption><strong>Recent Actions</strong></caption>
             <thead>
-            <tr><th>Student</th><th>Point</th><th>User</th></tr>
+            <tr><th>Time</th><th>Action</th><th>User</th></tr>
             </thead>
+        {% for log in logs %}
+            <tr><td>{{ log.time|date:'M d, Y h:i:s A' }}</td><td>{{ log.message }}&emsp14; </td><td>{{ log.user }}</td></tr>
+        {% endfor %}
+        {% comment %}
         {% for entry in recent %}
             <tr><td>{{ entry.get_student.first }} {{ entry.get_student.last }} &emsp14; </td><td>{{ entry.amount }} Points for {{ entry.type.description }} in Grade {{ entry.Grade.grade }}&emsp14; </td><td>{% if entry.entered_by.username %}{{ entry.entered_by.username }}{% else %}Importer{% endif %}</td></tr>
         {% endfor %}
+        {% endcomment %}
             <tr><td colspan="3"><a href="javascript:showData();">Show All</a></td></tr>
         </table>
     </div>
