@@ -186,7 +186,7 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 # if it's the start line skip it
-                if "Student Number,Last Name,Minutes of Service,Code" in line.decode("utf-8"):
+                if "Student Number,Last Name,Hours of Service,Code" in line.decode("utf-8"):
                     if point_catagory == "SE":
                         continue
                     else:
@@ -253,7 +253,7 @@ def upload_file(request, point_catagory):
                     continue
 
                 grade = student.get_grade(student.cur_grade_num)
-                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
+                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by).save(request.user)
                 error_msgs.append(
                     f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
 

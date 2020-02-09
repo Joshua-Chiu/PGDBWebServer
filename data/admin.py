@@ -22,11 +22,11 @@ def increase_grade(modeladmin, request, queryset):
         for student in queryset:
             if student.cur_grade_num >= 12:
                 student.active = False
-                student.save()
+                student.save(request.user)
             else:
                 student.active = True
                 student.cur_grade_num += 1
-                student.save()
+                student.save(request.user)
 
     thread = threading.Thread(target=increase)
     thread.start()
@@ -37,11 +37,11 @@ def decrease_grade(modeladmin, request, queryset):
         for student in queryset:
             if student.cur_grade_num <= 8:
                 student.active = False
-                student.save()
+                student.save(request.user)
             else:
                 student.active = True
                 student.cur_grade_num -= 1
-                student.save()
+                student.save(request.user)
 
     thread = threading.Thread(target=decrease)
     thread.start()
@@ -51,7 +51,7 @@ def mark_inactive(modeladmin, request, queryset):
     def inactive():
         for student in queryset:
             student.active = False
-            student.save()
+            student.save(request.user)
 
     thread = threading.Thread(target=inactive)
     thread.start()
@@ -107,12 +107,11 @@ class StudentAdmin(admin.ModelAdmin):
 
     def really_delete_selected(self, request, queryset):
         for s in queryset:
-            s.delete()
+            s.delete(request.user)
 
     really_delete_selected.short_description = "Delete selected entries"
 
-
-    def import_csv_file(self, file):
+    def import_csv_file(self, file, request):
         for line in file:
             # if it's the start line skip it
             if line.decode("utf-8") == \
@@ -130,13 +129,13 @@ class StudentAdmin(admin.ModelAdmin):
                 student = Student(first=first, last=last, legal=legal, student_num=int(student_num),
                                   cur_grade_num=int(re.sub('\D', '', homeroom)),
                                   homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))
-                student.save()
+                student.save(request.user)
             except Exception as e:
                 print(e)
 
     def import_as_csv(self, request):
         if "file" in request.FILES:
-            thread = threading.Thread(target=self.import_csv_file, args=(request.FILES['file'], ))
+            thread = threading.Thread(target=self.import_csv_file, args=(request.FILES['file'], request, ))
             thread.start()
             template = get_template('data/file_upload.html')
             context = {}
@@ -158,6 +157,9 @@ class StudentAdmin(admin.ModelAdmin):
 
     actions = [increase_grade, decrease_grade, export_as_csv, mark_inactive, really_delete_selected]
 
+    def save_model(self, request, obj, form, change):
+        obj.save(request.user)
+
 
 @receiver(post_import)
 def _post_import(model, **kwargs):
@@ -170,13 +172,12 @@ def _post_export(model, **kwargs):
     pass
 
 
-class DataAdmin(admin.ModelAdmin):
+class PlistCutoffAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
-        print(obj)
-        super().save_model(request, obj, form, change)
+        obj.save(request.user)
 
 
-admin.site.register(PlistCutoff)
+admin.site.register(PlistCutoff, PlistCutoffAdmin)
 admin.site.register(LoggedAction)
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
 decrease_grade.short_description = 'Decrease Grade'

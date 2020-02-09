@@ -1,10 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 import os, pytz
-import datetime
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
 from axes.utils import reset
+from PGDBWebServer.settings import TIME_ZONE
+
+from datetime import datetime
+from pytz import timezone
 
 from accounts.views import daniel_lai
 from util.roll_converter import roll_convert
@@ -246,7 +249,7 @@ def import_pgdb_file(tree, user):
                 p.grade_11_T2 = float(plist[8].text)
                 p.grade_12_T1 = float(plist[9].text)
                 p.grade_12_T2 = float(plist[10].text)
-                p.save()
+                p.save(user)
             else:
                 PlistCutoff.objects.get(year=int(plist[0].text),
                                         grade_8_T1=float(plist[1].text), grade_8_T2=float(plist[2].text),
@@ -254,7 +257,7 @@ def import_pgdb_file(tree, user):
                                         grade_10_T1=float(plist[5].text), grade_10_T2=float(plist[6].text),
                                         grade_11_T1=float(plist[7].text), grade_11_T2=float(plist[8].text),
                                         grade_12_T1=float(plist[9].text), grade_12_T2=float(plist[10].text),
-                                        ).save()
+                                        ).save(user)
     except:
         logs.append(f"Failed to add plist cutoffs for {plist[0].text} {int(plist[0].text) + 1}")
     done = True
@@ -283,20 +286,21 @@ def show_all(request):
 
 def ajax_all_points(request):
     data = []
+    now_tz = pytz.timezone(TIME_ZONE)
     for action in LoggedAction.objects.all().order_by('-id'):
         try:
-            entered_by = f"{action.user.first} {action.user.last}"
+            entered_by = f"{action.user.first_name} {action.user.last_name}"
         except:
             entered_by = "None"
         data.append({
-            'user': entered_by,
-            'time': action.time,
+            'entered_by': entered_by,
+            'time': action.time.astimezone(now_tz).strftime("%b. %d, %Y %H:%M:%S.%f %p"),
             'message': action.message,
         })
     return JsonResponse(data, safe=False)
 
 
-def convert_roll(year, term, file):
+def convert_roll(year, term, file, request):
     global done
     done = False
 
@@ -306,7 +310,7 @@ def convert_roll(year, term, file):
     for grade, cutoff in plist_cutoffs:
         print(plist, f"grade_{grade}_T{term}")
         setattr(plist, f"grade_{grade}_T{term}", cutoff)
-        plist.save()
+        plist.save(request.user)
 
     for s in students:
         try:

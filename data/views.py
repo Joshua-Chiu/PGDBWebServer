@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
-
+import datetime
 from configuration.views import google_calendar
 from .models import Student, PointCodes, PlistCutoff, Grade, Points, LoggedAction
 from configuration.models import Configuration
@@ -223,7 +223,7 @@ def archive_file(request):
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')
-    response['Content-Disposition'] = f'attachment; filename={query or "students"}.pgdb'
+    response['Content-Disposition'] = f'attachment; filename={query or str(datetime.datetime.now().strftime("%Y-%m-%d %Hh%Mm%Ss"))}.pgdb'
 
     return response
 
@@ -232,33 +232,8 @@ def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
 
-            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"]))
+            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"], request, ))
             roll_conv_thread.start()
-            '''
-            year = request.POST["start-year"]
-            term = request.POST["term"]
-            plist_cutoffs, students = roll_convert((l.decode() for l in request.FILES["file"]), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
-
-            plist = PlistCutoff.objects.get(year=year)
-            for grade, cutoff in plist_cutoffs:
-                print(plist, f"grade_{grade}_T{term}")
-                setattr(plist, f"grade_{grade}_T{term}", cutoff)
-                plist.save()
-
-            for s in students:
-                try:
-                    grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
-                    if term == "1":
-                        grade.term1_avg = s.average
-                        grade.term1_GE = s.GE
-
-                    else:
-                        grade.term2_avg = s.average
-                        grade.term2_GE = s.GE
-                    grade.save()
-                except:
-                    pass
-            '''
     template = get_template('data/file_upload.html')
     context = {
         "logs": logs,
@@ -320,7 +295,7 @@ def plist_submit(request):
         year.grade_12_T1 = items[str(year.year) + " 12 1"]
         year.grade_12_T2 = items[str(year.year) + " 12 2"]
 
-        year.save()
+        year.save(request.user)
 
     return HttpResponseRedirect(reverse('data:plist'))
 

@@ -12,6 +12,18 @@ import re
 
 
 class PlistCutoff(models.Model):
+    def save(self, user=None, *args, **kwargs):
+        if self.id is None:
+            # log creation
+            log = LoggedAction(user=user, message=f"Plist Cutoff: {self.year} → {self.year + 1} created")
+            log.save()
+        else:
+            # log creation
+            log = LoggedAction(user=user, message=f"Plist Cutoff: {self.year} → {self.year + 1} changed")
+            log.save()
+
+        return super(PlistCutoff, self).save(*args, **kwargs)
+
     YEAR_CHOICES = [(r, f"{r} → {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year, unique=True)
 
@@ -158,10 +170,6 @@ for i in range(8, 12+1):
 
 class Student(models.Model):
     def save(self, user=None, *args, **kwargs):
-        # log creation
-        log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) created")
-        log.save()
-
         self.first = self.first.strip()
         self.last = self.last.strip()
         self.legal = self.legal.strip()
@@ -169,13 +177,19 @@ class Student(models.Model):
 
         # add grades if missing
         if self.grade_8 is None:
+            # log creation
+            log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) created")
+            log.save()
             for i in range(8, 12+1):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
                 g.save()
                 setattr(self, f"grade_{i}", g)
         else:
+            # log creation
+            log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) changed")
+            log.save()
             for i in range(8, 12+1):
-                print("setattr(getattr(self, f""), "", self.grad_year)" + str(i))
+                # print("setattr(getattr(self, f""), "", self.grad_year)" + str(i))
                 g = getattr(self, f"grade_{i}")
                 g.start_year = (self.grad_year - (12 - i)) - 1
                 g.save()
