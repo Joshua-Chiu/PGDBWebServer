@@ -3,6 +3,8 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 
+from data.models import LoggedAction
+
 
 class Configuration(models.Model):
     principal_signature = models.ImageField(upload_to='export/uploads', default='export/uploads/signbox.png',
@@ -14,10 +16,13 @@ class Configuration(models.Model):
     at_help_text = models.CharField(max_length=100, verbose_name='Athletics Help Text', default='Athletics')
     fa_help_text = models.CharField(max_length=100, verbose_name='Fine Arts Help Text', default='Fine Arts')
 
-    def save(self, *args, **kwargs):
+    def save(self, user=None, *args, **kwargs):
         if not self.pk and Configuration.objects.exists():
             # if you'll not check for self.pk then error will also raised in update of exists model
             raise ValidationError('There can be only one Configuration instance')
+        else:
+            log = LoggedAction(user=user, message=f"System Configuration: Changed")
+            log.save()
         return super(Configuration, self).save(*args, **kwargs)
 
     def __str__(self):

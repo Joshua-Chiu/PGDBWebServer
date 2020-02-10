@@ -138,7 +138,7 @@ def student_submit(request, num):
                     typeClass.save()
 
                 grade = student.get_grade(grade_num)
-                grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by))
+                grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by), request.user)
 
     for grade_num in range(8, int(student.homeroom[:2]) + 1):
         grade = student.get_grade(grade_num)

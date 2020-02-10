@@ -253,7 +253,7 @@ def upload_file(request, point_catagory):
                     continue
 
                 grade = student.get_grade(student.cur_grade_num)
-                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by).save(request.user)
+                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
                 error_msgs.append(
                     f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
 

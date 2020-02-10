@@ -248,10 +248,9 @@ class Command(BaseCommand):
                 logging.warning(f"Error creating Plist with year '{plist[0]}'.")
 
         try:
-            config = Configuration.objects.get()
+            Configuration.objects.get()
         except Configuration.DoesNotExist:
-            config = Configuration.objects.create()
+            Configuration.objects.create()
             print(f'Created default configurations')
-        config.save()
 
         print("Created default definitions, user and groups.")

@@ -20,6 +20,9 @@ class MyAdmin(admin.ModelAdmin):
             del actions['delete_selected']
         return actions
 
+    def save_model(self, request, obj, form, change):
+        obj.save(request.user)
+
 
 admin.site.register(Configuration, MyAdmin)
 
