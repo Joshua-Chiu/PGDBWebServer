@@ -160,6 +160,9 @@ class StudentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.save(request.user)
 
+    def delete_model(self, request, obj):
+        obj.delete(request.user)
+
 
 @receiver(post_import)
 def _post_import(model, **kwargs):

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
-import datetime
+from datetime import datetime
 from configuration.views import google_calendar
 from .models import Student, PointCodes, PlistCutoff, Grade, Points, LoggedAction
 from configuration.models import Configuration
@@ -223,7 +223,7 @@ def archive_file(request):
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')
-    response['Content-Disposition'] = f'attachment; filename={query or str(datetime.datetime.now().strftime("%Y-%m-%d %Hh%Mm%Ss"))}.pgdb'
+    response['Content-Disposition'] = f'attachment; filename={query or str(datetime.now().strftime("%Y-%m-%d %Hh%Mm%Ss"))}.pgdb'
 
     return response
 
@@ -266,8 +266,8 @@ def plist(request):
     template = get_template('data/plist.html')
     context = {
         'plist': PlistCutoff.objects.all(),
-        'year': datetime.datetime.now().year,
-        'month': datetime.datetime.now().month
+        'year': datetime.now().year,
+        'month': datetime.now().month
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
