@@ -20,7 +20,6 @@ USERS = [
     # ['username', 'first', 'last, 'email', 'password', is_superuser, is_staff, can_view, no_entry, permission groups]
     ['manderson', 'Mason', 'Anderson', 'masonanderson0@gmail.com', '2.718281', True, True, True, False, []],
     ['jchiu', 'Joshua', 'Chiu', 'joshuachiu2020@gmail.com', '2.718281', True, True, True, False, []],
-    ['pgadmin', 'Point Grey', 'Administration', 'pointgreydb@gmail.com', '2.718281', True, True, True, False, []],
     ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
     ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
     ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],

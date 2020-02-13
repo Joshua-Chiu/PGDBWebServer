@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.8"
+  - "3.9"
+
+services:
+  - mysql
+
+env:
+  - DJANGO=2.2.9 DB=mysql
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - mysql -e 'create database pgdb;' -u pgadmin
+
+script:
+  - python manage.py test

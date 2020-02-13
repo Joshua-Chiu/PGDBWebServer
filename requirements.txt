@@ -11,7 +11,7 @@ python-dateutil==2.8.1
 pytz==2019.3
 six==1.14.0
 whitenoise==5.0.1
-psycopg2==2.8.4 # For heroku only
+# psycopg2==2.8.4 # For heroku only
 django-import-export==2.0.1
 django-session-security==2.6.5
 google-api-python-client==1.7.11
