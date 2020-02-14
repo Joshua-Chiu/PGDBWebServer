@@ -26,7 +26,7 @@ create databse PGDB;
 
 Create user in the SQL database
 ```
-CREATE USER 'pgadmin'@'localhost' IDENTIFIED BY '2.718281';
+CREATE USER 'pgadmin'@'localhost' IDENTIFIED BY '2.71828';
 GRANT ALL PRIVILEGES ON PGDB.* TO 'pgadmin'@'localhost';
 ```
 
