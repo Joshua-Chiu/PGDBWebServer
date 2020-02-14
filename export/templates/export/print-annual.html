@@ -58,6 +58,7 @@
             <select name="athletic">
                 <option value="" >Select</option>
                 <option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>
+                <option {% ifequal award "2ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
                 <option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
                 <option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>
                 <option {% ifequal award "5ST" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>
@@ -76,9 +77,9 @@
 
     {% if student_list %}
         {% if award == "bigblock" %}
-            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %} <p>big block template</p>
+            {% include 'export/award_templates/annual_cert_bigblock.html' with student_list=student_list %}
         {% elif "ST" in award %}
-            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %} <p>st template</p>
+            {% include 'export/award_templates/annual_cert_sport_athletes.html' with student_list=student_list grade=grade %}
         {% else %}
             {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list grade=grade %}
         {% endif %}
