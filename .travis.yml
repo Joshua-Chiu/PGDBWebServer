@@ -1,7 +1,7 @@
 language: python
 python:
+  - "3.7"
   - "3.8"
-  - "3.9"
 
 services:
   - mysql
@@ -14,9 +14,10 @@ install:
 
 before_script:
   - mysql -e 'CREATE DATABASE pgdb;'
-  - mysql -e "CREATE USER 'pgadmin'@'localhost' IDENTIFIED WITH '2.71828';
+  - mysql -e "CREATE USER 'pgadmin'@'localhost' IDENTIFIED WITH '2.71828';"
   - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'pgadmin'@'localhost' WITH GRANT OPTION;"
 
 script:
   - python manage.py migrate
   - python manage.py test
+  - python manage.py check

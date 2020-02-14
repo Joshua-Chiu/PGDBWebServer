@@ -1,5 +1,8 @@
 # Point Grey Awards Database
 
+[![Build Status](https://travis-ci.com/Joshua-Chiu/PGDBWebServer.svg?branch=master)](https://travis-ci.com/Joshua-Chiu/PGDBWebServer)
+
+
 A database custom built for PGSS for managing and storing student information for generating award recipients.
 
 ## Getting Started
