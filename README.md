@@ -1,64 +1,18 @@
 # Point Grey Awards Database
 
 [![Build Status](https://travis-ci.com/Joshua-Chiu/PGDBWebServer.svg?branch=master)](https://travis-ci.com/Joshua-Chiu/PGDBWebServer)
+[![Release](https://img.shields.io/github/v/release/Joshua-Chiu/PGDBWebServer.svg)](https://github.com/Joshua-Chiu/PGDBWebServer/releases)
+[![License](https://img.shields.io/github/license/Joshua-Chiu/PGDBWebServer.svg)](https://github.com/Joshua-Chiu/PGDBWebServer/blob/master/LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/Joshua-Chiu/PGDBWebServer)](https://github.com/Joshua-Chiu/PGDBWebServer/commits)
 
-
-A database custom built for PGSS for managing and storing student information for generating award recipients.
+A database custom built for Point Grey Secondary for managing and storing student information for generating award recipients.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+- [Development Instructions](https://github.com/Joshua-Chiu/PGDBWebServer/wiki/Development-Server-Installation) These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+- [Deployment Instructions](https://github.com/Joshua-Chiu/PGDBWebServer/wiki/Deployment-Server-Installation) These instructions will get you a copy of the project up and running on a live system.
 
-### Prerequisites
-
-System packages:
-* Python ≥ 3.6
-* mariaDB, MySQL or PostgresSQL
-
-### Installation
-
-A step by step series of examples that tell you how to get a development env running
-
-Create the PGDB database
-```
-create databse PGDB;
-```
-
-Create user in the SQL database
-```
-CREATE USER 'pgadmin'@'localhost' IDENTIFIED BY '2.71828';
-GRANT ALL PRIVILEGES ON PGDB.* TO 'pgadmin'@'localhost';
-```
-
-Install all python dependencies
-```
-pip install -r requirements.txt
-```
-
-Migrate columns to your SQL database
-```
-python manage.py migrate
-```
-
-Run the development server
-```
-python manage.py runserver
-```
-
-The output should be
-```
-    System check identified no issues (0 silenced).
-    December 14, 2019 - 16:12:27
-    Django version 2.2.7, using settings 'PGDBWebServer.settings'
-    Starting development server at http://127.0.0.1:8000/
-    Quit the server with CONTROL-C.
-```
-
-Manual: Available under the HELP page
-
-## Deployment
-
-Set ```Debug = False``` in settings.py
+Software Manual: Available under the HELP tab once you connect to the server.
 
 ## Built With
 
@@ -164,20 +118,19 @@ This project is licensed under the terms of the MIT license.
 
 WDB .csv:
 
-* only known way to convert to csv is to open in libreoffice
-* convert the csv to pgdb with converter.py
-* must contain only one grade
+* Only known way to convert to csv is to open in LibreOffice
+* Convert the csv to pgdb with converter.py
+* Must contain only one grade
 
 Students enter the system through:
 
-* admin creation
-* admin csv import (students only)
+* Admin creation
+* Admin csv import (students only)
 * .pgdb upload (students and their points)
-* test data adding script
 
 Points enter the system through:
 
 * .pgdb import
 * student_info page entry
-* direct entry
-* direct entry csv upload
+* Direct entry
+* Direct entry csv upload
