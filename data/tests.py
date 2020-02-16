@@ -1,5 +1,8 @@
 from django.test import TestCase
 from .models import Student, Points, PlistCutoff, PointCodes
+from users.models import CustomUser
+
+fixtures = ["random_data.json"]
 
 
 class StudentTestCase(TestCase):

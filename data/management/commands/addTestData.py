@@ -31,12 +31,9 @@ class Command(BaseCommand):
                 student = Student(first=r.choice(F_first), sex='F')
             student.legal = student.first
             student.last = last[r.randint(0, len(last) - 1)]
-            student.homeroom = "{}{}".format(str(r.randint(8, 12)).zfill(2), r.choice(string.ascii_uppercase))
-            student.student_num = r.randint(1, 100000)
+            student.homeroom_str = r.choice(string.ascii_uppercase)
+            student.cur_grade_num = r.randint(8, 12)
+            student.student_num = r.randint(1000000, 10000000)
             # student.date_added = timezone.now()
-            student.grad_year = timezone.now().year + 5 + 7 - int(student.homeroom[:2]) + 1
+            student.grad_year = timezone.now().year + 5 + 7 - int(student.cur_grade_num) + 1
             student.save()
-
-            for i in range(int(student.homeroom[:2]) - 7):
-                student.grade_set.create(grade=8 + i, start_year=timezone.now().year - int(student.homeroom[:2]) + 8 + i)
-                student.grade_set.get(grade=8 + i).scholar_set.create(term1=0, term2=0)

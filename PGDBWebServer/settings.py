@@ -214,7 +214,7 @@ DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
-
+FIXTURE_DIRS = os.path.join(BASE_DIR, 'PGDBWebServer/fixtures')
 # Deployment Configurations
 BUILD_NUMBER = get_version(pep440=True) #.split('+git', 1)[0]
 

@@ -204,7 +204,8 @@ class Command(BaseCommand):
             username, first, last, email, pwd, is_super, is_staff, can_view, no_entry, groups = u
             try:
                 user = User.objects.create_user(username=username, email=email, password=pwd)
-            except:
+            except Exception as e:
+                print(e)
                 logging.warning(f"Error creating user with name '{u[0]}'.")
                 user = User.objects.get(username=u[0])
                 user.email = email
@@ -243,7 +244,8 @@ class Command(BaseCommand):
                                            grade_10_T1=plist[5], grade_10_T2=plist[6],
                                            grade_11_T1=plist[7], grade_11_T2=plist[8],
                                            grade_12_T1=plist[9], grade_12_T2=plist[10])
-            except:
+            except Exception as e:
+                print(e)
                 logging.warning(f"Error creating Plist with year '{plist[0]}'.")
 
         try:
