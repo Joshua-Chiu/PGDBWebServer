@@ -174,6 +174,7 @@ class Student(models.Model):
         self.last = self.last.strip()
         self.legal = self.legal.strip()
         self.sex = self.sex.strip()
+        self.homeroom_str = self.homeroom_str.strip()
 
         # add grades if missing
         if self.grade_8 is None:

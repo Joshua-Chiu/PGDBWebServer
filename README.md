@@ -28,59 +28,6 @@ Always write a clear log message for your commits. One-line messages are fine fo
     > 
     > A paragraph describing what changed and its impact."
     
-### Code of Conduct
-
-#### Our Pledge
-
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
-
-#### Our Standards
-
-Examples of behavior that contributes to creating a positive environment
-include:
-
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
-
-Examples of unacceptable behavior by participants include:
-
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
-
-#### Our Responsibilities
-
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
-
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
-
-#### Scope
-
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
 
 ## Versioning
 
@@ -100,6 +47,7 @@ This project is licensed under the terms of the MIT license.
 ## Acknowledgments
 
 * N. Petheriotis
+* J. Chan
 
 ## Todo list
 
@@ -109,28 +57,6 @@ This project is licensed under the terms of the MIT license.
 - [ ] make the Points constructor create PointCodes if missing
 - [ ] in xml make ids of objects attributes instead of child tags e.g. `<student student_num=1234>`, `<grade grade=12>`
 - [ ] allow search to filter by T1 or T2 averages greater than a value
-- [ ] allow students to be kept in the database but marked as inactive so they don't show up in searches or other stuff unless it's explicitly enabled in the search
 - [ ] make a button to download pgdb file archive of students and delete them at the same time
 - [ ] make sure incorrect inputs from users like files or forms don't cause crashes
 - [ ] when doing searches avoid python for-loops and properties; try to use sql queries instead
-
-## Helpful Information
-
-WDB .csv:
-
-* Only known way to convert to csv is to open in LibreOffice
-* Convert the csv to pgdb with converter.py
-* Must contain only one grade
-
-Students enter the system through:
-
-* Admin creation
-* Admin csv import (students only)
-* .pgdb upload (students and their points)
-
-Points enter the system through:
-
-* .pgdb import
-* student_info page entry
-* Direct entry
-* Direct entry csv upload
