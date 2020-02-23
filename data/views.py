@@ -323,7 +323,7 @@ def codes_submit(request):
         entry.code = code[1][1]
         entry.catagory = code[0][1].upper()
         entry.description = code[2][1]
-        entry.save(request.user)
+        entry.save()
 
     return HttpResponseRedirect(reverse('data:codes'))
 
