@@ -26,23 +26,33 @@
                 <td>{{ student.student_num }}</td>
                 <td>{{ grade }}{{ student.homeroom_str }}</td>
                 <td>{% for point in student.grade_8.points_set.all %}
-                    {{ point.amount }} {{ point.type.description }}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
                     {% endfor %}
                 </td>
                 <td>{% for point in student.grade_9.points_set.all %}
-                    {{ point.amount }} {{ point.type.description }}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
                     {% endfor %}
                 </td>
                 <td>{% for point in student.grade_10.points_set.all %}
-                    {{ point.amount }} {{ point.type.description }}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
                     {% endfor %}
                 </td>
                 <td>{% for point in student.grade_11.points_set.all %}
-                    {{ point.amount }} {{ point.type.description }}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
                     {% endfor %}
                 </td>
                 <td>{% for point in student.grade_12.points_set.all %}
-                    {{ point.amount }} {{ point.type.description }}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
                     {% endfor %}
                 </td>
                 <td>{{ student.AT_total }}</td>

@@ -77,6 +77,7 @@
                 <td>
                     {% for grade in student.all_grades %}
                         {% ifequal grade_num grade.grade %}
+                            ANNUAL: CUMUMLATIVE:
                             {% for point in grade.points_set.all %}
                                 {% ifequal award_type point.type.catagory %}
                                     <span class="point">{{ point.amount|floatformat:2 }}</span>
