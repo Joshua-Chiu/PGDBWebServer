@@ -9,6 +9,7 @@
             </form>
         </li>
         {% if user.is_superuser %}
+        <li>
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'configuration:help' %}">Help</a></button>
                     <i class="fa fa-caret-down"></i>
@@ -16,6 +17,7 @@
                     <a href="https://github.com/Joshua-Chiu/PGDBWebServer/issues">Raise an Issue</a>
                 </div>
             </div>
+        </li>
 
         <li>
             <div class="dropdown">
