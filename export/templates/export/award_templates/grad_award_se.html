@@ -12,7 +12,7 @@
             <tr><td>Grade {{ grade.grade }}:</td>
                 {% for point in grade.points_set.all %}
                 {% ifequal point.type.catagory "SE" %}
-                    <td><span class="point">{{ point.amount }} </span><span class="code description">{{ point.type.description }}</span><span>&emsp;</span></td>
+                    <td><span class="point">{{ point.amount|floatformat:"1" }} </span><span class="code description">{{ point.type.description }}</span><span>&emsp;</span></td>
                 {% endifequal %}
                 {% endfor %}
             </tr>
