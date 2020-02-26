@@ -364,6 +364,12 @@ class PointCodes(models.Model):
     code = models.SmallIntegerField()
     description = models.CharField(max_length=30)
 
+    def save(self, user=None, *args, **kwargs):
+        # log creation
+        log = LoggedAction(user=user or self.entered_by, message=f"Point Definition: {self}")
+        log.save()
+        return super(PointCodes, self).save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.description} ({self.catagory}{self.code})"
 
