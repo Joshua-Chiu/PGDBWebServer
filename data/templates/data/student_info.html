@@ -51,9 +51,30 @@
 {% block javascript %}
 <!--Script for the getting post requests-->
 <script>
+
 function submitForms() {
-    document.getElementById("form0").submit();
+    if(validateForms()) document.getElementById("form0").submit();
+    else alert("Replace user then press 'OK'");
 }
+
+function validateForms() {
+    for(var i = 8;  i <= 12; i++) {
+        if(6 < parseFloat(document.getElementById("" + i + " AT points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " AT code").value) && parseFloat(document.getElementById("" + i + " AT code").value) < 0) return false;
+
+        if(100 < parseFloat(document.getElementById("" + i + " SE points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " SE code").value) && parseFloat(document.getElementById("" + i + " SE code").value) < 0) return false;
+
+        if(10 < parseFloat(document.getElementById("" + i + " FA points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " FA code").value) && parseFloat(document.getElementById("" + i + " FA code").value) < 0) return false;
+
+        if(100 < parseFloat(document.getElementById("" + i + " SC T1").value) || parseFloat(document.getElementById("" + i + " SC T1").value) < 0) return false;
+        if(100 < parseFloat(document.getElementById("" + i + " SC T2").value) || parseFloat(document.getElementById("" + i + " SC T2").value) < 0) return false;
+
+    }
+    return true;
+}
+
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
     // The rest of this code assumes you are not using a library.
@@ -127,7 +148,7 @@ $(document).ready(function() {
         data: {'student_num': student_num},
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             // Put in all the cumulative awards across all 5 grades
             for (let grade = 8; grade <= {{ student.cur_grade_num }}; grade++){
                 if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
@@ -168,7 +189,7 @@ $(document).ready(function() {
         data: {'student_num': student_num},
         dataType: 'json',
         success: function (data) {
-            console.log(data)
+            //console.log(data)
         }
     })
 });
