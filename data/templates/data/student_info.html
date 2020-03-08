@@ -21,41 +21,60 @@
     <h2><strong><a>{{ student.last }}, {{ student.first }} ({{ student.legal }})</a></strong></h2>
     <p style="font-size:20px"> Student #: <strong>{{ student.student_num }}</strong> | Homeroom: <strong>{{ student.homeroom }}</strong> | Sex: <strong>{{ student.sex }}</strong> | Grad Year: <strong>{{ student.grad_year}}</strong> | <a href="{% url 'admin:data_student_change' student.id %}">Edit</a></p>
     <hr>
-    {% if user.is_superuser or user.can_view %}
-        <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
-
+    <form action="{% url "data:student_submit" student.id %}" id="form0" name="col form" method="post">
+    {%csrf_token%}
+        {% if user.is_superuser or user.can_view %}
             {% if student.cur_grade_num >= 12 %}{% include 'data/collapsible.html' with student=student grade=grade_12 %}{% endif %}
             {% if student.cur_grade_num >= 11 %}{% include 'data/collapsible.html' with student=student grade=grade_11 %}{% endif %}
             {% if student.cur_grade_num >= 10 %}{% include 'data/collapsible.html' with student=student grade=grade_10 %}{% endif %}
             {% if student.cur_grade_num >= 09 %}{% include 'data/collapsible.html' with student=student grade=grade_09 %}{% endif %}
             {% if student.cur_grade_num >= 08 %}{% include 'data/collapsible.html' with student=student grade=grade_08 %}{% endif %}
-
-            {%csrf_token%}
-        </form>
-    {% else %}
-        <div style="clear: both;"><h3>My Entries</h3></div>
-        {% if request.user|has_group:"Service" %}
-            {% include 'entry/overview.html' with type='SE' grade=student.cur_grade %}
+        {% else %}
+            <div style="clear: both;"><h3>My Entries</h3></div>
+            {% if request.user|has_group:"Service" %}
+                {% include 'entry/overview.html' with type='SE' grade=student.cur_grade %}
+            {% endif %}
+            {% if request.user|has_group:"Athletics" %}
+                {% include 'entry/overview.html' with type='AT' grade=student.grade_set.all.0 %}
+            {% endif %}
+            {% if request.user|has_group:"Scholar" %}
+                {% include 'entry/overview.html' with type='SC' grade=student.grade_set.all.0 %}
+            {% endif %}
+            {% if request.user|has_group:"Fine Arts" %}
+                {% include 'entry/overview.html' with type='FA' grade=student.grade_set.all.0 %}
+            {% endif %}
         {% endif %}
-        {% if request.user|has_group:"Athletics" %}
-            {% include 'entry/overview.html' with type='AT' grade=student.grade_set.all.0 %}
-        {% endif %}
-        {% if request.user|has_group:"Scholar" %}
-            {% include 'entry/overview.html' with type='SC' grade=student.grade_set.all.0 %}
-        {% endif %}
-        {% if request.user|has_group:"Fine Arts" %}
-            {% include 'entry/overview.html' with type='FA' grade=student.grade_set.all.0 %}
-        {% endif %}
-    {% endif %}
+    </form>
 
 {% endblock %}
 
 {% block javascript %}
 <!--Script for the getting post requests-->
 <script>
+
 function submitForms() {
-    document.getElementById("form0").submit();
+    if(validateForms()) document.getElementById("form0").submit();
+    else alert("Replace user then press 'OK'");
 }
+
+function validateForms() {
+    for(var i = 8;  i <= 12; i++) {
+        if(6 < parseFloat(document.getElementById("" + i + " AT points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " AT code").value) && parseFloat(document.getElementById("" + i + " AT code").value) < 0) return false;
+
+        if(100 < parseFloat(document.getElementById("" + i + " SE points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " SE code").value) && parseFloat(document.getElementById("" + i + " SE code").value) < 0) return false;
+
+        if(10 < parseFloat(document.getElementById("" + i + " FA points").value)) return false;
+        if(99 < parseFloat(document.getElementById("" + i + " FA code").value) && parseFloat(document.getElementById("" + i + " FA code").value) < 0) return false;
+
+        if(100 < parseFloat(document.getElementById("" + i + " SC T1").value) || parseFloat(document.getElementById("" + i + " SC T1").value) < 0) return false;
+        if(100 < parseFloat(document.getElementById("" + i + " SC T2").value) || parseFloat(document.getElementById("" + i + " SC T2").value) < 0) return false;
+
+    }
+    return true;
+}
+
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
     // The rest of this code assumes you are not using a library.
@@ -129,7 +148,7 @@ $(document).ready(function() {
         data: {'student_num': student_num},
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             // Put in all the cumulative awards across all 5 grades
             for (let grade = 8; grade <= {{ student.cur_grade_num }}; grade++){
                 if(data['silver'] !== null) document.getElementById('silver ' + grade).innerHTML = "Grade " + data['silver']; else document.getElementById('silver ' + grade).innerHTML = "";
@@ -170,7 +189,7 @@ $(document).ready(function() {
         data: {'student_num': student_num},
         dataType: 'json',
         success: function (data) {
-            console.log(data)
+            //console.log(data)
         }
     })
 });

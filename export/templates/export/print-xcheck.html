@@ -33,7 +33,6 @@
             <label>Year: <select name="year" id="year"></select></label>
 
             <label>Type: <select name="type">
-                <option value="" >Select</option>
                 <option {% ifequal award_type "SE" %}selected{% endifequal %} value="SE"> Service</option>
                 <option {% ifequal award_type "AT" %}selected{% endifequal %} value="AT">Athletics</option>
                 <option {% ifequal award_type "SC" %}selected{% endifequal %} value="SC">Scholar</option>
@@ -57,8 +56,8 @@
                 <th style="min-width:100px;">First Name</th>
                 <th>Last Name</th>
                 <th>Student Number</th>
-                <th>Homeroom</th>
-                {% if award_type == "SC" %}<th>Term 1 Avg (%)</th><th>Term 2 Avg (%)</th>{% else %}<th>Data</th>{% endif %}
+                <th>HR</th>
+                {% if award_type == "SC" %}<th>Term 1 Avg (%)</th><th>Term 2 Avg (%)</th>{% else %}<th>Ann. Total</th><th>Cum. Total</th><th>Data</th>{% endif %}
             </tr></thead>
         {% for student in student_list %}
             <tr>
@@ -75,19 +74,22 @@
                         {% endifequal %}
                     {% endfor %}
             {% else %}
-                <td>
                     {% for grade in student.all_grades %}
                         {% ifequal grade_num grade.grade %}
+                            {% if award_type == "SE" %}
+                                <td>{{ grade.SE_total|floatformat:1 }}</td><td>{{ grade.cumulative_SE|floatformat:1 }}</td>
+                            {% elif award_type == "AT" %}
+                                <td>{{ grade.AT_total|floatformat:1 }}</td><td>{{ grade.cumulative_AT|floatformat:1 }}</td>
+                            {% elif award_type == "FA" %}
+                                <td>{{ grade.FA_total|floatformat:1 }}</td><td>{{ grade.cumulative_FA|floatformat:1 }}</td>
+                            {% endif %}
+                            <td>
                             {% for point in grade.points_set.all %}
-                                {% ifequal award_type point.type.catagory %}
-                                    <span class="point">{{ point.amount }}</span>
-                                    <span class="code description">{{ point.type.description }}</span>
-                                    <span style="display: inline-block; width: 2ch;">&#9;</span>
-                                {% endifequal %}
+                                {% ifequal award_type point.type.catagory %}<span class="point">{{ point.amount|floatformat:1 }}</span> <span class="code description">{{ point.type.description }}</span><span style="display: inline-block; width: 2ch;">&#9;</span>{% endifequal %}
                             {% endfor %}
+                            </td>
                         {% endifequal %}
                     {% endfor %}
-                </td>
             {% endif %}
             </tr>
         {% endfor %}

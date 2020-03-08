@@ -1,0 +1,32 @@
+<div id="GeneratedList">
+    <table class="sortable">
+        <caption>Number of Students in list: {{ student_list|length }}</caption>
+        <!-- Header Row-->
+        <thead>
+            <tr>
+                <td><strong>&nbsp;First Name</strong></td>
+                <td><strong>&nbsp;Legal Name</strong></td>
+                <td><strong>&nbsp;Last Name</strong></td>
+                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
+                <td><strong>&nbsp;Homeroom</strong></td>
+                <td><strong>&nbsp;Sports</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for student in student_list %}
+            <tr>
+                <td>{{ student.first }}</td>
+                <td>{{ student.legal }}</td>
+                <td>{{ student.last }}</td>
+                <td>{{ student.student_num }}</td>
+                <td>{{ grade }}{{ student.homeroom_str }}</td>
+                <td>
+                    {% for gr in student.all_grades %}{% if gr.grade == grade %}{% for point in gr.points_set.all %}{% ifequal "AT" point.type.catagory %}
+                        {{ point.amount|floatformat:1 }} {{ point.type.description }} &emsp;
+                    {% endifequal %}{% endfor %}{% endif %}{% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

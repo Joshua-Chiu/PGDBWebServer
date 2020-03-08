@@ -16,7 +16,7 @@
     <table>
         <tr><td><label for="first">First Name:</label></td><td><input id="first" type="text" value="{{ user.first_name }}" disabled></td></tr>
         <tr><td><label for="last">Last Name:</label></td><td><input id="last" type="text" value="{{ user.last_name }}" disabled></td></tr>
-        <tr><td><label for="email">Email:</label></td><td><input id="email" type="text" value="{{ user.email }}" disabled></td></tr>
+        <tr><td><label for="email">Email:</label></td><td><input name="email" id="email" type="text" value="{{ user.email }}"></td></tr>
         <tr><td><label for="header_colour">Top bar colour:</label></td><td><input type="color" name="header_colour" id="header_colour" value="{{ user.header_colour }}"></td></tr>
         <tr><td><label for="page_colour">Page colour:</label></td><td><input type="color" name="page_colour" id="page_colour" value="{{ user.page_colour }}"></td></tr>
         <tr><td><label for="alternate_row_colour">Alternate row colour:</label></td><td><input type="color" name="alternate_row_colour" id="alternate_row_colour" value="{{ user.alternate_row_colour }}"></td></tr>

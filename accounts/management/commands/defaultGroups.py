@@ -20,7 +20,6 @@ USERS = [
     # ['username', 'first', 'last, 'email', 'password', is_superuser, is_staff, can_view, no_entry, permission groups]
     ['manderson', 'Mason', 'Anderson', 'masonanderson0@gmail.com', '2.718281', True, True, True, False, []],
     ['jchiu', 'Joshua', 'Chiu', 'joshuachiu2020@gmail.com', '2.718281', True, True, True, False, []],
-    ['pgadmin', 'Point Grey', 'Administration', 'pointgreydb@gmail.com', '2.718281', True, True, True, False, []],
     ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
     ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
     ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
@@ -28,15 +27,16 @@ USERS = [
     ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
     ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
     ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
+    ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
 ]
 
 PLIST = [
-    [2019, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
-    [2018, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
-    [2017, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
-    [2016, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
-    [2015, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
-    [2014, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+    [2019, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [2018, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [2017, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [2016, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [2015, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [2014, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
 ]
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
@@ -204,7 +204,8 @@ class Command(BaseCommand):
             username, first, last, email, pwd, is_super, is_staff, can_view, no_entry, groups = u
             try:
                 user = User.objects.create_user(username=username, email=email, password=pwd)
-            except:
+            except Exception as e:
+                print(e)
                 logging.warning(f"Error creating user with name '{u[0]}'.")
                 user = User.objects.get(username=u[0])
                 user.email = email
@@ -243,14 +244,14 @@ class Command(BaseCommand):
                                            grade_10_T1=plist[5], grade_10_T2=plist[6],
                                            grade_11_T1=plist[7], grade_11_T2=plist[8],
                                            grade_12_T1=plist[9], grade_12_T2=plist[10])
-            except:
+            except Exception as e:
+                print(e)
                 logging.warning(f"Error creating Plist with year '{plist[0]}'.")
 
         try:
-            config = Configuration.objects.get()
+            Configuration.objects.get()
         except Configuration.DoesNotExist:
-            config = Configuration.objects.create()
+            Configuration.objects.create()
             print(f'Created default configurations')
-        config.save()
 
         print("Created default definitions, user and groups.")

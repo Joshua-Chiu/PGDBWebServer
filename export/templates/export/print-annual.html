@@ -24,7 +24,6 @@
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
             <labeL>Grade: <select name="grade">
-                <option value="" >Select</option>
                 <option {% ifequal grade 08 %}selected {% endifequal %}value="08" >Grade 08</option>
                 <option {% ifequal grade 09 %}selected {% endifequal %}value="09" >Grade 09</option>
                 <option {% ifequal grade 10 %}selected {% endifequal %}value="10" >Grade 10</option>
@@ -59,6 +58,7 @@
             <select name="athletic">
                 <option value="" >Select</option>
                 <option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>
+                <option {% ifequal award "2ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
                 <option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
                 <option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>
                 <option {% ifequal award "5ST" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>
@@ -76,10 +76,12 @@
     </div>
 
     {% if student_list %}
-        {% if award == "big-block" %}
-            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+        {% if award == "bigblock" %}
+            {% include 'export/award_templates/annual_cert_bigblock.html' with student_list=student_list %}
+        {% elif "ST" in award %}
+            {% include 'export/award_templates/annual_cert_sport_athletes.html' with student_list=student_list grade=grade %}
         {% else %}
-            {% include 'export/award_templates/student_list.html' with student_list=student_list %}
+            {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list grade=grade %}
         {% endif %}
     {% endif %}
 
@@ -143,20 +145,20 @@
         for(let i = 0; i < studentList.length; i++){
             doc.setFont('vivaldin', 'italic');// set font parameters to vivaldin
             doc.setFontSize(48);
-            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"},0,94); //first + last
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"}, 0, 94); //first + last
 
             doc.setFontSize(40);
-            doc.myText(type ,{align: "center"},0,131);
+            doc.myText(type ,{align: "center"}, 0, 131);
 
             doc.setFontSize(32);
-            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 153);
+            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 150);
 
             doc.setFontSize(7);
             doc.setFont('Arial', 'normal');
-            doc.text(220, 210, studentList[i][2]);
+            doc.text(255, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
 
-            doc.addImage(imgData, 'JPEG', 184, 172, 40, 23);
+            doc.addImage(imgData, 'JPEG', 172, 166, 60, 30);
 
             doc.addPage();
 
@@ -224,4 +226,9 @@
         }
     }
     </script>
+{% endblock %}
+{% block print-styles %}
+    'tr{}' +
+    'td{}' +
+    'table{}'
 {% endblock %}

@@ -27,7 +27,6 @@
 
             <label>Graduation Awards:
             <select name="grad-awards">
-                <option value="" >Select</option>
                 <option {% ifequal award "SE" %}selected {% endifequal %}value="SE">Service Candidates</option>
                 <option {% ifequal award "AT" %}selected {% endifequal %}value="AT">Athletics Candidates</option>
                 <option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>
@@ -95,5 +94,6 @@
 
 {% block print-styles %}
     'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
-    'td{ page-break-inside:avoid; page-break-after:avoid; }'
+    'td{ page-break-inside:avoid; page-break-after:avoid; }' +
+    'table{ page-break-inside:avoid; page-break-after:avoid; }'
 {% endblock %}

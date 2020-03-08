@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
 from django.urls import reverse
-
+import re
 from data.models import Student, PointCodes, Points
 from django.http import JsonResponse
 from data.views import google_calendar
@@ -153,19 +153,25 @@ def dictionary(request, point_catagory):
 def point_submit(request, point_catagory):
     if request.method == "POST":
         try:
-            snum = int(request.POST["student-number"])
-            code = int(request.POST["code"])
-            points = float(request.POST["minutes"])
-            if point_catagory == "SE":
-                points /= 300
+            if any(key.startswith("deletePoint ") for key in request.POST):
+                for key in request.POST:
+                    if key != 'csrfmiddlewaretoken':
+                        Points.objects.get(id=int(key.replace("deletePoint ", ""))).delete(request.user)
+            else:
+                snum = int(request.POST["student-number"])
+                code = int(request.POST["code"])
+                points = float(request.POST["minutes"])
+                if point_catagory == "SE":
+                    points /= 5
 
-            student = Student.objects.get(student_num=snum)
-            grade = student.get_grade(student.cur_grade_num)
-            grade.add_point(Points(
-                type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
-                amount=points,
-                entered_by=request.user,
-            ))
+                student = Student.objects.get(student_num=snum)
+                grade = student.get_grade(student.cur_grade_num)
+                grade.add_point(Points(
+                    type=PointCodes.objects.filter(catagory=point_catagory).get(code=code),
+                    amount=points,
+                    entered_by=request.user),
+                    request.user
+                )
         except Exception as e:
             print(e)
             print("failed to submit")
@@ -180,7 +186,7 @@ def upload_file(request, point_catagory):
         if "file" in request.FILES:
             for line in request.FILES['file']:
                 # if it's the start line skip it
-                if "Student Number,Last Name,Minutes of Service,Code" in line.decode("utf-8"):
+                if "Student Number,Last Name,Hours of Service,Code" in line.decode("utf-8"):
                     if point_catagory == "SE":
                         continue
                     else:

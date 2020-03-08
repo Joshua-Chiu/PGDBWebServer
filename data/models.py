@@ -12,23 +12,35 @@ import re
 
 
 class PlistCutoff(models.Model):
+    def save(self, user=None, *args, **kwargs):
+        if self.id is None:
+            # log creation
+            log = LoggedAction(user=user, message=f"Plist Cutoff: {self.year} → {self.year + 1} created")
+            log.save()
+        else:
+            # log creation
+            log = LoggedAction(user=user, message=f"Plist Cutoff: {self.year} → {self.year + 1} changed")
+            log.save()
+
+        return super(PlistCutoff, self).save(*args, **kwargs)
+
     YEAR_CHOICES = [(r, f"{r} → {r + 1}") for r in range(1984, datetime.date.today().year + 1)]
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year, unique=True)
 
-    grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_8_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_8_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_9_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_9_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_9_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_9_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_10_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_10_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_10_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_10_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_11_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_11_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_11_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_11_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
-    grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3)
-    grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3)
+    grade_12_T1 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
+    grade_12_T2 = models.DecimalField(max_digits=5, decimal_places=3, default=99.999)
 
     def getCutoff(self, grade, term):
         return getattr(self, f"grade_{grade}_T{term}")
@@ -84,10 +96,10 @@ class Grade(models.Model):
     FA_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     SC_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
 
-    def add_point(self, point):
+    def add_point(self, point, user):
         """adds point recalculate awards and sums"""
         self.points_set.add(point, bulk=False)
-        point.save()
+        point.save(user)
         self.calc_points_total(point.type.catagory)
 
     def calc_points_total(self, catagory):
@@ -150,7 +162,6 @@ class Grade(models.Model):
         annual_fa = True
     '''
 
-
 # declare Grade_8 through to 12 which inherit from Grade
 # this is done so that Student can have 5 oneToOnes of the 'same' type
 for i in range(8, 12+1):
@@ -158,15 +169,39 @@ for i in range(8, 12+1):
 
 
 class Student(models.Model):
-    def save(self, *args, **kwargs):
+    def save(self, user=None, *args, **kwargs):
+        self.first = self.first.strip()
+        self.last = self.last.strip()
+        self.legal = self.legal.strip()
+        self.sex = self.sex.strip()
+        self.homeroom_str = self.homeroom_str.strip()
+
+        # add grades if missing
         if self.grade_8 is None:
+            # log creation
+            log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) created")
+            log.save()
             for i in range(8, 12+1):
                 g = globals()[f"Grade_{i}"](grade=i, start_year=self.grad_year-13+i)
                 g.save()
                 setattr(self, f"grade_{i}", g)
+        else:
+            # log creation
+            log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) changed")
+            log.save()
+            for i in range(8, 12+1):
+                # print("setattr(getattr(self, f""), "", self.grad_year)" + str(i))
+                g = getattr(self, f"grade_{i}")
+                g.start_year = (self.grad_year - (12 - i)) - 1
+                g.save()
+
         return super(Student, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
+    def delete(self, user=None, *args, **kwargs):
+        # log deletion
+        log = LoggedAction(user=user, message=f"Student: {self.student_num} ({self.first} {self.last}) deleted")
+        log.save()
+
         # print("delete")
         self.grade_8.delete()
         self.grade_9.delete()
@@ -309,7 +344,7 @@ class Student(models.Model):
         return None
 
     def __str__(self):
-        return "{1}, {0} ({2}, {3})".format(self.first, self.last, self.student_num, self.homeroom)
+        return f"{self.last}, {self.first} #{self.student_num} {self.homeroom}"
 
     ''' Make cached booleans for reports
         class Awards:
@@ -320,7 +355,7 @@ class Student(models.Model):
             grad_me = True
     '''
     class Meta:
-        ordering = ['last', 'first']
+        ordering = ['active', 'last', 'first']
 
 
 class PointCodes(models.Model):
@@ -330,7 +365,7 @@ class PointCodes(models.Model):
     description = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.catagory} {self.code}"
+        return f"{self.description} ({self.catagory}{self.code})"
 
     class Meta:
         ordering = ['catagory', 'code']
@@ -343,11 +378,23 @@ class Points(models.Model):
     entered_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(editable=False)
 
-    def save(self, *args, **kwargs):
+    def save(self, user=None, *args, **kwargs):
         # On save, update timestamps
         if not self.id:
             self.created = timezone.now()
+        else:  # it works but i have no idea why
+            # log creation
+            log = LoggedAction(user=user or self.entered_by, message=f"Point: {self} added to {self.get_student().first} {self.get_student().last}")
+            log.save()
         return super(Points, self).save(*args, **kwargs)
+
+    def delete(self, user=None, *args, **kwargs):
+        # log deletion
+        log = LoggedAction(user=user, message=f"Point: {self} deleted from {self.get_student().first} {self.get_student().last}")
+        log.save()
+
+        return super().delete(*args, **kwargs)
+
 
     def get_student(self):
         return getattr(self.Grade, f"grade_{self.Grade.grade}").student
@@ -356,11 +403,12 @@ class Points(models.Model):
         return f"{self.type} {self.amount}"
 
 
-# class Certificates(models.Model):
-#     Grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-#     service = models.BooleanField(default=True)
-#     athletics = models.BooleanField(default=True)
-#     honour = models.BooleanField(default=True)
-#     fine_arts = models.BooleanField(default=True)
-#     t1 = models.BooleanField(default=True)
-#     t2 = models.BooleanField(default=True)
+class LoggedAction(models.Model):
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    time = models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user}: {self.message}"
+
+

@@ -1,0 +1,63 @@
+<div id="GeneratedList">
+    <table class="sortable">
+        <caption>Number of Students in list: {{ student_list|length }}</caption>
+        <!-- Header Row-->
+        <thead>
+            <tr>
+                <td><strong>&nbsp;First Name</strong></td>
+                <td><strong>&nbsp;Legal Name</strong></td>
+                <td><strong>&nbsp;Last Name</strong></td>
+                <td><strong>&nbsp;Student Number&nbsp;</strong></td>
+                <td><strong>&nbsp;Homeroom</strong></td>
+                <td><strong>&nbsp;Grade 08</strong></td>
+                <td><strong>&nbsp;Grade 09</strong></td>
+                <td><strong>&nbsp;Grade 10</strong></td>
+                <td><strong>&nbsp;Grade 11</strong></td>
+                <td><strong>&nbsp;Grade 12</strong></td>
+                <td><strong>&nbsp;Total</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for student in student_list %}
+            <tr>
+                <td>{{ student.first }}</td>
+                <td>{{ student.legal }}</td>
+                <td>{{ student.last }}</td>
+                <td>{{ student.student_num }}</td>
+                <td>{{ grade }}{{ student.homeroom_str }}</td>
+                <td>{% for point in student.grade_8.points_set.all %}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
+                    {% endfor %}
+                </td>
+                <td>{% for point in student.grade_9.points_set.all %}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
+                    {% endfor %}
+                </td>
+                <td>{% for point in student.grade_10.points_set.all %}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
+                    {% endfor %}
+                </td>
+                <td>{% for point in student.grade_11.points_set.all %}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
+                    {% endfor %}
+                </td>
+                <td>{% for point in student.grade_12.points_set.all %}
+                    {% ifequal point.type.catagory "AT" %}
+                        {{ point.amount }} {{ point.type.description }}
+                    {% endifequal %}
+                    {% endfor %}
+                </td>
+                <td>{{ student.AT_total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

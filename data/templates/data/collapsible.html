@@ -42,30 +42,30 @@
 
             <td>
                 <label for="service">Points: </label>
-                <input class="inputs" max="1000" id="service" type="number" name="{{ grade.grade }} SE points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="service" type="number" name="{{ grade.grade }} SE code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="1000" id="{{ grade.grade }} SE point" type="number" name="{{ grade.grade }} SE points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 1 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="{{ grade.grade }} SE code" type="number" name="{{ grade.grade }} SE code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="athletics">Points: </label>
-                <input class="inputs" max="6" id="athletics" type="number" name="{{ grade.grade }} AT points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="athletics" type="number" name="{{ grade.grade }} AT code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="6" id="{{ grade.grade }} AT points" type="number" name="{{ grade.grade }} AT points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 2 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="{{ grade.grade }} AT code" type="number" name="{{ grade.grade }} AT code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td>
                 <label for="fine_arts">Points: </label>
-                <input class="inputs" max="10" id="fine_arts" type="number" name="{{ grade.grade }} FA points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
-                <input class="codes" id="fine_arts" type="number" name="{{ grade.grade }} FA code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
+                <input class="inputs" max="10" id="{{ grade.grade }} FA points" type="number" name="{{ grade.grade }} FA points" maxlength="4" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 3 %} autofocus {% endifequal %}{% endifequal %} {% if user.no_entry %}disabled{% endif %} step="0.01">
+                <input class="codes" id="{{ grade.grade }} FA code" type="number" name="{{ grade.grade }} FA code" maxlength="2" {% if user.no_entry %}disabled{% endif %}>
             </td>
 
             <td rowspan="2">
                     <label for="scholar">T1 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{ grade.grade }} SC T1" value="{{ grade.term1_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
+                    <input class="scholar" max="100" id="{{ grade.grade }} SC T1" type="number" size="6" name="{{ grade.grade }} SC T1" value="{{ grade.term1_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 4 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
                     <label><input class="scholar" name="SC{{ grade.grade }}T1 nullify" type="checkbox" onclick="validate('T1');" {% if not grade.isnull_term1 %} checked{% endif %}></label><!--nullify average; don't assign points-->
                 <br>
 
                     <label for="scholar">T2 Average: </label>
-                    <input class="scholar" max="100" id="scholar" type="number" size="6" name="{{ grade.grade }} SC T2" value="{{ grade.term2_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
+                    <input class="scholar" max="100" id="{{ grade.grade }} SC T2" type="number" size="6" name="{{ grade.grade }} SC T2" value="{{ grade.term2_avg|floatformat:"3" }}" {% ifequal student.cur_grade_num grade.grade %}{% ifequal user.autofocus 5 %} autofocus {% endifequal %}{% endifequal %} onfocus="this.select()" step="0.001" {% if user.no_entry %}disabled{% endif %}>
                     <label><input class="scholar" name="SC{{ grade.grade }}T2 nullify" type="checkbox" onclick="validate('T2');" {% if not grade.isnull_term2 %} checked{% endif %}></label><!--nullify average; don't assign points-->
                 <br>
 
@@ -105,7 +105,7 @@
                     {% ifequal "SE" point.type.catagory %}
                         <tr>
                             <td style="border: none;"><div class="tooltip">
-                                {% if point.amount <= 6 %}<span class="point">{{ point.amount }}</span>{% elif point.amount <= 10 %}<span class="point" style="color:#ffc30b">{{ point.amount }}</span>{% else %}<span class="point" style="color:red">{{ point.amount }}</span>{% endif %}
+                                {% if 0 < point.amount and point.amount < 10 %}<span class="point">{{ point.amount }}</span>{% else %}<span class="point" style="color:red">{{ point.amount }}</span>{% endif %}
                                 <span style="display: inline-block; width: 2ch;">&#9;</span>
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}<br> Code ID {{ point.type.code }}<br>{{ point.created|date:'dMY' }} {{ point.created|date:'h:i:s A' }}</span>
@@ -137,7 +137,7 @@
                     {% ifequal "FA" point.type.catagory %}
                         <tr>
                             <td style="border: none;"><div class="tooltip">
-                                {% if point.amount <= 6 %}<span class="point">{{ point.amount }}</span>{% else %}<span class="point" style="color:darkgoldenrod">{{ point.amount }}</span>{% endif %}
+                                <span class="point">{{ point.amount }}</span>
                                 <span style="display: inline-block; width: 2ch;">&#9;</span>
                                 <span class="code description">{{ point.type.description }}</span>
                                 <span class="tooltiptext">Entered by: {% if point.entered_by %}{{ point.entered_by.username }}{% else %}Importer{% endif %}<br> Code ID {{ point.type.code }}<br>{{ point.created|date:'dMY' }} {{ point.created|date:'h:i:s A' }}</span>

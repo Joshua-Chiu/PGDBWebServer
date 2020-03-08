@@ -13,6 +13,7 @@ def index(request):
 
 
 def login(request):  # TODO this view is not being used
+    print('hello')
     if request.method == 'POST':
         username = request.POST['username']  # get username
         password = request.POST['txtPwd']  # and password
