@@ -59,18 +59,17 @@ function submitForms() {
 
 function validateForms() {
     for(var i = 8;  i <= 12; i++) {
-        if(6 < parseFloat(document.getElementById("" + i + " AT points").value)) return false;
-        if(99 < parseFloat(document.getElementById("" + i + " AT code").value) && parseFloat(document.getElementById("" + i + " AT code").value) < 0) return false;
+        if(6 < parseFloat(document.getElementById("" + i + " AT points").value)){console.log("AT Value"); return false;}
+        if(99 < parseFloat(document.getElementById("" + i + " AT code").value) && parseFloat(document.getElementById("" + i + " AT code").value) < 0){console.log("AT Code"); return false;}
 
-        if(100 < parseFloat(document.getElementById("" + i + " SE points").value)) return false;
-        if(99 < parseFloat(document.getElementById("" + i + " SE code").value) && parseFloat(document.getElementById("" + i + " SE code").value) < 0) return false;
+        if(100 < parseFloat(document.getElementById("" + i + " SE points").value)){console.log("SE Value"); return false;}
+        if(99 < parseFloat(document.getElementById("" + i + " SE code").value) && parseFloat(document.getElementById("" + i + " SE code").value) < 0){console.log("SE Code"); return false;}
 
-        if(10 < parseFloat(document.getElementById("" + i + " FA points").value)) return false;
-        if(99 < parseFloat(document.getElementById("" + i + " FA code").value) && parseFloat(document.getElementById("" + i + " FA code").value) < 0) return false;
+        if(10 < parseFloat(document.getElementById("" + i + " FA points").value)){console.log("FA Value"); return false;}
+        if(99 < parseFloat(document.getElementById("" + i + " FA code").value) && parseFloat(document.getElementById("" + i + " FA code").value) < 0){console.log("FA Code"); return false;}
 
-        if(100 < parseFloat(document.getElementById("" + i + " SC T1").value) || parseFloat(document.getElementById("" + i + " SC T1").value) < 0) return false;
-        if(100 < parseFloat(document.getElementById("" + i + " SC T2").value) || parseFloat(document.getElementById("" + i + " SC T2").value) < 0) return false;
-
+        if(100 < parseFloat(document.getElementById("" + i + " SC T1").value) || parseFloat(document.getElementById("" + i + " SC T1").value) < 0){console.log("SC Term 1"); return false;}
+        if(100 < parseFloat(document.getElementById("" + i + " SC T2").value) || parseFloat(document.getElementById("" + i + " SC T2").value) < 0){console.log("SC Term 1"); return false;}
     }
     return true;
 }

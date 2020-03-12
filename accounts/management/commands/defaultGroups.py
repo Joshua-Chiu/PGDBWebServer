@@ -22,16 +22,15 @@ USERS = [
     ['manderson', 'Mason', 'Anderson', 'masonanderson0@gmail.com', '2.718281', True, True, True, False, []],
     ['jchiu', 'Joshua', 'Chiu', 'joshuachiu2020@gmail.com', '2.718281', True, True, True, False, []],
     ['databaseadmin', 'Database', 'Administration', 'pointgreydb@gmail.com', '2.718281', True, True, True, False, []],
-    """
-    ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
-    ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
-    ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
-    ['jtchan', 'Jennie', 'Chan', 'jtchan@vsb.bc.ca', 'PEd7Cbsp5e', True, True, True, False, []],
-    ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
-    ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
-    ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
-    ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
-    """
+
+    # ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
+    # ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
+    # ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
+    # ['jtchan', 'Jennie', 'Chan', 'jtchan@vsb.bc.ca', 'PEd7Cbsp5e', True, True, True, False, []],
+    # ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
+    # ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
+    # ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
+    # ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
 ]
 
 PLIST = [
@@ -41,6 +40,7 @@ PLIST = [
     [int(datetime.datetime.now().year) - 3, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
     [int(datetime.datetime.now().year) - 4, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
     [int(datetime.datetime.now().year) - 5, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 6, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
 ]
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
