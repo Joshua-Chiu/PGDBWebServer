@@ -1,3 +1,0 @@
-[submodule "PGDBWebServer/ServerConfig"]
-	path = PGDBWebServer/ServerConfig
-	url = https://github.com/pgdb/ServerConfig
