@@ -221,8 +221,8 @@ def upload_file(request, point_catagory):
                 points = float(minutes)
                 if int(snum) == 1234567:  # skip aardvark
                     continue
-                if point_catagory == "SE":  # divide by 300 only if it's SE
-                    points = '%.3f' % (int(minutes) / 300)
+                if point_catagory == "SE":  # divide 5 only if it's SE
+                    points = '%.3f' % (int(minutes) / 5)
 
                 if Student.objects.filter(student_num__iexact=snum).exists():
                     student = Student.objects.get(student_num=int(snum))
@@ -253,7 +253,7 @@ def upload_file(request, point_catagory):
                     continue
 
                 grade = student.get_grade(student.cur_grade_num)
-                grade.points_set.create(type=point_type, amount=points, entered_by=entered_by)
+                grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
                 error_msgs.append(
                     f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
 
