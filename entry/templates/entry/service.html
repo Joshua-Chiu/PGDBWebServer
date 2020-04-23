@@ -1,5 +1,6 @@
 {% extends 'data/base.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}Service (Direct){% endblock %}
 
@@ -42,7 +43,7 @@
     {% csrf_token %}
         <table>
             {% for point in points %}
-                <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td{% if point.amount >= 10 %} style="color: red;" {% endif %}>: {{ point.amount }} Points for {{ point.type.description }}</td><td><input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X"></td></tr>
+                <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td{% if point.amount >= 10 %} style="color: red;" {% endif %}>: {{ point.amount|mul:5 }} hours ({{ point.amount }} Points) for {{ point.type.catagory }}{{ point.type.code }} {{ point.type.description }}</td><td><input type="submit" style="vertical-align: middle;" name="deletePoint {{ point.id }}" value="X"></td></tr>
             {% endfor %}
         </table>
     </form>
