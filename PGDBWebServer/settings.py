@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '5wqlq*_!b197zx2i1m2*)j*cqz^l!1^aium+1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ('True' == os.environ.get('DEBUG', 'True'))
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['*'])
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -213,17 +213,18 @@ DEFAULT_FROM_EMAIL = "Point Grey Database <donotreply@database.pointgrey.vsb.bc.
 # Heroku Deployment Configurations
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'PGDBWebServer/static/')
 FIXTURE_DIRS = os.path.join(BASE_DIR, 'PGDBWebServer/fixtures')
 # Deployment Configurations
 BUILD_NUMBER = get_version(pep440=True) #.split('+git', 1)[0]
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-
-# SECURE_SSL_REDIRECT = True # uncomment for SSL deployment
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+if not DEBUG:
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_SSL_REDIRECT = True # uncomment for SSL deployment
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    ALLOWED_HOSTS = ['.joshuachiu.com', '']
 
 X_FRAME_OPTIONS = 'DENY'
 

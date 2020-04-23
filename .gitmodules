@@ -1,0 +1,8 @@
+[submodule "PGDBWebServer/PGDBWebServer"]
+	path = PGDBWebServer/PGDBWebServer
+	url = https://github.com/pgdb/ServerConfig
+	branch = master
+[submodule "PGDBWebServer/ServerConfig"]
+	path = PGDBWebServer/ServerConfig
+	url = https://github.com/pgdb/ServerConfig
+	branch = master

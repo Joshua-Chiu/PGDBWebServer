@@ -60,7 +60,7 @@
                 </div>
             </div>
         </li>
-
+{% comment %}
         <li>
             <div class="dropdown">
                 <button class="dropbtn"><a>Cursor Default</a></button>
@@ -74,6 +74,7 @@
                 </div>
             </div>
         </li>
+        {% endcomment %}
         {% else %}
             <li>
             <a href="{% url 'users:personalisation' %}">Personalize Site</a>

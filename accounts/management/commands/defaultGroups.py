@@ -13,6 +13,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
 from data.models import PointCodes, PlistCutoff
 from configuration.models import Configuration
+import datetime
 
 User = get_user_model()
 
@@ -20,23 +21,26 @@ USERS = [
     # ['username', 'first', 'last, 'email', 'password', is_superuser, is_staff, can_view, no_entry, permission groups]
     ['manderson', 'Mason', 'Anderson', 'masonanderson0@gmail.com', '2.718281', True, True, True, False, []],
     ['jchiu', 'Joshua', 'Chiu', 'joshuachiu2020@gmail.com', '2.718281', True, True, True, False, []],
-    ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
-    ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
-    ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
-    ['jtchan', 'Jennie', 'Chan', 'jtchan@vsb.bc.ca', 'PEd7Cbsp5e', True, True, True, False, []],
-    ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
-    ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
-    ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
-    ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
+    ['databaseadmin', 'Database', 'Administration', 'pointgreydb@gmail.com', '2.718281', True, True, True, False, []],
+
+    # ['npetheriot', 'Nick', 'Petheriotis', 'npetheriot@vsb.bc.ca', 'wK7CSZVQnv', True, True, True, False, []],
+    # ['jdouglas', 'Julie', 'Douglas', '', 'FqkuNHt2Hn', False, False, False, True, ['Athletics', 'Service']],
+    # ['dlai', 'Daniel', 'Lai', '', 'eNHx4cwpJZ', False, False, False, True, ['Service']],
+    # ['jtchan', 'Jennie', 'Chan', 'jtchan@vsb.bc.ca', 'PEd7Cbsp5e', True, True, True, False, []],
+    # ['gjones', 'Gabriel', 'Jones', 'gjones@vsb.bc.ca', 'hg5MmWjhzL', True, True, True, False, []],
+    # ['syip', 'Stacey', 'Yip', '', 'hg5MmWjhzL', False, False, False, True, ['Service']],
+    # ['ccordoni', 'Chris', 'Cordoni', '', 'yUAp2WPMrJ', False, False, True, True, []],
+    # ['jnbaker', 'Jean', 'Baker', '', 'AKsjFJ23ff', True, True, True, False, []],
 ]
 
 PLIST = [
-    [2019, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [2018, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [2017, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [2016, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [2015, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [2014, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 0, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 1, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 2, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 3, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 4, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 5, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 6, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
 ]
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]

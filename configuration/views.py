@@ -30,7 +30,8 @@ def google_calendar():
 
     global offline_status
     offline_status = False
-    secret = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/client_secret.json')
+    secret = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          '../PGDBWebServer/ServerConfig/client_secret.json')
     credentials = ServiceAccountCredentials.from_json_keyfile_name(filename=secret, scopes=SCOPES)
     http = credentials.authorize(httplib2.Http())
     service_now = [pytz.utc.localize(datetime.datetime(1970, 1, 1)).astimezone(pytz.timezone('America/Vancouver')),
