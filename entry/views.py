@@ -254,8 +254,12 @@ def upload_file(request, point_catagory):
 
                 grade = student.get_grade(student.cur_grade_num)
                 grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
-                error_msgs.append(
-                    f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
+                if point_catagory == "SE":
+                    error_msgs.append(
+                        f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                else:
+                    error_msgs.append(
+                        f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
 
     template = get_template('entry/submission-summary.html')
     context = {
