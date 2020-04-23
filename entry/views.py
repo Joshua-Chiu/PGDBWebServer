@@ -211,7 +211,8 @@ def upload_file(request, point_catagory):
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
 
-                if ",,," in line.decode("utf-8"):  # skip blank lines
+                if ",,," in line.decode("utf-8")[:4]:  # skip blank lines
+                    error_msgs.append("Control Action: Blank Line Skipped")
                     continue
 
                 # print(line.decode("utf-8").strip())
