@@ -10,12 +10,17 @@ urlpatterns = [
     path('athletics', views.athletics, name='athletics'),
     path('fine-arts', views.fine_arts, name='fine-arts'),
     path('scholar', views.scholar, name='scholar'),
+
     path('scholar_submit', views.scholar_submit, name='scholar_submit'),
     path('scholar_upload_file', views.scholar_upload_file, name='scholar_upload_file'),
+
     path('error', views.error, name='error'),
+
     path('dictionary/<slug:point_catagory>', views.dictionary, name='dictionary'),
     path('upload_file/<slug:point_catagory>', views.upload_file, name='upload_file'),
+    path('check_file/<slug:point_catagory>', views.check_file, name='check_file'),
     path('point_submit/<slug:point_catagory>', views.point_submit, name='point_submit'),
+
     path('ajax/validate_student_name/', views.validate_student_name, name='validate_student_name'),
     path('ajax/validate_point_code/', views.validate_point_code, name='validate_point_code'),
 ]
