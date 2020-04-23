@@ -14,9 +14,16 @@
 
 {% block content%}
     <body>
+    {% if usage == "submit" %}
         <h2>Submission Summary - Do not refresh</h2>
         <h4>Please save this summary for your reference.</h4>
         <button class="button default" onclick="PrintElem('logs')">Print Submission Summary</button>
+    {% endif %}
+    {% if usage == "check" %}
+        <h2>Check Summary</h2>
+    {% endif %}
+
+
         <p id="logs">
             {% if logs %}
                 <span>Submission as of {% now "l, F j, Y g:i:s A" %}</span><br>
@@ -43,9 +50,11 @@
 {% endblock %}
 
 {% block javascript %}
+    {% if usage == "submit" %}
     <script>
     $(document).ready(function(){
         alert("Do not re-upload or refresh this page as this will duplicate all successful entries into the database.")
     });
     </script>
+    {% endif %}
 {% endblock %}
