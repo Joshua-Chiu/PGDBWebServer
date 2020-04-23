@@ -348,18 +348,6 @@ def check_file(request, point_catagory):
                         f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
                     continue
 
-                try:
-                    grade = student.get_grade(student.cur_grade_num)
-                    grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
-                    if point_catagory == "SE":
-                        error_msgs.append(
-                            f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
-                    else:
-                        error_msgs.append(
-                            f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
-                except:
-                    error_msgs.append("General Error Raised")
-
     template = get_template('entry/submission-summary.html')
     context = {
         'usage': "check",
