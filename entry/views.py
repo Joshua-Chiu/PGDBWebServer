@@ -205,13 +205,13 @@ def upload_file(request, point_catagory):
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
                 if "Student Number,Last Name,Average T1,Average T2" in line.decode("utf-8"):
-                    if point_catagory == "FA":
+                    if point_catagory == "SC":
                         continue
                     else:
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
 
-                if line.decode("utf-8") == ",,,\n":  # skip blank lines
+                if ",,," in line.decode("utf-8"):  # skip blank lines
                     continue
 
                 # print(line.decode("utf-8").strip())
@@ -252,14 +252,17 @@ def upload_file(request, point_catagory):
                         f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
                     continue
 
-                grade = student.get_grade(student.cur_grade_num)
-                grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
-                if point_catagory == "SE":
-                    error_msgs.append(
-                        f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
-                else:
-                    error_msgs.append(
-                        f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                try:
+                    grade = student.get_grade(student.cur_grade_num)
+                    grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
+                    if point_catagory == "SE":
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                    else:
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                except:
+                    error_msgs.append("General Error Raised")
 
     template = get_template('entry/submission-summary.html')
     context = {
