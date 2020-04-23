@@ -222,7 +222,7 @@ def upload_file(request, point_catagory):
                 if int(snum) == 1234567:  # skip aardvark
                     continue
                 if point_catagory == "SE":  # divide 5 only if it's SE
-                    points = '%.3f' % (int(minutes) / 5)
+                    points = '%.3f' % (float(minutes) / 5)
 
                 if Student.objects.filter(student_num__iexact=snum).exists():
                     student = Student.objects.get(student_num=int(snum))
