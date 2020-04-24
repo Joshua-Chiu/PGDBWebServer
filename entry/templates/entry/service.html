@@ -16,7 +16,7 @@
     <body>
     <h2>Direct Entry (Service)</h2>
     <h4>Single entry</h4>
-    <a href="{% url 'entry:dictionary' 'SE' %}">Click here to get the code dictionary</a><br>
+    <a href="#" onClick="MyWindow=window.open('{% url 'entry:dictionary' 'SE' %}','Code Dictionary','width=600,height=300'); return false;">Click here to get the code dictionary</a><br>
     <form action="{% url "entry:point_submit" "SE" %}" name="single" method="post" onsubmit="return validateForm();">
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label>
