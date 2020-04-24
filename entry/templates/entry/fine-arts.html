@@ -32,11 +32,10 @@
         <table style="width: 100%; border-collapse: collapse; " border="1">
         <tr>
             <td>
-                <h4>File Validation</h4>
-                <p>Upload a file here to check the file for errors.</p>
-                <form action="{% url 'entry:check_file' 'FA' %}" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
-                    {% csrf_token %}
+                <h4>Bulk Upload Template</h4>
+                <p>Only this CSV template works for bulk upload</p>
+                <form action="{% static "help_files/Direct Entry Import (Fill in - Fine Arts).csv" %}">
+                    <input type="submit" value="Download File" />
                 </form>
             </td>
             <td>
