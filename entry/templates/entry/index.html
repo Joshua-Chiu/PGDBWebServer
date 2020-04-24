@@ -15,16 +15,20 @@
 {% block content%}
     <h2>Dashboard</h2>
     <h4>Viewing a student</h4>
-    <p>Type in student number, first name or last name in Search to query for a student</p>
+    <p>To view a student file, type in the student number, first name or last name in the white search bar at the right.</p>
     <h4>My recent actions</h4>
+    {% if recent %}
     <table>
         <thead>
         <tr><th>&emsp14;Student&emsp14;</th><th>Point</th></tr>
         </thead>
-    {% for point in recent %}
+        {% for point in recent %}
             <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
         {% endfor %}
     </table>
+    {% else %}
+        None currently.
+    {% endif %}
     <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <span>
