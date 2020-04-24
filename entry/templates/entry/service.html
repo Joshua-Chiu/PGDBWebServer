@@ -36,7 +36,9 @@
             <td>
                 <h4>Bulk Upload Template</h4>
                 <p>Only this CSV template works for bulk upload</p>
-                <a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Download File</a>
+                <form action="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">
+                    <input type="submit" style="" value="Download File" />
+                </form>
             </td>
             <td>
                 <h4>File Validation</h4>
