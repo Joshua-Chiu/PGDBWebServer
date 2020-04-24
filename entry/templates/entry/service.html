@@ -16,7 +16,7 @@
     <body>
     <h2>Direct Entry (Service)</h2>
     <h4>Single entry</h4>
-    <a href="#" onClick="MyWindow=window.open('{% url 'entry:dictionary' 'SE' %}','Code Dictionary','width=600,height=300'); return false;">Click here to get the code dictionary</a><br>
+    <a href="#" onClick="MyWindow=window.open('{% url 'entry:dictionary' 'SE' %}','Code Dictionary','width=600,height=300'); return false;" style="color: red;">Click here to get the code dictionary</a><br><br>
     <form action="{% url "entry:point_submit" "SE" %}" name="single" method="post" onsubmit="return validateForm();">
         <fieldset>
             <label>Student Number: <input class="student-number" type='number' name="student-number" value="" autofocus></label>
@@ -30,9 +30,14 @@
         </fieldset>
     </form>
     {% if user.can_upload or user.is_superuser %}
-        <table style="width: 100%; border-collapse: collapse" border="1">
+        <h4>Bulk entry</h4>
+        <table style="width: 100%; border-collapse: collapse; " border="1">
         <tr>
-            <td><a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Direct Entry Import (Fill in - Service)</a></td>
+            <td>
+                <h4>Bulk Upload Template</h4>
+                <p>Only this CSV template works for bulk upload</p>
+                <a href="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">Download File</a>
+            </td>
             <td>
                 <h4>File Validation</h4>
                 <p>Upload a file here to check the file for errors.</p>
