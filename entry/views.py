@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
 from django.urls import reverse
 import re
-from data.models import Student, PointCodes, Points
+from data.models import Student, PointCodes, Points, LoggedAction
 from django.http import JsonResponse
 from data.views import google_calendar
 
@@ -265,6 +265,7 @@ def upload_file(request, point_catagory):
                 except:
                     error_msgs.append("General Error Raised")
 
+    LoggedAction(user=request.user, message=f"File: {point_catagory} File at uploaded at Direct Entry by {request.user}").save()
     template = get_template('entry/submission-summary.html')
     context = {
         'usage': "submit",
