@@ -181,6 +181,7 @@ def point_submit(request, point_catagory):
 
 def upload_file(request, point_catagory):
     error_msgs = []
+    lines = 0
     entered_by = request.user
     if request.method == "POST":
         if "file" in request.FILES:
@@ -262,10 +263,11 @@ def upload_file(request, point_catagory):
                     else:
                         error_msgs.append(
                             f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                    lines += 1
                 except:
                     error_msgs.append("General Error Raised")
 
-    LoggedAction(user=request.user, message=f"File: {point_catagory} File at uploaded at Direct Entry by {request.user}").save()
+    LoggedAction(user=request.user, message=f"File: {lines} ENTRIES BELOW BULK UPLOADED").save()
     template = get_template('entry/submission-summary.html')
     context = {
         'usage': "submit",
