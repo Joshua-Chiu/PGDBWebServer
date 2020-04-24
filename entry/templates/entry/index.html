@@ -20,7 +20,7 @@
     {% if recent %}
     <table>
         <thead>
-        <tr><th>&emsp14;Student&emsp14;</th><th>Point</th></tr>
+        <tr><th align="left">Student</th><th align="left">Points</th></tr>
         </thead>
         {% for point in recent %}
             <tr><td>{{ point.get_student.first }} {{ point.get_student.last }} &emsp14; </td><td>: {{ point.amount }} Points for {{ point.type.description }}</td></tr>
