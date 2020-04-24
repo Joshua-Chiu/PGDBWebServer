@@ -176,6 +176,7 @@ def archive_submit(request):
                 file = ET.parse(request.FILES["file"])
                 import_thread = Thread(target=import_pgdb_file, args=(file, request.user, ))
                 import_thread.start()
+                LoggedAction(user=request.user, message=f"File: PGDB Backup File uploaded by {request.user}").save()
                 logs.append("We will now import the file in the background")
         else:
             logs.append("Permission error: Please make sure you can import students")
@@ -238,6 +239,7 @@ def roll_importer(request):
     context = {
         "logs": logs,
     }
+    LoggedAction(user=request.user,message=f"File: Honour Roll File uploaded by {request.user}").save()
     return HttpResponse(template.render(context, request))
 
 
