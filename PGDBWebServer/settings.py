@@ -224,7 +224,7 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True # uncomment for SSL deployment
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    ALLOWED_HOSTS = ['.joshuachiu.com', '']
+    ALLOWED_HOSTS = ['database.joshuachiu.com']
 
 X_FRAME_OPTIONS = 'DENY'
 
