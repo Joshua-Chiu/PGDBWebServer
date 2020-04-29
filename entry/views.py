@@ -156,7 +156,9 @@ def point_submit(request, point_catagory):
             if any(key.startswith("deletePoint ") for key in request.POST):
                 for key in request.POST:
                     if key != 'csrfmiddlewaretoken':
-                        Points.objects.get(id=int(key.replace("deletePoint ", ""))).delete(request.user)
+                        point = Points.objects.get(id=int(key.replace("deletePoint ", "")))
+                        point.delete(request.user)
+                        point.Grade.calc_points_total(point.type.catagory)
             else:
                 snum = int(request.POST["student-number"])
                 code = int(request.POST["code"])
