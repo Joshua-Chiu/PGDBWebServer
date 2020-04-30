@@ -300,35 +300,6 @@ def ajax_all_points(request):
     return JsonResponse(data, safe=False)
 
 
-def convert_roll(year, term, file, request):
-    global done
-    done = False
-
-    plist_cutoffs, students = roll_convert((l.decode() for l in file), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
-
-    plist = PlistCutoff.objects.get(year=year)
-    for grade, cutoff in plist_cutoffs:
-        print(plist, f"grade_{grade}_T{term}")
-        setattr(plist, f"grade_{grade}_T{term}", cutoff)
-        plist.save(request.user)
-
-    for s in students:
-        try:
-            grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
-            if term == "1":
-                grade.term1_avg = s.average
-                grade.term1_GE = s.GE
-
-            else:
-                grade.term2_avg = s.average
-                grade.term2_GE = s.GE
-            grade.save()
-        except:
-            pass
-
-    done = True
-
-
 def reset_users(request):
     reset(request.GET['username'])
     return HttpResponseRedirect(request.path)

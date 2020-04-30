@@ -33,14 +33,14 @@
         <h4>Bulk entry</h4>
         <table style="width: 100%; border-collapse: collapse;">
         <tr>
-            <td>
+            <td class="border">
                 <h4>Bulk Upload Template</h4>
                 <p>Only this CSV template works for bulk upload</p>
                 <form action="{% static "help_files/Direct Entry Import (Fill in - Service).csv" %}">
                     <input type="submit" value="Download File" />
                 </form>
             </td>
-            <td>
+            <td class="border">
                 <h4>File Validation</h4>
                 <p>Upload a file here to check the file for errors.</p>
                 <form action="{% url 'entry:check_file' 'SE' %}" method="post" enctype="multipart/form-data">
@@ -48,7 +48,7 @@
                     {% csrf_token %}
                 </form>
             </td>
-            <td>
+            <td class="border">
                 <h4>Form entry</h4>
                 <p>Visit the home/help page to access import template files</p>
                 <form action="{% url 'entry:upload_file' 'SE' %}" method="post" enctype="multipart/form-data">
