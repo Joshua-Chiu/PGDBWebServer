@@ -27,24 +27,22 @@
             success: function (data) {
                 if(data['done']==='true') {
                     clearInterval(status_update);
-                    let logs = data['logs'];
-                    for (let i = 0; i < logs.length; i++) {
-                        console.log(logs[i]);
-                        $("ol").append("<li>" + logs[i] + "</li>");
-                    }
-                    document.getElementById('Progress').innerHTML = "We processed your file - please see errors below";
-                    if(logs.length === 0){
-                        document.getElementById('Progress').innerHTML = "We processed your file - no errors";
-                    }
+                    document.getElementById('Progress').innerHTML = "We processed your file";
                     document.title = "Done"
                 } else {
                     document.getElementById('Progress').innerHTML = "We are now processing your file in the background";
                     document.title = "Processing...";
                     i++;
                 }
+                let logs = data['logs'];
+                $("ol").empty();
+                for (let i = 0; i < logs.length; i++) {
+                    console.log(logs[i]);
+                    $("ol").append("<li>" + logs[i] + "</li>");
+                }
             }
         });
     }
-    const status_update = setInterval(status, 2500);
+    const status_update = setInterval(status, 500);
     </script>
 {% endblock %}

@@ -101,7 +101,7 @@
     <script>
     function injectThis() {
         $.ajax({
-        url: '{% url "data:ajax_all_points" %}',
+        url: '{% url "data:ajax_all_actions" %}',
         data: {},
         dataType: 'json',
         success: function (data) {

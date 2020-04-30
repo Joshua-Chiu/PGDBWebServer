@@ -27,13 +27,13 @@
         </form>
         <hr>
         {% if user.can_upload or user.is_superuser%}
-        <h4>Create Honour Roll, Principal's List and GE Rolls Recipients</h4>
+        <h4>Bulk Upload: Honour Roll, Principal's List and GE Rolls Recipients</h4>
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
             <td class="border">
                 <h4>Wizard Upload Template</h4>
                 <p>Only this CSV template works for wizard upload</p>
-                <form action="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">
+                <form action="{% static "help_files/Scholar_Wizard_Template.csv" %}">
                     <input type="submit" value="Download File" />
                 </form>
             </td>
@@ -41,13 +41,15 @@
                 <h4>File Validation</h4>
                 <p>Upload a file here to check the file for errors.</p>
                 <form action="{% url 'entry:scholar_upload_file' %}" method="post" enctype="multipart/form-data">
-                    Coming Soon!
+                    <label for="excluded-courses">Inadmissible course codes (YCPM, YBMO,...) </label><br><br><textarea style="width: 400px;" id="excluded-courses" name="excluded-courses">YCPM, YBMO, YIPS, MCE8, MCE9, MCLC</textarea><br><br>
+
                     <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv" disabled>
                     {% csrf_token %}
                 </form>
             </td>
             <td class="border">
                 <h4>Submit</h4>
+                <p>Select a file here to upload.</p>
                 <form method="post" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
 
                     <label for="excluded-courses">Inadmissible course codes (YCPM, YBMO,...) </label><br><br><textarea style="width: 400px;" id="excluded-courses" name="excluded-courses">YCPM, YBMO, YIPS, MCE8, MCE9, MCLC</textarea><br><br>
@@ -66,10 +68,10 @@
             </td>
             </tr>
         </table>
-<label></label>
+
         <hr>
 
-            <h4>Simple Bulk Upload</h4>
+        <h4>Bulk Upload: Averages only</h4>
 
         <table style="width: 100%; border-collapse: collapse;">
         <tr>

@@ -233,7 +233,9 @@ def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
 
-            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"], request, ))
+            excluded = [x.strip() for x in request.POST.get("excluded-courses", "YCPM, YBMO, YIPS, MCE8, MCE9, MCLC").split(',')]
+
+            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"], excluded, request, ))
             roll_conv_thread.start()
     template = get_template('data/file_upload.html')
     context = {
@@ -241,35 +243,6 @@ def roll_importer(request):
     }
     LoggedAction(user=request.user, message=f"File: Honour Roll File uploaded by {request.user}").save()
     return HttpResponse(template.render(context, request))
-
-
-def convert_roll(year, term, file, request):
-    global done
-    done = False
-
-    plist_cutoffs, students = roll_convert((l.decode() for l in file), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
-
-    plist = PlistCutoff.objects.get(year=year)
-    for grade, cutoff in plist_cutoffs:
-        print(plist, f"grade_{grade}_T{term}")
-        setattr(plist, f"grade_{grade}_T{term}", cutoff)
-        plist.save(request.user)
-
-    for s in students:
-        try:
-            grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
-            if term == "1":
-                grade.term1_avg = s.average
-                grade.term1_GE = s.GE
-
-            else:
-                grade.term2_avg = s.average
-                grade.term2_GE = s.GE
-            grade.save()
-        except:
-            pass
-
-    done = True
 
 
 def settings(request):
