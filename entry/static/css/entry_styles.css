@@ -2,6 +2,6 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-table, th, td {
+td.border {
   border: 1px solid black;
 }

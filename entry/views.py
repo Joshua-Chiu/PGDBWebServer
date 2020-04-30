@@ -122,18 +122,28 @@ def scholar_upload_file(request):
                     error_msgs.append(f"Error: LAST NAME MISMATCH")
                     continue
 
-                grade = student.get_grade(student.cur_grade_num)
+                if not float(term1) <= 100 and float(term2) <= 100:
+                    error_msgs.append(f"Error: AVERAGE GREATER THAN 100%")
+                    continue
 
-                grade.term1_avg(term1)
-                grade.term2_avg(term2)
-                grade.save()
+                if request.POST.get('check', "false") == "false":
+                    grade = student.get_grade(student.cur_grade_num)
 
-                error_msgs.append(
-                    f"Success: added term 1 and 2 averages for {student.first} {student.last} was "
-                    "entered.")
+                    grade.term1_avg = term1
+                    grade.term2_avg = term2
+                    grade.save()
 
-    context = {}
-    return HttpResponseRedirect("/entry/scholar")
+                error_msgs.append(f"Success: Term 1: {term1}, Term 2: {term2} averages added for {student.first} {student.last})")
+
+    template = get_template('entry/submission-summary.html')
+    usage = "check"
+    if request.POST.get('check', "false") == "false":
+        usage = "submit"
+    context = {
+        'usage': usage,
+        'logs': error_msgs,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def error(request):
