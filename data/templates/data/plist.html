@@ -15,6 +15,10 @@
 
     <h2>Principal Lists Thresholds</h2>
 
+    <div>
+    <a href="{% url 'admin:data_plistcutoff_changelist' %}">Click here to adjust the values</a>
+    </div>
+
     <form action="{% url "data:plist_submit" %}" name="form0" method="post">
     {%csrf_token%}
     <div>
@@ -22,16 +26,15 @@
         <table border="1" style="float: left">
             <tr><th colspan="3">{{ year.year }} - {{ year.year|add:1 }}</th></tr>
             <tr><th>Grade</th><th>Term 1</th><th>Term 2</th></tr>
-            <tr><td>8</td><td><label><input name="{{ year.year }} 8 1" type="number" value="{{ year.grade_8_T1 }}" step="0.001"></label></td><td><label><input name="{{ year.year }} 8 2" type="number" value="{{ year.grade_8_T2 }}" step="0.001"></label></td></tr>
-            <tr><td>9</td><td><label><input name="{{ year.year }} 9 1" type="number" value="{{ year.grade_9_T1 }}" step="0.001"></label></td><td><label><input name="{{ year.year }} 9 2" type="number" value="{{ year.grade_9_T2 }}" step="0.001"></label></td></tr>
-            <tr><td>10</td><td><label><input name="{{ year.year }} 10 1" type="number" value="{{ year.grade_10_T1 }}" step="0.001"></label></td><td><label><input name="{{ year.year }} 10 2" type="number" value="{{ year.grade_10_T2 }}" step="0.001"></label></td></tr>
-            <tr><td>11</td><td><label><input name="{{ year.year }} 11 1" type="number" value="{{ year.grade_11_T1 }}" step="0.001"></label></td><td><label><input name="{{ year.year }} 11 2" type="number" value="{{ year.grade_11_T2 }}" step="0.001"></label></td></tr>
-            <tr><td>12</td><td><label><input name="{{ year.year }} 12 1" type="number" value="{{ year.grade_12_T1 }}" step="0.001"></label></td><td><label><input name="{{ year.year }} 12 2" type="number" value="{{ year.grade_12_T2 }}" step="0.001"></label></td></tr>
+            <tr><td>8</td><td><label><input name="{{ year.year }} 8 1" type="number" value="{{ year.grade_8_T1 }}" step="0.001" disabled></label></td><td><label><input name="{{ year.year }} 8 2" type="number" value="{{ year.grade_8_T2 }}" step="0.001" disabled></label></td></tr>
+            <tr><td>9</td><td><label><input name="{{ year.year }} 9 1" type="number" value="{{ year.grade_9_T1 }}" step="0.001" disabled></label></td><td><label><input name="{{ year.year }} 9 2" type="number" value="{{ year.grade_9_T2 }}" step="0.001" disabled></label></td></tr>
+            <tr><td>10</td><td><label><input name="{{ year.year }} 10 1" type="number" value="{{ year.grade_10_T1 }}" step="0.001" disabled></label></td><td><label><input name="{{ year.year }} 10 2" type="number" value="{{ year.grade_10_T2 }}" step="0.001" disabled></label></td></tr>
+            <tr><td>11</td><td><label><input name="{{ year.year }} 11 1" type="number" value="{{ year.grade_11_T1 }}" step="0.001" disabled></label></td><td><label><input name="{{ year.year }} 11 2" type="number" value="{{ year.grade_11_T2 }}" step="0.001" disabled></label></td></tr>
+            <tr><td>12</td><td><label><input name="{{ year.year }} 12 1" type="number" value="{{ year.grade_12_T1 }}" step="0.001" disabled></label></td><td><label><input name="{{ year.year }} 12 2" type="number" value="{{ year.grade_12_T2 }}" step="0.001" disabled></label></td></tr>
         </table>
     {% endfor %}
     </div>
-
-    <input class="btn default" style="clear: both; display: block" type="submit">
+        {% comment %}<input class="btn default" style="clear: both; display: block" type="submit" value="Save">{% endcomment %}
     </form>
 
 {% endblock %}
