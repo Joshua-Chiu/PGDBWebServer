@@ -274,8 +274,9 @@ def convert_roll(year, term, file, excluded_courses, request):
     plist_cutoffs, students = [], []
 
     try:
-        plist_cutoffs, students = roll_convert((l.decode() for l in file), excluded_courses)
+        plist_cutoffs, students = roll_convert((l.decode("utf-8", "ignore") for l in file), excluded_courses)
     except Exception as e:
+        raise e
         logs.append("Generic File Error")
         logs.append(f"General Error Raised: {e}")
         done = True
