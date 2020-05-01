@@ -127,6 +127,7 @@ def check_integrity():
         if not 0 <= plist.grade_10_T2 <= 100: integrity_data.append(f"Plist: Grade {plist.year} average Term 10 T2 invalid")
         if not 0 <= plist.grade_11_T2 <= 100: integrity_data.append(f"Plist: Grade {plist.year} average Term 11 T2 invalid")
         if not 0 <= plist.grade_12_T2 <= 100: integrity_data.append(f"Plist: Grade {plist.year} average Term 12 T2 invalid")
+    integrity_data.append(f"Check completed: {datetime.datetime.now()}")
 
 
 def integrity_report(request):

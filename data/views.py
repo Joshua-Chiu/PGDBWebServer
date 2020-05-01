@@ -143,7 +143,6 @@ def student_submit(request, num):
     for grade_num in range(8, int(student.cur_grade_num) + 1):
         grade = student.get_grade(grade_num)
         grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
-        print(f"SC{grade_num} nullify" not in nullification)
         grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
         grade.isnull_SC = f"SC{grade_num} nullify" not in nullification
         grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
