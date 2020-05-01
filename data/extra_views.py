@@ -271,12 +271,12 @@ def convert_roll(year, term, file, excluded_courses, request):
     global done
     logs = []
     done = False
+    plist_cutoffs, students = [], []
 
     try:
         plist_cutoffs, students = roll_convert((l.decode() for l in file), excluded_courses)
     except Exception as e:
         logs.append("Generic File Error")
-        print(e)
         logs.append(f"General Error Raised: {e}")
         done = True
 
