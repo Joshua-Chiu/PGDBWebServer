@@ -140,14 +140,16 @@ def student_submit(request, num):
                 grade = student.get_grade(grade_num)
                 grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by), request.user)
 
-    for grade_num in range(8, int(student.homeroom[:2]) + 1):
+    for grade_num in range(8, int(student.cur_grade_num) + 1):
         grade = student.get_grade(grade_num)
         grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
+        print(f"SC{grade_num} nullify" not in nullification)
         grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
         grade.isnull_SC = f"SC{grade_num} nullify" not in nullification
         grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
         grade.isnull_term1 = f"SC{grade_num}T1 nullify" not in nullification
         grade.isnull_term2 = f"SC{grade_num}T2 nullify" not in nullification
+
         grade.calc_points_total("SE")
         grade.calc_points_total("AT")
         grade.calc_points_total("FA")
