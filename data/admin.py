@@ -181,7 +181,7 @@ class PlistCutoffAdmin(admin.ModelAdmin):
 
 
 admin.site.register(PlistCutoff, PlistCutoffAdmin)
-admin.site.register(LoggedAction)
+# admin.site.register(LoggedAction)
 increase_grade.short_description = 'Update Grade and Homerooms to New School Year '
 decrease_grade.short_description = 'Decrease Grade'
 export_as_csv.short_description = "Export Selected as CSV"
