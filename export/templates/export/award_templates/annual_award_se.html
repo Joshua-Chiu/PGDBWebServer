@@ -1,3 +1,4 @@
+{% load mathfilters %}
 <h2>Service Candidates</h2>
 
 <div id="AnnualList">
@@ -8,7 +9,7 @@
                 <td colspan="5">{{ student.last }}, {{ student.first }} ({{ student.legal }}) ({{ grade }}{{ student.homeroom_str }})</td>
 
                 {% for gr in student.all_grades %}
-                    <tr>
+                    <tr {% if forloop.counter0|mod:2 == 0 %} style="font-weight: bold" {% endif %}>
                     {% if gr.grade <= grade %}
                         <td>GR {{ gr.grade }}:</td>{% for point in gr.points_set.all %}
                             {% ifequal "SE" point.type.catagory %}
