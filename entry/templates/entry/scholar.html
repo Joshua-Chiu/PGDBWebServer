@@ -50,7 +50,7 @@
             <td class="border">
                 <h4>Submit</h4>
                 <p>Select a file here to upload.</p>
-                <form method="post" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
+                <form method="post" id="submit-form" enctype="multipart/form-data" action="{% url 'data:roll_importer'%}">
 
                     <label for="excluded-courses">Inadmissible course codes (YCPM, YBMO,...) </label><br><br><textarea style="width: 400px;" id="excluded-courses" name="excluded-courses">YCPM, YBMO, YIPS, MCE8, MCE9, MCLC</textarea><br><br>
 
@@ -61,7 +61,8 @@
                     of
                     <select name="start-year" id="year"></select>
 
-                <input type="file" name="file" id="file" onchange="form.submit()" accept=".csv">
+                <input type="file" name="file" id="file" accept=".csv">
+                <input type="submit">
                 {% csrf_token %}
 
             </form>
