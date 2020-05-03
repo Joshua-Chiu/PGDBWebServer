@@ -14,6 +14,7 @@ class Student:
         self.average = 0.0
         self.number = course["Student Number"]
         self.grade = int(course["Grade"])
+        self.term_null = False
 
 
 def roll_convert(csvfile, excluded_courses):
@@ -56,6 +57,9 @@ def roll_convert(csvfile, excluded_courses):
         if student.courses:
             average /= len(student.courses)
         student.average = average
+
+        # mark null if less than 6 courses
+        student.term_null = len(student.courses) < 6
 
     plists = []
     for g in range(8, 13):

@@ -62,6 +62,7 @@ def parseQuery(query):
                     students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
                 elif v == "honour":
                     students = students.filter(**{f"grade_{grade}___term{term}_avg__gte": 79.5})
+                    students = students.filter(**{f"grade_{grade}__isnull_term{term}": False})
                 elif v == "principalslist":
                     new_students = students
                     for s in students:
