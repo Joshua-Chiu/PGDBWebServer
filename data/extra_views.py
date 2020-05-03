@@ -296,10 +296,11 @@ def convert_roll(year, term, file, excluded_courses, request):
             if term == "1":
                 grade.term1_avg = s.average
                 grade.term1_GE = s.GE
-
+                grade.isnull_term1 = s.term_null
             else:
                 grade.term2_avg = s.average
                 grade.term2_GE = s.GE
+                grade.isnull_term2 = s.term_null
             grade.save()
 
             logs.append(f"Set average: {student.first} {student.last} ({student.student_num}) to {round(s.average, 3)}%, GE to {s.GE}")
