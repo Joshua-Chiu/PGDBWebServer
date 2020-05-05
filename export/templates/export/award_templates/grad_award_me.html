@@ -1,3 +1,4 @@
+{% load mathfilters%}
 <h2>Merit Candidates</h2>
 
 <div id="GradList">
@@ -12,7 +13,7 @@
             <tr><td>Scholar: </td><td>GR11T1: {{ student.grade_11.term1_avg|floatformat:"3" }} % &emsp;|&emsp; GR11T2: {{ student.grade_11.term2_avg|floatformat:"3" }} % &emsp;|&emsp; GR12T1: {{ student.grade_12.term1_avg|floatformat:"3" }} % &emsp;|&emsp; GR12T2: {{ student.grade_12.term2_avg|floatformat:"3" }} %</td></tr>
             <tr><td>Fine Arts: </td><td>{{ student.FA_11_12_total|floatformat:"3" }} Points</td></tr>
             <tr><td>Total 11-12: </td><td>{{ student.all_11_12_total|floatformat:"3" }} Points</td></tr>
-            <tr><td>Total 08-12: </td><td>{{ student.SE_total|add:student.AT_total|add:student.SC_total|add:student.FA_total|floatformat:"3" }}</td></tr>
+            <tr><td>Total 08-12: </td><td>{{ student.SE_total|addition:student.AT_total|addition:student.SC_total|addition:student.FA_total|floatformat:"3" }}</td></tr>
             <tr><td>PINS:</td><td colspan="3">Silver: Grade {{ student.silver_pin }} &emsp; | &emsp; Gold: Grade {{ student.gold_pin }} &emsp; | &emsp; Gold+: Grade {{ student.goldPlus_pin }} &emsp; | &emsp; Platinum: Grade {{ student.platinum_pin }}</td></tr>
         </table>
         <hr>
