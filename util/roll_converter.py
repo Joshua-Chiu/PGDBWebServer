@@ -53,13 +53,16 @@ def roll_convert(csvfile, excluded_courses):
         average = 0
         for course in student.courses:
             average += int(course["Mark"])
+            if int(course["Mark"]) < 60:
+                student.term_null = True
 
         if student.courses:
             average /= len(student.courses)
         student.average = average
 
         # mark null if less than 6 courses
-        student.term_null = len(student.courses) < 6
+        if len(student.courses) < 6:
+            student.term_null = True
 
     plists = []
     for g in range(8, 13):
