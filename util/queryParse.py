@@ -63,6 +63,15 @@ def parseQuery(query):
                 elif v == "honour":
                     students = students.filter(**{f"grade_{grade}___term{term}_avg__gte": 79.5})
                     students = students.filter(**{f"grade_{grade}__isnull_term{term}": False})
+
+                    # exclude students on plist
+                    new_students = students
+                    for s in students:
+                        grade_obj = s.get_grade(grade)
+                        if not getattr(grade_obj, f"term{term}_avg") < getattr(grade_obj, f"plist_T{term}"):
+                            new_students = new_students.exclude(id=s.id)
+                    students = new_students
+
                 elif v == "principalslist":
                     new_students = students
                     for s in students:
@@ -130,7 +139,7 @@ def parseQuery(query):
                             new_students = new_students.exclude(id=s.id)
 
                     elif type == "honourroll":
-                        if not grade.honourroll or grade.isnull_SC:
+                        if (not grade.honourroll or grade.isnull_SC) or grade.principalslist:
                             new_students = new_students.exclude(id=s.id)
                     elif type == "principalslist":
                         if not grade.principalslist or grade.isnull_SC:
