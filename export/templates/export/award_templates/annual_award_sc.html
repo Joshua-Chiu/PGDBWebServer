@@ -10,7 +10,7 @@
             </tr>
                 {% for gr in student.all_grades %}
                     {% ifequal gr.grade grade %}
-                        <tr><td>Grade {{ grade }} T1: {{ gr.term1_avg|floatformat:"3" }}</td><td>Grade {{ grade }} T2: {{ gr.term2_avg|floatformat:"3" }}</td><td>Year Avg: {{ gr.term1_avg|addition:gr.term1_avg|div:2|floatformat:"3" }}</td></tr>
+                        <tr><td>Grade {{ grade }} T1: {{ gr.term1_avg|floatformat:"3" }}</td><td style="padding-left: 15px">Grade {{ grade }} T2: {{ gr.term2_avg|floatformat:"3" }}</td><td style="padding-left: 15px">Year Avg: {{ gr.term1_avg|addition:gr.term1_avg|div:2|floatformat:"3" }}</td></tr>
                     {% endifequal %}
                 {% endfor %}
         </table>
