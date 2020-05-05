@@ -304,7 +304,7 @@ def convert_roll(year, term, file, excluded_courses, request):
             grade.calc_SC_total()
             grade.save()
 
-            logs.append(f"Set average: {student.first} {student.last} ({student.student_num}) to {round(s.average, 3)}%, GE to {s.GE}")
+            logs.append(f"Set average: {student.first} {student.last} ({student.student_num}) to {round(s.average, 3)}%, GE to {s.GE}, HR exclusion to {s.term_null}")
         except:
             logs.append(f"Failed to set average: Student {s.number} to {round(s.average, 3)}%")
 
