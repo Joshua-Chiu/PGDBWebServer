@@ -166,7 +166,7 @@ $(document).ready(function() {
                 if(data['annual AT ' + grade] >= 9.5) document.getElementById('annual AT ' + grade).innerHTML = "Athletics";
                 if(data['annual FA ' + grade] >= 9.5) document.getElementById('annual FA ' + grade).innerHTML = "Fine Arts";
                 if(data['annual HR ' + grade]) document.getElementById('annual SC ' + grade).innerHTML = "Scholar";
-                if(data['annual PL ' + grade]) document.getElementById('annual PL ' + grade).innerHTML = "PL";
+                if(data['annual PL ' + grade]) document.getElementById('annual PL ' + grade).innerHTML = "+Plist";
 
                 document.getElementById('annual SE' + grade + ' total').innerHTML = parseFloat(data['annual SE ' + grade]).toFixed(2);
                 document.getElementById('annual AT' + grade + ' total').innerHTML = parseFloat(data['annual AT ' + grade]).toFixed(2);
