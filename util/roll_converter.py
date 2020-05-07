@@ -64,12 +64,18 @@ def roll_convert(csvfile, excluded_courses):
         if len(student.courses) < 6:
             student.term_null = True
 
+        if student.number == "773090":
+            print(len(student.courses), student.term_null)
+
     plists = []
     for g in range(8, 13):
         top = [s for s in students if int(s.grade) == g]
+        tenth = ceil(len(top)/10)
 
+        top = [s for s in top if not s.term_null] # remove null students
         top.sort(key=lambda s: s.average)  # sort by average
-        top = list(reversed(top))[:ceil(len(top) / 10)]  # take the top ten percent
+        top = list(reversed(top))[:tenth]  # take the top ten percent
+
         cutoff = top[-1].average
         plists.append((g, cutoff))
 
