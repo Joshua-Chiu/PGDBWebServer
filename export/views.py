@@ -93,7 +93,7 @@ def print_annual(request):
         elif any(award in s for s in ["honourroll"]):
             query += f"HONOUR ROLL CERTIFICATE RECIPIENTS"
         elif any(award in s for s in ["principalslist"]):
-            query += f"PRINCIPAL'S LIST CERTIFICATE RECIPIENTS"
+            query += f"PRINCIPALS LIST CERTIFICATE RECIPIENTS"
         elif any(award in s for s in ["silver", "gold", "platinum"]):
             query += f"{award_formatted.upper()} PIN RECIPIENTS"
         elif any(award in s for s in ["goldplus"]):

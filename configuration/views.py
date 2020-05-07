@@ -102,15 +102,19 @@ def check_integrity():
         for grade in student.all_grades:
             temp = grade.SE_total
             grade.calc_points_total("SE")
-            if not temp == grade.SE_total: integrity_data.append(f"{student}: Fixed service totalling {grade.grade}.")
+            if not temp == grade.SE_total: integrity_data.append(f"{student}: Fixed service totalling points {grade.grade}.")
 
             temp = grade.AT_total
             grade.calc_points_total("AT")
-            if not temp == grade.AT_total: integrity_data.append(f"{student}: Fixed athletic totalling {grade.grade}.")
+            if not temp == grade.AT_total: integrity_data.append(f"{student}: Fixed athletic totalling points {grade.grade}.")
 
             temp = grade.FA_total
             grade.calc_points_total("FA")
-            if not temp == grade.FA_total: integrity_data.append(f"{student}: Fixed fine arts totalling {grade.grade}.")
+            if not temp == grade.FA_total: integrity_data.append(f"{student}: Fixed fine arts points totalling {grade.grade}.")
+
+            temp = grade.SC_total
+            grade.calc_SC_total()
+            if not temp == round(grade.SC_total, 3): integrity_data.append(f"{student}: Fixed scholar points totalling {grade.grade}.")
 
             if not 0 <= grade.term1_avg < 100: integrity_data.append(f"{student}: Grade {grade.grade} average Term 1 invalid")
             if not 0 <= grade.term2_avg < 100: integrity_data.append(f"{student}: Grade {grade.grade} average Term 2 invalid")

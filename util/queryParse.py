@@ -73,6 +73,7 @@ def parseQuery(query):
                     students = new_students
 
                 elif v == "principalslist":
+                    students = students.filter(**{f"grade_{grade}__isnull_term{term}": False})
                     new_students = students
                     for s in students:
                         grade_obj = s.get_grade(grade)
