@@ -77,19 +77,23 @@ class Grade(models.Model):
     def term1_avg(self):
         return float(self._term1_avg)
 
-    @term1_avg.setter
-    def term1_avg(self, avg):
-        self._term1_avg = Decimal(avg)
-        self.calc_SC_total()
+    def set_term1_avg(self, avg, user=None):
+        if avg != float(self._term1_avg):
+            log = LoggedAction(user=user, message=f"term1 average of {self.student} set to {avg}")
+            log.save()
+            self._term1_avg = Decimal(avg)
+            self.calc_SC_total()
 
     @property
     def term2_avg(self):
         return float(self._term2_avg)
 
-    @term2_avg.setter
-    def term2_avg(self, avg):
-        self._term2_avg = Decimal(avg)
-        self.calc_SC_total()
+    def set_term2_avg(self, avg, user=None):
+        if avg != float(self._term2_avg):
+            log = LoggedAction(user=user, message=f"term2 average of {self.student} set to {avg}")
+            log.save()
+            self._term2_avg = Decimal(avg)
+            self.calc_SC_total()
 
     SE_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
     AT_total = models.DecimalField(max_digits=6, decimal_places=3, null=False, default=0)
