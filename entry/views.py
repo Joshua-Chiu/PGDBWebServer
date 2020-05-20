@@ -85,8 +85,8 @@ def scholar_submit(request):
             student = Student.objects.get(student_num=snum)
             grade = student.get_grade(student.cur_grade_num)
 
-            grade.term1_avg=term1
-            grade.term2_avg=term2
+            grade.set_term1_avg(term1, user=request.user)
+            grade.set_term2_avg(term2, user=request.user)
             grade.save()
         except Exception as e:
             print(e)
@@ -129,8 +129,8 @@ def scholar_upload_file(request):
                 if request.POST.get('check', "false") == "false":
                     grade = student.get_grade(student.cur_grade_num)
 
-                    grade.term1_avg = term1
-                    grade.term2_avg = term2
+                    grade.set_term1_avg(term1, user=request.user)
+                    grade.set_term2_avg(term2, user=request.user)
                     grade.save()
 
                 error_msgs.append(f"Success: Term 1: {term1}, Term 2: {term2} averages added for {student.first} {student.last})")

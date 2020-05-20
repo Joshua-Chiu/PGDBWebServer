@@ -115,8 +115,8 @@ def student_submit(request, num):
 
                 # set the scholar average
                 grade = student.get_grade(grade_num)
-                grade.term1_avg = t1
-                grade.term2_avg = t2
+                grade.set_term1_avg(t1, user=request.user)
+                grade.set_term2_avg(t2, user=request.user)
                 if t1 <= 100 and t2 <= 100: grade.save()
 
             else:
