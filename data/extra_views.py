@@ -296,12 +296,12 @@ def convert_roll(year, term, file, excluded_courses, request):
             if not s.term_null:
                 grade.isnull_SC = s.term_null
             if term == "1":
-                grade.term1_avg = s.average
+                grade.set_term1_avg(s.average)
                 grade.term1_GE = s.GE
                 grade.isnull_term1 = s.term_null
                 grade.isnull_SC = s.term_null
             else:
-                grade.term2_avg = s.average
+                grade.set_term2_avg(s.average)
                 grade.term2_GE = s.GE
                 grade.isnull_term2 = s.term_null
             grade.calc_SC_total()
