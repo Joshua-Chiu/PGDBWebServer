@@ -19,3 +19,4 @@ django-axes==5.2.2
 django-smtp-ssl==1.0
 django-login-required-middleware==0.4
 django-sendgrid-v5==0.8.1
+django-ipware>=2,<3
