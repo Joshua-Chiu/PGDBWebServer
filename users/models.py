@@ -29,6 +29,12 @@ class CustomUser(AbstractUser):
     can_upload = models.BooleanField(default=False, verbose_name='Bulk upload at Direct Entry',
                                      help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
 
+    '''
+    # Report Booleans
+    pull_grad = models.BooleanField(default=False, verbose_name='Can view student page with all information',
+                                   help_text="Designates whether the user can see the student view with all the data. Note: If a user is a superuser, this is disregarded.")
+    '''
+
     @register.filter(name='has_group')
     def has_group(self, group_name):
         try:

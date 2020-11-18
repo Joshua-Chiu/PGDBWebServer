@@ -14,6 +14,7 @@ class Student:
         self.average = 0.0
         self.number = course["Student Number"]
         self.grade = int(course["Grade"])
+        self.term_null = False
 
 
 def roll_convert(csvfile, excluded_courses):
@@ -52,17 +53,29 @@ def roll_convert(csvfile, excluded_courses):
         average = 0
         for course in student.courses:
             average += int(course["Mark"])
+            if int(course["Mark"]) < 60:
+                student.term_null = True
 
         if student.courses:
             average /= len(student.courses)
         student.average = average
 
+        # mark null if less than 6 courses
+        if len(student.courses) < 6:
+            student.term_null = True
+
+        if student.number == "773090":
+            print(len(student.courses), student.term_null)
+
     plists = []
     for g in range(8, 13):
         top = [s for s in students if int(s.grade) == g]
+        tenth = ceil(len(top)/10)
 
+        top = [s for s in top if not s.term_null] # remove null students
         top.sort(key=lambda s: s.average)  # sort by average
-        top = list(reversed(top))[:ceil(len(top) / 10)]  # take the top ten percent
+        top = list(reversed(top))[:tenth]  # take the top ten percent
+
         cutoff = top[-1].average
         plists.append((g, cutoff))
 

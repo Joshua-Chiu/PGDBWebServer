@@ -225,18 +225,19 @@ def import_pgdb_file(tree, user):
                 g_obj.calc_points_total("FA")
                 g_obj.save()
 
-            # logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
+            logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
             # raise e
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
-            logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text})")
+            logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text}) {e}")
 
             # delete the partially formed student
             if len(Student.objects.filter(student_num=student_num)) != 0:
                 Student.objects.get(student_num=student_num).delete()
-    try:
-        for plist in root[1]:
+
+    for plist in root[1]:
+        try:
             if PlistCutoff.objects.filter(year=int(plist[0].text)).exists():
                 p = PlistCutoff.objects.get(year=int(plist[0].text))
                 p.grade_8_T1 = float(plist[1].text)
@@ -258,22 +259,73 @@ def import_pgdb_file(tree, user):
                                         grade_11_T1=float(plist[7].text), grade_11_T2=float(plist[8].text),
                                         grade_12_T1=float(plist[9].text), grade_12_T2=float(plist[10].text),
                                         ).save(user)
-    except:
-        logs.append(f"Failed to add plist cutoffs for {plist[0].text} {int(plist[0].text) + 1}")
+            logs.append(f"Configured Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}")
+        except Exception as e:
+            logs.append(f"Failed to add Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}: {e}")
     done = True
     close_old_connections()
 
 
-def ajax_import_status(request):
-    if not done:
-        data = {'done': 'false'}
-        return JsonResponse(data)
+def convert_roll(year, term, file, excluded_courses, request):
     global logs
+    global done
+    logs = []
+    done = False
+    plist_cutoffs, students = [], []
+
+    try:
+        plist_cutoffs, students = roll_convert((l.decode("utf-8", "ignore") for l in file), excluded_courses)
+    except Exception as e:
+        logs.append("Generic File Error")
+        logs.append(f"General Error Raised: {e}")
+        done = True
+
+    plist = PlistCutoff.objects.get(year=year)
+    logs.append(f"Excluded courses: {excluded_courses}")
+
+    for grade, cutoff in plist_cutoffs:
+        print(plist, f"grade_{grade}_T{term}")
+        setattr(plist, f"grade_{grade}_T{term}", cutoff)
+        logs.append(f"Saving Plist: Grade {grade} Term {term}: {round(cutoff, 3)}%")
+    plist.save(request.user)
+
+    for s in students:
+        try:
+            student = Student.objects.get(student_num=s.number)
+            grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
+            if not s.term_null:
+                grade.isnull_SC = s.term_null
+            if term == "1":
+                grade.set_term1_avg(s.average)
+                grade.term1_GE = s.GE
+                grade.isnull_term1 = s.term_null
+                grade.isnull_SC = s.term_null
+            else:
+                grade.set_term2_avg(s.average)
+                grade.term2_GE = s.GE
+                grade.isnull_term2 = s.term_null
+            grade.calc_SC_total()
+            grade.save()
+
+            logs.append(f"Set average: {student.first} {student.last} ({student.student_num}) to {round(s.average, 3)}%, GE to {s.GE}, HR exclusion to {s.term_null}")
+        except:
+            logs.append(f"Failed to set average: Student {s.number} to {round(s.average, 3)}%")
+
+    done = True
+
+
+def ajax_import_status(request):
+    global logs
+    if not done:
+        data = {
+            'logs': logs,
+            'done': 'false'
+        }
+        return JsonResponse(data)
     data = {
         'logs': logs,
         'done': 'true'
     }
-
     return JsonResponse(data)
 
 
@@ -284,7 +336,7 @@ def show_all(request):
     return HttpResponse(template.render(context, request))
 
 
-def ajax_all_points(request):
+def ajax_all_actions(request):
     data = []
     now_tz = pytz.timezone(TIME_ZONE)
     for action in LoggedAction.objects.all().order_by('-id'):
@@ -298,35 +350,6 @@ def ajax_all_points(request):
             'message': action.message,
         })
     return JsonResponse(data, safe=False)
-
-
-def convert_roll(year, term, file, request):
-    global done
-    done = False
-
-    plist_cutoffs, students = roll_convert((l.decode() for l in file), ["YCPM", "YBMO", "YIPS", "MCE8", "MCE9", "MCLC"])
-
-    plist = PlistCutoff.objects.get(year=year)
-    for grade, cutoff in plist_cutoffs:
-        print(plist, f"grade_{grade}_T{term}")
-        setattr(plist, f"grade_{grade}_T{term}", cutoff)
-        plist.save(request.user)
-
-    for s in students:
-        try:
-            grade = Student.objects.get(student_num=s.number).get_grade(s.grade)
-            if term == "1":
-                grade.term1_avg = s.average
-                grade.term1_GE = s.GE
-
-            else:
-                grade.term2_avg = s.average
-                grade.term2_GE = s.GE
-            grade.save()
-        except:
-            pass
-
-    done = True
 
 
 def reset_users(request):

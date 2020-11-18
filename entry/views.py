@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
 from django.urls import reverse
 import re
-from data.models import Student, PointCodes, Points
+from data.models import Student, PointCodes, Points, LoggedAction
 from django.http import JsonResponse
 from data.views import google_calendar
 
@@ -85,8 +85,8 @@ def scholar_submit(request):
             student = Student.objects.get(student_num=snum)
             grade = student.get_grade(student.cur_grade_num)
 
-            grade.term1_avg=term1
-            grade.term2_avg=term2
+            grade.set_term1_avg(term1, user=request.user)
+            grade.set_term2_avg(term2, user=request.user)
             grade.save()
         except Exception as e:
             print(e)
@@ -122,18 +122,28 @@ def scholar_upload_file(request):
                     error_msgs.append(f"Error: LAST NAME MISMATCH")
                     continue
 
-                grade = student.get_grade(student.cur_grade_num)
+                if not float(term1) <= 100 and float(term2) <= 100:
+                    error_msgs.append(f"Error: AVERAGE GREATER THAN 100%")
+                    continue
 
-                grade.term1_avg(term1)
-                grade.term2_avg(term2)
-                grade.save()
+                if request.POST.get('check', "false") == "false":
+                    grade = student.get_grade(student.cur_grade_num)
 
-                error_msgs.append(
-                    f"Success: added term 1 and 2 averages for {student.first} {student.last} was "
-                    "entered.")
+                    grade.set_term1_avg(term1, user=request.user)
+                    grade.set_term2_avg(term2, user=request.user)
+                    grade.save()
 
-    context = {}
-    return HttpResponseRedirect("/entry/scholar")
+                error_msgs.append(f"Success: Term 1: {term1}, Term 2: {term2} averages added for {student.first} {student.last})")
+
+    template = get_template('entry/submission-summary.html')
+    usage = "check"
+    if request.POST.get('check', "false") == "false":
+        usage = "submit"
+    context = {
+        'usage': usage,
+        'logs': error_msgs,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def error(request):
@@ -156,7 +166,9 @@ def point_submit(request, point_catagory):
             if any(key.startswith("deletePoint ") for key in request.POST):
                 for key in request.POST:
                     if key != 'csrfmiddlewaretoken':
-                        Points.objects.get(id=int(key.replace("deletePoint ", ""))).delete(request.user)
+                        point = Points.objects.get(id=int(key.replace("deletePoint ", "")))
+                        point.delete(request.user)
+                        point.Grade.calc_points_total(point.type.catagory)
             else:
                 snum = int(request.POST["student-number"])
                 code = int(request.POST["code"])
@@ -181,6 +193,7 @@ def point_submit(request, point_catagory):
 
 def upload_file(request, point_catagory):
     error_msgs = []
+    lines = 0
     entered_by = request.user
     if request.method == "POST":
         if "file" in request.FILES:
@@ -205,13 +218,14 @@ def upload_file(request, point_catagory):
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
                 if "Student Number,Last Name,Average T1,Average T2" in line.decode("utf-8"):
-                    if point_catagory == "FA":
+                    if point_catagory == "SC":
                         continue
                     else:
                         error_msgs.append("Error: File submitted at wrong entry point.")
                         break
 
-                if line.decode("utf-8") == ",,,\n":  # skip blank lines
+                if ",,," in line.decode("utf-8")[:4]:  # skip blank lines
+                    # error_msgs.append("Control Action: Blank Line Skipped")
                     continue
 
                 # print(line.decode("utf-8").strip())
@@ -252,13 +266,120 @@ def upload_file(request, point_catagory):
                         f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
                     continue
 
-                grade = student.get_grade(student.cur_grade_num)
-                grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
-                error_msgs.append(
-                    f"Success: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was entered.")
+                try:
+                    grade = student.get_grade(student.cur_grade_num)
+                    grade.add_point(Points(type=point_type, amount=points, entered_by=entered_by), request.user)
+                    if point_catagory == "SE":
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                    else:
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                    lines += 1
+                except:
+                    error_msgs.append("General Error Raised")
+
+    LoggedAction(user=request.user, message=f"File: {lines} ENTRIES BELOW BULK UPLOADED").save()
+    template = get_template('entry/submission-summary.html')
+    context = {
+        'usage': "submit",
+        'logs': error_msgs,
+        'category': point_catagory,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def check_file(request, point_catagory):
+    error_msgs = []
+    entered_by = request.user
+    if request.method == "POST":
+        if "file" in request.FILES:
+            for line in request.FILES['file']:
+                # if it's the start line skip it
+                try:
+                    line.decode("utf-8")
+                except Exception as e:
+                    error_msgs.append(f"Control Action: Generic Line Error. {e}")
+                if "Student Number,Last Name,Hours of Service,Code" in line.decode("utf-8"):
+                    if point_catagory == "SE":
+                        continue
+                    else:
+                        error_msgs.append("Error: File submitted at wrong entry point.")
+                        break
+                if "Student Number,Last Name,Athletic Points,Code" in line.decode("utf-8"):
+                    if point_catagory == "AT":
+                        continue
+                    else:
+                        error_msgs.append("Error: File submitted at wrong entry point.")
+                        break
+                if "Student Number,Last Name,Fine Art Points,Code" in line.decode("utf-8"):
+                    if point_catagory == "FA":
+                        continue
+                    else:
+                        error_msgs.append("Error: File submitted at wrong entry point.")
+                        break
+                if "Student Number,Last Name,Average T1,Average T2" in line.decode("utf-8"):
+                    if point_catagory == "SC":
+                        continue
+                    else:
+                        error_msgs.append("Error: File submitted at wrong entry point.")
+                        break
+
+                if ",,," in line.decode("utf-8")[:4]:  # skip blank lines
+                    # error_msgs.append("Control Action: Blank Line Skipped")
+                    continue
+
+                # print(line.decode("utf-8").strip())
+                # print(line.decode("utf-8").strip().split(","))
+                try:
+                    snum, last_name, minutes, code = line.decode("utf-8").strip().split(",")[:4]
+
+                    points = float(minutes)
+                    if int(snum) == 1234567:  # skip aardvark
+                        continue
+                    if point_catagory == "SE":  # divide 5 only if it's SE
+                        points = '%.3f' % (float(minutes) / 5)
+
+                    if Student.objects.filter(student_num__iexact=snum).exists():
+                        student = Student.objects.get(student_num=int(snum))
+                    else:
+                        error_msgs.append(f"Error: {points} point(s) of Code {point_catagory}{code} for {snum} was not entered: STUDENT NUMBER NOT FOUND")
+                        continue
+
+                    if PointCodes.objects.filter(catagory=point_catagory).filter(code=code).exists():
+                        point_type = PointCodes.objects.filter(catagory=point_catagory).get(code=code)
+                    else:
+                        error_msgs.append(f"Error: {points} point(s) of Code Type {point_catagory}{code} for {student.first} {student.last} ({student.student_num}) was not entered: CODE UNDEFINED")
+                        continue
+
+                    if not student.last.lower() == last_name.lower():
+                        error_msgs.append(
+                            f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} ({student.student_num}) was not entered: LAST NAME MISMATCH")
+                        continue
+
+                    if point_catagory == "AT" and points > 6:  # check less than 6 for AT
+                        error_msgs.append(
+                            f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} "
+                            f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 6")
+                        continue
+                    if point_catagory == "FA" and points > 10:  # check less than 10 for FA
+                        error_msgs.append(
+                            f"Error: {points} point(s) of Code Type ({point_catagory}{code}) {point_type.description} for {student.first} {student.last} "
+                            f"({student.student_num}) was not entered: POINTS EXCEEDED MAXIMUM VALUE OF 10")
+                        continue
+
+                    if point_catagory == "SE":
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {minutes} hours {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                    else:
+                        error_msgs.append(
+                            f"Success: {student.first} {student.last} ({student.student_num}): {points} point(s) in  {point_catagory}{code} {point_type.description}")
+                except Exception as e:
+                    error_msgs.append(f"General Error Raised: {e}")
 
     template = get_template('entry/submission-summary.html')
     context = {
+        'usage': "check",
         'logs': error_msgs,
         'category': point_catagory,
     }

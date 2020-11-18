@@ -44,6 +44,14 @@ def parseQuery(query):
             if k == 'grade':
                 students = students.filter(cur_grade_num=int(v))
 
+            # filter for students who have a point with a certain type
+            if k == "has_point":
+                new_students = students
+                for s in new_students:
+                    if len(s.cur_grade.points_set.filter(type__catagory=v[:2]).filter(type__code=int(v[2:]))) == 0:
+                        new_students = new_students.exclude(id=s.id)
+                students = new_students
+
             # grade_00_year
             elif k[:6] == "grade_" and k[8:] == "_year":
                 grade = int(k[6:8])
@@ -62,7 +70,18 @@ def parseQuery(query):
                     students = students.filter(**{f"grade_{grade}__term{term}_GE": True})
                 elif v == "honour":
                     students = students.filter(**{f"grade_{grade}___term{term}_avg__gte": 79.5})
+                    students = students.filter(**{f"grade_{grade}__isnull_term{term}": False})
+
+                    # exclude students on plist
+                    new_students = students
+                    for s in students:
+                        grade_obj = s.get_grade(grade)
+                        if not getattr(grade_obj, f"term{term}_avg") < getattr(grade_obj, f"plist_T{term}"):
+                            new_students = new_students.exclude(id=s.id)
+                    students = new_students
+
                 elif v == "principalslist":
+                    students = students.filter(**{f"grade_{grade}__isnull_term{term}": False})
                     new_students = students
                     for s in students:
                         grade_obj = s.get_grade(grade)
@@ -129,7 +148,7 @@ def parseQuery(query):
                             new_students = new_students.exclude(id=s.id)
 
                     elif type == "honourroll":
-                        if not grade.honourroll or grade.isnull_SC:
+                        if (not grade.honourroll or grade.isnull_SC) or grade.principalslist:
                             new_students = new_students.exclude(id=s.id)
                     elif type == "principalslist":
                         if not grade.principalslist or grade.isnull_SC:

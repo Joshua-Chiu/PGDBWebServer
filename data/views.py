@@ -115,8 +115,8 @@ def student_submit(request, num):
 
                 # set the scholar average
                 grade = student.get_grade(grade_num)
-                grade.term1_avg = t1
-                grade.term2_avg = t2
+                grade.set_term1_avg(t1, user=request.user)
+                grade.set_term2_avg(t2, user=request.user)
                 if t1 <= 100 and t2 <= 100: grade.save()
 
             else:
@@ -140,7 +140,7 @@ def student_submit(request, num):
                 grade = student.get_grade(grade_num)
                 grade.add_point(Points(type=typeClass, amount=amount, entered_by=entered_by), request.user)
 
-    for grade_num in range(8, int(student.homeroom[:2]) + 1):
+    for grade_num in range(8, int(student.cur_grade_num) + 1):
         grade = student.get_grade(grade_num)
         grade.isnull_AT = f"AT{grade_num} nullify" not in nullification
         grade.isnull_FA = f"FA{grade_num} nullify" not in nullification
@@ -148,6 +148,7 @@ def student_submit(request, num):
         grade.isnull_SE = f"SE{grade_num} nullify" not in nullification
         grade.isnull_term1 = f"SC{grade_num}T1 nullify" not in nullification
         grade.isnull_term2 = f"SC{grade_num}T2 nullify" not in nullification
+
         grade.calc_points_total("SE")
         grade.calc_points_total("AT")
         grade.calc_points_total("FA")
@@ -176,6 +177,7 @@ def archive_submit(request):
                 file = ET.parse(request.FILES["file"])
                 import_thread = Thread(target=import_pgdb_file, args=(file, request.user, ))
                 import_thread.start()
+                LoggedAction(user=request.user, message=f"File: PGDB Backup File uploaded by {request.user}").save()
                 logs.append("We will now import the file in the background")
         else:
             logs.append("Permission error: Please make sure you can import students")
@@ -232,12 +234,15 @@ def roll_importer(request):
     if request.method == "POST":
         if "file" in request.FILES:
 
-            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"], request, ))
+            excluded = [x.strip() for x in request.POST.get("excluded-courses", "YCPM, YBMO, YIPS, MCE8, MCE9, MCLC").split(',')]
+
+            roll_conv_thread = Thread(target=convert_roll, args=(request.POST["start-year"], request.POST["term"], request.FILES["file"], excluded, request, ))
             roll_conv_thread.start()
     template = get_template('data/file_upload.html')
     context = {
         "logs": logs,
     }
+    LoggedAction(user=request.user, message=f"File: Honour Roll File uploaded by {request.user}").save()
     return HttpResponse(template.render(context, request))
 
 

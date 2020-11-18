@@ -1,0 +1,29 @@
+{% extends 'data/base.html' %}
+{% load static %}
+
+{% block title %}Help{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/collapsible_style.css' %}">
+{% endblock %}
+
+{% block content%}
+    <h2>Integrity Report</h2>
+    <div>
+    {% if integrity_data %}
+    <ul>
+        {% for line in integrity_data %}
+            <li>{{ line }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        No results available
+    {% endif %}
+
+    </div>
+{% endblock %}
+

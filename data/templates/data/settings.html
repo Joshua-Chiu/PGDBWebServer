@@ -28,5 +28,11 @@
     <div>
         <h4><a href="{% url 'users:personalisation' %}">Personalisation</a></h4>
     </div>
+    <div>
+        <h4><a href="{% url 'configuration:integrity_report' %}">Integrity Report</a></h4>
+    </div>
+    <div>
+        <button class="btn" onclick="alert('A check is being executed in the background.\n Recompiling sums and report booleans. \n Checking all points and deleting abandoned children \n Verifying all points are in the designated range.'); window.location.href='{% url 'configuration:integrity_check' %}'">Database Integrity Check</button>
+    </div>
 {% endblock %}
 

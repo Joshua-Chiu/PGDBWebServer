@@ -15,7 +15,7 @@
     <body>
         <h2>Direct Entry (Athletics)</h2>
         <h4>Single entry</h4>
-        <a href="{% url 'entry:dictionary' 'AT' %}">Click here to get the code dictionary</a>
+        <a href="#" onClick="MyWindow=window.open('{% url 'entry:dictionary' 'AT' %}','Code Dictionary','width=600,height=300'); return false;" style="color: red;">Click here to get the code dictionary</a><br><br>
             <form action="{% url "entry:point_submit" "AT" %}" method="post">
                 <fieldset>
                     <label>Student Number: <input class="student-number" required="required" type='number' name="student-number" value="" autofocus></label>
@@ -27,14 +27,37 @@
                     {% csrf_token %}
                 </fieldset>
             </form>
-        {% if user.can_upload or user.is_superuser%}
-        <h4>Form entry</h4>
-            <p>Visit the home/help page to access import template files</p>
-            <form action="{% url 'entry:upload_file' 'AT' %}" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
-                {% csrf_token %}
-            </form>
-        {% endif %}
+        {% if user.can_upload or user.is_superuser %}
+        <h4>Bulk entry</h4>
+        <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td class="border">
+                <h4>Bulk Upload Template</h4>
+                <p>Only this CSV template works for bulk upload</p>
+                <form action="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">
+                    <input type="submit" value="Download File" />
+                </form>
+            </td>
+            <td class="border">
+                <h4>File Validation</h4>
+                <p>Upload a file here to check the file for errors.</p>
+                <form action="{% url 'entry:check_file' 'AT' %}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
+                    {% csrf_token %}
+                </form>
+            </td>
+            <td class="border">
+                <h4>Form entry</h4>
+                <p>Visit the home/help page to access import template files</p>
+                <form action="{% url 'entry:upload_file' 'AT' %}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" onchange="form.submit();" accept=".csv">
+                    {% csrf_token %}
+                </form>
+            </td>
+        </tr>
+        </table>
+
+    {% endif %}
         <h4>My recent actions</h4>
         <form action="{% url "entry:point_submit" "AT" %}" name="single" method="post">
         {% csrf_token %}
