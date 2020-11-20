@@ -83,7 +83,7 @@ class StudentResource(resources.ModelResource):
 class StudentAdmin(admin.ModelAdmin):
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
-    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom', 'active']
+    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'cur_grade_num', 'homeroom_str', 'active']
     list_display_links = ('last', 'first')
     search_fields = ('first', 'last', 'student_num',)
     fieldsets = (
