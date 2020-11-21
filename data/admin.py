@@ -77,7 +77,7 @@ class StudentResource(resources.ModelResource):
         model = Student
         import_id_fields = ('student_num',)
         fields = ('first', 'last', 'legal', 'student_num', 'homeroom', 'sex', 'grad_year')
-        export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'homeroom', 'grad_year']
+        export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'cur_grade_num', 'homeroom_str', 'grad_year']
 
 
 class StudentAdmin(admin.ModelAdmin):
