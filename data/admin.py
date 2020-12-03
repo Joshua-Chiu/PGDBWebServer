@@ -113,19 +113,20 @@ class StudentAdmin(admin.ModelAdmin):
 
     def import_csv_file(self, file, request):
         for line in file:
+            print(line)
             # if it's the start line skip it
-            if line.decode("utf-8") == \
-                    "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
+            if "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation" in line.decode("utf-8"):
                 continue
 
-            print(line.decode("utf-8").strip().split("\t"))
+            print(line.decode("utf-8").strip().split(","))
             student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
             # skip if student exists
-            if Student.objects.filter(student_num=int(student_num)):
-                print(f"student {student_num} already exists")
-                continue
 
             try:
+                if Student.objects.filter(student_num=int(student_num)):
+                    print(f"student {student_num} already exists")
+                    continue
+
                 student = Student(first=first, last=last, legal=legal, student_num=int(student_num),
                                   cur_grade_num=int(re.sub('\D', '', homeroom)),
                                   homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))
