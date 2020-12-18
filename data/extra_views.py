@@ -206,8 +206,8 @@ def import_pgdb_file(tree, user):
                 g_obj = s_obj.get_grade(int(g[0].text))
                 g_obj.anecdote = g[2].text or ""
 
-                g_obj.term1_avg = float(g[3].text)
-                g_obj.term2_avg = float(g[4].text)
+                g_obj.set_term1_avg(float(g[3].text), user)
+                g_obj.set_term2_avg(float(g[4].text), user)
 
                 for p in g[5]:
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -227,7 +227,7 @@ def import_pgdb_file(tree, user):
 
             logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
-            # raise e
+            raise e
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
             logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text}) {e}")
