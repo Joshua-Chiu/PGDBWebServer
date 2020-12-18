@@ -212,6 +212,9 @@ def archive_file(request):
         raise Http404
     query = request.POST['query']
 
+    if query == "":
+        query = "active:both"
+
     print(f"query={query}")
 
     student_list = parseQuery(query)
@@ -225,7 +228,7 @@ def archive_file(request):
     xml_file = io.StringIO(xml_str)
 
     response = HttpResponse(xml_file, content_type='application/xml')
-    response['Content-Disposition'] = f'attachment; filename={query or str(datetime.now().strftime("%Y-%m-%d %Hh%Mm%Ss"))}.pgdb'
+    response['Content-Disposition'] = f'attachment; filename={str(datetime.now().strftime("%Y-%m-%d %Hh%Mm%Ss"))}.pgdb'
 
     return response
 
