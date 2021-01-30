@@ -227,7 +227,7 @@ def import_pgdb_file(tree, user):
 
             logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
-            raise e
+            # raise e
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
             logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text}) {e}")

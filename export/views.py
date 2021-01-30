@@ -52,14 +52,16 @@ def print_annual(request):
         # print(request.GET)
         if "year" in request.GET and request.GET["year"]:
             award = request.GET["athletic"]
-            if "ST" in request.GET["athletic"]:
+            if "cumulative" in request.GET["athletic"]:
+                pass
+            elif "ST" in request.GET["athletic"]:
                 query += f"annual_cert:{request.GET['athletic']}_{request.GET['grade']}"
             else:
                 query += "award_" + request.GET["grade"] + ":" + request.GET["athletic"] + " "
         else:
             query += "award" + ":" + request.GET["athletic"] + " "
 
-    print(query)
+    print(award)
     if query:
         students = parseQuery(query + " active:both")
     else:
@@ -76,6 +78,7 @@ def print_annual(request):
         "goldplus": "Gold Plus",
         "platinum": "Platinum",
         "bigblock": "big block",
+        "cumulative": "Cumulative",
         "3ST": "3-Sport",
         "4ST": "4-Sport",
         "5ST": "5+-Sport",
