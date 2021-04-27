@@ -171,6 +171,13 @@ def export_pgdb_archive(student_list, relevent_plists):
         ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
         ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
 
+    codes = ET.SubElement(root, "codes")
+    for code in PointCodes.objects.all():
+        codes_tag = ET.SubElement(codes, 'codes')
+
+        ET.SubElement(codes_tag, 'code_id').text = str(code.code)
+        ET.SubElement(codes_tag, 'code_description').text = str(code.description)
+        ET.SubElement(codes_tag, 'code_category').text = str(code.catagory)
     return root
 
 
