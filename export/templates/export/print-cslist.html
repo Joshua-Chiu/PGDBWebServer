@@ -1,0 +1,113 @@
+{% extends 'data/base.html' %}
+
+{% load mathfilters %}
+{% load static %}
+
+{% block title %}{% if type %}{{ type }}{% else %}Club and Sport Lists{% endif %}{% endblock %}
+
+{% block navbar %}
+    {% include 'data/navbar.html' %}
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'export/css/reports_styles.css' %}">
+{% endblock %}
+
+{% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
+
+{% block content%}
+    <div>
+    <h2 class="heading">Printing Reports</h2>
+    </div>
+
+    <form method="get" class="search_bar">
+        <fieldset style="border: 0">
+            <label>Grade: <select id="grade" name="grade">
+                <option {% ifequal grade 8 %}selected {% endifequal %}value="8">Grade 8</option>
+                <option {% ifequal grade 9 %}selected {% endifequal %}value="9">Grade 9</option>
+                <option {% ifequal grade 10 %}selected {% endifequal %}value="10">Grade 10</option>
+                <option {% ifequal grade 11 %}selected {% endifequal %}value="11">Grade 11</option>
+                <option {% ifequal grade 12 %}selected {% endifequal %}value="12">Grade 12</option>
+            </select></label>
+
+            <label>Year: <select name="year" id="year"></select></label>
+
+            <label>Service: <select name="service">
+                <option value="">Empty</option>
+            {% for code in points_se %}
+                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
+            </select></label>
+
+            <label>Athletics: <select name="athletic">
+                <option value="">Empty</option>
+            {% for code in points_se %}
+                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
+            </select></label>
+
+            <label>Fine Arts: <select name="fine_arts">
+                <option value="">Empty</option>
+            {% for code in points_fa %}
+                <option {% ifequal "FA" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
+            </select></label>
+
+            <input type="submit" value="Go" onclick="form.action='print-trophies';" />
+        </fieldset>
+    </form>
+
+    <div>
+        <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
+    </div>
+    <div id="GradList">
+        {% ifequal award "SE" %}
+            {% include 'export/award_templates/annual_award_se.html' with student_list=student_list grade=grade %}
+        {% endifequal %}
+
+        {% ifequal award "AT" %}
+            {% include 'export/award_templates/annual_award_at.html' with student_list=student_list grade=grade %}
+        {% endifequal %}
+
+        {% ifequal award "SC" %}
+            {% include 'export/award_templates/annual_award_sc.html' with student_list=student_list grade=grade %}
+        {% endifequal %}
+
+        {% ifequal award "FA" %}
+            {% include 'export/award_templates/annual_award_fa.html' with student_list=student_list grade=grade %}
+        {% endifequal %}
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        {% now "n" as current_month %}
+        const start = new Date().getFullYear() + 1;
+        const end = 1970;
+        let options = "";
+        for(let year = start ; year >=end; year--){
+          options += "<option ";
+          {% if year %}
+          if(year === {{ year }}){
+              options += "selected ";
+          }
+          {% elif current_month|add:"0" <= 7 %}
+          if(year === start - 2){
+              options += "selected ";
+          }
+          {% else %}
+          if(year === start - 1){
+              options += "selected ";
+          }
+          {% endif %}
+              options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
+          }
+        document.getElementById("year").innerHTML = options;
+    </script>
+{% endblock %}
+
+{% block print-styles %}
+    'tr{ page-break-inside:avoid; page-break-after:avoid; }' +
+    'td{ page-break-inside:avoid; page-break-after:avoid; }'+
+    'table{ page-break-inside:avoid; page-break-after:avoid; }'
+{% endblock %}

@@ -81,6 +81,7 @@ class StudentResource(resources.ModelResource):
 
 
 class StudentAdmin(admin.ModelAdmin):
+    list_per_page = 300
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
     list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'cur_grade_num', 'homeroom_str', 'active']

@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.urls import reverse
 
-from data.models import Student
+from data.models import Student, PointCodes
 from util.queryParse import parseQuery
 from configuration.models import Configuration
 
@@ -207,6 +207,21 @@ def print_term(request):
         'term': term,
         'roll': roll,
         'student_list': students,
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect(reverse('entry:error'))
+
+
+def print_cslist(request):
+    template = get_template('export/print-cslist.html')
+
+    context = {
+        'student_list': Student.objects.all(),
+        'points_se': PointCodes.objects.filter(catagory="SE"),
+        'points_at': PointCodes.objects.filter(catagory="AT"),
+        'points_fa': PointCodes.objects.filter(catagory="FA"),
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))
