@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/entry_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'entry/css/entry_styles.css' %}">
 {% endblock %}
 
 {% block content%}
@@ -34,7 +34,7 @@
             <td class="border">
                 <h4>Bulk Upload Template</h4>
                 <p>Only this CSV template works for bulk upload</p>
-                <form action="{% static "help_files/Direct Entry Import (Fill in - Athletics).csv" %}">
+                <form action="{% static "configuration/help_files/Direct Entry Import (Fill in - Athletics).csv" %}">
                     <input type="submit" value="Download File" />
                 </form>
             </td>

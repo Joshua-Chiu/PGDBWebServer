@@ -16,7 +16,7 @@ Import
 {% endblock %}
 
 {% block content %}
-    <a href="{% static "help_files/Import New Grade 8.csv" %}">CLICK HERE to Download Template File</a>
+    <a href="{% static "configuration/help_files/Import New Grade 8.csv" %}">CLICK HERE to Download Template File</a>
     <p>In order to upload the new grade 8's to the database, the template here MUST be used.</p>
     <form method="post" enctype="multipart/form-data">
         <input class="clearable-file-input" type="file" name="file" id="file" onchange="form.submit()" accept=".csv">

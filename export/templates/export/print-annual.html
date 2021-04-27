@@ -12,9 +12,9 @@
 {% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'export/css/reports_styles.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-    <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
+    <script src="{% static 'export/vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
 {% block content%}
