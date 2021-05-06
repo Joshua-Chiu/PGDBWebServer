@@ -234,7 +234,7 @@ def import_pgdb_file(tree, user):
 
             logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
-            # raise e
+            raise e
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
             logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text}) {e}")
@@ -269,6 +269,17 @@ def import_pgdb_file(tree, user):
             logs.append(f"Configured Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}")
         except Exception as e:
             logs.append(f"Failed to add Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}: {e}")
+
+    for code in root[2]:
+        try:
+            if PointCodes.objects.filter(catagory=code[3].text(), code=int(code[1].text())).exists():
+                obj = PointCodes.objects.get(catagory=code[3].text(), code=int(code[1].text()))
+                obj.description = code[2].text()
+                obj.save()
+            else:
+                PointCodes.objects.create(catagory=code[3].text(), code=int(code[1].text()), description=code[2].text())
+        except Exception as e:
+            logs.append(f"Failed to create code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}: {e}")
     done = True
     close_old_connections()
 
