@@ -1,3 +1,5 @@
+import csv
+from util.queryParse import parseQuery
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -419,3 +421,23 @@ def validate_point_code(request):
                 'code_description': code[0].description,
             }
     return JsonResponse(data)
+
+
+def scholar_file(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Direct Entry Import (Fill in - Scholar).csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Student Number', 'Last Name', 'Average T1', 'Average T2'])
+
+    if request.GET:
+        grade = int(request.GET["grade"])
+        students = parseQuery(f"grade:{str(grade).zfill(2)} active:yes")
+        writer.writerow(['1234567', 'Aardvark', '#Leave empty for the other term', 89.764])
+
+        for student in students:
+            writer.writerow([student.student_num, student.last, '', ''])
+
+    return response
+

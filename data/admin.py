@@ -16,17 +16,43 @@ from django.template.loader import get_template
 import re
 import threading
 
-
 def increase_grade(modeladmin, request, queryset):
     def increase():
-        for student in queryset:
-            if student.cur_grade_num >= 12:
-                student.active = False
-                student.save(request.user)
-            else:
-                student.active = True
-                student.cur_grade_num += 1
-                student.save(request.user)
+        log = LoggedAction(
+            user=request.user,
+            message=f"Starting new school year... Increasing grade for all students")
+        log.save()
+        try:
+            for student in queryset:
+                try:
+                    if student.cur_grade_num >= 12:
+                        student.active = False
+                        student.save(request.user)
+                        log = LoggedAction(
+                            user=request.user,
+                            message=f"Deactivated Student: {student.first} {student.last} ({student.student_num})")
+                        log.save()
+                    else:
+                        student.active = True
+                        student.cur_grade_num += 1
+                        student.save(request.user)
+                        log = LoggedAction(
+                            user=request.user,
+                            message=f"Increased Grade for student: {student.first} {student.last} ({student.student_num})")
+                        log.save()
+                except Exception as e:
+                    log = LoggedAction(
+                        user=request.user,
+                        message=f"Error occured when increasing grade for student: {student.first} {student.last} ({student.student_num})")
+                    log.save()
+
+        except Exception as e:
+            print(e)
+            log = LoggedAction(
+                user=request.user,
+                message=f"Generic Error occured when increasing grade")
+            log.save()
+
 
     thread = threading.Thread(target=increase)
     thread.start()
@@ -77,13 +103,14 @@ class StudentResource(resources.ModelResource):
         model = Student
         import_id_fields = ('student_num',)
         fields = ('first', 'last', 'legal', 'student_num', 'homeroom', 'sex', 'grad_year')
-        export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'homeroom', 'grad_year']
+        export_order = ['student_num', 'first', 'last', 'legal', 'sex', 'cur_grade_num', 'homeroom_str', 'grad_year']
 
 
 class StudentAdmin(admin.ModelAdmin):
+    list_per_page = 300
     resource_class = StudentResource
     formats = (base_formats.XLSX, base_formats.ODS, base_formats.CSV, base_formats.CSV)
-    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'homeroom', 'active']
+    list_display = ['last', 'first', 'legal', 'student_num', 'sex', 'cur_grade_num', 'homeroom_str', 'active']
     list_display_links = ('last', 'first')
     search_fields = ('first', 'last', 'student_num',)
     fieldsets = (
@@ -113,19 +140,20 @@ class StudentAdmin(admin.ModelAdmin):
 
     def import_csv_file(self, file, request):
         for line in file:
+            print(line)
             # if it's the start line skip it
-            if line.decode("utf-8") == \
-                    "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation\n":
+            if "Student Number,Last Name,First Name,Legal Name,Gender,Homeroom,Year of Graduation" in line.decode("utf-8"):
                 continue
 
-            print(line.decode("utf-8").strip().split("\t"))
+            print(line.decode("utf-8").strip().split(","))
             student_num, last, first, legal, sex, homeroom, grad_year = line.decode("utf-8").strip().split(",")
             # skip if student exists
-            if Student.objects.filter(student_num=int(student_num)):
-                print(f"student {student_num} already exists")
-                continue
 
             try:
+                if Student.objects.filter(student_num=int(student_num)):
+                    print(f"student {student_num} already exists")
+                    continue
+
                 student = Student(first=first, last=last, legal=legal, student_num=int(student_num),
                                   cur_grade_num=int(re.sub('\D', '', homeroom)),
                                   homeroom_str=homeroom.lstrip('0123456789'), sex=sex, grad_year=int(grad_year))

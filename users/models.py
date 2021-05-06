@@ -6,6 +6,14 @@ from django.contrib.auth.models import Group
 register = template.Library()
 
 
+class AccessControl(models.Model):
+    identifier = models.CharField(max_length=250, default='Set Identifier', unique=True)
+    description = models.CharField(max_length=250, default='Set Description')
+
+    def __str__(self):
+        return self.description
+
+
 class CustomUser(AbstractUser):
     # Personalization Fields
     autofocus = models.IntegerField(default=1,
@@ -19,21 +27,34 @@ class CustomUser(AbstractUser):
     text_colour = models.CharField(max_length=7, default='#000000')
     collapsible_bar_colour = models.CharField(max_length=7, default='#eeeeee')
 
-    # Permission Booleans
-    can_view = models.BooleanField(default=False, verbose_name='Can view student page with all information',
-                                   help_text="Designates whether the user can see the student view with all the data. Note: If a user is a superuser, this is disregarded.")
+    accesscontrol = models.ManyToManyField(AccessControl,
+        verbose_name=('Database Access Control'),
+        blank=True,
+        help_text=('Specify access control for this user. Ctrl + A to select all.'),
+        related_name="accesscontrol_set",
+        related_query_name="accesscontrol",)
 
-    no_entry = models.BooleanField(default=True, verbose_name='Disable entry at student page',
-                                   help_text="Designates whether the user can enter data at the student view. Note: If a user is a superuser, this is disregarded.")
+    @register.filter(name='has_access')
+    def has_access(self, perm):
+        try:
+            perm = AccessControl.objects.get(identifier=perm)
+        except Exception as e:
+            print(f"Can't find permission: {perm}")
+            return False
 
-    can_upload = models.BooleanField(default=False, verbose_name='Bulk upload at Direct Entry',
-                                     help_text="Designates whether the user can submit files for at direct entry pages. Note: If a user is a superuser, this is disregarded.")
+        return perm in self.accesscontrol.all()
 
-    '''
-    # Report Booleans
-    pull_grad = models.BooleanField(default=False, verbose_name='Can view student page with all information',
-                                   help_text="Designates whether the user can see the student view with all the data. Note: If a user is a superuser, this is disregarded.")
-    '''
+    @property
+    def can_upload(self):
+        return self.has_access("can_upload")
+
+    @property
+    def no_entry(self):
+        return not self.has_access("can_enter")
+
+    @property
+    def can_view(self):
+        return self.has_access("can_view")
 
     @register.filter(name='has_group')
     def has_group(self, group_name):

@@ -4,7 +4,7 @@
 {% load static %}
 {% load has_access %}
 
-{% block title %}{% if type %}{{ type }}{% else %}Trophy Candidates{% endif %}{% endblock %}
+{% block title %}{% if type %}{{ type }}{% else %}Club and Sport Lists{% endif %}{% endblock %}
 
 {% block navbar %}
     {% include 'data/navbar.html' %}
@@ -21,6 +21,8 @@
     <h2 class="heading">Printing Reports</h2>
     </div>
 
+    {% if request.user|has_access:"pull_cs" %}
+
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
             <label>Grade: <select id="grade" name="grade">
@@ -33,11 +35,25 @@
 
             <label>Year: <select name="year" id="year"></select></label>
 
-            <label>Trophy Type: <select name="trophy-awards">
-                {% if request.user|has_access:"pull_trophy_se" %}<option {% ifequal "SE" point_type %}selected {% endifequal %}value="SE">Service Candidates</option>{% endif %}
-                {% if request.user|has_access:"pull_trophy_at" %}<option {% ifequal "AT" point_type %}selected {% endifequal %}value="AT">Athletics Candidates</option>{% endif %}
-                {% if request.user|has_access:"pull_trophy_sc" %}<option {% ifequal "SC" point_type %}selected {% endifequal %}value="SC">Scholar Candidates</option>{% endif %}
-                {% if request.user|has_access:"pull_trophy_fa" %}<option {% ifequal "FA" point_type %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>{% endif %}
+            <label>Service: <select name="service">
+                <option value="">Select</option>
+            {% for code in points_se %}
+                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
+            </select></label>
+
+            <label>Athletics: <select name="athletic">
+                <option value="">Select</option>
+            {% for code in points_at %}
+                <option {% ifequal "AT" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
+            </select></label>
+
+            <label>Fine Arts: <select name="fine_arts">
+                <option value="">Select</option>
+            {% for code in points_fa %}
+                <option {% ifequal "FA" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+            {% endfor %}
             </select></label>
 
             <input type="submit" value="Go" onclick="form.action='print-trophies';" />
@@ -64,6 +80,9 @@
             {% include 'export/award_templates/annual_award_fa.html' with student_list=student_list grade=grade %}
         {% endifequal %}
     </div>
+    {% else %}
+        <h4>You do not have permission to pull this report</h4>
+    {% endif %}
 
 {% endblock %}
 {% block javascript %}

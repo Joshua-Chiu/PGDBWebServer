@@ -1,6 +1,7 @@
 {% extends 'data/base.html' %}
 
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Honour Rolls{% endif %}{% endblock %}
 
@@ -11,15 +12,16 @@
 {% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'export/css/reports_styles.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-    <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
+    <script src="{% static 'export/vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
 {% block content%}
     <div>
         <h2 class="heading">Printing Reports</h2>
     </div>
+    {% if request.user|has_access:"pull_term" %}
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
             <labeL>Grade: <select name="grade">
@@ -56,6 +58,10 @@
 
     {% if student_list %}
         {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %}
+    {% endif %}
+
+    {% else %}
+        <h4>You do not have permission to pull this report</h4>
     {% endif %}
 
 {% endblock %}

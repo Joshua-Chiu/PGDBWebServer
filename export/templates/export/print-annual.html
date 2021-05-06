@@ -2,6 +2,7 @@
 
 {% load mathfilters %}
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Annual Awards{% endif %}{% endblock %}
 
@@ -12,9 +13,9 @@
 {% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/reports_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'export/css/reports_styles.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-    <script src="{% static 'vivaldin-italic.js' %}" type="module"></script>
+    <script src="{% static 'export/vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
 {% block content%}
@@ -36,32 +37,33 @@
             <label>Annual Certificates:
             <select name="annual">
                 <option value="" >Select</option>
-                <option {% ifequal award "SE" %}selected {% endifequal %}value="SE" >Service</option>
-                <option {% ifequal award "AT" %}selected {% endifequal %}value="AT" >Athletics</option>
-                <option {% ifequal award "honourroll" %}selected {% endifequal %}value="honourroll" >Scholar Honour Roll</option>
-                <option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Scholar Principal's List</option>
-                <option {% ifequal award "FA" %}selected {% endifequal %}value="FA" >Fine Arts</option>
+                {% if request.user|has_access:"pull_annual_service" %}<option {% ifequal award "SE" %}selected {% endifequal %}value="SE" >Service</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_athletic" %}<option {% ifequal award "AT" %}selected {% endifequal %}value="AT" >Athletics</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_honour" %}<option {% ifequal award "honourroll" %}selected {% endifequal %}value="honourroll" >Scholar Honour Roll</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_plist" %}<option {% ifequal award "principalslist" %}selected {% endifequal %}value="principalslist" >Scholar Principal's List</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_finearts" %}<option {% ifequal award "FA" %}selected {% endifequal %}value="FA" >Fine Arts</option>{% endif %}
             </select>
             </label>
 
             <label>Cumulative Awards:
             <select name="cumulative">
                 <option value="" >Select</option>
-                <option {% ifequal award "silver" %}selected {% endifequal %}value="silver" >Greyhound Silver Pin</option>
-                <option {% ifequal award "gold" %}selected {% endifequal %}value="gold" >Greyhound Gold Pin</option>
-                <option {% ifequal award "goldplus" %}selected {% endifequal %}value="goldplus" >Greyhound Gold+ Bar</option>
-                <option {% ifequal award "platinum" %}selected {% endifequal %}value="platinum" >Greyhound Platinum Pin</option>
+                {% if request.user|has_access:"pull_cum_silver" %}<option {% ifequal award "silver" %}selected {% endifequal %}value="silver" >Greyhound Silver Pin</option>{% endif %}
+                {% if request.user|has_access:"pull_cum_gold" %}<option {% ifequal award "gold" %}selected {% endifequal %}value="gold" >Greyhound Gold Pin</option>{% endif %}
+                {% if request.user|has_access:"pull_cum_gold+" %}<option {% ifequal award "goldplus" %}selected {% endifequal %}value="goldplus" >Greyhound Gold+ Bar</option>{% endif %}
+                {% if request.user|has_access:"pull_cum_platinum" %}<option {% ifequal award "platinum" %}selected {% endifequal %}value="platinum" >Greyhound Platinum Pin</option>{% endif %}
             </select>
             </label>
 
             <label>Athletic Awards:
             <select name="athletic">
                 <option value="" >Select</option>
-                <option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>
-                <option {% ifequal award "2ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>
-                <option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3+ Sport Athletes</option>
-                <option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>
-                <option {% ifequal award "5ST" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>
+                {% if request.user|has_access:"pull_annual_bb" %}<option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_atcum" %}<option {% ifequal award "cumulative" %}selected {% endifequal %}value="cumulative" >Athletics Cumulative</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at3" %}<option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at3+" %}<option {% ifequal award "3STPLUS" %}selected {% endifequal %}value="3ST" >Annual 3+ Sport Athletes</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at4" %}<option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at4+" %}<option {% ifequal award "4STPLUS" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>{% endif %}
             </select>
             </label>
 
@@ -77,6 +79,8 @@
 
     {% if student_list %}
         {% if award == "bigblock" %}
+            {% include 'export/award_templates/annual_cert_bigblock.html' with student_list=student_list %}
+        {% elif award == "cumulative" %}
             {% include 'export/award_templates/annual_cert_bigblock.html' with student_list=student_list %}
         {% elif "ST" in award %}
             {% include 'export/award_templates/annual_cert_sport_athletes.html' with student_list=student_list grade=grade %}

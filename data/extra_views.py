@@ -171,6 +171,13 @@ def export_pgdb_archive(student_list, relevent_plists):
         ET.SubElement(plist_tag, 'grade_12_T1').text = str(plist_object.grade_12_T1)
         ET.SubElement(plist_tag, 'grade_12_T2').text = str(plist_object.grade_12_T2)
 
+    codes = ET.SubElement(root, "codes")
+    for code in PointCodes.objects.all():
+        codes_tag = ET.SubElement(codes, 'codes')
+
+        ET.SubElement(codes_tag, 'code_id').text = str(code.code)
+        ET.SubElement(codes_tag, 'code_description').text = str(code.description)
+        ET.SubElement(codes_tag, 'code_category').text = str(code.catagory)
     return root
 
 
@@ -206,8 +213,8 @@ def import_pgdb_file(tree, user):
                 g_obj = s_obj.get_grade(int(g[0].text))
                 g_obj.anecdote = g[2].text or ""
 
-                g_obj.term1_avg = float(g[3].text)
-                g_obj.term2_avg = float(g[4].text)
+                g_obj.set_term1_avg(float(g[3].text), user)
+                g_obj.set_term2_avg(float(g[4].text), user)
 
                 for p in g[5]:
                     if (len(PointCodes.objects.filter(catagory=p[0].text).filter(
@@ -227,7 +234,7 @@ def import_pgdb_file(tree, user):
 
             logs.append(f"Added student {s[0].text} \t ({s[4].text}, {s[3].text}) successfully")
         except Exception as e:
-            # raise e
+            raise e
             student_num = int(s[0].text)
             print(f"Failed to add student {int(s[0].text)}")
             logs.append(f"Failed to add student {s[0].text} \t ({s[4].text}, {s[3].text}) {e}")
@@ -262,6 +269,19 @@ def import_pgdb_file(tree, user):
             logs.append(f"Configured Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}")
         except Exception as e:
             logs.append(f"Failed to add Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}: {e}")
+
+    for code in root[2]:
+        try:
+            if PointCodes.objects.filter(catagory=code[3].text(), code=int(code[1].text())).exists():
+                obj = PointCodes.objects.get(catagory=code[3].text(), code=int(code[1].text()))
+                obj.description = code[2].text()
+                obj.save()
+            else:
+                PointCodes.objects.create(catagory=code[3].text(), code=int(code[1].text()), description=code[2].text())
+            logs.append(
+                f"Created code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}")
+        except Exception as e:
+            logs.append(f"Failed to create code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}: {e}")
     done = True
     close_old_connections()
 

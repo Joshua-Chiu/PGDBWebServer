@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.urls import reverse
 
-from data.models import Student
+from data.models import Student, PointCodes
 from util.queryParse import parseQuery
 from configuration.models import Configuration
 
@@ -52,14 +52,16 @@ def print_annual(request):
         # print(request.GET)
         if "year" in request.GET and request.GET["year"]:
             award = request.GET["athletic"]
-            if "ST" in request.GET["athletic"]:
+            if "cumulative" in request.GET["athletic"]:
+                pass
+            elif "ST" in request.GET["athletic"]:
                 query += f"annual_cert:{request.GET['athletic']}_{request.GET['grade']}"
             else:
                 query += "award_" + request.GET["grade"] + ":" + request.GET["athletic"] + " "
         else:
             query += "award" + ":" + request.GET["athletic"] + " "
 
-    print(query)
+    print(award)
     if query:
         students = parseQuery(query + " active:both")
     else:
@@ -76,6 +78,7 @@ def print_annual(request):
         "goldplus": "Gold Plus",
         "platinum": "Platinum",
         "bigblock": "big block",
+        "cumulative": "Cumulative",
         "3ST": "3-Sport",
         "4ST": "4-Sport",
         "5ST": "5+-Sport",
@@ -204,6 +207,21 @@ def print_term(request):
         'term': term,
         'roll': roll,
         'student_list': students,
+    }
+    if request.user.is_superuser:
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponseRedirect(reverse('entry:error'))
+
+
+def print_cslist(request):
+    template = get_template('export/print-cslist.html')
+
+    context = {
+        'student_list': Student.objects.all(),
+        'points_se': PointCodes.objects.filter(catagory="SE"),
+        'points_at': PointCodes.objects.filter(catagory="AT"),
+        'points_fa': PointCodes.objects.filter(catagory="FA"),
     }
     if request.user.is_superuser:
         return HttpResponse(template.render(context, request))

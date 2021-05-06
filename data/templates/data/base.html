@@ -8,11 +8,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <link rel="icon" type="image/png" href="{% static 'icon.png'%}" />
+    <link rel="icon" type="image/png" href="{% static 'data/icon.png' %}" />
     <title>{% block title %}Database{% endblock %} | Point Grey Awards Database</title>
     {% comment %}<link rel="stylesheet" href="{% url 'users:custom_css' %}">-->{% endcomment %}
-    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
-    <script src="{% static 'Javascript/sorttable.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'data/css/base_style.css' %}">
+    <script src="{% static 'data/Javascript/sorttable.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     {% include 'session_security/all.html' %}
     {% block stylesheet %}{% endblock %}
@@ -24,7 +24,7 @@
 <body style="background-color: {{ user.page_colour }};">
 <div class="top" style="background-color: {{ user.header_colour }};">
     <div class="toptext" style="display:inline;text-align:left; float: left;">
-        <a href="https://www.vsb.bc.ca/schools/point-grey/Families/Awards/Pages/default.aspx" target="_blank"><img src="{% static 'pglogo.png' %}" alt="Point Grey Secondary Logo" height="50" width="50"></a>
+        <a href="https://www.vsb.bc.ca/schools/point-grey/Families/Awards/Pages/default.aspx" target="_blank"><img src="{% static 'data/pglogo.png' %}" alt="Point Grey Secondary Logo" height="50" width="50"></a>
     </div>
 
     <div>

@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/entry_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'entry/css/entry_styles.css' %}">
 {% endblock %}
 
 {% block content%}
@@ -33,7 +33,7 @@
             <td class="border">
                 <h4>Wizard Upload Template</h4>
                 <p>Only this CSV template works for wizard upload</p>
-                <form action="{% static "help_files/Scholar_Wizard_Template.csv" %}">
+                <form action="{% static "configuration/help_files/Scholar_Wizard_Template.csv" %}">
                     <input type="submit" value="Download File" />
                 </form>
             </td>
@@ -79,8 +79,16 @@
             <td class="border">
                 <h4>Bulk Upload Template</h4>
                 <p>Only this CSV template works for bulk upload</p>
-                <form action="{% static "help_files/Direct Entry Import (Fill in - Scholar).csv" %}">
+                <form action="{% url "entry:scholar_file" %}" method="GET">
                     <input type="submit" value="Download File" />
+                    <select name="grade">
+                        <option value="00">Blank File</option>
+                        <option value="08">Grade 08</option>
+                        <option value="09">Grade 09</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                    </select>
                 </form>
             </td>
             <td class="border">

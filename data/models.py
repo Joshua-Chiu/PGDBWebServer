@@ -165,6 +165,9 @@ class Grade(models.Model):
         annual_sc_pl = True
         annual_fa = True
     '''
+    @property
+    def stu(self):
+        return self.grade
 
 # declare Grade_8 through to 12 which inherit from Grade
 # this is done so that Student can have 5 oneToOnes of the 'same' type
