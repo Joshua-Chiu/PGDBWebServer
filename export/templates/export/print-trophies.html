@@ -2,6 +2,7 @@
 
 {% load mathfilters %}
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Trophy Candidates{% endif %}{% endblock %}
 
@@ -33,10 +34,10 @@
             <label>Year: <select name="year" id="year"></select></label>
 
             <label>Trophy Type: <select name="trophy-awards">
-                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="SE">Service Candidates</option>
-                <option {% ifequal "AT" point_type %}selected {% endifequal %}value="AT">Athletics Candidates</option>
-                <option {% ifequal "SC" point_type %}selected {% endifequal %}value="SC">Scholar Candidates</option>
-                <option {% ifequal "FA" point_type %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>
+                {% if request.user|has_access:"pull_trophy_se" %}<option {% ifequal "SE" point_type %}selected {% endifequal %}value="SE">Service Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_trophy_at" %}<option {% ifequal "AT" point_type %}selected {% endifequal %}value="AT">Athletics Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_trophy_sc" %}<option {% ifequal "SC" point_type %}selected {% endifequal %}value="SC">Scholar Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_trophy_fa" %}<option {% ifequal "FA" point_type %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>{% endif %}
             </select></label>
 
             <input type="submit" value="Go" onclick="form.action='print-trophies';" />

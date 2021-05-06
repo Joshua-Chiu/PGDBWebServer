@@ -2,6 +2,7 @@
 
 {% load mathfilters %}
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if award_type_display %}Grade {{ grade_num }} {{ year }}-{{ year|add:1 }} {{ award_type_display }}{% else %}Data{% endif %} Crosscheck{% endblock %}
 
@@ -33,10 +34,10 @@
             <label>Year: <select name="year" id="year"></select></label>
 
             <label>Type: <select name="type">
-                <option {% ifequal award_type "SE" %}selected{% endifequal %} value="SE"> Service</option>
-                <option {% ifequal award_type "AT" %}selected{% endifequal %} value="AT">Athletics</option>
-                <option {% ifequal award_type "SC" %}selected{% endifequal %} value="SC">Scholar</option>
-                <option {% ifequal award_type "FA" %}selected{% endifequal %} value="FA">Fine Arts</option>
+                {% if request.user|has_access:"pull_xcheck_se" %}<option {% ifequal award_type "SE" %}selected{% endifequal %} value="SE">Service</option>{% endif %}
+                {% if request.user|has_access:"pull_xcheck_at" %}<option {% ifequal award_type "AT" %}selected{% endifequal %} value="AT">Athletics</option>{% endif %}
+                {% if request.user|has_access:"pull_xcheck_sc" %}<option {% ifequal award_type "SC" %}selected{% endifequal %} value="SC">Scholar</option>{% endif %}
+                {% if request.user|has_access:"pull_xcheck_fa" %}<option {% ifequal award_type "FA" %}selected{% endifequal %} value="FA">Fine Arts</option>{% endif %}
             </select></label>
 
             <input type="submit" value="Go" onclick="form.action='print-xcheck';" />

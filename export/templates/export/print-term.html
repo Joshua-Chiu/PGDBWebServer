@@ -1,6 +1,7 @@
 {% extends 'data/base.html' %}
 
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Honour Rolls{% endif %}{% endblock %}
 
@@ -20,6 +21,7 @@
     <div>
         <h2 class="heading">Printing Reports</h2>
     </div>
+    {% if request.user|has_access:"pull_term" %}
     <form method="get" class="search_bar">
         <fieldset style="border: 0">
             <labeL>Grade: <select name="grade">
@@ -56,6 +58,10 @@
 
     {% if student_list %}
         {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %}
+    {% endif %}
+
+    {% else %}
+        <h4>You do not have permission to pull this report</h4>
     {% endif %}
 
 {% endblock %}

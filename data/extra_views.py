@@ -278,6 +278,8 @@ def import_pgdb_file(tree, user):
                 obj.save()
             else:
                 PointCodes.objects.create(catagory=code[3].text(), code=int(code[1].text()), description=code[2].text())
+            logs.append(
+                f"Created code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}")
         except Exception as e:
             logs.append(f"Failed to create code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}: {e}")
     done = True

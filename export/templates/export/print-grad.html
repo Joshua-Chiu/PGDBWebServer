@@ -1,6 +1,7 @@
 {% extends 'data/base.html' %}
 
 {% load static %}
+{% load has_access %}
 
 {% block title %}{% if type %}{{ type }}{% else %}Graduation{% endif %} Candidates{% endblock %}
 
@@ -27,11 +28,11 @@
 
             <label>Graduation Awards:
             <select name="grad-awards">
-                <option {% ifequal award "SE" %}selected {% endifequal %}value="SE">Service Candidates</option>
-                <option {% ifequal award "AT" %}selected {% endifequal %}value="AT">Athletics Candidates</option>
-                <option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>
-                <option {% ifequal award "FA" %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>
-                <option {% ifequal award "ME" %}selected {% endifequal %}value="ME">Merit Candidates</option>
+                {% if request.user|has_access:"pull_grad_se" %}<option {% ifequal award "SE" %}selected {% endifequal %}value="SE">Service Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_grad_at" %}<option {% ifequal award "AT" %}selected {% endifequal %}value="AT">Athletics Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_grad_sc" %}<option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_grad_fa" %}<option {% ifequal award "FA" %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_grad_me" %}<option {% ifequal award "ME" %}selected {% endifequal %}value="ME">Merit Candidates</option>{% endif %}
             </select></label>
 
             <input type="submit" value="Go" onclick="form.action='print-grad';"/>

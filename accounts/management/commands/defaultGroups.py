@@ -1,6 +1,8 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
+from users.models import AccessControl
+
 """
 Create permission groups
 Create permissions (read only) to models for a set of groups
@@ -34,13 +36,20 @@ USERS = [
 ]
 
 PLIST = [
-    [int(datetime.datetime.now().year) - 0, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 1, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 2, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 3, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 4, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 5, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
-    [int(datetime.datetime.now().year) - 6, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999],
+    [int(datetime.datetime.now().year) - 0, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 1, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 2, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 3, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 4, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 5, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
+    [int(datetime.datetime.now().year) - 6, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999, 99.999,
+     99.999],
 ]
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
@@ -48,20 +57,62 @@ PERMISSIONS = ['change', ]  # For now only view permission by default for all, o
 ACCESS_CONTROL = [  # Define the permissions
     ['can_view', 'CAN VIEW STUDENT PAGE - Designates whether the user can see the student view with all the data.'],
     ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
-    ['no_entry', 'NO ENTRY ALLOWED - Designates whether the user can enter data at the student view.'],
+    ['can_enter', 'CAN ENTER DATA - Designates whether the user can enter data at the student view.'],
 
-    ['pull_service', 'CAN PULL ALL SERVICE REPORTS - Designates whether the user can generate service reports'],
-    ['pull_athletics', 'CAN PULL ALL SERVICE REPORTS - Designates whether the user can generate service reports'],
-    ['pull_scholar', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
-    ['pull_finearts', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
+    # ['pull_service', 'CAN PULL ALL SERVICE REPORTS - Designates whether the user can generate all service reports'],
+    # ['pull_athletics', 'CAN PULL ALL ATHLETICS REPORTS - Designates whether the user can generate all athletics reports'],
+    # ['pull_scholar', 'CAN PULL ALL HONOUR/SCHOLAR REPORTS - Designates whether the user can generate all scholar reports'],
+    # ['pull_finearts', 'CAN PULL ALL FINE ART REPORTS - Designates whether the user can generate all fine arts reports'],
 
-    ['pull_service', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
+    ['pull_term', 'CAN PULL TERM HR/GE LISTS - Designates whether the user can pull term reports.'],
 
-    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
-    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
-    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
-    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
-    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['pull_annual_service',
+     'CAN PULL ANNUAL SERVICE CERTIFICATES - Designates whether the user can generate the annual report'],
+    ['pull_annual_athletic',
+     'CAN PULL ANNUAL ATHLETICS CERTIFICATES - Designates whether the user can generate the annual report'],
+    ['pull_annual_honour',
+     'CAN PULL ANNUAL SCHOLAR HONOUR CERTIFICATES - Designates whether the user can generate the annual report'],
+    ['pull_annual_plist',
+     'CAN PULL ANNUAL SCHOLAR PLIST CERTIFICATES - Designates whether the user can generate the annual report'],
+    ['pull_annual_finearts',
+     'CAN PULL ANNUAL SCHOLAR FINE ARTS CERTIFICATES - Designates whether the user can generate the annual report'],
+
+    ['pull_cum_silver', 'CAN PULL GREYHOUND SILVER PIN - Designates whether the user can generate the annual report'],
+    ['pull_cum_gold', 'CAN PULL GREYHOUND GOLD PIN - Designates whether the user can generate the annual report'],
+    ['pull_cum_gold+', 'CAN PULL GREYHOUND GOLD+ BAR - Designates whether the user can generate the annual report'],
+    ['pull_cum_platinum',
+     'CAN PULL GREYHOUND PLATINIUM PIN - Designates whether the user can generate the annual report'],
+
+    ['pull_annual_bb',
+     'CAN PULL ANNUAL BIG BLOCK - Designates whether the user can pull annual athletics big block report.'],
+    ['pull_annual_atcum',
+     'CAN PULL ANNUAL AT CUMULATIVE - Designates whether the user can pull annual athletics cumulative report.'],
+    ['pull_annual_at3',
+     'CAN PULL ANNUAL 3 SPORT ATHLETES - Designates whether the user can pull annual athletics 3S report.'],
+    ['pull_annual_at3+',
+     'CAN PULL ANNUAL 3+ SPORT ATHLETES - Designates whether the user can pull annual athletics 3+ report.'],
+    ['pull_annual_at4',
+     'CAN PULL ANNUAL 4 SPORT ATHLETES - Designates whether the user can pull annual athletics 4S report.'],
+    ['pull_annual_at4+',
+     'CAN PULL ANNUAL 4+ SPORT ATHLETES - Designates whether the user can pull annual athletics 4+ report.'],
+
+    ['pull_trophy_se', 'CAN PULL SE TROPHY - Designates whether the user can pull service trophy reports.'],
+    ['pull_trophy_at', 'CAN PULL AT TROPHY - Designates whether the user can pull athletics trophy reports.'],
+    ['pull_trophy_sc', 'CAN PULL SC TROPHY - Designates whether the user can pull scholar trophy reports.'],
+    ['pull_trophy_fa', 'CAN PULL FA TROPHY - Designates whether the user can pull fine arts trophy reports.'],
+
+    ['pull_grad_se', 'CAN PULL SE GRAD REPORT - Designates whether the user can pull service grad reports.'],
+    ['pull_grad_at', 'CAN PULL AT GRAD REPORT - Designates whether the user can pull athletics grad reports.'],
+    ['pull_grad_sc', 'CAN PULL SC GRAD REPORT - Designates whether the user can pull scholar grad reports.'],
+    ['pull_grad_fa', 'CAN PULL FA GRAD REPORT - Designates whether the user can pull fine arts grad reports.'],
+    ['pull_grad_me', 'CAN PULL ME GRAD REPORT - Designates whether the user can pull merit grad reports.'],
+
+    ['pull_xcheck_se', 'CAN PULL SE XCHECK REPORT - Designates whether the user can pull service xcheck reports.'],
+    ['pull_xcheck_at', 'CAN PULL AT XCHECK REPORT - Designates whether the user can pull athletics xcheck reports.'],
+    ['pull_xcheck_sc', 'CAN PULL SC XCHECK REPORT - Designates whether the user can pull scholar xcheck reports.'],
+    ['pull_xcheck_fa', 'CAN PULL FA XCHECK REPORT - Designates whether the user can pull fine arts xcheck reports.'],
+
+    ['pull_cs', 'CAN PULL CLUB/TEAM SEARCH LISTS - Designates whether the user can pull club/team reports.'],
 ]
 POINTTYPES = [
     ['SE', 0, 'See Student Comment Box'],
@@ -202,6 +253,7 @@ POINTTYPES = [
 
 ]
 
+
 class Command(BaseCommand):
     help = 'Creates 4 default groups for users and create pgadmin'
 
@@ -235,8 +287,8 @@ class Command(BaseCommand):
 
             user.is_superuser = is_super
             user.is_staff = is_staff
-            user.can_view = can_view
-            user.no_entry = no_entry
+            # user.can_view = can_view
+            # user.no_entry = no_entry
             user.save()
 
             for group in groups:
@@ -279,6 +331,13 @@ class Command(BaseCommand):
             except Exception as e:
                 print(e)
                 logging.warning(f"Error creating Plist with year '{plist[0]}'.")
+
+        for c in ACCESS_CONTROL:
+            try:
+                AccessControl.objects.create(identifier=c[0], description=c[1])
+            except Exception as e:
+                print(e)
+                logging.warning(f"Error creating Control Sequence with name '{c[0]}' and description '{c[1]}'.")
 
         try:
             Configuration.objects.get()

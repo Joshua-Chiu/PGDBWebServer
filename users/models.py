@@ -7,8 +7,11 @@ register = template.Library()
 
 
 class AccessControl(models.Model):
-    identifier = models.CharField(max_length=250, default='Set Identifier')
+    identifier = models.CharField(max_length=250, default='Set Identifier', unique=True)
     description = models.CharField(max_length=250, default='Set Description')
+
+    def __str__(self):
+        return self.description
 
 
 class CustomUser(AbstractUser):
@@ -24,19 +27,34 @@ class CustomUser(AbstractUser):
     text_colour = models.CharField(max_length=7, default='#000000')
     collapsible_bar_colour = models.CharField(max_length=7, default='#eeeeee')
 
-    permissions = models.ManyToManyField(AccessControl)
+    accesscontrol = models.ManyToManyField(AccessControl,
+        verbose_name=('Database Access Control'),
+        blank=True,
+        help_text=('Specify access control for this user. Ctrl + A to select all.'),
+        related_name="accesscontrol_set",
+        related_query_name="accesscontrol",)
+
+    @register.filter(name='has_access')
+    def has_access(self, perm):
+        try:
+            perm = AccessControl.objects.get(identifier=perm)
+        except Exception as e:
+            print(f"Can't find permission: {perm}")
+            return False
+
+        return perm in self.accesscontrol.all()
 
     @property
     def can_upload(self):
-        return True
+        return self.has_access("can_upload")
 
     @property
     def no_entry(self):
-        return False
+        return not self.has_access("can_enter")
 
     @property
     def can_view(self):
-        return True
+        return self.has_access("can_view")
 
     @register.filter(name='has_group')
     def has_group(self, group_name):
