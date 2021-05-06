@@ -23,4 +23,6 @@ urlpatterns = [
 
     path('ajax/validate_student_name/', views.validate_student_name, name='validate_student_name'),
     path('ajax/validate_point_code/', views.validate_point_code, name='validate_point_code'),
+
+    path('file/scholar_file', views.scholar_file, name='scholar_file'),
 ]
