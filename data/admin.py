@@ -16,17 +16,43 @@ from django.template.loader import get_template
 import re
 import threading
 
-
 def increase_grade(modeladmin, request, queryset):
     def increase():
-        for student in queryset:
-            if student.cur_grade_num >= 12:
-                student.active = False
-                student.save(request.user)
-            else:
-                student.active = True
-                student.cur_grade_num += 1
-                student.save(request.user)
+        log = LoggedAction(
+            user=request.user,
+            message=f"Starting new school year... Increasing grade for all students")
+        log.save()
+        try:
+            for student in queryset:
+                try:
+                    if student.cur_grade_num >= 12:
+                        student.active = False
+                        student.save(request.user)
+                        log = LoggedAction(
+                            user=request.user,
+                            message=f"Deactivated Student: {student.first} {student.last} ({student.student_num})")
+                        log.save()
+                    else:
+                        student.active = True
+                        student.cur_grade_num += 1
+                        student.save(request.user)
+                        log = LoggedAction(
+                            user=request.user,
+                            message=f"Increased Grade for student: {student.first} {student.last} ({student.student_num})")
+                        log.save()
+                except Exception as e:
+                    log = LoggedAction(
+                        user=request.user,
+                        message=f"Error occured when increasing grade for student: {student.first} {student.last} ({student.student_num})")
+                    log.save()
+
+        except Exception as e:
+            print(e)
+            log = LoggedAction(
+                user=request.user,
+                message=f"Generic Error occured when increasing grade")
+            log.save()
+
 
     thread = threading.Thread(target=increase)
     thread.start()

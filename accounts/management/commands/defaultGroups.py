@@ -45,6 +45,24 @@ PLIST = [
 GROUPS = ['Athletics', 'Service', 'Scholar', 'Fine Arts']
 MODELS = ['Student', ]
 PERMISSIONS = ['change', ]  # For now only view permission by default for all, others include add, delete, change
+ACCESS_CONTROL = [  # Define the permissions
+    ['can_view', 'CAN VIEW STUDENT PAGE - Designates whether the user can see the student view with all the data.'],
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['no_entry', 'NO ENTRY ALLOWED - Designates whether the user can enter data at the student view.'],
+
+    ['pull_service', 'CAN PULL ALL SERVICE REPORTS - Designates whether the user can generate service reports'],
+    ['pull_athletics', 'CAN PULL ALL SERVICE REPORTS - Designates whether the user can generate service reports'],
+    ['pull_scholar', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
+    ['pull_finearts', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
+
+    ['pull_service', 'CAN PULL SERVICE REPORTS - Designates whether the user can generate service reports'],
+
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+    ['can_upload', 'CAN UPLOAD - Designates whether the user can submit files for at direct entry pages.'],
+]
 POINTTYPES = [
     ['SE', 0, 'See Student Comment Box'],
     ['SE', 1, 'Service Club'],
@@ -237,6 +255,18 @@ class Command(BaseCommand):
             except PointCodes.DoesNotExist:
                 point = PointCodes.objects.create(catagory=category, code=code, description=description)
                 print(f'Created Code {code} of type {category} with description: {description}')
+
+        for plist in PLIST:
+            try:
+                PlistCutoff.objects.create(year=plist[0],
+                                           grade_8_T1=plist[1], grade_8_T2=plist[2],
+                                           grade_9_T1=plist[3], grade_9_T2=plist[4],
+                                           grade_10_T1=plist[5], grade_10_T2=plist[6],
+                                           grade_11_T1=plist[7], grade_11_T2=plist[8],
+                                           grade_12_T1=plist[9], grade_12_T2=plist[10])
+            except Exception as e:
+                print(e)
+                logging.warning(f"Error creating Plist with year '{plist[0]}'.")
 
         for plist in PLIST:
             try:
