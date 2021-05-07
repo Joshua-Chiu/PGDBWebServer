@@ -117,10 +117,7 @@ def print_annual(request):
         'award_formatted': award_formatted,  # Certificate
         "principals_signature": p_sig_string,
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def print_grad(request):
@@ -155,10 +152,7 @@ def print_grad(request):
         'award': award,
         'type': query,
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def print_trophies(request):
@@ -183,10 +177,7 @@ def print_trophies(request):
         'award': award,
         "grade": int(grade or 0),
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def print_term(request):
@@ -208,10 +199,7 @@ def print_term(request):
         'roll': roll,
         'student_list': students,
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def print_cslist(request):
@@ -223,10 +211,7 @@ def print_cslist(request):
         'points_at': PointCodes.objects.filter(catagory="AT"),
         'points_fa': PointCodes.objects.filter(catagory="FA"),
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def print_xcheck(request):
@@ -281,10 +266,7 @@ def print_xcheck(request):
         'award_type_display': award_type_display,
         'year': year,
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect(reverse('entry:error'))
+    return HttpResponse(template.render(context, request))
 
 
 def export_files(request):
@@ -292,7 +274,4 @@ def export_files(request):
     context = {
 
     }
-    if request.user.is_superuser:
-        return HttpResponse(template.render(context, request))
-    else:
-        return HttpResponseRedirect('/')
+    return HttpResponse(template.render(context, request))
