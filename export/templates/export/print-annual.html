@@ -61,9 +61,9 @@
                 {% if request.user|has_access:"pull_annual_bb" %}<option {% ifequal award "bigblock" %}selected {% endifequal %}value="bigblock" >Athletics Big Block</option>{% endif %}
                 {% if request.user|has_access:"pull_annual_atcum" %}<option {% ifequal award "cumulative" %}selected {% endifequal %}value="cumulative" >Athletics Cumulative</option>{% endif %}
                 {% if request.user|has_access:"pull_annual_at3" %}<option {% ifequal award "3ST" %}selected {% endifequal %}value="3ST" >Annual 3 Sport Athletes</option>{% endif %}
-                {% if request.user|has_access:"pull_annual_at3+" %}<option {% ifequal award "3STPLUS" %}selected {% endifequal %}value="3ST" >Annual 3+ Sport Athletes</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at3+" %}<option {% ifequal award "3STPLUS" %}selected {% endifequal %}value="3+ST" >Annual 3+ Sport Athletes</option>{% endif %}
                 {% if request.user|has_access:"pull_annual_at4" %}<option {% ifequal award "4ST" %}selected {% endifequal %}value="4ST" >Annual 4 Sport Athletes</option>{% endif %}
-                {% if request.user|has_access:"pull_annual_at4+" %}<option {% ifequal award "4STPLUS" %}selected {% endifequal %}value="5ST" >Annual 5+ Sport Athletes</option>{% endif %}
+                {% if request.user|has_access:"pull_annual_at4+" %}<option {% ifequal award "4STPLUS" %}selected {% endifequal %}value="4+ST" >Annual 4+ Sport Athletes</option>{% endif %}
             </select>
             </label>
 

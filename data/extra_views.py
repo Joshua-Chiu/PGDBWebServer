@@ -270,18 +270,18 @@ def import_pgdb_file(tree, user):
         except Exception as e:
             logs.append(f"Failed to add Plist Cutoffs for {plist[0].text}-{int(plist[0].text) + 1}: {e}")
 
-    for code in root[2]:
+    for c in root[2]:
         try:
-            if PointCodes.objects.filter(catagory=code[3].text(), code=int(code[1].text())).exists():
-                obj = PointCodes.objects.get(catagory=code[3].text(), code=int(code[1].text()))
-                obj.description = code[2].text()
+            if PointCodes.objects.filter(catagory=c[2].text, code=int(c[0].text)).exists():
+                obj = PointCodes.objects.get(catagory=c[2].text, code=int(c[0].text))
+                obj.description = c[1].text
                 obj.save()
             else:
-                PointCodes.objects.create(catagory=code[3].text(), code=int(code[1].text()), description=code[2].text())
+                PointCodes.objects.create(catagory=c[2].text, code=int(c[0].text), description=c[1].text)
             logs.append(
-                f"Created code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}")
+                f"Created code definition for {c[2].text}{c[0].text} with desc. {c[1].text}")
         except Exception as e:
-            logs.append(f"Failed to create code definition for {code[3].text()}{code[1].text()} with desc. {code[2].text()}: {e}")
+            logs.append(f"Failed to create code definition for {c[2].text}{c[0].text} with desc. {c[1].text}: {e}")
     done = True
     close_old_connections()
 

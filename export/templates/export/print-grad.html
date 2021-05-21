@@ -33,6 +33,7 @@
                 {% if request.user|has_access:"pull_grad_sc" %}<option {% ifequal award "SC" %}selected {% endifequal %}value="SC">Scholar Candidates</option>{% endif %}
                 {% if request.user|has_access:"pull_grad_fa" %}<option {% ifequal award "FA" %}selected {% endifequal %}value="FA">Fine Arts Candidates</option>{% endif %}
                 {% if request.user|has_access:"pull_grad_me" %}<option {% ifequal award "ME" %}selected {% endifequal %}value="ME">Merit Candidates</option>{% endif %}
+                {% if request.user|has_access:"pull_grad_superlist" %}<option {% ifequal award "SUPER" %}selected {% endifequal %}value="SUPER">Sr. Awards Superlist</option>{% endif %}
             </select></label>
 
             <input type="submit" value="Go" onclick="form.action='print-grad';"/>
@@ -41,6 +42,7 @@
 
     <div>
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
+        <button class="btn default" onclick="exportTableToExcel('GeneratedList')">Export to Excel (Sr. Superlist Only)</button>
     </div>
 
     {% if student_list  %}
@@ -62,6 +64,10 @@
 
         {% ifequal award "ME" %}
             {% include 'export/award_templates/grad_award_me.html' with student_list=student_list %}
+        {% endifequal %}
+
+        {% ifequal award "SUPER" %}
+            {% include 'export/award_templates/grad_superlist.html' with student_list=student_list %}
         {% endifequal %}
     {% endif %}
 {% endblock %}
@@ -90,6 +96,39 @@
               options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
           }
         document.getElementById("year").innerHTML = options;
+    </script>
+    <script>
+    function exportTableToExcel(tableID, filename = ''){
+        let downloadLink;
+        const dataType = 'application/vnd.ms-excel';
+        const tableSelect = document.getElementById(tableID);
+        console.log(tableSelect);
+        const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
+
+        // Specify file name
+        filename = filename?filename+'.xls':'{{ type }}.xls';
+
+        // Create download link element
+        downloadLink = document.createElement("a");
+
+        document.body.appendChild(downloadLink);
+
+        if(navigator.msSaveOrOpenBlob){
+            const blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBlob( blob, filename);
+        }else{
+            // Create a link to the file
+            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+            // Setting the file name
+            downloadLink.download = filename;
+
+            //triggering the function
+            downloadLink.click();
+        }
+    }
     </script>
 {% endblock %}
 {% block print-styles %}'*{font-family: "Helvetica", Helvetica, sans-serif;font-size:10px;}'{% endblock %}

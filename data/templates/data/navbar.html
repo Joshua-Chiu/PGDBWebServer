@@ -46,21 +46,6 @@
                 </div>
             </div>
         </li>
-
-        <li>
-            <div class="dropdown">
-                <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
-                    <i class="fa fa-caret-down"></i>
-                <div class="dropdown-content">
-                    <a href="{% url 'export:print-term' %}">Honour Rolls</a>
-                    <a href="{% url 'export:print-annual' %}">Annual Awards</a>
-                    <a href="{% url 'export:print-trophies' %}">Annual Trophies</a>
-                    <a href="{% url 'export:print-grad' %}">Graduation</a>
-                    <a href="{% url 'export:print-xcheck' %}">Crosscheck</a>
-                    <a href="{% url 'export:print-cslist' %}">Club/Sport Lists</a>
-                </div>
-            </div>
-        </li>
 {% comment %}
         <li>
             <div class="dropdown">
@@ -81,6 +66,20 @@
             <a href="{% url 'users:personalisation' %}">Personalize Site</a>
             </li>
         {% endif %}
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn"><a href="{% url 'export:index' %}">Reports</a></button>
+                    <i class="fa fa-caret-down"></i>
+                <div class="dropdown-content">
+                    <a href="{% url 'export:print-term' %}">Honour Rolls</a>
+                    <a href="{% url 'export:print-annual' %}">Annual Awards</a>
+                    <a href="{% url 'export:print-trophies' %}">Annual Trophies</a>
+                    <a href="{% url 'export:print-grad' %}">Graduation</a>
+                    <a href="{% url 'export:print-xcheck' %}">Crosscheck</a>
+                    <a href="{% url 'export:print-cslist' %}">Club/Sport Lists</a>
+                </div>
+            </div>
+        </li>
         <li style="border-left: 1px solid #bbb">
             <div class="dropdown">
                 <button class="dropbtn"><a href="{% url 'entry:index' %}">Direct Entry</a></button>

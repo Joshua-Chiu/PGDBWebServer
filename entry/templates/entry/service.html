@@ -76,7 +76,7 @@
     <script>
         $(".min").keyup(function () {
             if (this.value.length > 0) {
-                document.getElementById('hours').innerHTML="" + Math.floor(parseInt(this.value)) + "h " + ('0'+(Math.floor((parseFloat(this.value) % 1)*60))).slice(-2) + "m = " + parseFloat(this.value)/5 + " Points";
+                document.getElementById('hours').innerHTML="" + Math.floor(parseInt(this.value)) + "h " + ('0'+(Math.floor((parseFloat(this.value) % 1)*60))).slice(-2) + "m = " + (parseFloat(this.value)/5).toFixed(2) + " Points";
             } else {
                 document.getElementById('hours').innerHTML="NONE";
             }

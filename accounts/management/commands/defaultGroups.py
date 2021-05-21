@@ -106,6 +106,7 @@ ACCESS_CONTROL = [  # Define the permissions
     ['pull_grad_sc', 'CAN PULL SC GRAD REPORT - Designates whether the user can pull scholar grad reports.'],
     ['pull_grad_fa', 'CAN PULL FA GRAD REPORT - Designates whether the user can pull fine arts grad reports.'],
     ['pull_grad_me', 'CAN PULL ME GRAD REPORT - Designates whether the user can pull merit grad reports.'],
+    ['pull_grad_superlist', 'CAN PULL SR CEREMONY GRAD REPORT - Designates whether the user can pull ceremony grad reports.'],
 
     ['pull_xcheck_se', 'CAN PULL SE XCHECK REPORT - Designates whether the user can pull service xcheck reports.'],
     ['pull_xcheck_at', 'CAN PULL AT XCHECK REPORT - Designates whether the user can pull athletics xcheck reports.'],
