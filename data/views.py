@@ -332,7 +332,10 @@ def codes_submit(request):
         entry.catagory = code[0][1].upper()
         entry.description = code[2][1]
         entry.save()
-
+    log = LoggedAction(
+        user=request.user,
+        message=f"Code Definitions were changed.")
+    log.save()
     return HttpResponseRedirect(reverse('data:codes'))
 
 

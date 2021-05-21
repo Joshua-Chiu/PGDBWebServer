@@ -38,25 +38,25 @@
             <label>Service: <select name="service">
                 <option value="">Select</option>
             {% for code in points_se %}
-                <option {% ifequal "SE" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+                <option {% ifequal code.code se_point_code %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
             {% endfor %}
             </select></label>
 
             <label>Athletics: <select name="athletic">
                 <option value="">Select</option>
             {% for code in points_at %}
-                <option {% ifequal "AT" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+                <option {% ifequal code.code at_point_code %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
             {% endfor %}
             </select></label>
 
             <label>Fine Arts: <select name="fine_arts">
                 <option value="">Select</option>
             {% for code in points_fa %}
-                <option {% ifequal "FA" point_type %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
+                <option {% ifequal code.code fa_point_code %}selected {% endifequal %}value="{{ code.code }}">{{ code.description }} - {{ code.code }}</option>
             {% endfor %}
             </select></label>
 
-            <input type="submit" value="Go" onclick="form.action='print-trophies';" />
+            <input type="submit" value="Go" onclick="form.action='print-cslist';" />
         </fieldset>
     </form>
 
@@ -64,21 +64,7 @@
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
     </div>
     <div id="GradList">
-        {% ifequal award "SE" %}
-            {% include 'export/award_templates/annual_award_se.html' with student_list=student_list grade=grade %}
-        {% endifequal %}
-
-        {% ifequal award "AT" %}
-            {% include 'export/award_templates/annual_award_at.html' with student_list=student_list grade=grade %}
-        {% endifequal %}
-
-        {% ifequal award "SC" %}
-            {% include 'export/award_templates/annual_award_sc.html' with student_list=student_list grade=grade %}
-        {% endifequal %}
-
-        {% ifequal award "FA" %}
-            {% include 'export/award_templates/annual_award_fa.html' with student_list=student_list grade=grade %}
-        {% endifequal %}
+        {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %}
     </div>
     {% else %}
         <h4>You do not have permission to pull this report</h4>

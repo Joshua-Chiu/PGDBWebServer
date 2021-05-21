@@ -205,12 +205,31 @@ def print_term(request):
 
 def print_cslist(request):
     template = get_template('export/print-cslist.html')
+    students, grade, year, se_point_code, at_point_code, fa_point_code = "", "", "", "", "", ""
+    if request.GET:
+        year = request.GET.get("year")
+        grade = (request.GET.get("grade")).zfill(2)
+        se_point_code = int(request.GET.get("service")) if request.GET.get("service") else None
+        at_point_code = int(request.GET.get("athletic")) if request.GET.get("athletic") else None
+        fa_point_code = int(request.GET.get("fine_arts")) if request.GET.get("fine_arts") else None
+
+        query = f"grade_{grade}_year:{year} active:both "
+        if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
+        if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
+        if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
+
+        students = parseQuery(query)
 
     context = {
-        'student_list': Student.objects.all(),
+        'student_list': students,
         'points_se': PointCodes.objects.filter(catagory="SE"),
         'points_at': PointCodes.objects.filter(catagory="AT"),
         'points_fa': PointCodes.objects.filter(catagory="FA"),
+        'grade': grade,
+        'year': year,
+        'se_point_code': se_point_code,
+        'at_point_code': at_point_code,
+        'fa_point_code': fa_point_code,
     }
     return HttpResponse(template.render(context, request))
 

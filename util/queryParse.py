@@ -13,9 +13,17 @@ def get_year_keys(dict):
 
 
 def get_term_keys(dict):
-    '''checks if there are grade_XX_year:0000 keys'''
+    '''checks if there are grade_XX_term:X keys'''
     for key, val in dict.items():
-        if key[:5] == "grade" and key[7:12] == "_term":
+        if key[:6] == "grade_" and key[8:] == "_term":
+            return key
+    return False
+
+
+def get_point_keys(dict):
+    '''checks if there are grade_XX_point:XX_X keys'''
+    for key, val in dict.items():
+        if key[:6] == "grade_" and key[8:] == "_point":
             return key
     return False
 
@@ -23,7 +31,7 @@ def get_term_keys(dict):
 def get_grad_keys(dict):
     '''checks if there are grad award keys'''
     for key, val in dict.items():
-        if key[:5] == "grade" and key[7:12] == "_term":
+        if "award" in key:
             return key
     return False
 
@@ -142,74 +150,68 @@ def parseQuery(query):
             students = new_students
 
         # Process grad_reports
+        if get_grad_keys(items):
+            k = get_grad_keys(items)
+            v = items[get_grad_keys(items)]
+            #  set the allowed grade for an award to be won in to a specific grade or default to all
+            if "_" in k:
+                grade = int(k.split("_")[1])
+                grades = [grade]
+                print(grade)
+            else:
+                grades = [8, 9, 10, 11, 12]
+                grade = 0
+
+            # go through each student and see if the grade they won the award in is correct
+            new_students = students
+            if v == "silver":
+                for s in students:
+                    if not s.silver_pin in grades:
+                        new_students = new_students.exclude(id=s.id)
+            elif v == "gold":
+                for s in students:
+                    if not s.gold_pin in grades:
+                        new_students = new_students.exclude(id=s.id)
+            elif v == "goldplus":
+                for s in students:
+                    if not s.goldPlus_pin in grades:
+                        new_students = new_students.exclude(id=s.id)
+            elif v == "platinum":
+                for s in students:
+                    if not s.platinum_pin in grades:
+                        new_students = new_students.exclude(id=s.id)
+            elif v == "bigblock":
+                for s in students:
+                    if not s.bigblock_award in grades:
+                        new_students = new_students.exclude(id=s.id)
+            elif v == "honourroll":
+                for s in students:
+                    grade_object = s.get_grade(grade)
+                    if not grade_object.honourroll and not grade_object.isnull_SC:
+                        new_students = new_students.exclude(id=s.id)
+
+            students = new_students
 
         # Process lookup reverse requests:
+        if get_point_keys(items):
+            key = get_point_keys(items)
+            val = items[key].split("_")
+            grade = int(key[6:8])
+
+            for s in students:
+                g = s.get_grade(grade)
+                if not g.points_set.filter(type__catagory=val[0], type__code=val[1]).exists():
+                    students = students.exclude(id=s.id)
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-        return students
-        '''
-            # award: or award_12:
-            elif "award" in k:
-                # set the allowed grade for an award to be won in to a specific grade or default to all
-                if "_" in k:
-                    grade = int(k.split("_")[1])
-                    grades = [grade]
-                    print(grade)
-                else:
-                    grades = [8, 9, 10, 11, 12]
-                    grade = 0
-
-                # go through each student and see if the grade they won the award in is correct
-                new_students = students
-                if v == "silver":
-                    for s in students:
-                        if not s.silver_pin in grades:
-                            new_students = new_students.exclude(id=s.id)
-                elif v == "gold":
-                    for s in students:
-                        if not s.gold_pin in grades:
-                            new_students = new_students.exclude(id=s.id)
-                elif v == "goldplus":
-                    for s in students:
-                        if not s.goldPlus_pin in grades:
-                            new_students = new_students.exclude(id=s.id)
-                elif v == "platinum":
-                    for s in students:
-                        if not s.platinum_pin in grades:
-                            new_students = new_students.exclude(id=s.id)
-                elif v == "bigblock":
-                    for s in students:
-                        if not s.bigblock_award in grades:
-                            new_students = new_students.exclude(id=s.id)
-                elif v == "honourroll":
-                    for s in students:
-                        grade_object = s.get_grade(grade)
-                        if not grade_object.honourroll and not grade_object.isnull_SC:
-                            new_students = new_students.exclude(id=s.id)
-
-                students = new_students
-
-            elif hasattr(Student, k):
-                val = "{0}__icontains".format(k)
-                # print(val, v)
-                students = students.filter(**{val: v})
+        # lookup by attributes - won't be implemented
 
         return students
-        '''
     except Exception as e:
         print(f"oh no! failed to parse query: {query}")
         print(e)
         raise e
-        return Student.objects.none()
+        # return Student.objects.none()
