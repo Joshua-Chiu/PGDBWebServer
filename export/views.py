@@ -226,7 +226,7 @@ def print_cslist(request):
         'points_se': PointCodes.objects.filter(catagory="SE"),
         'points_at': PointCodes.objects.filter(catagory="AT"),
         'points_fa': PointCodes.objects.filter(catagory="FA"),
-        'grade': grade,
+        'grade': int(grade),
         'year': year,
         'se_point_code': se_point_code,
         'at_point_code': at_point_code,
