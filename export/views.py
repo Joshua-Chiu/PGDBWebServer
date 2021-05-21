@@ -131,9 +131,9 @@ def print_grad(request):
         query = f"grade_12_year:{year} active:both"
         students = parseQuery(query)
 
-        if not award == "ME":
+        if award != "ME" and award != "SUPER":
             students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
-        else:
+        elif award == "ME":
             students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:30]
 
         awards_dict = {
@@ -142,6 +142,7 @@ def print_grad(request):
             "SC": "SCHOLARSHIP",
             "FA": "FINE ARTS",
             "ME": "MERIT",
+            "SUPER": "SR. AWARDS SUPERLIST"
         }
 
         query = f"{year} - {int(year) + 1} {awards_dict[award]} GRADUATION CANDIDATES"

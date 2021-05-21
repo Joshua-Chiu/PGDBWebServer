@@ -250,6 +250,33 @@ class Student(models.Model):
     def homeroom(self):
         return f"{self.cur_grade_num}{self.homeroom_str}"
 
+    @property
+    def grad_awards(self):
+        '''returns all awards that a student is graduating with in senior ceremony'''
+        awards = []
+        if self.grade_12.AT_total >= 9.5:
+            awards.append("Athletics Certificate")
+        if self.grade_12.FA_total >= 9.5:
+            awards.append("Fine Arts Certificate")
+        if self.grade_12.SE_total >= 9.5:
+            awards.append("Service Certificate")
+
+        if self.grade_12.term1_avg >= self.grade_12.plist_T1 and self.grade_12.term2_avg >= self.grade_12.plist_T2:
+            awards.append("Principal's List Certificate")
+        elif self.grade_12.term1_avg >= 79.45 and self.grade_12.term2_avg >= 79.45:
+            awards.append("Honour Roll Certificate")
+
+        if self.silver_pin == 12:
+            awards.append("Silver Greyhound Pin")
+        if self.gold_pin == 12:
+            awards.append("Gold Greyhound Pin")
+        if self.goldPlus_pin == 12:
+            awards.append("Gold+ Service Attachment")
+        if self.platinum_pin == 12:
+            awards.append("Platinum Greyhound Pin")
+
+        return awards
+
     # Cumulative returns all points up to a certain grade
 
     def cumulative_SE(self, i):
