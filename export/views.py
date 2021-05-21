@@ -80,8 +80,9 @@ def print_annual(request):
         "bigblock": "big block",
         "cumulative": "Cumulative",
         "3ST": "3-Sport",
+        "3+ST": "3+-Sport",
         "4ST": "4-Sport",
-        "5ST": "5+-Sport",
+        "4+ST": "4+-Sport",
     }
     award_formatted = award
     if query:
