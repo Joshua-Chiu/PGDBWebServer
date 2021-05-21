@@ -38,9 +38,9 @@ def daniel_lai(request):
     if request.user.username == "dlai":
         request.user.first_name = "".join(random.choice([k.upper(), k.lower()]) for k in request.user.first_name)
         request.user.last_name = "".join(random.choice([k.upper(), k.lower()]) for k in request.user.last_name)
-        request.user.header_colour = f"#{'%06x' % random.randrange(16**6)}"
-        request.user.page_colour = f"#{'%06x' % random.randrange(16**6)}"
-        request.user.alternate_row_colour = f"#{'%06x' % random.randrange(16**6)}"
-        request.user.text_colour = f"#{'%06x' % random.randrange(16**6)}"
-        request.user.collapsible_bar_colour = f"#{'%06x' % random.randrange(16**6)}"
+        # request.user.header_colour = f"#{'%06x' % random.randrange(16**6)}"
+        # request.user.page_colour = f"#{'%06x' % random.randrange(16**6)}"
+        # request.user.alternate_row_colour = f"#{'%06x' % random.randrange(16**6)}"
+        # request.user.text_colour = f"#{'%06x' % random.randrange(16**6)}"
+        # request.user.collapsible_bar_colour = f"#{'%06x' % random.randrange(16**6)}"
         request.user.save()
