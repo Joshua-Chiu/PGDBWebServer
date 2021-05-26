@@ -40,8 +40,8 @@ def parseQuery(query):
     try:
         if ":" not in query:
             query = query.split()
-            if len(query) == 1 and query.isdigit():
-                return Student.objects.filter(student_num=query)
+            if len(query) == 1 and query[0].isdigit():
+                return Student.objects.filter(student_num=query[0])
             elif len(query) == 1:
                 return Student.objects.filter(Q(first__icontains=query[0]) | Q(last__icontains=query[0]))
             elif len(query) >= 2:
