@@ -140,8 +140,8 @@
         });
 
 
-        const imgData = 'data:image/png;base64,{{ principals_signature }}';
-        console.log(imgData);
+        {% comment %}const imgData = 'data:image/png;base64,{{ principals_signature }}';{% endcomment %}
+        //console.log(imgData);
         const type = "{{ award_formatted }}";
         const studentList = formatText(elem); //format table html from the table
         doc.addFont('vivaldin', 'italic');
@@ -162,7 +162,7 @@
             doc.text(255, 210, studentList[i][2]);
             console.log(studentList[i][2]); //identifier
 
-            doc.addImage(imgData, 'JPEG', 172, 166, 60, 30);
+            //doc.addImage(imgData, 'JPEG', 172, 166, 60, 30);
 
             doc.addPage();
 

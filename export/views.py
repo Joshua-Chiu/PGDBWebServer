@@ -132,9 +132,9 @@ def print_grad(request):
         students = parseQuery(query)
 
         if award != "ME" and award != "SUPER":
-            students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:30]
+            students = sorted(students, key=lambda student: getattr(student, f"{award}_11_12_total"), reverse=True)[:40]
         elif award == "ME":
-            students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:30]
+            students = sorted(students, key=lambda student: getattr(student, "all_11_12_total"), reverse=True)[:40]
 
         awards_dict = {
             "SE": "SERVICE",
@@ -168,7 +168,7 @@ def print_trophies(request):
         query = f"grade_{grade.zfill(2)}_year:{year} active:both"
         students = parseQuery(query)
 
-        students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:30]
+        students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:40]
     else:
         students = Student.objects.none()
 
