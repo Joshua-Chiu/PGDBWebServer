@@ -106,8 +106,8 @@ def print_annual(request):
             query += f"{award_formatted.upper()} RECIPIENTS"
     config = Configuration.objects.get()
 
-    with open(config.principal_signature.path, 'rb') as img:
-        p_sig_string = str(base64.b64encode(img.read()))[2:-1]
+    # with open(config.principal_signature.path, 'rb') as img:
+        # p_sig_string = str(base64.b64encode(img.read()))[2:-1]
 
     context = {
         'student_list': students,
@@ -116,7 +116,7 @@ def print_annual(request):
         'award': award,
         "grade": int(grade),
         'award_formatted': award_formatted,  # Certificate
-        "principals_signature": p_sig_string,
+        # "principals_signature": p_sig_string,
     }
     return HttpResponse(template.render(context, request))
 
