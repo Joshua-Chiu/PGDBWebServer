@@ -107,7 +107,7 @@ def print_annual(request):
     config = Configuration.objects.get()
 
     # with open(config.principal_signature.path, 'rb') as img:
-        # p_sig_string = str(base64.b64encode(img.read()))[2:-1]
+    # p_sig_string = str(base64.b64encode(img.read()))[2:-1]
 
     context = {
         'student_list': students,
@@ -168,7 +168,8 @@ def print_trophies(request):
         query = f"grade_{grade.zfill(2)}_year:{year} active:both"
         students = parseQuery(query)
 
-        students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"), reverse=True)[:40]
+        students = sorted(students, key=lambda student: getattr(student.get_grade(grade), f"{award}_total"),
+                          reverse=True)[:40]
     else:
         students = Student.objects.none()
 
@@ -204,6 +205,30 @@ def print_term(request):
     return HttpResponse(template.render(context, request))
 
 
+def cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code):
+    try:
+        if grade == "all":
+            students = Student.objects.none()
+            for i in range(8, 12 + 1):
+                grade = str(i).zfill(2)
+                query = f"grade_{grade}_year:{year} active:both "
+                if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
+                if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
+                if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
+                students = students | parseQuery(query)
+                # print(students)
+            return students
+        else:
+            grade = grade.zfill(2)
+            query = f"grade_{grade}_year:{year} active:both "
+            if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
+            if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
+            if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
+            return parseQuery(query)
+    except Exception as e:
+        print(e)
+
+
 def print_cslist(request):
     template = get_template('export/print-cslist.html')
     students, grade, year, se_point_code, at_point_code, fa_point_code = "", "", "", "", "", ""
@@ -214,19 +239,14 @@ def print_cslist(request):
         at_point_code = int(request.GET.get("athletic")) if request.GET.get("athletic") else None
         fa_point_code = int(request.GET.get("fine_arts")) if request.GET.get("fine_arts") else None
 
-        query = f"grade_{grade}_year:{year} active:both "
-        if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
-        if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
-        if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
-
-        students = parseQuery(query)
+        students = cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code)
 
     context = {
         'student_list': students,
         'points_se': PointCodes.objects.filter(catagory="SE"),
         'points_at': PointCodes.objects.filter(catagory="AT"),
         'points_fa': PointCodes.objects.filter(catagory="FA"),
-        'grade': int(grade),
+        'grade': int(grade) if grade.isdigit() else grade,
         'year': year,
         'se_point_code': se_point_code,
         'at_point_code': at_point_code,
