@@ -12,6 +12,8 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'export/css/reports_styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script src="{% static 'export/vivaldin-italic.js' %}" type="module"></script>
 {% endblock %}
 
 {% block user_custom %}table.sortable tbody tr:nth-child(odd) td {background: {{ user.alternate_row_colour }};}{% endblock %}
@@ -70,7 +72,9 @@
     <div>
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
 
-        <button class="btn default" onclick="exportTableToExcel('GradList', '{{ type }}')">Export to Excel</button>
+        <button class="btn default" onclick="exportTableToExcel('GradList', '{{ filename }}')">Export to Excel</button>
+        <button class="btn default" onclick="PrintCert('GeneratedList')">Print Certificates</button>
+        <label>Cert Name: <input type="text" placeholder="Certificate Name" id="certname"></label>
     </div>
     <div id="GradList">
         {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %}
@@ -104,6 +108,87 @@
               options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
           }
         document.getElementById("year").innerHTML = options;
+    </script>
+    <script>
+        (function(API){API.myText = function(txt, options, x, y) {
+                options = options ||{};
+            let txtWidth;
+            if (options.align === "center") {
+
+                const fontSize = this.internal.getFontSize();
+                const pageWidth = this.internal.pageSize.width;
+                txtWidth = this.getStringUnitWidth(txt) * fontSize / this.internal.scaleFactor;
+
+                // Calculate text's x coordinate
+                x = (pageWidth - txtWidth) / 2;
+            }
+
+                // Draw text at x,y
+                this.text(txt,x,y);
+            }})(jsPDF.API);
+    function PrintCert(elem) {
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            format: 'letter'
+        });
+
+
+        {% comment %}const imgData = 'data:image/png;base64,{{ principals_signature }}';{% endcomment %}
+        //console.log(imgData);
+        const type = document.getElementById("certname").value;
+        const studentList = formatText(elem); //format table html from the table
+        doc.addFont('vivaldin', 'italic');
+
+        for(let i = 0; i < studentList.length; i++){
+            doc.setFont('vivaldin', 'italic');// set font parameters to vivaldin
+            doc.setFontSize(48);
+            doc.myText(studentList[i][0] + " " + studentList[i][1],{align: "center"}, 0, 94); //first + last
+
+            doc.setFontSize(40);
+            doc.myText(type ,{align: "center"}, 0, 131);
+
+            doc.setFontSize(32);
+            doc.myText("{{ year }} - {{ year|add:1 }}",{align: "center"},0 , 150);
+
+            doc.setFontSize(7);
+            doc.setFont('Arial', 'normal');
+            doc.text(255, 210, studentList[i][2]);
+            console.log(studentList[i][2]); //identifier
+
+            //doc.addImage(imgData, 'JPEG', 172, 166, 60, 30);
+
+            doc.addPage();
+
+        }
+        doc.deletePage(studentList.length + 1); //delete last blank page in file
+
+        //doc.myText("Test",{align: "center"},0,16);
+        //doc.save('Certificates.pdf');
+
+
+        const string = doc.output('datauristring');
+        const embed = "<embed width='100%' height='100%' name=Certificates src='" + string + "'/>";
+        const x = window.open('', 'PRINT', 'height=400,width=600');
+        x.document.open();
+        x.document.write(embed);
+        x.document.close();
+    }
+    function formatText(elem) {
+        elem = document.getElementById(elem);
+        elem = elem.children[0].children[2]; //gets table body
+        console.log(elem);
+        const studentList = [];
+        for(let i = 0 ; i < {{ student_list|length }}; i++){ //iterate through each student in student list
+            const student = elem.children[i];
+            const first_name = student.children[0].innerHTML.replace(/ *\([^)]*\) */g, ""); // Get firstname and regex to remove legal name
+            const last_name = student.children[2].innerHTML;
+            const identifier = student.children[3].innerHTML + " - " + student.children[4].innerHTML; // get student number and homeroom
+            //console.log(first_name + " " + last_name + " " + identifier);
+
+            studentList.push([first_name, last_name, identifier]);
+        }
+        return studentList;
+    }
     </script>
 
     <script>
