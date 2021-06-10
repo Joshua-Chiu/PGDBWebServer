@@ -27,6 +27,7 @@ def index(request):
 def print_annual(request):
     template = get_template('export/print-annual.html')
 
+    active = ""
     query = ""
     year = ""
     award = ""
@@ -83,6 +84,7 @@ def print_annual(request):
         "3+ST": "3+-Sport",
         "4ST": "4-Sport",
         "4+ST": "4+-Sport",
+        'active': active,
     }
     award_formatted = award
     if query:
@@ -205,13 +207,13 @@ def print_term(request):
     return HttpResponse(template.render(context, request))
 
 
-def cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code):
+def cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code, active):
     try:
         if grade == "all":
             students = Student.objects.none()
             for i in range(8, 12 + 1):
                 grade = str(i).zfill(2)
-                query = f"grade_{grade}_year:{year} active:both "
+                query = f"grade_{grade}_year:{year} active:{active} "
                 if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
                 if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
                 if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
@@ -220,7 +222,7 @@ def cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code):
             return students
         else:
             grade = grade.zfill(2)
-            query = f"grade_{grade}_year:{year} active:both "
+            query = f"grade_{grade}_year:{year} active:{active} "
             if se_point_code: query += f"grade_{grade}_point:SE_{se_point_code} "
             if at_point_code: query += f"grade_{grade}_point:AT_{at_point_code} "
             if fa_point_code: query += f"grade_{grade}_point:FA_{fa_point_code} "
@@ -231,15 +233,16 @@ def cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code):
 
 def print_cslist(request):
     template = get_template('export/print-cslist.html')
-    students, grade, year, se_point_code, at_point_code, fa_point_code = "", "", "", "", "", ""
+    students, grade, year, se_point_code, at_point_code, fa_point_code, active = "", "", "", "", "", "", ""
     if request.GET:
         year = request.GET.get("year")
         grade = (request.GET.get("grade")).zfill(2)
+        active = request.GET.get("active")
         se_point_code = int(request.GET.get("service")) if request.GET.get("service") else None
         at_point_code = int(request.GET.get("athletic")) if request.GET.get("athletic") else None
         fa_point_code = int(request.GET.get("fine_arts")) if request.GET.get("fine_arts") else None
 
-        students = cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code)
+        students = cslist_helper(grade, year, se_point_code, at_point_code, fa_point_code, active)
 
     context = {
         'student_list': students,
@@ -248,9 +251,11 @@ def print_cslist(request):
         'points_fa': PointCodes.objects.filter(catagory="FA"),
         'grade': int(grade) if grade.isdigit() else grade,
         'year': year,
+        'active': active,
         'se_point_code': se_point_code,
         'at_point_code': at_point_code,
         'fa_point_code': fa_point_code,
+        'filename': f"{grade}-{year}-list",
     }
     return HttpResponse(template.render(context, request))
 

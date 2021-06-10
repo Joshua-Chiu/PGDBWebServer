@@ -57,12 +57,20 @@
             {% endfor %}
             </select></label>
 
+            <labeL>Active: <select name="active">
+                <option {% ifequal active "yes" %}selected {% endifequal %}value="yes" >Yes (Present and Active Students)</option>
+                <option {% ifequal active "no" %}selected {% endifequal %}value="no" >No (Graduated and Transferred Students)</option>
+                <option {% ifequal active "both" %}selected {% endifequal %}value="Both" >Both</option>
+            </select></labeL>
+
             <input type="submit" value="Go" onclick="form.action='print-cslist';" />
         </fieldset>
     </form>
 
     <div>
         <button class="btn default" onclick="PrintElem('GradList')">Print Student List</button>
+
+        <button class="btn default" onclick="exportTableToExcel('GradList', '{{ type }}')">Export to Excel</button>
     </div>
     <div id="GradList">
         {% include 'export/award_templates/annual_cert_student_list.html' with student_list=student_list %}
@@ -96,6 +104,40 @@
               options += "value=\""+ year + "\">" + year + " → " + (year + 1) + "</option>";
           }
         document.getElementById("year").innerHTML = options;
+    </script>
+
+    <script>
+    function exportTableToExcel(tableID, filename = ''){
+        let downloadLink;
+        const dataType = 'application/vnd.ms-excel';
+        const tableSelect = document.getElementById(tableID);
+        console.log(tableSelect);
+        const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20').replace(/#/g, 'UNKN');
+
+        // Specify file name
+        filename = filename?filename+'.xls':"{{ filename }}.xls";
+
+        // Create download link element
+        downloadLink = document.createElement("a");
+
+        document.body.appendChild(downloadLink);
+
+        if(navigator.msSaveOrOpenBlob){
+            const blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBlob( blob, filename);
+        }else{
+            // Create a link to the file
+            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+            // Setting the file name
+            downloadLink.download = filename;
+
+            //triggering the function
+            downloadLink.click();
+        }
+    }
     </script>
 {% endblock %}
 
