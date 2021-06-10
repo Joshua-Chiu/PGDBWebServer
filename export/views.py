@@ -63,7 +63,7 @@ def print_annual(request):
 
     print(award)
     if query:
-        students = parseQuery(query + " active:both")
+        students = parseQuery(f"{query} active:{request.GET['active']}")
     else:
         students = parseQuery(query)
 
