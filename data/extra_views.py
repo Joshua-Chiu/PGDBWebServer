@@ -105,8 +105,8 @@ def ajax_student_cumulative_data(request):
 
         data['annual HR ' + str(g)] = grade_object.term1_avg >= 79.45 and grade_object.term2_avg >= 79.45
         try:
-            data['annual PL ' + str(g)] = grade_object.term1_avg >= grade_object.plist_T1 and \
-                                          grade_object.term2_avg >= grade_object.plist_T2
+            data['annual PL ' + str(g)] = grade_object.term1_avg >= float(grade_object.plist_T1) and \
+                                          grade_object.term2_avg >= float(grade_object.plist_T2)
         except PlistCutoff.DoesNotExist:
             data['annual PL ' + str(g)] = False
 

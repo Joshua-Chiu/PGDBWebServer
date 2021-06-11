@@ -96,7 +96,7 @@ def parseQuery(query):
                 new_students = students
                 for s in students:
                     grade_obj = s.get_grade(grade)
-                    if not getattr(grade_obj, f"term{term}_avg") < getattr(grade_obj, f"plist_T{term}"):
+                    if not getattr(grade_obj, f"term{term}_avg") < float(getattr(grade_obj, f"plist_T{term}")):
                         new_students = new_students.exclude(id=s.id)
                 students = new_students
 
@@ -105,7 +105,7 @@ def parseQuery(query):
                 new_students = students
                 for s in students:
                     grade_obj = s.get_grade(grade)
-                    if not getattr(grade_obj, f"term{term}_avg") >= getattr(grade_obj, f"plist_T{term}") and \
+                    if not getattr(grade_obj, f"term{term}_avg") >= float(getattr(grade_obj, f"plist_T{term}")) and \
                             not grade_obj.isnull_SC:
                         new_students = new_students.exclude(id=s.id)
                 students = new_students

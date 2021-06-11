@@ -140,7 +140,7 @@ class Grade(models.Model):
 
     @property
     def principalslist(self):
-        return self.plist_T1 <= self.term1_avg and self.plist_T2 <= self.term2_avg
+        return float(self.plist_T1) <= self.term1_avg and float(self.plist_T2) <= self.term2_avg
 
     @property
     def cumulative_SE(self):
